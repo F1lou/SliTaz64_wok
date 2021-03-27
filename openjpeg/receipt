@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="openjpeg"
+VERSION="1.5.0"
+CATEGORY="development"
+SHORT_DESC="An open source JPEG 2000 codec"
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="BSD"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://www.openjpeg.org/"
+WGET_URL="http://openjpeg.googlecode.com/files/$TARBALL"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="glibc-base"
+BUILD_DEPENDS="zlib-dev tiff-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# make sure we use system libs
+	[ -d thirtparty ] && rm -rf thirtparty
+	./configure --enable-lcms2=no \
+		--enable-png=no \
+		--enable-lcms1=no \
+		--disable-static \
+		$CONFIGURE_ARGS &&
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}
+

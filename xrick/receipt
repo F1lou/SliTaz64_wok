@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="xrick"
+VERSION="021212"
+CATEGORY="games"
+SHORT_DESC="Rick Dangerous"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL"
+TARBALL="$PACKAGE-$VERSION.tgz"
+WEB_SITE="http://www.bigorno.net/xrick/"
+WGET_URL="http://www.bigorno.net/xrick/$TARBALL"
+
+DEPENDS="libsdl zlib"
+BUILD_DEPENDS="libsdl-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	make
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin \
+		$fs/usr/share/xrick
+	 
+	cp -a $src/$PACKAGE $fs/usr/bin
+	cp -a $src/data.zip $fs/usr/share/xrick
+	cp -a $src/KeyCodes $fs/usr/share/xrick
+}
+

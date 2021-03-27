@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="obconf"
+VERSION="2.0.4"
+CATEGORY="x-window"
+SHORT_DESC="Openbox configuration tool"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://openbox.org/wiki/ObConf:About"
+WGET_URL="http://openbox.org/dist/obconf/$TARBALL"
+TAGS="openbox"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="openbox gtk+ libglade shared-mime-info xorg-libXdamage \
+startup-notification slitaz-boot-scripts desktop-file-utils"
+BUILD_DEPENDS="gtk+-dev libglade-dev openbox-dev gdk-pixbuf-dev \
+startup-notification-dev xorg-libXft-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	msgfmt -o $src/po/ru.gmo $stuff/ru.po
+
+	./configure $CONFIGURE_ARGS &&
+	sed -i 's/^mkdir_p = .*/mkdir_p = mkdir -p/' po/Makefile &&
+	make && make install
+
+	cp -f $stuff/obconf.desktop $install/usr/share/applications
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/obconf
+
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/obconf/obconf.glade $fs/usr/share/obconf
+}

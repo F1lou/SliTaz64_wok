@@ -1,0 +1,6 @@
+Dillo is a minimalistic web browser particularly intended for older or slower 
+computers and embedded systems. It supports only plain HTML/XHTML (with basic 
+CSS rendering) and images over HTTP; scripting is ignored entirely. Due to its 
+small size, it is the browser of choice in several space-conscious Linux 
+distributions.
+

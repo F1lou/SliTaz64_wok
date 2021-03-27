@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="screen"
+VERSION="4.8.0"
+CATEGORY="system-tools"
+SHORT_DESC="Terminal multiplexer."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.gnu.org/software/screen/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
+
+CONFIG_FILES="/etc/screenrc"
+
+SUGGESTED="screen-terminfo"
+DEPENDS="elfutils"
+BUILD_DEPENDS="ncursesw-extra texinfo"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure					\
+		--with-sys-screenrc=/etc/screenrc	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make -j1 DESTDIR=$DESTDIR install &&
+	mkdir -p $DESTDIR/usr/share/terminfo &&
+	tic -o $DESTDIR/usr/share/terminfo terminfo/screeninfo.src &&
+	mkdir -p $DESTDIR/etc &&
+	cp -a $src/etc/screenrc $DESTDIR/etc
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	mkdir -p $fs/usr/share
+
+	cp -a $install/etc			$fs
+	cp -a $install/usr/bin/screen-$VERSION	$fs/usr/bin/screen
+	cp -a $install/usr/share/screen		$fs/usr/share
+}

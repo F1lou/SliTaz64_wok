@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="leocad-pieces"
+VERSION="4806"
+CATEGORY="games"
+SHORT_DESC="Pieces library for LeoCAD."
+MAINTAINER="rcx@zoominternet.net"
+LICENSE="GPL2"
+SOURCE="pieces"
+TARBALL="$SOURCE-$VERSION.zip"
+WEB_SITE="https://www.leocad.org/"
+WGET_URL="http://leocad.googlecode.com/files/$TARBALL"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/leocad
+	cp -a $src/* $fs/usr/share/leocad
+}

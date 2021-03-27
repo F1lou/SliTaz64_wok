@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="libjpeg62"
+VERSION="6b"
+CATEGORY="x-window"
+SHORT_DESC="JPEG shared libs (from Independent JPEG Group)"
+MAINTAINER="paul@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="http://www.ijg.org/"
+TARBALL="libjpeg6b_${VERSION}.orig.tar.gz"
+WGET_URL="ftp://ftp.debian.org/debian/pool/main/libj/libjpeg6b/$TARBALL"
+TAGS="jpeg jpg"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|uname -m|echo i686|' config.guess
+	./configure --enable-shared --prefix=/usr \
+		--mandir=/usr/share/man $CONFIGURE_ARGS &&
+	make
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $src/.libs/*.so.62* $fs/usr/lib
+}

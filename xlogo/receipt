@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="xlogo"
+VERSION="0.9.959"
+CATEGORY="games"
+SHORT_DESC="A logo interpreter written in java."
+MAINTAINER="claudinei@slitaz.org"
+LICENSE="GPL"
+TARBALL="xlogo.jar"
+WEB_SITE="http://xlogo.tuxfamily.org"
+
+DEPENDS="java-jre"
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	wget_url="http://downloads.tuxfamily.org/xlogo/common/xlogo.jar"
+	[ -f $SOURCES_REPOSITORY/xlogo.jar ] ||
+	wget $wget_url -P $SOURCES_REPOSITORY
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/xlogo
+	cp $SOURCES_REPOSITORY/xlogo.jar $fs/usr/lib/xlogo
+}

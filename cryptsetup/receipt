@@ -1,0 +1,45 @@
+# SliTaz package receipt.
+
+PACKAGE="cryptsetup"
+VERSION="2.3.4"
+CATEGORY="system-tools"
+SHORT_DESC="dm-crypt setup tool for encryption of block devices."
+MAINTAINER="b1+slitaz@nagel.org"
+LICENSE="GPL2"
+WEB_SITE="https://gitlab.com/$PACKAGE/$PACKAGE"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="https://www.kernel.org/pub/linux/utils/$PACKAGE/v${VERSION%.*}/$TARBALL"
+
+DEPENDS="e2fsprogs libdevmapper libgcrypt libjson-c openssl popt"
+BUILD_DEPENDS="e2fsprogs-dev libdevmapper-dev libgcrypt-dev 
+	libjson-c-dev openssl-dev popt-dev util-linux-blkid-dev 
+	util-linux-uuid-dev"
+
+current_version()
+{
+	local base=$(wget -O - ${WGET_URL%/v*} 2>/dev/null | \
+		sed '/href/!d;s|.*href="\(.*\)".*|\1|' | tail -n 1)
+	wget -O - ${WGET_URL%/v*}/$base 2>/dev/null | sed \
+		"/href/!d;/z/!d;s|.*href=\"$PACKAGE-\\(.*\\).tar.*\".*|\\1|" | \
+		tail -n1
+}
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure		\
+		--prefix=/usr	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/sbin		$fs/usr
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+}

@@ -1,0 +1,89 @@
+#!/bin/sh
+
+PERIOD=5	# minutes
+
+IP=$2
+PROT=$3
+PORT=$4
+
+[ -d /var/lib/knockd ] || mkdir -p /var/lib/knockd
+
+disable()
+{
+while read IP PROT PORT MSG; do
+	iptables -t nat -D PREROUTING -s $IP -p $PROT --dport $PORT -j RETURN
+	iptables -D INPUT -s $IP -p $PROT --dport $PORT -j ACCEPT
+	logger "Disable $PROT:$PORT for $IP $MSG"
+done < $1
+rm -rf $1
+}
+
+case "$1" in
+on)
+	shift
+	echo "$@" >> /var/lib/knockd/$IP
+	iptables -t nat -I PREROUTING -s $IP -p $PROT --dport $PORT -j RETURN
+	iptables -I INPUT -s $IP -p $PROT --dport $PORT -j ACCEPT
+	shift 3
+	logger "Enable $PROT:$PORT for $IP $@"
+	;;
+off)
+	[ -f /var/lib/knockd/$IP ] && disable /var/lib/knockd/$IP
+	;;
+check)
+	TIMEOUT=$(( $PERIOD * 120 ))
+	for i in /var/lib/knockd/*.*.*.*; do
+		[ -f "$i" ] || continue
+		while read ip prot port msg; do
+			if netstat -nut | grep -qe "^$prot .*:$port *$ip:[0-9]* " ; then
+				touch $i
+				break
+			fi
+		done < $i
+		[ $(date "+%s") -gt $(( $(date -r $i "+%s") + $TIMEOUT )) ] &&
+			disable $i
+	done
+	;;
+purge)
+	for i in /var/lib/knockd/*.*.*.*; do
+		[ -f "$i" ] && disable $i
+	done
+	;;
+cron)
+	crontab -l 2> /dev/null | grep -q $0 || {
+		crontab - <<EOT
+$(crontab -l)
+
+# Close old connections opened by knockd
+*/$PERIOD  * * * * $0 check > /dev/null 2>&1
+EOT
+		/etc/init.d/crond stop
+		/etc/init.d/crond start
+	}
+	;;
+*)
+	PROG=$(basename $0)
+	cat <<EOT
+Usage: $PROG [on|off|check|purge|cron] [args...]
+
+$PROG on ip_address protocol port	enable access
+$PROG off ip_address			disable access
+$PROG check				verify timeouts
+$PROG purge				disable all accesses
+$PROG cron				install auto disable access
+	
+Example for /etc/knockd.conf file :
+
+[options]
+	PidFile = /var/run/knockd.pid
+	logfile = /var/log/knockd.log
+
+[openSSH]
+	sequence    = 7000,8000,9000
+	seq_timeout = 5
+	command     = /usr/sbin/knockd-helper on %IP% tcp 22
+	tcpflags    = syn
+EOT
+	exit 1
+	;;
+esac

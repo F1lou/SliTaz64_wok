@@ -1,0 +1,21 @@
+# SliTaz package receipt
+
+PACKAGE="giblib-dev"
+VERSION="1.2.4"
+CATEGORY="graphics"
+SHORT_DESC="Giblib graphic library development files."
+MAINTAINER="mallory@sweetpeople.org"
+LICENSE="MIT"
+WANTED="giblib"
+WEB_SITE="http://freshmeat.sourceforge.net/projects/giblib"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="giblib"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/include $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib/*a $fs/usr/lib
+}

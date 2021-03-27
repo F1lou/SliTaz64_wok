@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="python-pyrex"
+VERSION="0.9.9"
+CATEGORY="development"
+SHORT_DESC="Language for Writing Python Extension Modules."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="Apache"
+SOURCE="Pyrex"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="http://www.cosc.canterbury.ac.nz/greg.ewing/python/Pyrex/"
+WGET_URL="$WEB_SITE$TARBALL"
+TAGS="python"
+
+DEPENDS="python"
+BUILD_DEPENDS="python python-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py install --root="$DESTDIR" --prefix=/usr
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr $fs
+}

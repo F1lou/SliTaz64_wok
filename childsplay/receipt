@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="childsplay"
+VERSION="3.4"
+CATEGORY="games"
+SHORT_DESC="Python educational game."
+MAINTAINER="claudinei@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="http://www.schoolsplay.org/"
+
+TARBALL="$PACKAGE-$VERSION.tgz"
+WGET_URL="$SF_MIRROR/schoolsplay/$TARBALL"
+
+DEPENDS="libogg pygtk python python-pygame python-pysqlite python-sqlalchemy"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir -p $DESTDIR/usr/share/$PACKAGE
+
+	cp -a $src/*	$DESTDIR/usr/share/$PACKAGE
+	mv $DESTDIR/usr/share/$PACKAGE/locale \
+			$DESTDIR/usr/share
+	rm -rf 		$DESTDIR/usr/share/$PACKAGE/po
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/games
+
+	cp $stuff/$PACKAGE	$fs/usr/games
+	cp -a $install/*	$fs
+}

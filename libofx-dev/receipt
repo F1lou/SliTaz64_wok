@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="libofx-dev"
+VERSION="0.9.8"
+CATEGORY="development"
+SHORT_DESC="OFX parser library dev files"
+MAINTAINER="remyhr@free.fr"
+LICENSE="GPL2"
+WEB_SITE="http://libofx.sourceforge.net/"
+WANTED="libofx"
+
+DEPENDS="libofx pkg-config opensp-dev"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share $fs/usr/lib
+
+	cp -a $install/usr/share/libofx $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+}

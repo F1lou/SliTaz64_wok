@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="libgnomeui"
+VERSION="2.24.5"
+CATEGORY="x-window"
+SHORT_DESC="This is the gui parts of what was previously gnome-libs"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://www.gnome.org"
+
+DEPENDS="libgnome libgnomecanvas libglade libbonoboui gnome-keyring"
+BUILD_DEPENDS="libgnome-dev libgnomecanvas-dev gnome-keyring \
+libgnome-keyring-dev libbonoboui-dev util-linux-uuid-dev libgcrypt-dev \
+dbus-glib-dev esound-dev audiofile-dev libglade-dev intltool"
+WGET_URL="http://ftp.gnome.org/pub/gnome/sources/$PACKAGE/${VERSION%.*}/$TARBALL"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure \
+		--prefix=/usr \
+		--libexecdir=/usr/lib/$PACKAGE \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/libglade $fs/usr/lib
+	cp -a $install/usr/share/pixmaps $fs/usr/share
+	find $fs/usr/lib -name *.*a -exec rm -f {} \;
+}

@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="ecj"
+VERSION="4.14"
+CATEGORY="development"
+TAGS="compiler java"
+SHORT_DESC="The Eclipse standalone batch Java compiler and Ant compiler adapter."
+MAINTAINER="rcx@zoominternet.net"
+LICENSE="other"
+WEB_SITE="http://www.eclipse.org/jdt/core/"
+
+TARBALL="$PACKAGE-$VERSION.jar"
+# 3.4.2: WGET_URL="http://download.eclipse.org/eclipse/downloads/drops/R-$VERSION-200902111700/$TARBALL"
+# 3.5.2: WGET_URL="http://download.eclipse.org/eclipse/downloads/drops/R-$VERSION-201002111343/$TARBALL"
+# 3.6:   WGET_URL="http://download.eclipse.org/eclipse/downloads/drops/R-$VERSION-201006080911/$TARBALL"
+# 4.10:
+WGET_URL="http://download.eclipse.org/eclipse/downloads/drops4/R-$VERSION-201812060815/$TARBALL"
+# 4.14:
+WGET_URL="http://download.eclipse.org/eclipse/downloads/drops4/R-$VERSION-201912100610/$TARBALL"
+
+SUGGESTED="java-jre"
+DEPENDS=""
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# Build the ecj shell script to use the current version
+	mkdir -p $DESTDIR/usr/bin && 
+	echo "#!/bin/sh" > $DESTDIR/usr/bin/ecj &&
+	echo "ECJ_VERSION=$VERSION" >> $DESTDIR/usr/bin/ecj &&
+	cat $stuff/ecj.sh.part >> $DESTDIR/usr/bin/ecj &&
+	chmod +x $DESTDIR/usr/bin/ecj &&
+	mkdir -p $DESTDIR/usr/share/java &&
+	cp -a $src/*.jar $DESTDIR/usr/share/java
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs
+	cp -a $install/usr $fs
+}

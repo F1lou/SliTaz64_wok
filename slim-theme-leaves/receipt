@@ -1,0 +1,45 @@
+# SliTaz package receipt.
+
+PACKAGE="slim-theme-leaves"
+VERSION="20150602"
+CATEGORY="customization"
+SHORT_DESC="Leaves - theme for SLiM"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="PublicDomain"
+WEB_SITE="https://github.com/SliTaz-official/hackdorte-artwork/tree/master/slim/themes"
+TAGS="hackdorte slim"
+COOKOPTS="!pngquant"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="https://drive.google.com/uc?export=download&id=0B4Re2DvqOMqldkFkbmRCRFZVQ0k"
+
+DEPENDS="slim"
+BUILD_DEPENDS="imagemagick"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	theme=$install/usr/share/slim/themes/Leaves
+	mkdir -p $theme
+	cp -a $src/* $theme
+	cd $theme
+	convert background.png background.jpg
+	rm background.png
+	chown -R root:root $install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+}
+
+post_install()
+{
+	chroot "$1/" slim-theme -s Leaves
+}
+
+pre_remove()
+{
+	chroot "$1/" slim-theme -f Leaves
+}

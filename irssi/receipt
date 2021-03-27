@@ -1,0 +1,40 @@
+# SliTaz package receipt
+
+PACKAGE="irssi"
+VERSION="1.2.2"
+CATEGORY="network"
+TAGS="irc"
+SHORT_DESC="Lightweight console IRC client."
+MAINTAINER="mallory@sweetpeople.org"
+LICENSE="GPL2"
+WEB_SITE="https://irssi.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="https://github.com/$PACKAGE/$PACKAGE/releases/download/$VERSION/$TARBALL"
+
+DEPENDS="glib ncurses openssl perl"
+BUILD_DEPENDS="glib glib-dev ncurses-dev openssl-dev perl pkg-config"
+
+# Rules to configure and make the package.
+compile_rules()
+{	
+	export LDFLAGS="$LDFLAGS -ltinfo"
+
+	./configure			\
+		--prefix=/usr		\
+		--sysconfdir=/etc/irssi	\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/
+
+	cp -a $install/etc		$fs
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/lib		$fs/usr
+	cp -a $install/usr/share/irssi	$fs/usr/share
+}

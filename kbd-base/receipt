@@ -1,0 +1,55 @@
+# SliTaz package receipt.
+
+PACKAGE="kbd-base"
+VERSION="2.2.0"
+CATEGORY="base-system"
+SHORT_DESC="Keyboard mapping definitions, loadkeys and setfont utilities."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://kbd-project.org/"
+
+WANTED="kbd"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Make sure it will run on host or no keyboard support...
+testsuite()
+{
+	readelf -h $install/usr/bin/loadkeys
+	readelf -h $install/usr/bin/setfont
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/bin
+	cp -a $install/usr/bin/loadkeys	$fs/bin
+	cp -a $install/usr/bin/setfont	$fs/bin
+
+	# Directories
+	for dir in dvorak azerty qwerty qwertz
+	  do
+		mkdir -p $fs/usr/share/kbd/keymaps/i386/$dir
+	  done
+
+	# i386 keymaps only.
+	for keymap in $(cat $stuff/keymaps-path.list)
+	  do
+		cp -a $install/usr/share/kbd/keymaps/i386/$keymap \
+			$fs/usr/share/kbd/keymaps/i386/$keymap
+	  done
+
+	# Include files
+	cp -a $install/usr/share/kbd/keymaps/include \
+			$fs/usr/share/kbd/keymaps
+	cp -a $install/usr/share/kbd/keymaps/i386/include \
+			$fs/usr/share/kbd/keymaps/i386/include
+
+	# X11 keyboard aliases
+	while read X keymap
+	  do
+		ln -s $keymap.map.gz $fs/usr/share/kbd/keymaps/i386/$X.map.gz
+	  done <<EOT
+qwertz/hr	croat
+EOT
+}

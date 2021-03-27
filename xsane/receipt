@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="xsane"
+VERSION="0.999"
+CATEGORY="office"
+SHORT_DESC="XSane - graphical scanning frontend."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://www.xsane.org/"
+WGET_URL="https://gitlab.com/sane-project/frontend/xsane/-/archive/$VERSION/$TARBALL"
+
+DEPENDS="sane-backends gtk+ tiff xorg-libXdamage lcms libv4l libltdl"
+BUILD_DEPENDS="gtk+-dev sane-backends-dev lcms-dev "
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--prefix=/usr \
+		--mandir=/usr/share/man \
+		--disable-gimp \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+    mkdir -p $fs/usr/share
+    cp -a $install/usr/bin $fs/usr
+    cp -a $install/usr/share/sane $fs/usr/share
+    rm -rf $fs/usr/share/sane/xsane/doc
+    mv $install/usr/share/sane/xsane/doc $install/usr/share/doc
+}

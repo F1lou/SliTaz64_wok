@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="xfwm4-themes"
+VERSION="4.12.0"
+CATEGORY="customization"
+SHORT_DESC="xfwm4 additionnal themes"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+WANTED="xfwm4"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://www.xfce.org/"
+HOST_ARCH="x86_64 any"
+
+DEPENDS="xfwm4"
+BUILD_DEPENDS=""
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/share/themes $fs/usr/share
+}
+

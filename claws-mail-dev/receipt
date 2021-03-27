@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="claws-mail-dev"
+VERSION="3.17.5"
+CATEGORY="development"
+SHORT_DESC="The user-friendly, lightweight and fast email client - development files."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://www.claws-mail.org/index.php"
+
+DEPENDS="claws-mail gnutls-dev gtk+-dev libetpan-dev pkg-config"
+WANTED="claws-mail"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/$WANTED/plugins
+
+	cp -a $install/usr/include			$fs/usr
+	cp -a $install/usr/lib/$WANTED/plugins/*.*a	$fs/usr/lib/$WANTED/plugins/
+	cp -a $install/usr/lib/pkgconfig		$fs/usr/lib/
+}

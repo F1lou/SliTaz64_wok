@@ -1,0 +1,160 @@
+# SliTaz package receipt.
+
+PACKAGE="icedtea6-jdk"
+SOURCE="icedtea6"
+VERSION="1.9.9"
+CATEGORY="development"
+SHORT_DESC="A Free Software harness for OpenJDK."
+MAINTAINER="rcx@zoominternet.net"
+LICENSE="GPL2"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="http://www.iced-tea.org/"
+WGET_URL="http://icedtea.wildebeest.org/download/source/$TARBALL"
+
+DEPENDS="icedtea6-jre xorg xorg-libXtst xorg-libXp cups"
+BUILD_DEPENDS="gcc+gcj autoconf automake m4 diffutils gawk cups-dev wget cpio \
+coreutils-file-special coreutils-file-summarize alsa-lib-dev file patch perl \
+zip unzip findutils  bzip2 tar glib-dev fastjar rhino ecj apache-ant jpeg-dev \
+xalan-xerces-j gtk+-dev giflib-dev libpng-dev xorg-dev xorg-libXtst-dev \
+xorg-libXp-dev xorg-dev-proto nss nss-dev jdk6-jaxws jdk6-jaxp jdk6-jaf \
+openjdk-6-src"
+
+# Note to icedtea6 updaters,
+# You should check version into receipts:
+# * jdk6-jaxws (version: $openjdk_version)
+# * jdk6-jaxp (version: $openjdk_version)
+# * jdk6-jaf (version: $openjdk_version)
+# * openjdk-6-src (version: $openjdk_version-$openjdk_date)
+# Theses receipts allow to have source tarballs in SRC.
+openjdk_version="b20"
+openjdk_date="21_jun_2010"
+EXTRA_SOURCE_FILES="jdk6-jaxws-$openjdk_version.zip \
+jdk6-jaxp-$openjdk_version.zip jdk6-jaf-$openjdk_version.zip \
+openjdk-6-src-$openjdk_version-$openjdk_date.tar.gz"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# Limit memory usage
+	ulimit -v $(awk '/MemTotal/ { print int(($2*80)/100) }' < /proc/meminfo)
+
+	local JVM_PREFIX
+	JVM_PREFIX="/usr/lib/jvm/java-icedtea"
+	
+	# NOTE: This build does not seem to work with ECJ 3.5
+	local ECJ_VERSION
+	ECJ_VERSION="3.6"
+
+	find $src -name '*akefile*' \; | xargs sed -i sed -i 's|uname -m|echo i486|' 
+	cd $src
+	mkdir drops
+	sed -i -e 's/mkdir -p drops/true/' -e 's/ jar xf/ fastjar xf/'  Makefile*
+	
+	# Check than all sources files are available, or exit.
+	REPO=http://icedtea.wildebeest.org/download/drops
+	if [ -x /usr/bin/cook ]; then
+		for i in jdk6-jaxws jdk6-jaxp jdk6-jaf; do
+			[ -s $SOURCES_REPOSITORY/$i-$openjdk_version.zip ] ||
+			     wget -P $SOURCES_REPOSITORY $REPO/$i-$openjdk_version.zip
+			cp $SOURCES_REPOSITORY/$i-$openjdk_version.zip drops || return 1
+		done
+		# openjdk-6-src is in BUILD_DEPENDS and must be build like jdk6-* pkgs.
+		[ -s $SOURCES_REPOSITORY/openjdk-6-src-$openjdk_version-$openjdk_date.tar.gz ] ||
+		    wget -P $SOURCES_REPOSITORY $REPO/openjdk-6-src-$openjdk_version-$openjdk_date.tar.gz
+		cp $SOURCES_REPOSITORY/openjdk-6-src-$openjdk_version-$openjdk_date.tar.gz .
+	else
+		report open-bloc
+		for i in jdk6-jaxws jdk6-jaxp jdk6-jaf openjdk-6-src; do
+			tazwok get-src $i
+			cp $SOURCES_REPOSITORY/$i-$openjdk_version.zip drops
+		done
+		cp $SOURCES_REPOSITORY/openjdk-6-src-$openjdk_version-$openjdk_date.tar.gz .
+		report step "Running compilation"
+	fi
+
+	mem=$(free | awk '/Mem:/ { printf "%d\n",$2/1024 }')
+	cat > slitaz.sh <<EOT
+# disable currency timebomb
+find -name GenerateCurrencyData.java | xargs sed -i 's|throw new RuntimeException("time is|System.err.println("time is|' 2> /dev/null
+find -name CurrencyData.properties | xargs sed -i 's/TR=TRL.*/TR=TRY/' 2> /dev/null
+# Busybox compatibility
+#find -name Sanity.gmk | xargs sed -i 's/--sync -kP/-k/' Makefile 
+find -name Platform.gmk | xargs sed -i "s@MB_OF_MEMORY *:=.*free.*@MB_OF_MEMORY := $mem@" Makefile
+EOT
+	sed -i  -e 's|touch .*|&\n\tsh slitaz.sh|' \
+		-e 's/--check/-c/' \
+		-e 's/Bsymbolic/& -lgcj/' \
+		-e 's/ln -sfv/ln -sf/' Makefile*
+	aclocal
+	autoconf &&
+	automake --add-missing &&
+	{
+	./configure \
+		--prefix=/usr \
+		--disable-plugin \
+		--disable-docs \
+		--with-ecj \
+		--with-ecj-jar=/usr/share/java/ecj-$ECJ_VERSION.jar \
+		--with-gcj \
+		--with-gcj-home=/usr/lib/jvm/java-gcj \
+		--with-xalan2-jar=/usr/share/java/xalan.jar \
+		--with-xalan2-serializer-jar=/usr/share/java/serializer.jar \
+		--with-xerces2-jar=/usr/share/java/xercesImpl.jar \
+		--with-rhino=/usr/share/java/js.jar \
+		--with-abs-install-dir=$JVM_PREFIX \
+		$CONFIGURE_ARGS || return 1
+	make -j 1 ARCH_PREFIX= 2>&1 | sed '/java_lang_ClassLoaderr.NativeLibrary/d'
+	} 2>&1 | sed 's/No such file/no such file/'
+	
+	echo "Copying needed files to install dir..."
+	rm -rf $DESTDIR
+
+	local JVM_BUILDDIR
+	JVM_BUILDDIR=$src/openjdk.build/j2sdk-image
+	local JVM_DESTDIR
+	JVM_DESTDIR=${DESTDIR}$JVM_PREFIX
+	echo "OpenJDK build     : source/openjdk.build/j2sdk-image"
+	echo "OpenJDK install   : install/$JVM_PREFIX"
+
+	echo "Copying JDK files : bin/ lib/"
+	mkdir -p $JVM_DESTDIR
+	cp -a $JVM_BUILDDIR/bin $JVM_DESTDIR
+	cp -a $JVM_BUILDDIR/lib $JVM_DESTDIR
+
+	echo "Copying JRE files : bin/ lib/"
+	mkdir -p $JVM_DESTDIR/jre
+	cp -a $JVM_BUILDDIR/jre/bin $JVM_DESTDIR/jre
+	cp -a $JVM_BUILDDIR/jre/lib $JVM_DESTDIR/jre
+	
+	# Delete duplicated executables from the JDK bin
+	echo "Deleting duplicated files..."
+	for jbin in $(ls -1 $JVM_DESTDIR/jre/bin) ; do
+		rm -f $JVM_DESTDIR/bin/$jbin
+	done
+
+	# Create symlinks for JDK binaries
+	echo "Creating symlinks for JDK binaries..."
+	mkdir -p $DESTDIR/usr/jdk-bin
+	for jbin in $(ls -1 $JVM_DESTDIR/bin) ; do
+		ln -s $JVM_PREFIX/bin/$jbin $DESTDIR/usr/jdk-bin/$jbin
+	done
+	
+	# Create symlinks for JRE binaries
+	echo "Creating symlinks for JRE binaries..."
+	mkdir -p $DESTDIR/usr/jre-bin
+	for jbin in $(ls -1 $JVM_DESTDIR/jre/bin) ; do
+		ln -s $JVM_PREFIX/jre/bin/$jbin $JVM_DESTDIR/bin/$jbin
+		ln -s $JVM_PREFIX/jre/bin/$jbin $DESTDIR/usr/jre-bin
+	done
+	if [ ! -x /usr/bin/cook ]; then
+		report close-bloc
+	fi
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/jvm/java-icedtea
+	cp -a $install/usr/lib/jvm/java-icedtea/bin $fs/usr/lib/jvm/java-icedtea
+	cp -a $install/usr/lib/jvm/java-icedtea/lib $fs/usr/lib/jvm/java-icedtea
+}

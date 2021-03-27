@@ -1,0 +1,17 @@
+# SliTaz package receipt.
+
+PACKAGE="cdrkit-isoinfo"
+VERSION="1.1.11"
+CATEGORY="multimedia"
+SHORT_DESC="Isoinfo Utility programs for iso9660 images"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL2"
+WANTED="cdrkit"
+WEB_SITE="http://www.cdrkit.org/"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $install/usr/bin/isoinfo $fs/usr/bin	
+}

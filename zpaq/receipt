@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="zpaq"
+VERSION="7.15"
+CATEGORY="utilities"
+SHORT_DESC="incremental journaling backup utility and archiver"
+MAINTAINER="necrophcodr@necrophcodr.me"
+LICENSE="GPL3"
+TARBALL="zpaq${VERSION/./}.zip"
+WEB_SITE="http://mattmahoney.net/dc/zpaq.html"
+WGET_URL="http://mattmahoney.net/dc/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make &&
+	mkdir -p $install/usr/bin &&
+	cp zpaq $install/usr/bin/zpaq
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr $fs/
+}

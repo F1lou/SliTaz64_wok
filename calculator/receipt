@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="calculator"
+VERSION="1.6.57"
+CATEGORY="utilities"
+SHORT_DESC="Calculator using the Fox Toolkit."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2.1"
+WANTED="fox"
+WEB_SITE="http://www.fox-toolkit.org/"
+TAGS="calculator"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="fox"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $install/usr/bin/$PACKAGE $fs/usr/bin
+	copy_generic_files
+}

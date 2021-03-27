@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="gnome-commander-i18n"
+VERSION="1.4.8"
+CATEGORY="localization"
+SHORT_DESC="Language files for Gnome Commander"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://gcmd.github.io/"
+WANTED="gnome-commander"
+
+DEPENDS="gnome-commander"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/locale
+	cp -a $install/usr/share/locale/* $fs/usr/share/locale
+}

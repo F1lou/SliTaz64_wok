@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="linux-libre-toshiba"
+VERSION="3.18.129-gnu"
+CATEGORY="base-system"
+SHORT_DESC="The Linux Libre kernel toshiba module."
+MAINTAINER="gokhlayeh@slitaz.org"
+LICENSE="GPL2"
+PROVIDE="linux-toshiba"
+DEPENDS="linux-libre"
+WANTED="linux-libre"
+WEB_SITE="http://www.fsfla.org/svnwiki/selibre/linux-libre/"
+
+# Modules paths and list
+MOD_PATH="lib/modules/$VERSION-slitaz/kernel"
+MODULES="drivers/char/toshiba.ko.xz"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p ${fs}${MOD_PATH}
+	for module in $MODULES
+	do
+		dir=$MOD_PATH/$(dirname $module)
+		[ -d $fs/$dir ] || mkdir -p $fs/$dir
+		cp -a $install/$MOD_PATH/$module $fs/$dir
+	done
+}
+
+# Post install/remove commands for Tazpkg.
+post_install()
+{
+	chroot "$1/" depmod -a $VERSION-slitaz
+}
+
+post_remove()
+{
+	chroot "$1/" depmod -a $VERSION-slitaz
+}

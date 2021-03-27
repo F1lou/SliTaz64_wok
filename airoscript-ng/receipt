@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="airoscript-ng"
+VERSION="1.2rc3"
+CATEGORY="network"
+SHORT_DESC="Airoscript ng"
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://airoscript.aircrack-ng.org/"
+TARBALL="$PACKAGE-${VERSION%rc3}-3.tar.gz"
+WGET_URL="http://airoscript.googlecode.com/files/$TARBALL"
+
+DEPENDS="bash"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# Remove broken install parts
+	sed -i '/install-docs \\/ d' Makefile-Linux
+	sed -i '/install-locale \\/ d' Makefile-Linux
+	sed -i '/install-desktop \\/ d' Makefile-Linux
+	make -j1 DESTDIR=$DESTDIR \
+		prefix=usr \
+		picdir=$DESTDIR/usr/share/pixmaps/ \
+		appdir=$DESTDIR/usr/share/applications/ \
+		etcdir=$DESTDIR/etc/$PACKAGE install
+	# Patch config - replace "usr/local" by "usr"
+	sed -i 's/usr\/local/usr/g' $DESTDIR/etc/$PACKAGE/airoscript-ng_advanced.conf
+
+	# Patch executable to find config files
+	sed -i 's/etc\//etc\/airoscript-ng\//g' $DESTDIR/usr/sbin/$PACKAGE
+
+	cook_pick_manpages $src/src/airoscript-ng.1
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/sbin $fs/usr
+	cp -a $install/usr/share/airoscript-ng $fs/usr/share
+	cp -a $install/etc $fs
+}

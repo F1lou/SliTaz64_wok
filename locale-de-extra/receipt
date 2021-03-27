@@ -1,0 +1,21 @@
+# SliTaz package receipt
+
+PACKAGE="locale-de-extra"
+VERSION="4.2"
+CATEGORY="localization"
+SHORT_DESC="German extra locale pack."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="http://www.slitaz.org/"
+WANTED="slitaz-i18n-extra"
+
+LOCALE="de"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	. $WOK/slitaz-i18n-extra/stuff/locale-pack.functions
+	. $WOK/slitaz-i18n-extra/stuff/locale-pack.conf
+	mk_locale_dir
+	get_extra_messages
+}

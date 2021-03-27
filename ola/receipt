@@ -1,0 +1,40 @@
+# SliTaz package receipt.
+
+PACKAGE="ola"
+VERSION="0.9.8"
+CATEGORY="network"
+SHORT_DESC="Open Lighting Architecture"
+MAINTAINER="kult-ex@aon.at"
+LICENSE="LGPL2.1"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://www.openlighting.org/ola/"
+WGET_URL="https://github.com/OpenLightingProject/ola/archive/$VERSION.tar.gz"
+
+DEPENDS="libftdi liblo libmicrohttpd ncurses protobuf"
+BUILD_DEPENDS="libtool flex protobuf-dev util-linux-uuid-dev cppunit-dev \
+libmicrohttpd-dev libftdi-dev libusb-dev liblo-dev ncurses-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|libusb_set_debug(m_context,\(.*\);|#if LIBUSB_API_VERSION >= 0x01000106\
+    libusb_set_option(m_context, LIBUSB_OPTION_LOG_LEVEL,\1;\
+#else\
+    \0\
+#endif|' tools/ja-rule/USBDeviceManager.cpp plugins/usbdmx/*yncPluginImpl.cpp
+	export LDFLAGS="$LDFLAGS -ltinfo"
+	autoreconf -i
+	./configure \
+		--prefix=/usr \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/olad
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/share $fs/usr
+}

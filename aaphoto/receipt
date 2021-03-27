@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="aaphoto"
+VERSION="0.45"
+CATEGORY="graphics"
+SHORT_DESC="Automatic photo adjusting."
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL3"
+SOURCE="aaphoto_sources_"
+TARBALL="$SOURCE$VERSION.tar.gz"
+WEB_SITE="http://log69.com/aaphoto_en.html" 
+WGET_URL="http://log69.com/downloads/$TARBALL"
+#WGET_URL="http://ftp.uni-erlangen.de/pub/FreeBSD/ports/distfiles/$TARBALL"
+TAGS="photo jpeg jpg png bmp"
+
+DEPENDS="jasper jpeg libpng zlib"
+BUILD_DEPENDS="jpeg-dev jasper-dev libpng libpng-dev zlib-dev autoconf"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+   	cd $src
+	./configure --prefix=/usr &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $install/usr/bin $fs/usr
+}

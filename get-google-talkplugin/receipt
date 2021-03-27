@@ -1,0 +1,18 @@
+# SliTaz package receipt.
+
+PACKAGE="get-google-talkplugin"
+VERSION="1.00"
+CATEGORY="non-free"
+SHORT_DESC="Get Google Talk Plugin."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="http://www.google.com/chat/video"
+TAGS="webcam chat"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp stuff/get-google-talkplugin $fs/usr/bin
+}
+

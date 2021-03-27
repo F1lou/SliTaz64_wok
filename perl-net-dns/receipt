@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-net-dns"
+VERSION="1.23"
+CATEGORY="development"
+SHORT_DESC="Perl extension Net::DNS."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL"
+WEB_SITE="https://metacpan.org/release/Net-DNS"
+
+SOURCE="Net-DNS"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://cpan.metacpan.org/authors/id/N/NL/NLNETLABS/$TARBALL"
+
+DEPENDS="perl perl-io-socket-inet6"
+BUILD_DEPENDS="perl perl-io-socket-inet6"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	yes n | perl Makefile.PL &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib	$fs/usr
+}

@@ -1,0 +1,25 @@
+# SliTaz package receipt.
+
+PACKAGE="nspr-dev"
+VERSION="4.25"
+CATEGORY="development"
+SHORT_DESC="Nspr development files."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="MPL2"
+WEB_SITE="https://developer.mozilla.org/docs/Mozilla/Projects/NSPR"
+
+DEPENDS="nspr pkg-config"
+WANTED="nspr"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/include		$fs/usr
+	cp -a $install/usr/lib/pkgconfig	$fs/usr/lib
+	cp -a $install/usr/share/aclocal	$fs/usr/share
+	cp -a $install/usr/bin/nspr-config	$fs/usr/bin/nspr-config
+}

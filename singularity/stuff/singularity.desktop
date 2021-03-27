@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Singularity
+Comment= Strategy game - simulation of true Al
+Icon=icon
+Exec=singularity
+Terminal=false
+StartupNotify=false
+Categories=Game;Strategy;

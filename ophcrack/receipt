@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="ophcrack"
+VERSION="3.5.0"
+CATEGORY="security"
+SHORT_DESC="Windows password cracker"
+MAINTAINER="slitaz@objectif-securite.ch"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://ophcrack.sourceforge.net"
+WGET_URL="http://downloads.sourceforge.net/ophcrack/$TARBALL"
+TAGS="password windows"
+
+DEPENDS="libQtCore libQtGui libqwt5-qt4 openssl expat gcc-lib-base"
+BUILD_DEPENDS="Qt4-dev qmake libqwt5-qt4-dev openssl-dev expat-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure --prefix=/usr $CONFIGURE_ARGS &&
+	make
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $src/src/ophcrack $fs/usr/bin
+}
+

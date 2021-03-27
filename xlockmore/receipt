@@ -1,0 +1,42 @@
+# SliTaz package receipt.
+
+PACKAGE="xlockmore"
+VERSION="5.56"
+CATEGORY="utilities"
+SHORT_DESC="X Window System Lock Screen."
+MAINTAINER="rocky@slitaz.org"
+LICENSE="BSD"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WEB_SITE="http://sillycycle.com/xlockmore.html"
+WGET_URL="http://sillycycle.com/xlock/$TARBALL"
+
+DEPENDS="xorg-libX11 freetype freetype1"
+BUILD_DEPENDS="xorg-libXdmcp-dev xorg-libXpm-dev xorg-libX11-dev \
+xorg-libXt-dev openmotif-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+    sed -i 's|__GNUC_MINOR__ >= 4|__GNUC_MINOR__ >= 7|' modes/strange.c
+    ./configure --prefix=/usr \
+        --infodir=/usr/share/info \
+        --mandir=/usr/share/man \
+        $CONFIGURE_ARGS &&
+    make &&
+    mkdir -p $DESTDIR/usr/share/X11/app-defaults/ \
+        $DESTDIR/usr/bin
+    cp -f xlock/xlock $DESTDIR/usr/bin/
+    cp -f xlock/XLock.ad $DESTDIR/usr/share/X11/app-defaults/XLock
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+    mkdir -p $fs
+    cp -a $install/usr $fs
+}
+
+post_install() 
+{
+    chmod u+s "$1/usr/bin/xlock"
+}

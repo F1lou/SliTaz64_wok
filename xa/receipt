@@ -1,0 +1,27 @@
+# SliTaz package receipt.
+
+PACKAGE="xa"
+VERSION="2.3.10"
+CATEGORY="development"
+TAGS="cross assembler 6502"
+SHORT_DESC="6502 cross assembler."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.floodgap.com/retrotech/xa/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}dists/$TARBALL"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make DESTDIR=$DESTDIR/usr &&
+	make install DESTDIR=$DESTDIR/usr
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin	$fs/usr
+}

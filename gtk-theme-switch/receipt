@@ -1,0 +1,27 @@
+# SliTaz package receipt.
+
+PACKAGE="gtk-theme-switch"
+VERSION="2.1.0"
+CATEGORY="x-window"
+SHORT_DESC="Utility to switch and preview GTK+ theme"
+MAINTAINER="devl547@gmail.com"
+LICENSE="GPL2"
+TARBALL="${PACKAGE}_${VERSION}.orig.tar.gz"
+WEB_SITE="https://packages.qa.debian.org/g/gtk-theme-switch.html"
+WGET_URL="http://ftp.debian.org/debian/pool/main/g/$PACKAGE/$TARBALL"
+
+BUILD_DEPENDS="gtk+-dev"
+DEPENDS="gtk+"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp $src/gtk-theme-switch2 $fs/usr/bin/gtk-theme-switch2
+}

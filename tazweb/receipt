@@ -1,0 +1,42 @@
+# SliTaz package receipt.
+
+PACKAGE="tazweb"
+VERSION="209"
+CATEGORY="network"
+TAGS="web-browser"
+SHORT_DESC="SliTaz simple, fast and small Web Browser."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="http://www.slitaz.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="http://hg.slitaz.org/$PACKAGE/archive/$VERSION.tar.gz"
+
+DEPENDS="libwebkit"
+BUILD_DEPENDS="glib-dev gtk+-dev libsoup-dev libwebkit-dev libxslt-dev"
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make -j 1 &&
+	make DESTDIR=$install install
+}
+
+# Cross compilation check
+testsuite() {
+	readelf -h $install/usr/bin/tazweb
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs
+	cp -a $install/* $fs
+}
+
+post_install()
+{
+	sed -i "s|content: \"20..\"|content: \"$(date +%Y)\"|" \
+		$1/usr/share/doc/tazweb/style.css
+}

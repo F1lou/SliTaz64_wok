@@ -1,0 +1,10 @@
+--- knock-0.5/knockd.conf
++++ knock-0.5/knockd.conf
+@@ -1,4 +1,5 @@
+ [options]
++	PidFile = /var/run/knockd.pid
+ 	logfile = /var/log/knockd.log
+ 
+ [openSSH]
+
+ 

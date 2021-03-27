@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="icedtea6-jre"
+VERSION="1.9.9"
+CATEGORY="development"
+SHORT_DESC="A Free Software harness for OpenJDK JRE."
+MAINTAINER="rcx@zoominternet.net"
+LICENSE="GPL2"
+WEB_SITE="http://www.iced-tea.org/"
+WANTED="icedtea6-jdk"
+SOURCE="icedtea6"
+
+DEPENDS="glibc-base gcc-lib-base util-linux-uuid alsa-lib freetype giflib libjpeg libpng zlib \
+xorg-libICE xorg-libSM xorg-libX11 xorg-libXau xorg-libXdmcp xorg-libXext \
+xorg-libXi xorg-libXrender xorg-libXtst"
+BUILD_DEPENDS=""
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/jvm/java-icedtea
+	cp -a $install/usr/lib/jvm/java-icedtea/jre $fs/usr/lib/jvm/java-icedtea
+}
+
+# Post install/remove commands for Tazpkg.
+post_install()
+{
+	ln -sf /usr/lib/jvm/java-icedtea/bin/java "$1/usr/bin/java"
+}
+
+post_remove()
+{
+	rm -f "$1/usr/bin/java"
+}

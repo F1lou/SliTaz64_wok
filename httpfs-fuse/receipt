@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="httpfs-fuse"
+VERSION="2.06.08.26"
+CATEGORY="system-tools"
+SHORT_DESC="HTTP Filesystem implemented with FUSE."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+SOURCE="httpfs_with_static_binaries"
+TARBALL="${SOURCE}_$VERSION.tar.gz"
+WEB_SITE="http://httpfs.sourceforge.net/"
+WGET_URL="$SF_MIRROR/httpfs/$TARBALL"
+TAGS="filesystem"
+
+DEPENDS="fuse"
+BUILD_DEPENDS="fuse-dev upx"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	patch -p0 < $stuff/httpfs.u
+	mkdir -p $DESTDIR/usr/bin $DESTDIR/usr/share/boot
+	# keep uclibc prebuilt. Glibc version is 10x bigger !
+	if true; then
+		install -m 755 static_uclibc/httpfs $DESTDIR/usr/share/boot/httpfs-static
+		upx -d $DESTDIR/usr/share/boot/httpfs-static
+	else
+		sed 's/lpthread/& -ldl -lrt/' static_uclibc/make_httpfs | sh
+		cp -a httpfs $DESTDIR/usr/share/boot/httpfs-static
+	fi
+	. ./make_httpfs && cp -a httpfs $DESTDIR/usr/bin
+	install -m 755 static_uclibc/fusermount $DESTDIR/usr/share/boot/fusermount-static
+	upx -d $DESTDIR/usr/share/boot/fusermount-static
+	chmod 4755 $DESTDIR/usr/share/boot/fusermount-static
+	chmod 555 $DESTDIR/usr/share/boot/httpfs-static
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}

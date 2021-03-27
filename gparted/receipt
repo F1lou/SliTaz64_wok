@@ -1,0 +1,49 @@
+# SliTaz package receipt.
+
+PACKAGE="gparted"
+VERSION="0.33.0"
+CATEGORY="system-tools"
+SHORT_DESC="A partition editor to graphically manage disk partitions"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+SUGGESTED="e2fsprogs dosfstools mtools ntfs-3g ntfsprogs jfsutils xfsprogs \
+reiserfsprogs reiser4progs btrfs-progs f2fs-tools hfsutils hfsprogs mdadm \
+cryptsetup dmsetup lvm2 nilfs-utils udftools util-linux-minix exfat-utils \
+util-linux-mkfs"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://gparted.sourceforge.net/"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+CROSS="error: cannot run test program while cross compiling"
+
+DEPENDS="gtk+ libsigc++ glibmm gtkmm pangomm parted util-linux-uuid \
+xorg-libXdamage libgiomm cairomm"
+BUILD_DEPENDS="gtk+-dev libsigc++-dev glibmm-dev gtkmm-dev parted-dev \
+cairomm-dev pangomm-dev libgiomm-dev intltool util-linux-uuid-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	find . -name '*.h' -o -name '*.c*' | xargs sed -i 's|glibmm/i18n|glib/gi18n|'
+	# Remove the "-v" option from the swapon/off commands.  This will allow
+	# gparted to play nicely with busybox.
+	sed -i 's/swapoff -v/swapoff/' src/Win_GParted.cc
+	sed -i 's/swapon -v/swapon/' src/Win_GParted.cc
+	# Process test busybox compatible
+	sed -i 's/ps -e | grep/pgrep/' gparted.in
+	./configure \
+		--prefix=/usr \
+		--disable-scrollkeeper \
+		--disable-doc \
+		--build=$HOST_SYSTEM \
+		--host=$HOST_SYSTEM &&
+	make && make install
+
+	cp -f $stuff/*.desktop $install/usr/share/applications/
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cook_copy_files gparted gpartedbin
+	cook_copy_icons
+}

@@ -1,0 +1,40 @@
+# SliTaz package receipt.
+
+PACKAGE="rp-pppoe"
+VERSION="3.13"
+CATEGORY="network"
+SHORT_DESC="A PPP over Ethernet client (for xDSL support)."
+TAGS="network PPPoE"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://dianne.skoll.ca/projects/rp-pppoe/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}download/$TARBALL"
+
+BUILD_DEPENDS="ppp"
+
+HOST_ARCH="x86_64 i486"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src/src
+	./configure		\
+		--prefix=/usr	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	
+	cp -a $install/etc	$fs
+	cp -a $install/usr/sbin	$fs/usr	
+
+	# Fix permissions on all scripts
+	chmod -R 755 $fs/usr/sbin/*
+}

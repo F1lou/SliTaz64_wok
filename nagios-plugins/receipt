@@ -1,0 +1,70 @@
+# SliTaz package receipt.
+
+PACKAGE="nagios-plugins"
+VERSION="2.3.3"
+CATEGORY="network"
+SHORT_DESC="Plugins for host, service and network monitoring program nagios."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://www.nagios-plugins.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://www.nagios-plugins.org/download/$TARBALL"
+
+DEPENDS="fping libssl procps"
+BUILD_DEPENDS="libmysqlclient mysql-dev openldap-dev openssl-dev \
+	radiusclient-ng radiusclient-ng-dev procps"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure						\
+		--prefix=/usr					\
+		--libexecdir=/usr/lib/nagios/plugins		\
+		--with-nagios-user=nobody			\
+		--with-nagios-group=nogroup			\
+		--with-ping-command="/bin/ping -w %d -c %d %s"	\
+		--with-fping-command="/usr/sbin/fping"		\
+		--mandir=/usr/share/man				\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install &&
+	make DESTDIR=$DESTDIR install-root
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	mkdir -p $fs/etc/nagios/objects
+
+	cp -a $install/usr/lib/nagios	$fs/usr/lib
+
+	# 
+	stuff/convertcfg $src/command.cfg commands > $fs/etc/nagios/objects/command.cfg
+	
+	# Move mySQL plugins in a separate package.
+	rm -f				$fs/usr/lib/nagios/plugins/*mysql*
+}
+
+post_install()
+{
+	if ! grep -q nagios "$1/etc/passwd"
+	  then
+		echo
+		echo -n "Adding user/group nagios..."
+		chroot "$1/" addgroup -S nagios
+		chroot "$1/" adduser -S -D -H -G nagios nagios
+		status
+	fi
+	
+	if [ -f "$1/etc/nagios/resource.cfg" ]
+	  then
+		sed -i 's|/usr/lib/nagios|/usr/lib/nagios/plugins|' \
+		   "$1/etc/nagios/resource.cfg"
+	fi
+
+	# Set permissions for files and directories
+	chroot "$1/" chown -R nagios.nagios	/usr/lib/nagios/plugins 
+	chroot "$1/" chown -R nagios.nagios	/etc/nagios/objects
+}

@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="go-sources"
+VERSION="1.2.1"
+CATEGORY="development"
+SHORT_DESC="The Go programming language - Sources files."
+MAINTAINER="domcox@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="http://www.golang.org"
+WANTED="go"
+TAGS="go"
+
+DEPENDS="go"
+BUILD_DEPENDS=""
+
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	# misc
+	mkdir -p $fs/usr/lib/go/misc
+	for dir in arm cgo goplay swig; do
+		cp -a $src/misc/$dir $fs/usr/lib/go/misc
+	done
+
+	# test
+	cp -a $src/test/ $fs/usr/lib/go
+
+	# doc
+	cp -a $src/doc/ $fs/usr/lib/go
+
+	# tools
+	mkdir -p $fs/usr/lib/go/src
+	cp -a $src/src/*.bash $fs/usr/lib/go/src
+	cp -a $src/src/*.rc $fs/usr/lib/go/src
+}

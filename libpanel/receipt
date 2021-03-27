@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="libpanel"
+VERSION="6.2"
+CATEGORY="development"
+SHORT_DESC="Panel stack extension for curses"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="MIT"
+WEB_SITE="https://invisible-island.net/ncurses/"
+
+DEPENDS="libtinfo ncurses"
+WANTED="ncurses"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/lib
+	cp -a $install/lib/libpanel.so*	$fs/lib
+}

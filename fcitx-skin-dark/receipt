@@ -1,0 +1,17 @@
+# SliTaz package receipt.
+
+PACKAGE="fcitx-skin-dark"
+VERSION="4.1.2"
+CATEGORY="x-window"
+SHORT_DESC="The dark skin of fcitx."
+MAINTAINER="devel@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://fcitx-im.org/wiki/Fcitx"
+WANTED="fcitx"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+    mkdir -p $fs/usr/share/fcitx/skin/
+    cp -a $install/usr/share/fcitx/skin/dark/ $fs/usr/share/fcitx/dark/
+}

@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="fbxkb"
+VERSION="0.6"
+CATEGORY="utilities"
+SHORT_DESC="fbxkb is NETWM compliant keyboard indicator and switcher."
+MAINTAINER="devl547@gmail.com"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tgz"
+WEB_SITE="http://fbxkb.sourceforge.net/"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="gtk+ xorg-libXmu"
+BUILD_DEPENDS="gtk+-dev xorg-libXmu-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	export LDFLAGS="$LDFLAGS -Wl,--copy-dt-needed-entries -lX11"
+	patch -Np1 -i $stuff/$PACKAGE.patch
+	./configure &&
+	make
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin $fs/usr/share/fbxkb/images
+	cp -a $src/fbxkb $fs/usr/bin
+	cp $src/images/*.png $fs/usr/share/fbxkb/images
+
+}
+

@@ -1,0 +1,45 @@
+# SliTaz package receipt.
+
+PACKAGE="pcsxr-svn"
+VERSION="62214"
+CATEGORY="games"
+SHORT_DESC="A Sony PlayStation emulator based on the PCSX-df Project"
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://github.com/iCatButler/pcsxr"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="subversion|https://pcsxr.svn.codeplex.com/svn/pcsxr"
+BRANCH="$VERSION"
+TAGS="emulator playstation"
+
+DEPENDS="libcdio libglade xorg-libXtst xorg-libXv mesa libsdl"
+BUILD_DEPENDS="glib-dev libcdio libcdio-dev libglade-dev gtk+-dev xorg-libXtst xorg-libXtst-dev xorg-libXv xorg-libXv-dev mesa-dev \
+zlib-dev libsdl libsdl-dev subversion nasm gettext intltool sed lzma \
+autoconf automake libtool"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./autogen.sh \
+		--prefix=/usr \
+		--infodir=/usr/share/info \
+		--mandir=/usr/share/man \
+		--enable-libcdio \
+		--enable-opengl \
+		$CONFIGURE_ARGS &&
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib $fs/usr
+	cp -a $install/usr/share/pixmaps $fs/usr/share
+	cp -a $install/usr/share/psemu $fs/usr/share
+	cp -a $install/usr/share/pcsx $fs/usr/share
+	find $fs/usr/lib -name "*.la" -delete
+}
+

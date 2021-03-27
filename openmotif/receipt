@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="openmotif"
+VERSION="2.3.8"
+CATEGORY="development"
+SHORT_DESC="Source code version of Motif under a public license."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="LGPL 2.1"
+WEB_SITE="http://www.opengroup.org/openmotif/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/motif/motif-$VERSION.tar.gz"
+
+DEPENDS="expat fontconfig freetype jpeg libpng xorg xorg-libXft xorg-libXp"
+BUILD_DEPENDS="bison expat-dev flex fontconfig-dev freetype-dev jpeg-dev \
+	libpng-dev libxml2-dev util-linux-uuid-dev xorg-dev-proto xorg-libSM-dev \
+	xorg-libX11-dev xorg-libXft-dev xorg-libXmu xorg-libXmu-dev xorg-libXp \
+	xorg-libXrender-dev xorg-libXt-dev xorg-printproto xorg-xbitmaps \
+	xorg-xextproto xorg-xproto"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure				\
+		--prefix=/usr			\
+		--infodir=/usr/share/info	\
+		--mandir=/usr/share/man		\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/bin		$fs/usr
+	rm -f $fs/usr/bin/uil
+
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+	cp -a $install/usr/lib/X11	$fs/usr/lib
+}

@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="xfce4-dev-tools"
+VERSION="4.12.0"
+CATEGORY="development"
+SHORT_DESC="Xfce Developpers Tools"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://xfce.org/~benny/projects/xfce4-dev-tools/"
+WGET_URL="http://archive.xfce.org/src/xfce/$PACKAGE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="subversion autoconf automake intltool pkg-config"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	#patch -p1 -i $stuff/xdt-autogen-4.6.0.u || return 1
+	./configure \
+		--prefix=/usr \
+		--infodir=/usr/share/info \
+		--mandir=/usr/share/man \
+		$CONFIGURE_ARGS &&
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share $fs/usr
+	
+	chmod 755 $fs/usr/bin/xdt-*
+}

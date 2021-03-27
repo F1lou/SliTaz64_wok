@@ -1,0 +1,50 @@
+# SliTaz package receipt.
+
+PACKAGE="avant-window-navigator"
+VERSION="0.4.0"
+CATEGORY="x-window"
+SHORT_DESC="Dock-like bar which sits at the bottom of the screen."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://launchpad.net/awn/"
+WGET_URL="https://launchpad.net/awn/${VERSION%.*}/$VERSION/+download/$TARBALL"
+TAGS="panel"
+
+DEPENDS="acl dbus-glib librsvg libwnck xorg-xcompmgr libgtop \
+libdesktop-agnostic"
+BUILD_DEPENDS="librsvg-dev libwnck-dev pygtk-dev python-xdg intltool \
+dbus-glib-dev python-dev libdesktop-agnostic-dev libgtop-dev GConf-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# Binutils 2.22 break many packages build without LDFLAGS set correctly.
+	export LDFLAGS="$LDFLAGS -Wl,--copy-dt-needed-entries"
+
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--with-desktop=agnostic \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/share/$PACKAGE $fs/usr/share
+	cp -a $install/usr/share/applications $fs/usr/share
+	cp -a $install/usr/share/icons $fs/usr/share
+	# Custom autostart script so we ensure xcompmgr is also started.
+	cat > $fs/usr/bin/awn-autostart << _EOT_
+#!/bin/sh
+xcompmgr &
+sleep 4
+avant-window-navigator
+_EOT_
+}

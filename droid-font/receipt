@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="droid-font"
+VERSION="2010-04-09"
+GIT_HASH=22a27501a220e8f2ea5f9be3312bb0b64e32a71a
+CATEGORY="fonts"
+SHORT_DESC="Font family from Google's Android project"
+MAINTAINER="devl547@gmail.com"
+LICENSE="Apache"
+WEB_SITE="https://android.googlesource.com/"
+# Located in git repo, so we need a snapshot and some dirty hacks.
+TARBALL="$PACKAGE-$VERSION.tgz"
+WGET_URL="http://android.git.kernel.org/?p=platform/frameworks/base.git;f=data/fonts;a=snapshot;h=$GIT_HASH;sf=tgz"
+
+BUILD_DEPENDS="wget"
+
+# Rules to configure and make the package.
+# Keep an empty compile_rules to make tazwok install build depends.
+compile_rules()
+{
+	:
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	dir=$fs/usr/share/fonts/truetype/droid-font
+	mkdir -p $dir
+	cp -a $src/*.ttf $dir
+	chmod -x $dir/*.ttf
+}

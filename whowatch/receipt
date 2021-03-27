@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="whowatch"
+VERSION="1.8.6"
+CATEGORY="utilities"
+SHORT_DESC="Real-time user logins monitoring tool."
+MAINTAINER="paul@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://github.com/mtsuszycki/whowatch/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}releases/download/$PACKAGE-$VERSION/$TARBALL"
+
+DEPENDS="libtinfo ncurses"
+BUILD_DEPENDS="ncurses-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export LDFLAGS="$LDFLAGS -Wl,--copy-dt-needed-entries"
+
+	./configure --prefix=/usr &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr	
+}

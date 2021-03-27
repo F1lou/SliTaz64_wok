@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="915resolution"
+VERSION="0.5.3"
+CATEGORY="system-tools"
+SHORT_DESC="Intel video BIOS hack to support certain resolutions"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="PublicDomain"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://915resolution.mango-lang.org/"
+WGET_URL="$WEB_SITE$TARBALL"
+TAGS="widescreen resolution"
+
+DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	for i in widescreen-resolution cedarview ; do
+		[ -f done.$i ] && continue
+		patch -p0 < $stuff/$PACKAGE-$VERSION-$i.patch
+		touch done.$i
+	done
+	make
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/sbin
+	install $src/$PACKAGE $fs/usr/sbin
+	install $src/dump_bios $fs/usr/sbin
+}

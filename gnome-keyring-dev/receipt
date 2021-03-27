@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="gnome-keyring-dev"
+VERSION="2.32.1"
+CATEGORY="development"
+SHORT_DESC="Gnome keyring devel files"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.gnome.org"
+WANTED="gnome-keyring"
+
+DEPENDS="gnome-keyring pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/$WANTED
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/$WANTED/devel $fs/usr/lib/$WANTED
+	cp -a $install/usr/lib/$WANTED/*.*a $fs/usr/lib/$WANTED
+	cp -a $install/usr/include $fs/usr	
+}

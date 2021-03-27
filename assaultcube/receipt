@@ -1,0 +1,42 @@
+# SliTaz package receipt.
+
+PACKAGE="assaultcube"
+VERSION="1.1.0.4"
+CATEGORY="games"
+SHORT_DESC="A realistic team oriented multiplayer FPS based on the cube engine."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="zlib/libpng"
+SOURCE="AssaultCube"
+TARBALL="${SOURCE}_v${VERSION}_source.tar.bz2"
+SOURCE="AssaultCube-Source"
+WEB_SITE="https://assault.cubers.net/"
+WGET_URL="$SF_MIRROR/actiongame/$TARBALL"
+
+DEPENDS="openal libsdl-image libsdl-mixer mesa libglu-mesa assaultcube-data"
+BUILD_DEPENDS="openal-dev libsdl-image-dev libsdl-mixer-dev mesa-dev \
+libglu-mesa-dev file"
+
+# Rules to configure and make the package.
+compile_rules()
+{	
+	cd $src/source/src
+	sed -i 's/lvorbisfile/& -lX11/' Makefile
+	make
+	mkdir -p $DESTDIR/usr/bin
+	cp -a ac_client $DESTDIR/usr/bin
+	cp -a ac_server $DESTDIR/usr/bin
+	
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $install/usr/bin/ac_client $fs/usr/bin
+	cp -a $install/usr/bin/ac_server $fs/usr/bin
+	cp -a $stuff/assaultcube $fs/usr/bin
+	cp -a $stuff/assaultcube-server $fs/usr/bin
+	chmod +x $fs/usr/bin/assaultcube
+	chmod +x $fs/usr/bin/assaultcube-server
+}
+

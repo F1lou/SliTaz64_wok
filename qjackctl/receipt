@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="qjackctl"
+VERSION="0.3.9"
+CATEGORY="multimedia"
+SHORT_DESC="Application to Control Jack"
+MAINTAINER="allan316@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="http://qjackctl.sourceforge.net"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="http://nchc.dl.sourceforge.net/sourceforge/qjackctl/$TARBALL"
+
+DEPENDS="alsa-lib bzlib expat fontconfig freetype gcc-lib-base glib \
+glibc-base jack-audio-connection-kit libffi libpng libQtCore libQtDBus \
+libQtGui libQtXml libxcb util-linux-uuid xorg-libICE xorg-libSM \
+xorg-libX11 xorg-libXau xorg-libXdmcp xorg-libXext xorg-libXrender zlib"
+BUILD_DEPENDS="qmake Qt4-dev jack-audio-connection-kit \
+jack-audio-connection-kit-dev xorg-xproto xorg-libX11-dev"
+TAGS="audio sound"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	#sed -i 's|^LIBS.*|& -Wl,--copy-dt-needed-entries -lX11|' qjackctl.pro.in
+	./configure $CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr $fs
+	#rm -rf $fs/usr/share/man
+}
+

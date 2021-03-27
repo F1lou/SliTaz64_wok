@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="cdf"
+VERSION="0.2"
+CATEGORY="system-tools"
+SHORT_DESC="Colorized df (color schemes)."
+MAINTAINER="paul@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://github.com/novel/cdf"
+WGET_URL="http://download.berlios.de/bmp-plugins/$TARBALL"
+TAGS="color schemes"
+
+DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+
+	# Fix typos
+	sed -i 's/filesyitems/filesystems/' src/main.c
+
+	./configure \
+		--prefix=/usr \
+		--infodir=/usr/share/info \
+		--mandir=/usr/share/man \
+		$CONFIGURE_ARGS &&
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}

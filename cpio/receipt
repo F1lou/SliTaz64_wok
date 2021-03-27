@@ -1,0 +1,49 @@
+# SliTaz package receipt.
+
+PACKAGE="cpio"
+VERSION="2.13"
+CATEGORY="base-system"
+SHORT_DESC="GNU cpio archiver."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="http://www.gnu.org/software/cpio/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+GNU_MIRROR="http://ftp-stud.hs-esslingen.de/pub/Mirrors/ftp.gnu.org"
+WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="glibc-base"
+BUILD_DEPENDS="slitaz-toolchain"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure --prefix=/usr \
+		--bindir=/bin \
+		--libexecdir=/usr/bin \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
+		$CONFIGURE_ARGS  &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+#	mkdir -p $fs/usr/share/locale
+	mkdir -p $fs/usr/bin
+	cp -a $install/bin $fs
+	cp -a $install/usr/bin $fs/usr
+}
+
+# Remove Busybox symlink before installing
+pre_install()
+{
+	rm -f "$1/bin/cpio"
+}
+
+post_remove()
+{
+	ln -s /bin/busybox "$1/bin/cpio"
+}

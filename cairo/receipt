@@ -1,0 +1,50 @@
+# SliTaz package receipt.
+
+PACKAGE="cairo"
+VERSION="1.16.0"
+CATEGORY="x-window"
+SHORT_DESC="2D graphics library"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MPL LGPL2.1"
+WEB_SITE="https://www.cairographics.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="${WEB_SITE}releases/$TARBALL"
+
+DEPENDS="bzlib fontconfig freetype glib glibc-base harfbuzz libffi libpng \
+libxcb libxml2 pcre pixman xorg-libX11 xorg-libXau xorg-libXdmcp xorg-libXext \
+xorg-libXrender zlib"
+BUILD_DEPENDS="pkg-config glib-dev libpng-dev zlib-dev fontconfig-dev \
+freetype-dev xorg-libX11-dev pixman-dev xorg-libXau-dev xorg-libXdmcp-dev \
+xorg-libXrender-dev xcb-util-dev libxcb-dev expat-dev libxml2-dev util-linux-uuid-dev"
+SPLIT="cairo-tools"
+SIBLINGS="cairo-gl"
+HOST_ARCH="x86_64 i486 arm"
+
+# Handle cross compilation
+case "$ARCH" in
+	arm*) export CFLAGS="$CFLAGS -L/cross/$ARCH/sysroot/usr/lib" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i '/index.sgml/d' doc/public/Makefile*
+	./configure \
+		--prefix=/usr \
+		--enable-xcb \
+		--enable-xlib-xcb \
+		--enable-tee \
+		--disable-gl \
+		--disable-static \
+		$CONFIGURE_ARGS &&
+	make $MAKEFLAGS &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

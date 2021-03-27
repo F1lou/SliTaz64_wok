@@ -1,0 +1,18 @@
+# SliTaz package receipt.
+
+PACKAGE="util-linux-manpages"
+VERSION="2.35.1"
+CATEGORY="doc"
+SHORT_DESC="The manual pages from Util Linux."
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://en.wikipedia.org/wiki/Util-linux"
+
+WANTED="util-linux"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/share/man	$fs/usr/share
+}

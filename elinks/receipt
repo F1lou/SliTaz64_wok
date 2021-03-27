@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="elinks"
+VERSION="0.12pre6"
+CATEGORY="network"
+SHORT_DESC="Full featured www text browser"
+MAINTAINER="allan316@gmail.com"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://elinks.or.cz"
+WGET_URL="$WEB_SITE/download/$TARBALL"
+TAGS="web-browser"
+
+DEPENDS="openssl bzip2 spidermonkey zlib libidn expat gpm"
+BUILD_DEPENDS="openssl-dev bzip2-dev spidermonkey-dev zlib-dev libidn-dev \
+expat-dev gpm-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# --enable-fastmem: disables internal `malloc()` debugging and 
+	# use `alloca()` wherever possible.
+	# --disable-backtrace disables internal backtrace code.
+	./configure \
+		--enable-fastmem \
+		--disable-backtrace \
+		--without-x \
+		$CONFIGURE_ARGS && 
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}

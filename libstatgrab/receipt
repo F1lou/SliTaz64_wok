@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="libstatgrab"
+VERSION="0.92"
+CATEGORY="system-tools"
+SHORT_DESC="Provides statistics about the system on which it is run."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.i-scream.org/libstatgrab/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://ftp.uk.i-scream.org/pub/i-scream/libstatgrab/$TARBALL"
+
+DEPENDS="ncursesw"
+BUILD_DEPENDS="file ncursesw-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export LDFLAGS="$LDFLAGS -ltinfo"
+
+	./configure &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+	cp -a $install/usr/bin		$fs/usr
+}

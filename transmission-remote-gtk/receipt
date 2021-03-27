@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="transmission-remote-gtk"
+VERSION="1.1.1"
+CATEGORY="network"
+SHORT_DESC="GTK remote control for the Transmission BitTorrent client"
+MAINTAINER="devl547@gmail.com"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://github.com/transmission-remote-gtk/transmission-remote-gtk"
+WGET_URL="http://transmission-remote-gtk.googlecode.com/files/$TARBALL"
+
+DEPENDS="gtk+ json-glib curl libnotify libunique"
+BUILD_DEPENDS="gtk+-dev json-glib-dev curl-dev libnotify-dev \
+libunique-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure \
+	--enable-gtk2 \
+	$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/icons $fs/usr/share
+	cp -a $install/usr/share/applications $fs/usr/share
+}
+

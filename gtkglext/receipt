@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="gtkglext"
+VERSION="1.2.0"
+CATEGORY="x-window"
+SHORT_DESC="GtkGLExt is an OpenGL extension to GTK+."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://web.archive.org/web/20190521002311/https://projects-old.gnome.org/gtkglext/"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+SUGGESTED="nvidia"
+
+DEPENDS="gtk+ mesa libglu-mesa pangox-compat"
+BUILD_DEPENDS="gtk+-dev libglu-mesa libglu-mesa-dev mesa-dev \
+util-linux-uuid-dev autoconf pangox-compat-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	patch -Np1 -i $stuff/gtk2.20.patch
+	autoconf --force
+	./configure \
+    	--prefix=/usr \
+    	$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

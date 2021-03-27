@@ -1,0 +1,27 @@
+# SliTaz package receipt.
+
+PACKAGE="smbclient"
+VERSION="3.6.7"
+CATEGORY="network"
+SHORT_DESC="File and print services with SMB/CIFS, client side."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="http://samba.org/"
+
+DEPENDS="libldap libssl cyrus-sasl readline ncurses popt libcap \
+libcomerr3 libkrb5 attr samba-common glibc-base"
+WANTED="samba"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	while read file; do
+		dir=${file%/*}
+		[ -d $fs$dir ] || mkdir -p $fs$dir
+		cp -a $install$file $fs$dir
+	done < $wanted_stuff/$PACKAGE.files-list
+	
+	# Symlink smbspool to cups backend
+	mkdir -p $fs/usr/lib/cups/backend
+	ln -sf /usr/bin/smbspool $fs/usr/lib/cups/backend/smb
+}

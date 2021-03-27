@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="isapnptools"
+VERSION="1.27"
+CATEGORY="system-tools"
+SHORT_DESC="ISA Plug-And-Play configuration."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tgz"
+WEB_SITE="https://web.archive.org/web/20140210040320/http://www.roestock.demon.co.uk/isapnptools/"
+WGET_URL="ftp://metalab.unc.edu/pub/Linux/system/hardware/$TARBALL"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's/pnpdump_main.$(OBJEXT)/isapnp_main.$(OBJEXT) &/' src/Makefile.*
+	sed -i 's/return/if (!strcmp(basename(argv[0]),"isapnp")) return (isapnp_main(argc, argv));\n&/' src/pnpdump.c
+	./configure --prefix=/usr --bindir=/bin \
+		--libexecdir=/usr/bin --mandir=/usr/share/man \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	# move /usr/sbin/* /sbin to use pnptools *before* mounting /usr
+	mkdir -p $fs/sbin
+	cp -a $install/usr/sbin/pnpdump $fs/sbin
+	ln $fs/sbin/pnpdump $fs/sbin/isapnp
+}

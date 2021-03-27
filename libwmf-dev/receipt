@@ -1,0 +1,27 @@
+# SliTaz package receipt.
+
+PACKAGE="libwmf-dev"
+VERSION="0.2.8.4"
+CATEGORY="development"
+SHORT_DESC="library for converting WMF files"
+MAINTAINER="monghitri@aruba.it"
+LICENSE="GPL2"
+WEB_SITE="http://wvware.sourceforge.net/libwmf.html"
+WANTED="libwmf"
+
+DEPENDS="libwmf"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib $fs/usr/                                                 
+	find $fs/usr/ | while read f ; do
+		case "$f" in
+		*so.*) rm -f $f
+		esac
+	done
+}
+
+

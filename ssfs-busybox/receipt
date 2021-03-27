@@ -1,0 +1,24 @@
+# SliTaz package receipt.
+
+PACKAGE="ssfs-busybox"
+VERSION="1.31.1"
+CATEGORY="base-system"
+SHORT_DESC="Busybox for Ssfs virtual disk minimal chroot."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WANTED="busybox"
+WEB_SITE="http://www.busybox.net/"
+
+#
+# NOTE: We Install files in Ssfs data directory to always have have ready to
+# create chroot on the server and provide an easy way to update the vdisk.
+# We dont do a static build, we need some shared lib in the chroot anyway.
+# Busybox is configured to not use /usr and with a minimal set of applets.
+#
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	rootfs=$fs/usr/share/ssfs/rootfs
+	cp -a $src/ssfs-busybox/* $fs
+}

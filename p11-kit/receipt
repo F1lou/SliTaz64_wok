@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="p11-kit"
+VERSION="0.23.20"
+CATEGORY="security"
+SHORT_DESC="Library to work with PKCS#11 modules."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="BSD"
+WEB_SITE="https://p11-glue.freedesktop.org/"
+LFS="http://www.linuxfromscratch.org/blfs/view/stable/postlfs/p11-kit.html"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="https://github.com/p11-glue/p11-kit/releases/download/$VERSION/$TARBALL"
+
+BUILD_DEPENDS="cacerts gettext glib glib-dev gtk-doc libffi libffi-dev \
+	libtasn1-dev libxslt"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure					\
+		--sysconfdir=/etc			\
+		--with-module-path=/usr/lib/pkcs11	\
+		$CONFIGURE_ARGS && 
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/etc		$fs
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+}

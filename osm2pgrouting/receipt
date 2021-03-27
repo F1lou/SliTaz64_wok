@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="osm2pgrouting"
+VERSION="2.3.6"
+CATEGORY="misc"
+SHORT_DESC="Import tool for OpenStreetMap data to pgRouting database."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://github.com/pgRouting/osm2pgrouting"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/archive/v$VERSION.tar.gz"
+
+DEPENDS="expat gcc-lib-base libboost-program-options libpostgresqlclient"
+BUILD_DEPENDS="cmake expat-dev gcc libpqxx libboost-program-options-dev \
+	pgrouting postgis postgresql-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cmake -DCMAKE_INSTALL_PREFIX=/usr -H. -Bbuild
+	cd build/
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr $fs
+}

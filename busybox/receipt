@@ -1,0 +1,285 @@
+# SliTaz package receipt.
+
+PACKAGE="busybox"
+VERSION="1.31.1"
+CATEGORY="base-system"
+SHORT_DESC="Busybox combines tiny versions of many common UNIX utilities."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://www.busybox.net/"
+WGET_URL="http://www.busybox.net/downloads/$TARBALL"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="slitaz-base-files glibc-base ncurses-common"
+BUILD_DEPENDS="bzip2 pam pam-dev uclibc-cross-compiler-i486 \
+musl-libc-dev dietlibc gettext-tools"
+
+CONFIG_FILES="/etc/dnsd.conf /etc/inetd.conf /etc/udhcpd.conf \
+/etc/resolv.conf /etc/httpd.conf"
+AUFS_NOT_RAMFS="uclibc-cross-compiler-i486 is not compatible with aufs+tmpfs 8("
+
+# Handle cross compilation
+case "$ARCH" in
+	arm*) BUILD_DEPENDS="bzip2" ;;
+esac
+
+current_version()
+{
+	wget -O - $WEB_SITE 2>/dev/null | \
+	sed "/tar/!d;s|.*$PACKAGE-\\(.*\\).tar.*\".*|\\1|;q"
+}
+
+# Busybox patches
+apply_bb_patchs()
+{
+    sed -i 's|march=|&i486 -mtune=|' arch/i386/Makefile
+    while read file; do
+    	[ -f done.$file ] && continue
+    	echo "Apply $file..."
+    	patch -p1 < $stuff/$PACKAGE-${VERSION%.*}-$file || return 1
+	cp $stuff/$PACKAGE-${VERSION%.*}-$file done.$file
+    done <<EOT
+tar.u
+stat.u
+ris.u
+zmodules.u
+cmdline.u
+diff.u
+diet.u
+losetup.u
+fbvnc.u
+cpio.u
+shutdown.u
+scriptreplay.u
+mkfs_vfat.u
+ash.u
+EOT
+    cp $stuff/$PACKAGE-${VERSION%.*}.config .config
+    cp $stuff/$PACKAGE-${VERSION%.*}.config .
+}
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	case "$ARCH" in
+		arm*)
+			echo "cook: CROSS_COMPILE=$CROSS_COMPILE"
+			apply_bb_patchs &&
+			cp $stuff/arm/$PACKAGE.config .config
+			make oldconfig | sed 's|ERROR|error|' &&
+			make && make install || return 1
+			chmod 4755 $src/_install/bin/busybox ;;
+		x86_64) echo "TODO" ;;
+		i?86)
+			echo "=== Build busybox ==="
+			sed -i 's|uname -m|echo i486|' Makefile
+			apply_bb_patchs &&
+			make oldconfig | sed 's|ERROR|error|' &&
+			make && make install || return 1
+		    strip --strip-unneeded -R .eh_frame -R .eh_frame_hdr \
+				$src/_install/bin/busybox
+		    cp busybox busybox-glibc
+		    mv busybox_unstripped.map busybox-glibc.map
+		    mv docs/busybox.1 docs/busybox.base.1
+
+			# prepare busybox-pam package
+			echo "=== Build busybox-pam ==="
+		    sed -i 's/# CONFIG_PAM is not set/CONFIG_PAM=y/' .config
+		    make oldconfig | sed 's|ERROR|error|' && make || return 1
+		    strip --strip-unneeded -R .eh_frame -R .eh_frame_hdr busybox
+		    mv busybox busybox-pam
+		    mv busybox_unstripped.map busybox-pam.map
+		    mv docs/busybox.1 docs/busybox.pam.1
+
+		    # prepare busybox-static package
+		    if [ -x /usr/bin/uclibc-i486-gcc ]; then
+			echo "=== Build busybox-uclibc ==="
+			cp $stuff/$PACKAGE-${VERSION%.*}.config-static .config
+			cp $stuff/$PACKAGE-${VERSION%.*}.config-static .
+			sed -i 's/# CONFIG_ASH_INTERNAL_GLOB is not set/CONFIG_ASH_INTERNAL_GLOB=y/' .config
+			make oldconfig | sed 's|ERROR|error|' &&
+			LDFLAGS="" make || return 1
+			cp busybox busybox-static
+			mv busybox busybox-uclibc
+			mv busybox_unstripped.map busybox-uclibc.map
+			mv -f docs/busybox.1 docs/busybox.static.1
+		    fi
+
+		    if [ -x /usr/bin/musl-gcc ]; then
+			echo "=== Build busybox-musl ==="
+			# prepare busybox-musl package
+			cp $stuff/$PACKAGE-${VERSION%.*}.config-static .config
+			cp $stuff/$PACKAGE-${VERSION%.*}.config-static .
+			sed -i 's|uclibc-i486-||' .config
+			make oldconfig | sed 's|ERROR|error|' &&
+			if make CC=musl-gcc 2> musl-err.log ; then
+				mv busybox busybox-musl
+				mv busybox_unstripped.map busybox-musl.map
+				mv -f docs/busybox.1 docs/busybox.static.1
+			fi
+		    fi
+
+		    if [ -x /usr/lib/diet/bin/diet ]; then
+			echo "=== Build busybox-diet ==="
+			# prepare busybox-diet package
+			cp $stuff/$PACKAGE-${VERSION%.*}.config-static .config
+			cp $stuff/$PACKAGE-${VERSION%.*}.config-static .
+			sed -i 's|uclibc-i486-||;s|CFLAGS="|&-D_BSD_SOURCE |;s|LDFLAGS="|&-Wl,--allow-multiple-definition |;s|LDLIBS="|&compat rpc |' .config
+			make oldconfig | sed 's|ERROR|error|' &&
+			if make CC="/usr/lib/diet/bin/diet gcc" 2> diet-err.log ; then
+				mv busybox busybox-diet
+				mv busybox_unstripped.map busybox-diet.map
+				mv -f docs/busybox.1 docs/busybox.static.1
+			fi
+		    fi
+
+		    # prepare ssfs-busybox package
+			echo "=== Build busybox-ssfs ==="
+		    rootfs=$src/ssfs-busybox/usr/share/ssfs/rootfs
+		    mkdir -p $rootfs/etc
+		    cp $stuff/$PACKAGE-${VERSION%.*}.config-ssfs .config
+		    cp $stuff/$PACKAGE-${VERSION%.*}.config-ssfs .
+		    make oldconfig | sed 's|ERROR|error|' && make busybox &&
+		    make CONFIG_PREFIX=$rootfs install || return 1
+		    mv busybox_unstripped.map busybox-ssfs.map
+		    cp $stuff/busybox.conf-ssfs $rootfs/etc/busybox.conf
+		    chown -R 0.0 $rootfs/etc
+		    chmod 0600 $rootfs/etc/busybox.conf
+		    chmod 4755 $rootfs/bin/busybox
+
+			# Compile translations
+			echo "=== Build translations ==="
+			make -C $stuff/po install
+			cp docs/busybox.base.1 docs/busybox.1
+
+			;;
+
+	esac
+}
+
+# Cross compilation check.
+testsuite()
+{
+	readelf -h $src/_install/bin/busybox
+}
+
+# Keep e2fsprogs kmod & util-linux-mount files
+REMOVED_SYMLINKS="/bin/mount /bin/mountpoint /bin/umount /sbin/depmod \
+/sbin/insmod /sbin/modinfo /sbin/modprobe /sbin/rmmod /bin/lsattr /bin/chattr \
+/sbin/tune2fs"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $install/usr/share/man/man1 $install/usr/share/doc/busybox
+	cp -a $src/_install/* $fs
+	cp -a $src/docs/busybox.base.1 $install/usr/share/man/man1/busybox.1
+	cp -a $src/docs/*.txt $install/usr/share/doc/busybox
+	cp -a $src/docs/*.htm* $install/usr/share/doc/busybox
+	cp -a $src/docs/cgi $install/usr/share/doc/busybox
+	[ -e $fs/sbin/ip ] && ln -s busybox $fs/bin/ip
+	rm -f $fs/bin/bbconfig $fs/usr/bin/ar
+	mkdir -p $fs/etc/init.d $fs/var/spool/cron/crontabs $fs/var/spool/lpd \
+		 $fs/var/lib/misc
+	cp $stuff/command_not_found $fs/bin
+
+	# Busybox config files.
+	for f in busybox.conf dnsd.conf udhcpd.conf inetd.conf httpd.conf \
+		syslog.conf zcip.script
+	do
+		cp $stuff/$f $fs/etc
+	done
+	chown -R 0.0 $fs/etc
+	chmod 600 $fs/etc/busybox.conf
+	touch $fs/etc/resolv.conf
+
+	# Daemon scripts.
+	cp $stuff/daemon $fs/etc/init.d
+	DAEMON="crond dnsd ftpd httpd inetd lpd klogd ntpd syslogd telnetd tftpd udhcpd zcip"
+	for i in $DAEMON; do
+		grep -qi config_$i=y $stuff/$PACKAGE-${VERSION%.*}.config &&
+		ln -s daemon $fs/etc/init.d/$i
+	done
+	mkdir -p $fs/etc/modprobe.d
+
+	# Udhcpc stuff.
+	mkdir -p $fs/usr/share/udhcpc
+	cp $stuff/udhcp.script $fs/usr/share/udhcpc/default.script
+	chmod +x $fs/usr/share/udhcpc/default.script
+
+	# Httpd stuff.
+	ln -s /usr/lib/slitaz/httphelper.sh $fs/usr/bin/httpd_helper.sh
+	cp -a $stuff/www $fs/var
+
+	# Update copyright year
+	grep -rl 'copy; 2' $fs/var/www | xargs \
+		sed -i "s/copy; [0-9]*/copy; $(date +%Y)/"
+
+	# Remove kmod & util-linux-mount links
+	for link in $REMOVED_SYMLINKS; do
+		rm -f $fs$link
+	done
+}
+
+# GNU utils stuff.
+pre_install()
+{
+	local i
+	[ -s $1/etc/resolv.conf ] &&
+	cp -a $1/etc/resolv.conf $1/etc/resolv.conf-busybox-install
+	answer=""
+	for i in $(cat "$1$INSTALLED/$PACKAGE/files.list"); do
+		[ -f "$1$i" ] || continue
+		case "$i" in
+			/bin/busybox) continue ;;
+			*bin/*) ;;
+			*) continue ;;
+		esac
+		if [ -z "$answer" ]; then
+			echo
+			echo -n "Keep installed GNU utilities ? "
+			read -t 30 answer	# by default: keep
+			case "$answer" in
+			n*|N*) break;;
+			*) answer="Y";;
+			esac
+		fi
+		cp -a "$1$i" "$1$i-busybox-install"
+	done
+}
+
+post_install()
+{
+	local i
+	[ -f $1/etc/resolv.conf-busybox-install ] &&
+	mv -f $1/etc/resolv.conf-busybox-install $1/etc/resolv.conf
+	while read i ; do
+		[ -f "$1$i-busybox-install" ] || continue
+		mv "$1$i-busybox-install" "$1$i"
+	done < "$1$INSTALLED/$PACKAGE/files.list"
+	chmod 4755 "$1/bin/busybox"
+
+	touch $1/etc/daemons.conf
+	# /etc/daemons.conf (tftp + dnsd + httpd may not be present)
+	if ! grep -q ^DNSD_OPTIONS $1/etc/daemons.conf; then
+		echo '# Domain name server options.' >> $1/etc/daemons.conf
+		echo 'DNSD_OPTIONS="-d"' >> $1/etc/daemons.conf
+		echo '' >> $1/etc/daemons.conf
+	fi
+	if ! grep -q ^TFTPD_OPTIONS $1/etc/daemons.conf; then
+		echo '# Tftp daemon options.' >> $1/etc/daemons.conf
+		echo 'TFTPD_OPTIONS="-r /boot"' >> $1/etc/daemons.conf
+		echo '' >> $1/etc/daemons.conf
+	fi
+	sed -i "s/copy; 20../copy; $(date +%Y)/" $1/var/www/httpd/404.html
+	for link in $REMOVED_SYMLINKS; do
+		[ -e $1$link ] || ln -s /bin/busybox $1$link
+	done
+}
+
+pre_remove()
+{
+	# We can not remove this package !
+	exit 1
+}

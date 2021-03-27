@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="ckermit"
+VERSION="9.0.302"
+CATEGORY="network"
+SHORT_DESC="Portable Scriptable Network and Serial Communication Software."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="http://www.columbia.edu/kermit/ck90.html"
+TARBALL="cku${VERSION##*.}.tar.gz"
+WGET_URL="ftp://kermit.columbia.edu/kermit/archives/$TARBALL"
+
+DEPENDS="ncurses"
+BUILD_DEPENDS="ncurses-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|uname -m|echo i486|' makefile
+	make linux "LNKFLAGS=-lncurses -ltinfo"
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp $src/wart $fs/usr/bin
+	cp $src/wermit $fs/usr/bin
+}

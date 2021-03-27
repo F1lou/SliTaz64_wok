@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="gucharmap"
+VERSION="3.0.1"
+CATEGORY="utilities"
+SHORT_DESC="GNOME Character Map (GTK+2)"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL3"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://wiki.gnome.org/action/show/Apps/Gucharmap"
+WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="gtk+ xorg-libXdamage"
+BUILD_DEPENDS="itstool libxml2-tools glib-dev libgio-dev gtk+-dev"
+SPLIT="gucharmap-i18n"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--sysconfdir=/etc \
+		--disable-maintainer-mode \
+		--disable-gconf \
+		--disable-schemas-install \
+		--disable-scrollkeeper \
+		--with-gtk=2.0 \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin $fs/usr/lib $fs/usr/share
+	cp -a $install/etc $fs
+	cp -a $install/usr/bin/$PACKAGE $fs/usr/bin
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/share/applications $fs/usr/share
+}

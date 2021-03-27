@@ -1,0 +1,77 @@
+# SliTaz package receipt.
+
+PACKAGE="qt4"
+SOURCE="qt-everywhere-opensource-src"
+VERSION="4.8.7"
+CATEGORY="meta"
+SHORT_DESC="qt x11 toolkit"
+MAINTAINER="allan316@gmail.com"
+LICENSE="GPL3 LGPL2.1"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="http://qt-project.org/"
+WGET_URL="http://download.qt.io/official_releases/qt/${VERSION%.*}/$VERSION/$TARBALL"
+PROVIDE="qt-x11-opensource-src Qt4"
+TAGS="qt"
+
+DEPENDS="glibc-locale libQtCore libQtGui libQtNetwork libQtSvg libQtXml \
+libQtDesigner libQtScript libQt3Support libQtClucene libQtDBus libQtHelp \
+libQtOpenGL libQtSql libQtWebkit qtconfig"
+SUGGESTED="libQtPlugins libQtScriptTools libQtDeclarative"
+BUILD_DEPENDS="xorg-libX11-dev dbus-dev mesa-dev libmng-dev cups-dev mysql-dev \
+unixODBC-dev fontconfig-dev postgresql-dev atk-dev autoconf automake bash \
+binutils bison bzip2-dev cairo-dev coreutils expat-dev flex fontconfig-dev \
+freetype-dev gettext glib-dev jpeg-dev libIDL libcap-dev libpng-dev libtool \
+libxml2-dev linux-api-headers m4 make mercurial ncurses-dev openssl-dev \
+pango-dev patch pcre-dev perl perl-xml-parser perl-xml-simple pixman-dev \
+pkg-config tiff-dev xorg-dev-proto xorg-dev zip unzip gtk+-dev alsa-lib-dev \
+xorg-libXv-dev sqlite-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${src}/lib"
+	./configure\
+		-silent \
+		-prefix /usr \
+		-confirm-license -opensource \
+		-sysconfdir /etc/xdg \
+		-plugindir /usr/lib/qt/plugins \
+		-importdir /usr/lib/qt/imports \
+		-translationdir /usr/share/qt/translations \
+		-datadir /usr/share/qt \
+		-docdir /usr/share/doc/qt \
+		-examplesdir /usr/share/doc/qt/examples \
+		-demosdir /usr/share/doc/qt/demos \
+		-release \
+		-nomake demos \
+		-nomake examples \
+		-nomake docs \
+		-system-zlib \
+		-system-libtiff \
+		-system-libpng \
+		-system-libmng \
+		-system-libjpeg \
+		-system-sqlite \
+		-scripttools \
+		-glib \
+		-optimized-qmake \
+		-opengl \
+		-gtkstyle \
+		-no-openvg \
+		-no-reduce-relocations \
+		-no-phonon \
+		-no-phonon-backend \
+		-graphicssystem raster \
+		-continue \
+		2>&1 | grep -v 'wayland-client' | \
+		sed 's/such file or directory/file/' &&
+	make $MAKEFLAGS &&
+	make INSTALL_ROOT=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	# dummy tree to avoid 'tazwok cmp --cook' building loop
+	mkdir $fs/etc
+}

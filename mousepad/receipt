@@ -1,0 +1,46 @@
+# SliTaz package receipt.
+
+PACKAGE="mousepad"
+VERSION="0.4.2"
+CATEGORY="x-window"
+TAGS="text-editor"
+SHORT_DESC="Xfce Text Editor."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://git.xfce.org/apps/mousepad/about/"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="https://archive.xfce.org/src/apps/$PACKAGE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="dbus-glib gtk+ gtksourceview libgio libxfconf xorg-libXdamage"
+BUILD_DEPENDS="dbus-glib-dev gtk+-dev gtksourceview-dev intltool 
+	libgio-dev libxfconf-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export	CFLAGS="$CFLAGS -I/usr/include/gio-unix-2.0"
+
+	./configure			\
+		--prefix=/usr		\
+		--enable-debug=no	\
+		--mandir=/usr/share/man	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/locale
+	mkdir -p $fs/usr/share/glib-2.0
+
+	cp -a $install/usr/bin				$fs/usr
+	cp -a $install/usr/share/locale/de		$fs/usr/share/locale
+	cp -a $install/usr/share/locale/fr		$fs/usr/share/locale
+	cp -a $install/usr/share/locale/ru		$fs/usr/share/locale
+	cp -a $install/usr/share/applications		$fs/usr/share
+	cp -a $install/usr/share/glib-2.0/schemas	$fs/usr/share/glib-2.0
+}
+

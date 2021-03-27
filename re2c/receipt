@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="re2c"
+VERSION="1.3"
+CATEGORY="system-tools"
+TAGS="scanner"
+SHORT_DESC="A tool for generating C-based recognisers from regular expressions."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="PublicDomain"
+WEB_SITE="https://re2c.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/skvadrik/re2c/archive/$VERSION.tar.gz"
+
+BUILD_DEPENDS="automake libtool"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	[ -d m4 ] || mkdir m4
+	./autogen.sh &&
+	./configure		\
+		--prefix=/usr	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin	$fs/usr
+}

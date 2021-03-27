@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="motion"
+VERSION="4.3.0"
+CATEGORY="multimedia"
+SHORT_DESC="Monitors the video signal from cameras."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://motion-project.github.io/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/Motion-Project/$PACKAGE/archive/release-$VERSION.tar.gz"
+
+DEPENDS="ffmpeg jpeg libmicrohttpd libpthread-stubs libv4l"
+BUILD_DEPENDS="automake ffmpeg-dev jpeg-dev libmicrohttpd-dev libpthread-stubs \
+	libtool libv4l-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's@<linux/videodev.h>@<libv4l1.h>\n#include <linux/videodev2.h>@' \
+		src/*.c \
+		src/*.h
+
+	autoreconf -fiv &&
+	./configure			\
+		--sysconfdir=/etc/motion &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/etc/motion
+	mkdir -p $fs/usr
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $stuff/motion.conf	$fs/etc/motion
+	cp -a $stuff/init.d		$fs/etc
+
+	chmod 0644			$fs/etc/motion/*
+}

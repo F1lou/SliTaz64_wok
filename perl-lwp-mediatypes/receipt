@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-lwp-mediatypes"
+VERSION="6.04"
+CATEGORY="development"
+SHORT_DESC="Guess media type for a file or an URL."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL"
+WEB_SITE="https://metacpan.org/release/LWP-MediaTypes"
+
+SOURCE="LWP-MediaTypes"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://cpan.metacpan.org/authors/id/O/OA/OALDERS/$TARBALL"
+
+DEPENDS="perl"
+BUILD_DEPENDS="perl"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	perl Makefile.PL &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/*	$fs
+}

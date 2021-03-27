@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="hubbub"
+VERSION="0.1.2"
+CATEGORY="system-tools"
+SHORT_DESC="Hubbub is a flexible HTML parser."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://www.netsurf-browser.org/projects/hubbub/"
+TARBALL="lib$PACKAGE-$VERSION-src.tar.gz"
+WGET_URL="http://download.netsurf-browser.org/libs/releases/$TARBALL"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="libparserutils"
+BUILD_DEPENDS="libparserutils-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make install DESTDIR=$DESTDIR PREFIX=/usr &&
+	make install COMPONENT_TYPE=lib-shared DESTDIR=$DESTDIR PREFIX=/usr
+}
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="wv-dev"
+VERSION="1.2.9"
+CATEGORY="x-window"
+SHORT_DESC="WV (MS doc lib) devel files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WANTED="wv"
+WEB_SITE="http://www.abisource.com/projects/"
+
+DEPENDS="pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+}
+

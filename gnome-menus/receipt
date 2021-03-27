@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="gnome-menus"
+VERSION="2.30.2"
+CATEGORY="x-window"
+SHORT_DESC="GNOME menu libs and tools (without desktop files)."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://www.gnome.org/"
+WGET_URL="http://ftp.gnome.org/pub/GNOME/desktop/${VERSION%.*}/$VERSION/sources/$TARBALL"
+
+DEPENDS="glib libgio"
+BUILD_DEPENDS="intltool python-dev python glib-dev libgio-dev"
+SUGGESTED="python gamin"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--mandir=/usr/share/man \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	PYTHON_LIB=python$(grep ^VERSION= $WOK/python/receipt | sed 's/.*"\(...\).*/\1/')
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/$PYTHON_LIB $fs/usr/lib
+	rm $fs/usr/lib/$PYTHON_LIB/site-packages/*.*a
+}

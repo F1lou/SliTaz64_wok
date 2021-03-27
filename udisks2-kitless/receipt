@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="udisks2-kitless"
+VERSION="2.1.8"
+CATEGORY="system-tools"
+SHORT_DESC="D-Bus service to access and manipulate storage devices"
+MAINTAINER="psychomaniak@xakep.ru"
+LICENSE="GPL2"
+WEB_SITE="https://github.com/ehegnes/udisks-kitless/"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}archive/v${TARBALL/*-/}"
+
+DEPENDS="libatasmart libgudev"
+BUILD_DEPENDS="docbook-xsl gtk-doc libgudev-dev libatasmart-dev \
+gobject-introspection-dev intltool"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--enable-fhs-media \
+		--with-udevdir=/etc/udev \
+		--with-systemdsystemunitdir=no \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+#	copy etc/ bin/ sbin/ libexec/ dbus-1/ polkit-1/ var/ *.so*
+	cook_copy_folders etc bin sbin libexec dbus-1 var
+	cook_copy_files *.so*
+
+	# mount to "/media" instead of "/media/<user>"
+	cp $stuff/99-udisks2.rules $fs/etc/udev/rules.d/
+}

@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="slitaz-doc"
+VERSION="160"
+CATEGORY="base-system"
+SHORT_DESC="SliTaz system documentation."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://www.slitaz.org/"
+WGET_URL="http://hg.slitaz.org/$PACKAGE/archive/$VERSION.tar.gz"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p \
+		$fs/usr/share/doc \
+		$fs/usr/share/applications \
+		$fs/etc/skel/Desktop
+	cp -a $src/slitaz $fs/usr/share/doc
+	# Desktop file and pixmaps.
+	cp $src/applications/slitaz-doc.desktop \
+		$fs/etc/skel/Desktop
+	cp $src/applications/system-doc.desktop \
+		$fs/usr/share/applications
+	cp -a $src/pixmaps $fs/usr/share
+	chown -R root.root $fs/*
+}

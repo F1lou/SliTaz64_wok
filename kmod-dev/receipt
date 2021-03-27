@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="kmod-dev"
+VERSION="23"
+CATEGORY="development"
+SHORT_DESC="Kmod devel files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WANTED="kmod"
+WEB_SITE="http://ftp.kernel.org/pub/linux/utils/kernel/kmod/"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="kmod liblzma-dev pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/lib $fs/usr/lib
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+}

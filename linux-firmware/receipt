@@ -1,0 +1,25 @@
+# SliTaz package receipt.
+
+PACKAGE="linux-firmware"
+VERSION="3.16.55"
+CATEGORY="non-free"
+SHORT_DESC="Firmware thats compiled from linux source code."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL2"
+DEPENDS="linux"
+WEB_SITE="https://www.kernel.org/"
+WANTED="linux"
+PROVIDE="linux64-firmware"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/lib
+	cp -a $install/lib/firmware $fs/lib
+
+	# remove linux-sound firmware files
+	for i in ess korg sun yamaha; do
+		rm -rf $fs/lib/firmware/$i
+	done
+}
+

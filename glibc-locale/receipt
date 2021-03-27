@@ -1,0 +1,45 @@
+# SliTaz package receipt.
+
+PACKAGE="glibc-locale"
+VERSION="2.32"
+CATEGORY="system-tools"
+SHORT_DESC="The GNU C libraries locale files and utilities (see also locale-*)."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://www.gnu.org/software/libc/"
+
+DEPENDS="glibc-base"
+WANTED="glibc"
+
+LOCALE_PACK="cs de es fr hu id it pt ru sl zh_CN zh_TW"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share $fs/usr/lib $fs/usr/bin
+
+	cp -a $install/usr/lib64/gconv $fs/usr/lib64
+	cp -a $install/usr/share/locale $fs/usr/share
+	cp -a $install/usr/share/i18n $fs/usr/share
+	cp -a $install/usr/share/zoneinfo $fs/usr/share
+
+	# Utilities and tools
+	cp -a $install/usr/bin/iconv $fs/usr/bin
+	cp -a $install/usr/bin/tzselect $fs/usr/bin
+
+	# Rm base files.
+	echo -n "* Removing all base files..."
+	for file in `cat $WOK/glibc-base/taz/glibc-base-$VERSION/files.list`
+	do
+		rm -f ${fs}$file
+	done
+	status
+
+	# Rm files provided by locale-pack.
+	for i in $LOCALE_PACK
+	do
+		echo -n "* Removing locale: $i"
+		rm -rf $fs/usr/share/locale/$i
+		status
+	done
+}

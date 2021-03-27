@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-date-manip"
+VERSION="6.81"
+CATEGORY="development"
+SHORT_DESC="Perl extension Date::Manip."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL"
+WEB_SITE="https://metacpan.org/release/Date-Manip/"
+
+SOURCE="Date-Manip"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://www.cpan.org/modules/by-module/Date/$TARBALL"
+
+DEPENDS="perl perl-yaml-syck"
+BUILD_DEPENDS="perl perl-extutils-makemaker perl-yaml-syck"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	perl Makefile.PL &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib	$fs/usr
+}

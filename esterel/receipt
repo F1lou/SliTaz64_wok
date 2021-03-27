@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="esterel"
+VERSION="5.92"
+CATEGORY="development"
+SHORT_DESC="Esterel language tools."
+MAINTAINER="rcx@zoominternet.net"
+LICENSE="other"
+TARBALL="$PACKAGE-$VERSION.tgz"
+WEB_SITE="https://web.imt-atlantique.fr/x-info/lego/"
+WGET_URL="http://users.zoominternet.net/~rcx/$TARBALL"
+
+DEPENDS="glibc-base"
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir -p $DESTDIR/usr
+	cp -a $src/bin $DESTDIR/usr
+	cp -a $src/include $DESTDIR/usr
+	cp -a $src/share $DESTDIR/usr
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs
+	cp -a $install/* $fs
+}

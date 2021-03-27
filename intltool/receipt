@@ -1,0 +1,38 @@
+# SliTaz package receipt.
+
+PACKAGE="intltool"
+VERSION="0.51.0"
+CATEGORY="development"
+SHORT_DESC="Translation tools (PO, XML)."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://launchpad.net/intltool/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://launchpad.net/$PACKAGE/trunk/$VERSION/+download/$TARBALL"
+
+DEPENDS="perl perl-xml-parser gettext"
+BUILD_DEPENDS="perl perl-xml-parser"
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure		\
+		--prefix=/usr	\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/share/aclocal	$fs/usr/share
+	cp -a $install/usr/share/intltool	$fs/usr/share
+
+	chmod +x $fs/usr/bin/*
+}

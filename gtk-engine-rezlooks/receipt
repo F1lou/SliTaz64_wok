@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="gtk-engine-rezlooks"
+VERSION="0.6"
+CATEGORY="customization"
+SHORT_DESC="Rezlooks GTK+ Engine"
+MAINTAINER="devl547@gmail.com"
+LICENSE="GPL2"
+TARBALL="39179-rezlooks-0.6.tar.gz"
+WEB_SITE="https://www.gnome-look.org/content/show.php?content=39179"
+WGET_URL="http://GNOME-Look.org/CONTENT/content-files/$TARBALL"
+
+BUILD_DEPENDS="gtk+-dev"
+DEPENDS="gtk+"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	sed -i 's|<glib/gtimer.h>|<glib.h>|' src/animation.c
+	./configure --enable-animation $CONFIGURE_ARGS &&
+	make &&
+	make prefix=/usr install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib $fs/usr
+}

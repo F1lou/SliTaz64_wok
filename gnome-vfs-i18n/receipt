@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="gnome-vfs-i18n"
+VERSION="2.24.4"
+CATEGORY="localization"
+SHORT_DESC="Language files for the GNOME Virtual File System libraries"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://www.gnome.org/"
+WANTED="gnome-vfs"
+
+DEPENDS="gnome-vfs"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/locale
+	cp -a $install/usr/share/locale/* $fs/usr/share/locale
+}

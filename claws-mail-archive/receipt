@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="claws-mail-archive"
+VERSION="3.17.5"
+CATEGORY="network"
+SHORT_DESC="Claws-mail archiving features."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://www.claws-mail.org/plugins.php"
+
+DEPENDS="acl bzlib claws-mail libarchive liblzma"
+WANTED="claws-mail"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/claws-mail/plugins
+#	mkdir -p $fs/usr/share/locale
+
+	cp -a $install/usr/lib/claws-mail/plugins/${PACKAGE##*-}.so  \
+		$fs/usr/lib/claws-mail/plugins
+}

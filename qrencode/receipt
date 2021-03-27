@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="qrencode"
+VERSION="4.0.2"
+CATEGORY="misc"
+SHORT_DESC="C library for encoding data in a QR Code symbol."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="LGPL2.1"
+WEB_SITE="https://github.com/fukuchi/libqrencode"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/archive/v$VERSION.tar.gz"
+
+DEPENDS="libpng"
+BUILD_DEPENDS="automake libpng-dev libtool"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./autogen.sh &&
+	./configure				\
+		--prefix=/usr			\
+		--infodir=/usr/share/info	\
+		--mandir=/usr/share/man		\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/lib/lib*so*	$fs/usr/lib
+}

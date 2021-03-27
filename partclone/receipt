@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="partclone"
+VERSION="0.2.70"
+CATEGORY="system-tools"
+SHORT_DESC="Utilities to smartly backup partitions."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://partclone.org/"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+TAGS="backup"
+
+DEPENDS="ncursesw ntfs-3g e2fsprogs"
+BUILD_DEPENDS="util-linux-blkid-dev util-linux-uuid-dev libxslt e2fsprogs-dev \
+ ncursesw-dev ntfsprogs-dev ntfs-3g-dev docbook-xsl"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure LDFLAGS="$LDFLAGS -lcom_err" $CONFIGURE_ARGS \
+		--enable-extfs \
+		--enable-fat \
+		--enable-exfat \
+		--enable-ntfs \
+		--enable-btrfs \
+		--enable-hfsp \
+		--enable-ncursesw &&
+		make && make install 2>&1 | sed "s/8': No such/8': no such/"
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/local
+	cp -a $install/usr/sbin* $fs/usr
+}

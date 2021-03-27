@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="acme"
+VERSION="0.91"
+CATEGORY="development"
+SHORT_DESC="A Crossassembler for Multiple Environments (6502, 65c02 and 65816)."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE${VERSION/./}src.tar.bz2"
+WEB_SITE="https://github.com/meonwax/acme"
+WGET_URL="$WEB_SITE/current/$TARBALL"
+TAGS="cross assembler 6502"
+
+DEPENDS=""
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+  cd $src/src
+  make
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+  mkdir -p $fs/usr/bin
+  cp -a $src/src/acme $fs/usr/bin
+}
+
+## -----------------------------------------------------------------------
+## Revision: 03/Aug/2017 - SliTaz DevTeam.
+## URL: "http://www.esw-heim.tu-clausthal.de/~marco/smorbrod/acme" is OFF.
+## This looks good? => https://sourceforge.net/projects/acme-crossass/
+## !! Please, remove this after you update. Thank you.

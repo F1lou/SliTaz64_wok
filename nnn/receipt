@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="nnn"
+VERSION="3.4"
+CATEGORY="system-tools"
+SHORT_DESC="The missing terminal file manager for X."
+MAINTAINER="developer@slitaz.org"
+LICENSE="BSD-2"
+WEB_SITE="https://github.com/jarun/nnn/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}archive/v$VERSION.tar.gz"
+
+DEPENDS="libtinfo ncursesw readline"
+BUILD_DEPENDS="libtinfo ncursesw-dev readline-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# pkg-config does not work properly
+	sed -i 's|\$(LDLIBS_CURSES)|-lncursesw -ltinfo -lrt|' Makefile
+
+	# -std=c11 invalid
+	sed -i 's|-std=c11|-std=c1x|' Makefile
+
+	make CFLAGS_OPTIMIZATION=-O2 PREFIX=/usr &&
+	make PREFIX=/usr install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr	$fs
+}

@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="strigi-client"
+VERSION="0.7.8"
+CATEGORY="system-tools"
+SHORT_DESC="Strigi GUI client using QT."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2"
+WEB_SITE="https://www.vandenoever.info/software/strigi/"
+
+DEPENDS="libQtCore libQtDBus strigi"
+WANTED="strigi"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $install/usr/bin/strigiclient	$fs/usr/bin
+}

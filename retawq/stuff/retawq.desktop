@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Retawq Web browser
+Name[de]=Retawq Internet-Browser
+Name[es]=Retawq Navegador
+Name[fr]=Retawq Navigateur Web
+Name[pt]=Navegador web Retawq
+Name[pt_BR]=Navegador web Retawq
+Name[ru]=Консольный браузер retawq
+Exec=terminal -e retawq
+Icon=internet-web-browser
+Categories=ConsoleOnly;Network;WebBrowser;

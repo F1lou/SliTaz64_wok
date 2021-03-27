@@ -1,0 +1,48 @@
+#!/bin/sh
+# get Pale Moon web browser
+
+PACKAGE="palemoon-opt"
+WEB_SITE="http://linux.palemoon.org"
+PKGROOT="/opt/palemoon"
+################
+WGET_URL="$WEB_SITE$(wget -O - $WEB_SITE/download/mainline/ 2> /dev/null | \
+sed '/i686/!d;s/.*href="\([^"]*\).*/\1/;q')"
+VERSION="$(echo $WGET_URL | sed 's/.*palemoon-\([0-9\.]*\)\..*/\1/')"
+
+# busybox tar autodetect compression type
+mkdir -p $1/opt; cd $1/opt; busybox wget -O - $WGET_URL | busybox tar -xJf -
+
+################
+DESKTOP=usr/share/applications/$PACKAGE.desktop
+cat > $1/$DESKTOP << EOA
+[Desktop Entry]
+Type=Application
+Name=Palemoon v${VERSION%.*}
+Exec=$PKGROOT/palemoon %u
+Icon=$PKGROOT/browser/icons/mozicon128.png
+StartupNotify=true
+Categories=GTK;Network;WebBrowser;
+MimeType=text/html;text/xml;application/xhtml+xml;application/xml;
+EOA
+################
+PKGDIR="$1/var/lib/tazpkg/installed/$PACKAGE"
+mkdir -p "$PKGDIR"
+cat > "$PKGDIR/receipt" << EOR
+# SliTaz package receipt.
+
+UNPACKED_SIZE="$(du -hs $1$PKGROOT | awk '{ print $1 }')"
+PACKAGE="$PACKAGE"
+VERSION="$VERSION"
+CATEGORY="network"
+SHORT_DESC="Browser based on Firefox that's optimised for performance"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="MPL2"
+WEB_SITE="$WEB_SITE"
+
+DEPENDS="dbus-glib"
+SUGGESTED="ffmpeg"
+EOR
+################
+( cd $1/; find .$PKGROOT ./$DESKTOP -type f -exec md5sum {} \; ) | \
+	cut -c-34,36- | tee "$PKGDIR/md5sum" | cut -c35- > "$PKGDIR/files.list"
+################

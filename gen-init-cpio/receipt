@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="gen-init-cpio"
+VERSION="2.6.32"
+CATEGORY="base-system"
+MAINTAINER="devel@slitaz.org"
+LICENSE="GPL2"
+SHORT_DESC="Program to compress initramfs images"
+WEB_SITE="https://www.kernel.org/"
+TARBALL=""
+WGET_URL=""
+TAGS=""
+
+DEPENDS="glibc-base"
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+
+compile_rules()
+{
+	cd $stuff
+	make && make DESTDIR=$DESTDIR install &&
+	rm gen_init_cpio *.o
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/sbin $fs
+}

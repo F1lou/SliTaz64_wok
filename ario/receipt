@@ -1,0 +1,54 @@
+# SliTaz package receipt.
+
+PACKAGE="ario"
+VERSION="1.5.1"
+CATEGORY="multimedia"
+SHORT_DESC="GTK client for MPD"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://ario-player.sourceforge.net/index.php?en"
+WGET_URL="http://freefr.dl.sourceforge.net/sourceforge/ario-player/$TARBALL"
+TAGS="music audio player mp3 ogg"
+
+DEPENDS="libgcrypt gtk+ libcurl libglade libmpdclient taglib dbus-glib \
+libunique libtasn1"
+BUILD_DEPENDS="glib-dev gtk+-dev gnutls-dev taglib-dev intltool libunique-dev \
+libtasn1-dev libgcrypt-dev curl-dev libglade-dev taglib-dev libmpdclient-dev \
+libgnutls"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	sed -i 's|.glib/gslist.h.|<glib.h>|' src/ario-util.h src/ario-profiles.h
+	sed -i 's|<glib/gkeyfile.h>|<glib.h>|' src/plugins/ario-plugin-info.c
+	./configure \
+		--prefix=/usr \
+		--infodir=/usr/share/info \
+		--mandir=/usr/share/man \
+		--disable-dbus \
+		--disable-notify \
+		--disable-mpdidle \
+		--disable-audioscrobbler \
+		--disable-avahi \
+		$CONFIGURE_ARGS &&
+	make -j1 && make -j1 DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/locale/
+	
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib $fs/usr
+	cp -a $install/usr/share/applications $fs/usr/share
+	cp -a $install/usr/share/icons $fs/usr/share
+	cp -a $install/usr/share/ario $fs/usr/share
+	cp -a $install/usr/share/locale/fr $fs/usr/share/locale
+
+	# Cleanup
+	rm -f $fs/usr/lib/ario/plugins/*.?a
+}
+

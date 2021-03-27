@@ -1,0 +1,91 @@
+# SliTaz package receipt.
+
+PACKAGE="ajaxterm"
+VERSION="0.10"
+CATEGORY="network"
+SHORT_DESC="Login terminal for the web."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="PublicDomain LGPL"
+WEB_SITE="https://github.com/antonylesuisse/qweb/tree/master/ajaxterm"
+SOURCE="Ajaxterm"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="http://antony.lesuisse.org/ajaxterm/files/$TARBALL"
+TAGS="web application"
+
+DEPENDS="python"
+SUGGESTED="apache lighttpd-ssl lighttpd-modules"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cook_pick_manpages $src/ajaxterm.1
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/ajaxterm
+	cp -a $src/*.py $src/*.js $src/*.css $src/*.html $fs/usr/share/ajaxterm
+	cp -a $stuff/* $fs/
+	chown -R root:root $fs
+	find $fs -type f -name '*.py' -exec chmod a+x \{\} \;
+}
+
+post_install()
+{
+	grep ^RUN_DAEMONS "$1/etc/rcS.conf" | grep -q "ajaxterm" || sed -i \
+	  's/RUN_DAEMONS="/RUN_DAEMONS="ajaxterm /' "$1/etc/rcS.conf"
+	# Configure lighttpd server
+	if [ -f "$1/usr/lib/lighttpd/mod_proxy.so" ]; then
+			grep -q mod_proxy "$1/etc/lighttpd/lighttpd.conf" ||
+			cat >> "$1/etc/lighttpd/lighttpd.conf" <<EOT
+server.modules += ( "mod_proxy" )
+EOT
+			grep -q ajaxterm "$1/etc/lighttpd/lighttpd.conf" ||
+			cat >> "$1/etc/lighttpd/lighttpd.conf" <<EOT
+proxy.server = ( "/ajaxterm/" =>
+	( ( "host" => "127.0.0.1", "port" => 8022 ) )
+)
+EOT
+			if [ -z "$1" ]; then
+				# Start Web server.
+				/etc/init.d/lighttpd stop
+				/etc/init.d/lighttpd start
+			fi
+	fi
+	# Configure apache server
+	if [ -f "$1/etc/apache/httpd.conf" ]; then
+		if [ ! -f "$1/etc/apache/conf.d/ajaxterm" ]; then
+			cat > "$1/etc/apache/conf.d/ajaxterm" <<EOT
+<IfModule mod_proxy.c>
+    ProxyRequests Off
+    <Proxy *>
+            Order deny,allow
+            Allow from all
+    </Proxy>
+    ProxyPass /ajaxterm/ http://localhost:8022/
+    ProxyPassReverse /ajaxterm/ http://localhost:8022/
+</IfModule>
+EOT
+			if [ -z "$1" ]; then
+				# Start Web server.
+				/etc/init.d/apache stop
+				sleep 2
+				/etc/init.d/apache start
+			fi
+		fi
+	fi
+	[ -z "$1" ] && /etc/init.d/ajaxterm start
+	[ ! -f "$1/usr/lib/lighttpd/mod_proxy.so" -a \
+	  ! -f "$1/etc/apache/httpd.conf" ] &&
+	  [ -z "$quiet" ] && cat <<EOT
+--------
+You should install either lighttpd
+# tazpkg get-install lighttpd-ssl ; tazpkg get-install lighttpd-modules
+or apache
+# tazpkg get-install apache
+and reconfigure
+# tazpkg reconfigure ajaxterm
+--------
+EOT
+}

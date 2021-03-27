@@ -1,0 +1,66 @@
+# SliTaz package receipt.
+
+PACKAGE="firefox-dev"
+VERSION="17.0.11esr"
+CATEGORY="development"
+SHORT_DESC="firefox devel files"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="MPL2"
+WANTED="firefox"
+WEB_SITE="http://www.mozilla.org/"
+
+DEPENDS="alsa-lib sqlite cairo dbus-glib pango atk \
+libgio xorg-libXt xorg-libXinerama \
+xorg-libXcursor xorg-libXcomposite xorg-libXext xorg-libXdamage libxcb \
+xorg-libSM xorg-libICE pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	printf "Installing include files.."
+	mkdir -p $fs/usr/include/$WANTED-$VERSION &&
+	cp -rL $src/obj-firefox/dist/include/* $fs/usr/include/$WANTED-$VERSION
+	status
+
+	printf "Installing libs files.."
+	mkdir -p $fs/usr/lib/$WANTED-devel/sdk/bin/ply &&
+	cp -rL $src/obj-firefox/dist/sdk/bin/*.py \
+		$fs/usr/lib/$WANTED-devel/sdk/bin &&
+	cp -rL $src/obj-firefox/dist/sdk/bin/ply/*.py \
+		$fs/usr/lib/$WANTED-devel/sdk/bin/ply &&
+	mkdir -p $fs/usr/lib/$WANTED-devel/sdk/lib &&
+	cp -rL $src/obj-firefox/dist/sdk/lib/* \
+		$fs/usr/lib/$WANTED-devel/sdk/lib
+	status
+
+#	printf "Installing npapi files.."
+#	mkdir -v $fs/usr/include/$WANTED-$VERSION/npapi &&
+#	cp -a $src/dom/plugins/base/*.h $fs/usr/include/$WANTED-$VERSION/npapi
+#	status
+
+	# /usr/share/idl folder should also be in firefox-dev
+	printf "Installing idl files.."
+	mkdir -p $fs/usr/share/$WANTED-$VERSION/idl &&
+	cp -rL $src/obj-firefox/dist/idl/* $fs/usr/share/$WANTED-$VERSION/idl
+	status
+
+	# copy missing *.pc files
+	printf "Installing pkgconfig files.."
+	mkdir -p $fs/usr/lib/pkgconfig &&
+	cp -a $stuff/*.pc $fs/usr/lib/pkgconfig &&
+	# fix version
+	sed -i "s/VERSION/$VERSION/" $fs/usr/lib/pkgconfig/*
+	status
+}
+
+# Pre and post install commands for Tazpkg.
+post_install()
+{
+	for i in usr/share/idl/firefox- usr/include/firefox- \
+		usr/lib/firefox-devel- ; do
+		for j in $(ls -d "$1"/$i* 2>/dev/null); do
+			[ "${j##*-}" = "$VERSION" ] && continue
+			[ ! -d "$j" ] || rm -rf "$j"
+		done
+	done
+}

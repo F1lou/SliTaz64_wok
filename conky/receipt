@@ -1,0 +1,45 @@
+# SliTaz package receipt.
+
+PACKAGE="conky"
+VERSION="1.9.0"
+CATEGORY="system-tools"
+SHORT_DESC="Simple and very light system monitor."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://conky.sourceforge.net/"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+TAGS="desktop monitoring"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="expat fontconfig freetype glib xorg-libX11 xorg-libXau \
+xorg-libXdamage xorg-libXdmcp xorg-libXext xorg-libXfixes libxcb \
+xorg-libXft xorg-libXrender zlib ncursesw wireless_tools imlib2"
+BUILD_DEPENDS="xorg-libXdamage-dev xorg-libXft-dev fontconfig-dev \
+expat-dev glib glib-dev pkg-config zlib-dev freetype-dev xorg-xextproto \
+xorg-damageproto xorg-fixesproto ncursesw-dev libxcb-dev wireless_tools-dev \
+imlib2-dev lua-dev libtinfo"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export LDFLAGS="$LDFLAGS -ltinfo"
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--enable-wlan \
+		--enable-lua \
+		--enable-imlib2 \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr $fs/etc/conky $fs/etc/xdg/autostart
+	cp -a $install/usr/bin $fs/usr
+	cp -f $install/etc/conky/conky_no_x11.conf $fs/etc/conky
+	cp -a $stuff/conky.conf $fs/etc/conky
+	cp -a $stuff/conky.desktop $fs/etc/xdg/autostart
+}

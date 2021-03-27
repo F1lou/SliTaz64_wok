@@ -1,0 +1,76 @@
+# SliTaz package receipt.
+
+PACKAGE="blender"
+VERSION="2.81a"
+CATEGORY="graphics"
+TAGS="3D creator editor"
+SHORT_DESC="3D content creation suite."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL"
+WEB_SITE="https://www.blender.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="http://download.blender.org/source/$TARBALL"
+
+SUGGESTED="nvidia"
+DEPENDS="desktop-file-utils ffmpeg freeglut freetype gcc83-lib-base glew
+	jpeg lcms libboost-date-time libboost-dev libboost-filesystem 
+	libboost-regex libboost-thread libdrm libglu-mesa libgomp libpng librsvg 
+	libsamplerate libsdl mesa openal openexr openjpeg py3k tiff zlib"
+BUILD_DEPENDS="cmake coreutils-file-format ffmpeg-dev freeglut-dev gcc83 gettext 
+	glew-dev ilmbase-dev lcms-dev libboost-dev libboost-filesystem-dev 
+	libboost-graph-dev libboost-math-dev libboost-regex-dev libboost-thread-dev 
+	libboost-tr1-dev libglu-mesa-dev librsvg-dev libsamplerate-dev 
+	libsdl-dev mesa-dev openal-dev openexr-dev openjpeg-dev pkg-config 
+	py3k-dev py3k-numpy tiff-dev xorg-libXmu yasm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|uname -m|echo i486|' GNUmakefile
+	sed -i -e 's|\(PyModule_GetFilename\)(mod|_PyUnicode_AsString(\1Object(mod)|' \
+		-e 's|(.*_Py_atomic_load_relaxed(.*t)|(PyThreadState_GetDict(|' \
+			$src/source/blender/python/generic/py_capi_utils.c
+#	sed -i 's|char. chars = _PyUnicode_AsString|const &|' \
+#		$src/source/gameengine/Ketsji/KX_FontObject.cpp
+	mkdir -p $WOK/$PACKAGE/source/build
+	cd $WOK/$PACKAGE/source/build
+	PY3K_VER=$(ls -d /usr/include/python3.?m | sed 's|.*python\(.*\)m|\1|')
+
+	export	CC=gcc-83
+	export	CXX=g++-83
+
+	cmake $src						\
+		-DCMAKE_INSTALL_PREFIX:PATH=/usr		\
+		-DCMAKE_BUILD_TYPE:STRING=Release		\
+		-DWITH_INSTALL_PORTABLE:BOOL=OFF		\
+		-DWITH_PYTHON_INSTALL:BOOL=OFF			\
+		-DWITH_OPENCOLLADA:BOOL=OFF			\
+		-DWITH_GAMEENGINE:BOOL=ON			\
+		-DWITH_CYCLES:BOOL=OFF				\
+		-DWITH_PLAYER:BOOL=ON				\
+		-DPYTHON_VERSION:STRING=$PY3K_VER		\
+		-DPYTHON_LIBPATH:STRING=/usr/lib		\
+		-DPYTHON_LIBRARY:STRING=python${PY3K_VER}m	\
+		-DPYTHON_INCLUDE_DIRS:STRING=/usr/include/python${PY3K_VER}m
+	# build
+	make $MAKEFLAGS &&
+	make DESTDIR=$DESTDIR install &&
+	python3 -m compileall "$DESTDIR/usr/share/blender"
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	LOCALE="fr de pt_BR es zh_CN"
+
+	mkdir -p $fs/usr/bin
+	mkdir -p $fs/usr/share/pixmaps
+
+	cp -a $install/usr/share/blender	$fs/usr/share
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/share/applications	$fs/usr/share
+	cp -a $install/usr/share/icons		$fs/usr/share
+	mv -f $fs/usr/bin/blender		$fs/usr/bin/blender-bin
+	cp -a $stuff/blender			$fs/usr/bin
+}

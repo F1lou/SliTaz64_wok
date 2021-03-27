@@ -1,0 +1,56 @@
+# SliTaz package receipt.
+
+PACKAGE="gnutls"
+VERSION="3.6.12"
+CATEGORY="security"
+SHORT_DESC="GNU Transport Layer Security Library."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://www.gnutls.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="https://www.gnupg.org/ftp/gcrypt/gnutls/v${VERSION%.*}/$TARBALL"
+
+SUGGESTED="cacerts"
+DEPENDS="gcc-lib-base libcrypto libgnutls libgpg-error 
+	libtasn1 libunistring ncurses nettle readline zlib"
+BUILD_DEPENDS="gmp-dev libcrypto-dev libgcrypt-dev libgpg-error-dev libtasn1-dev 
+	libunistring-dev ncurses-dev nettle-dev readline-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Handle SliTaz arch.
+case "$SLITAZ_ARCH" in
+	i?86) DEPENDS="$DEPENDS p11-kit" ;;
+esac
+
+# Handle cross compilation.
+case "$ARCH" in
+	i?86) 
+		BUILD_DEPENDS="$BUILD_DEPENDS p11-kit-dev cacerts" ;;
+	arm*) 
+		ARCH_ARGS="--with-libgcrypt-prefix=/cross/$ARCH/sysroot/usr \
+		--without-p11-kit --disable-rpath" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# 3.6.12 unrecognised:
+	#	--with-libgcrypt
+	#	--with-zlib
+
+	./configure		\
+		--disable-guile \
+		--with-default-trust-store-file="/etc/ssl/ca-bundle.crt" \
+		$CONFIGURE_ARGS ${ARCH_ARGS} &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin	$fs/usr
+}

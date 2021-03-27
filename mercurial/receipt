@@ -1,0 +1,67 @@
+# SliTaz package receipt.
+
+PACKAGE="mercurial"
+VERSION="5.3.1"
+CATEGORY="development"
+SHORT_DESC="Revision tools system."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.mercurial-scm.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}release/$TARBALL"
+
+PROVIDE="hg"
+DEPENDS="libssl patch python"
+BUILD_DEPENDS="openssl-dev patch python-dev"
+SUGGESTED="cacerts"
+
+CONFIG_FILES="/etc/mercurial/hgweb.config"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# Cross compilation hack to avoid using compiler which build python 
+	# itself.
+	case "$ARCH" in
+		arm*)
+			mv /usr/bin/i486-slitaz-linux-gcc /tmp &&
+			ln -s /cross/${ARCH}/tools/bin/${HOST_SYSTEM}-gcc \
+				/usr/bin/i486-slitaz-linux-gcc ;;
+	esac &&
+
+	python setup.py install		\
+		--root="$DESTDIR"	\
+		--optimize=1 &&
+	mkdir -p $DESTDIR/usr/share/examples/mercurial &&
+	cp -a $src/hgweb.cgi $DESTDIR/usr/share/examples/mercurial &&
+
+	case "$ARCH" in
+		arm*) 
+			rm /usr/bin/i486-slitaz-linux-gcc &&
+			mv /tmp/i486-slitaz-linux-gcc /usr/bin ;;
+	esac
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/examples/mercurial
+
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib $fs/usr
+
+	# Examples
+	cp -a $stuff/hgwebdir.cgi \
+		$fs/usr/share/examples/mercurial
+	cp -a $stuff/lighttpd-hg-vhost.conf \
+		$fs/usr/share/examples/mercurial
+
+	# Configuration file for hgweb
+	mkdir -p $fs/etc/mercurial
+	cp -a $stuff/hgweb.config $fs/etc/mercurial
+	
+	chown -R root.root $fs
+}

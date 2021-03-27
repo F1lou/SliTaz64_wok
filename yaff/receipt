@@ -1,0 +1,24 @@
+# SliTaz package receipt
+
+PACKAGE="yaff"
+VERSION="258"
+CATEGORY="utilities"
+SHORT_DESC="Mozilla Firefox multi-launcher"
+MAINTAINER="postmaster@baba0rum.com"
+LICENSE="BSD"
+SOURCE="slitaz-dev-tools"
+TARBALL="$SOURCE-$VERSION.tar.bz2"
+WGET_URL="http://hg.slitaz.org/slitaz-dev-tools/archive/$VERSION.tar.bz2"
+WEB_SITE="http://www.slitaz.org/"
+
+DEPENDS="gtkdialog"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/pixmaps $fs/usr/bin
+	cp -a $src/baba-scripts/yaff $fs/usr/bin
+	cp -a $src/baba-scripts/mozicon24.png $src/baba-scripts/yaff.png \
+	      $fs/usr/share/pixmaps
+	chown -R root.root $fs
+}

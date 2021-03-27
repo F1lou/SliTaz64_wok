@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="i2c-tools-dev"
+VERSION="4.1"
+CATEGORY="development"
+SHORT_DESC="I2C tools - development files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://i2c.wiki.kernel.org/index.php/I2C_Tools"
+
+WANTED="i2c-tools"
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/include $fs/usr
+}

@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="audit"
+VERSION="2.8.5"
+CATEGORY="misc"
+SHORT_DESC="System call auditing."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://people.redhat.com/sgrubb/audit/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS="openldap-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--prefix=/usr		\
+		--sysconfdir=/etc	\
+		--mandir=/usr/share/man	\
+		--localstatedir=/var	\
+		--sbindir=/sbin		\
+		--with-libcap-ng=no	\
+		--without-python	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/sbin		$fs/
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+	cp -a $install/etc		$fs/
+	chown -R root.root		$fs/etc
+}

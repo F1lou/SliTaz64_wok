@@ -1,0 +1,105 @@
+# SliTaz package receipt.
+
+PACKAGE="busybox-boot"
+VERSION="1.31.1"
+CATEGORY="base-system"
+SHORT_DESC="Many common UNIX utilities for core-5in1/boot flavor."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://www.busybox.net/"
+CONFIG_FILES=""
+
+WANTED="busybox"
+DEPENDS="linux syslinux"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/boot/bin $fs/usr/share/boot/dev
+	jslinux=false
+	CHOICE=static
+	for i in uclibc musl ; do # diet's busybox umount crash
+		[ -x $src/busybox-$i ] || continue
+		[ -x $src/busybox-$CHOICE ] &&
+			[ $(stat -c %s $src/busybox-$i) -ge \
+			  $(stat -c %s $src/busybox-$CHOICE) ] &&
+			continue
+		CHOICE=$i
+	done
+	cp -a $src/busybox-$CHOICE $fs/usr/share/boot/bin/busybox
+	chmod 4755 $fs/usr/share/boot/bin/busybox
+	mknod -m 660 $fs/usr/share/boot/dev/console c 5 1
+	mknod -m 771 $fs/usr/share/boot/dev/null c 1 3
+	mknod -m 660 $fs/usr/share/boot/dev/tty c 5 0
+	mknod -m 660 $fs/usr/share/boot/dev/tty1 c 4 1
+	if $jslinux; then
+		mknod -m 644 $fs/usr/share/boot/dev/clipboard c 10 231
+		mknod -m 660 $fs/usr/share/boot/dev/ttyS0 c 4 64
+	fi
+	cat > $fs/usr/share/boot/init <<EOT
+#!/bin/busybox sh
+
+export PATH=/bin
+export HOME=/
+export TERM=vt100
+
+if [ -d /etc ]; then
+	[ -n "\$domain" ] && echo search \$domain > /etc/resolv.conf
+	for i in \$dns ; do echo nameserver \$i; done >> /etc/resolv.conf
+	[ -n "\$broadcast" ] && BROADCAST="broadcast \$broadcast"
+	[ -n "\$subnet" ] && NETMASK="netmask \$subnet"
+	if ifconfig \$interface \${ip:-0.0.0.0} \$BROADCAST \$NETMASK ; then
+		while route del default gw 0.0.0.0 dev \$interface ; do : ; done
+		for i in \$router ; do route add default gw \$i dev \$interface; done
+	fi
+	exit
+fi
+
+mkdir /tmp /mnt /proc /etc
+mount -t proc none /proc
+mount -t devtmpfs none /dev
+
+arg()
+{
+root="\$(sed "s/^/ /;s/\$/ /;/ \$1=/!d;s/.* \$1=\\([^ ]*\\).*/\\1/" </proc/cmdline)"
+[ -n "\$root" ]
+}
+
+arg init
+init=\${root:-/sbin/init}
+[ -n "\$(sed 's/\$/ /;s/^/ /;/ ro /!d' /proc/cmdline)" ] && ro="-o ro"
+[ -n "\$(sed 's/\$/ /;s/^/ /;/ rw /!d' /proc/cmdline)" ] && ro="-o rw"
+arg root && root="\$(echo \$root | sed 's|/|\\\\/|g')" &&
+	root="\$(blkid | sed "s/\"//g;/\$root/!d;s/:.*//;q")" &&
+	[ -n "\$root" ] && mount \$ro \$root /mnt
+arg loopfs && losetup /dev/loop0 /mnt/\$root && mount /dev/loop0 /mnt
+arg subroot && cp /bin/busybox /mnt/\$root/dev/shm &&
+	chroot="\$root/dev/shm/busybox chroot \$root"
+[ -x /mnt/\$root/\$init ] && umount /dev && umount /proc && exec switch_root mnt \$chroot \$init
+
+[ -d /proc/bus/usb ] && mount -t usbfs usbfs /proc/bus/usb
+while read type dir ; do
+	grep -qs \$type /proc/filesystems || continue
+	[ -d "\$dir" ] || mkdir \$dir
+	mount -t \$type none \$dir
+done <<EOM
+sysfs		/sys
+devpts		/dev/pts
+EOM
+
+TTY=\$(tty 2>/dev/null)
+TTY=\${TTY:-/dev/tty1}
+EOT
+	$jslinux && echo 'stty -F $TTY rows 30 2>/dev/null' >> $fs/usr/share/boot/init
+	cat >> $fs/usr/share/boot/init <<EOT
+
+udhcpc -b -s /init
+while true; do
+	busybox | sed '/Current/,\$!d'
+	setsid sh -c "exec sh <\$TTY >\$TTY 2>&1"
+done
+EOT
+	chmod +x $fs/usr/share/boot/init
+	( cd $fs/usr/share/boot ; find bin dev init | cpio -o -H newc > initrd )
+	rm -rf $fs/usr/share/boot/bin $fs/usr/share/boot/dev $fs/usr/share/boot/init
+}

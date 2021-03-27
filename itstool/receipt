@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="itstool"
+VERSION="2.0.6"
+CATEGORY="utilities"
+SHORT_DESC="ITS-based XML translation tool."
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL3"
+WEB_SITE="http://itstool.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="http://files.itstool.org/$PACKAGE/$TARBALL"
+
+DEPENDS="libxml2-python python"
+BUILD_DEPENDS="libxml2-python"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/share/$PACKAGE	$fs/usr/share
+}

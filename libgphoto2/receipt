@@ -1,0 +1,91 @@
+# SliTaz package receipt.
+
+PACKAGE="libgphoto2"
+VERSION="2.5.24"
+CATEGORY="graphics"
+TAGS="camera photo"
+SHORT_DESC="Core library of gphoto2 to access photos from digital camera."
+MAINTAINER="jozee@slitaz.org"
+LICENSE="LGPL2.1"
+WEB_SITE="http://www.gphoto.org" 
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="$SF_MIRROR/gphoto/$TARBALL"
+
+DEPENDS="hal jpeg libexif libltdl libusb libusb-compat"
+BUILD_DEPENDS="jpeg jpeg-dev libexif libexif-dev libtool \
+	libusb libusb-compat libusb-compat-dev libusb-dev pkg-config"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure				\
+		--prefix=/usr			\
+		udevscriptdir=/lib/udev		\
+		--with-camlibs=everything	\
+		--with-exif			\
+		--disable-static		\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p \
+		$fs/usr/lib/$PACKAGE \
+		$fs/usr/share \
+		$fs/lib \
+		$fs/usr/share/hal/fdi/information/20thirdparty \
+		$fs/etc/udev/rules.d
+
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/lib/$PACKAGE		$fs/usr/lib
+	cp -a $install/usr/lib/${PACKAGE}_port	$fs/usr/lib
+	cp -a $install/usr/lib/*so*		$fs/usr/lib
+	cp -a $install/usr/share/$PACKAGE	$fs/usr/share
+	cp -a $install/lib/udev			$fs/lib
+
+	# remove all archive files
+	find $fs/usr/lib -name "*.*a" -exec rm -f {} \; 2> /dev/null
+
+	# fix permissions
+	chmod +x				$fs/lib/udev/check*
+	chmod +x				$fs/usr/bin/gphoto2*
+}
+
+post_install()
+{
+	HAL_FDI="$1/usr/share/hal/fdi/information/20thirdparty/10-camera-libgphoto2.fdi"
+	UDEV_RULE="$1/etc/udev/rules.d/70-libgphoto2.rules"
+	CAM_LIST="$1/usr/lib/libgphoto2/print-camera-list"
+
+	# Let print-camera-list find libgphoto2.so
+	export LD_LIBRARY_PATH="$1/usr/lib"
+	# Let libgphoto2 find its camera-modules before running print-camera-list
+	export CAMLIBS="$1/usr/lib/libgphoto2/$VERSION"
+
+	# HAL file
+	"$CAM_LIST" hal-fdi > "$HAL_FDI" || return 1
+
+	#udev rule
+	"$CAM_LIST" udev-rules version 0.98 group camera mode 0660 > "$UDEV_RULE" || return 1
+
+	tazpkg reconfigure udev --root="$1"
+
+	# add group camera
+	if ! grep -q camera "$1/etc/group"
+	  then
+		chroot "$1/" addgroup -g 97 camera
+	fi
+
+	echo
+	echo "Don't forget to add your user id to group camera to use libgphoto2:"
+	echo "    # addgroup <user id> camera"
+}
+
+post_remove()
+{
+	chroot "$1/" delgroup camera
+}

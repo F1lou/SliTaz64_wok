@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="elfutils"
+VERSION="0.161"
+CATEGORY="development"
+SHORT_DESC="ELF object file access library."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://fedorahosted.org/elfutils/"
+WGET_URL="https://fedorahosted.org/releases/e/l/$PACKAGE/$VERSION/$TARBALL"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="glibc-base"
+BUILD_DEPENDS="wget bzip2-dev liblzma-dev"
+
+# Handle multiarch compilation
+case "$ARCH" in
+	arm) BUILD_DEPENDS="bzip2-dev xz-dev" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	CFLAGS="$CFLAGS -Wno-error"
+	./configure \
+	--enable-thread-safety \
+	$CONFIGURE_ARGS &&
+	touch src/.deps/none_ld.Po &&
+	make -s && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/bin
+	for i in elfcmp findtextrel unstrip; do
+		cp -a $install/usr/bin/$i $fs/usr/bin
+	done
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/elfutils $fs/usr/lib
+}

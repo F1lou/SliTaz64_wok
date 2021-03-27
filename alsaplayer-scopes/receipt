@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="alsaplayer-scopes"
+VERSION="0.99.81"
+CATEGORY="multimedia"
+SHORT_DESC="Alsa GTK+ PCM player scopes."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WANTED="alsaplayer"
+WEB_SITE="http://alsaplayer.sourceforge.net/scopes.php"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="alsaplayer"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/alsaplayer
+	cp -a $install/usr/lib/alsaplayer/scopes2 \
+		$fs/usr/lib/alsaplayer
+}
+

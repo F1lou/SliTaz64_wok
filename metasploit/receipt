@@ -1,0 +1,26 @@
+# SliTaz package receipt.
+
+PACKAGE="metasploit"
+VERSION="5.0.91"
+CATEGORY="network"
+SHORT_DESC="An advanced open-source platform for developing, testing, and using exploit code."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="BSD"
+WEB_SITE="https://www.metasploit.com/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/rapid7/$PACKAGE-framework/archive/$VERSION.tar.gz"
+
+DEPENDS="libpcap ruby"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/$PACKAGE
+	mkdir -p $fs/etc/profile.d
+
+	cp -a $src/*	$fs/usr/share/$PACKAGE
+	echo "export PATH=$PATH:/usr/share/$PACKAGE" > \
+			$fs/etc/profile.d/$PACKAGE.sh
+	chmod 755	$fs/etc/profile.d/$PACKAGE.sh
+}

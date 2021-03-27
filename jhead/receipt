@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="jhead"
+VERSION="3.04"
+CATEGORY="graphics"
+SHORT_DESC="Exif Jpeg header manipulation tool."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="PublicDomain"
+WEB_SITE="http://www.sentex.net/~mwandel/jhead/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# because dpkg-buildflags is unknown:
+	sed -i 's|CPPFLAGS|#CPPFLAGS|; s|CFLAGS|#CFLAGS|; s|LDFLAGS|#LDFLAGS|' \
+		makefile
+
+	make
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $src/jhead	$fs/usr/bin
+}

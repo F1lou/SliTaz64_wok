@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="gucharmap3-i18n"
+VERSION="3.18.2"
+CATEGORY="localization"
+SHORT_DESC="Language files for GNOME Character Map (GTK+3)"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL3"
+WEB_SITE="https://wiki.gnome.org/action/show/Apps/Gucharmap"
+
+WANTED="gucharmap3"
+DEPENDS="gucharmap3"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/locale
+	cp -a $install/usr/share/locale/* $fs/usr/share/locale
+}

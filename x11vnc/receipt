@@ -1,0 +1,51 @@
+# SliTaz package receipt.
+
+PACKAGE="x11vnc"
+VERSION="0.9.16"
+CATEGORY="network"
+TAGS="vnc server"
+SHORT_DESC="VNC server for real X displays."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://www.karlrunge.com/x11vnc/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/LibVNC/$PACKAGE/archive/$VERSION.tar.gz"
+
+DEPENDS="jpeg libvncserver openssl xorg-libXdamage xorg-libXtst zlib"
+BUILD_DEPENDS="libtool jpeg-dev libvncserver-dev openssl-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./autogen.sh		\
+		--prefix=/usr	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make -j1 DESTDIR=$DESTDIR install &&
+	echo rm -rf $DESTDIR/usr/share/applications
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	mkdir -p $fs/etc/init.d
+
+	cp -a $install/usr/bin/x11vnc	$fs/usr/bin
+	cp -a $stuff/x11vnc		$fs/etc/init.d
+}
+
+# Post install commands for Tazpkg.
+post_install()
+{
+	grep -q "^X11VNC" "$1/etc/daemons.conf" || cat >> "$1/etc/daemons.conf" <<EOT
+# VNC server options.
+X11VNC_OPTIONS="-rfbauth /etc/vnc.secret -auth /var/run/slim.auth -allow 10.,192.168.,127.0.0.1 -forever -loop -tightfilexfer -permitfiletransfer -display :0"
+
+EOT
+	[ -f "$1/etc/vnc.secret" ] || 
+	chroot "$1/" x11vnc -storepasswd root /etc/vnc.secret
+}

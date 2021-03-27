@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="python-mako"
+VERSION="1.1.2"
+CATEGORY="development"
+TAGS="python"
+SHORT_DESC="Fast template library."
+MAINTAINER="taziden@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://www.makotemplates.org/"
+
+SOURCE="Mako"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://files.pythonhosted.org/packages/source/M/$SOURCE/$TARBALL"
+
+DEPENDS="python"
+BUILD_DEPENDS="python python-dev python-setuptools"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr	$fs
+}

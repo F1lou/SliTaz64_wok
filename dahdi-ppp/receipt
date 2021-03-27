@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="dahdi-ppp"
+VERSION="2.11.1"
+CATEGORY="network"
+SHORT_DESC="Digium Asterisk Hardware Device Interface PPP plugin."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.asterisk.org/"
+WANTED="dahdi-tools"
+
+DEPENDS="ppp"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/pppd $fs/usr/lib
+}

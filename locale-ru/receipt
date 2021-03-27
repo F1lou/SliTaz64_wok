@@ -1,0 +1,34 @@
+# SliTaz package receipt
+
+PACKAGE="locale-ru"
+VERSION="5.0"
+CATEGORY="localization"
+SHORT_DESC="Russian locale pack"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="http://www.slitaz.org/"
+HOST_ARCH="x86_64 i486 arm"
+
+WANTED="glibc slitaz-i18n xorg-libX11 flag-icons tzdata kbd"
+DEPENDS="glibc-base"
+
+LOCALE="ru"
+LOCALE_DEPENDS=""
+KBD="ru"
+KB_FLAGS="US:us RU:ru UA:ua"
+GCONV="ISO8859-5 KOI8-R KOI8-U IBM866 CP1251"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	. $WOK/slitaz-i18n/stuff/locale-pack.functions
+	. $WOK/slitaz-i18n/stuff/locale-pack.conf
+	get_locale
+}
+
+# Back to C if it's the last used locale.
+post_remove()
+{
+	grep -qs =$LOCALE /etc/locale.conf &&
+	echo -e "LANG=C\nLC_ALL=C" > /etc/locale.conf
+}

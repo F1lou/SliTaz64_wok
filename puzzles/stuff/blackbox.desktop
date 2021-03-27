@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=blackbox
+Name[zh_CN]=黑盒
+Exec=blackbox
+Icon=blackbox
+Terminal=false
+Categories=Application;Game;

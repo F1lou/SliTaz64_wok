@@ -1,0 +1,16 @@
+[Desktop Entry]
+Type=Application
+Name=Bc Calculator
+Name[fr]=Bc Calculatrice
+Name[pt]=Calculadora BC
+Name[pt_BR]=Calculadora BC
+Name[ru]=Калькулятор Bc
+Name[zh_CN]=Bc计算器
+Comment=Texte mode Calculator
+Comment[fr]=Calculatrice en mode texte
+Comment[ru]=Консольный калькулятор
+Comment[zh_CN]=命令行模式的计算器
+Exec=bc
+Terminal=true
+Icon=accessories-calculator
+Categories=Utility;Calculator;ConsoleOnly;

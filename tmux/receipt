@@ -1,0 +1,46 @@
+# SliTaz package receipt.
+
+PACKAGE="tmux"
+VERSION="3.0a"
+CATEGORY="utilities"
+SHORT_DESC="Terminal multiplexer."
+MAINTAINER="paul@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://github.com/tmux/tmux/wiki"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/$PACKAGE/$PACKAGE/releases/download/$VERSION/$TARBALL"
+
+DEPENDS="libevent ncursesw"
+BUILD_DEPENDS="libevent-dev ncursesw-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export LDFLAGS="$LDFLAGS -ltinfo"
+
+	./configure $CONFIGURE_ARGS &&
+	make PREFIX=/usr &&
+	make PREFIX=/usr install &&
+	install -d m755				"$DESTDIR/usr/share/tmux/" &&
+	install -m 644 example_tmux.conf	$DESTDIR/usr/share/tmux/
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/terminfo/s
+
+	cp -a $install/usr/bin		$fs/usr
+
+	# copy sample configuration
+	cp -a $install/usr/share/tmux	$fs/usr/share
+
+	# Get screen terminfo data
+	tazpkg get-install ncursesw-extra --root=$src/ncursesw-extra > /dev/null 2>&1
+	cp -a $src/ncursesw-extra/usr/share/terminfo/s/screen \
+					$fs/usr/share/terminfo/s
+	rm -r $src/ncursesw-extra
+}

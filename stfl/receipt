@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="stfl"
+VERSION="0.24"
+CATEGORY="base-system"
+SHORT_DESC="Structured Terminal Forms Language/Library."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="LGPL3"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://www.clifford.at/stfl/"
+WGET_URL="$WEB_SITE$TARBALL"
+
+BUILD_DEPENDS="ncursesw-dev swig python-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|/usr/local|/usr|' Makefile.cfg
+	sed -i 's|ncursesw/ncurses.h|ncurses.h|' stfl_internals.h
+	sed -i 's|^include Makefile.deps|-&|' Makefile
+	make -j 1 &&
+	make -j 1 DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	lib=$(cd $fs/usr/lib ; echo *.so.*.*)
+	[ -e $fs/usr/lib/${lib%.*} ] ||
+	ln -s $lib $fs/usr/lib/${lib%.*}
+}

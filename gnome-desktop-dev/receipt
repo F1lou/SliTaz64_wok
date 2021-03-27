@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="gnome-desktop-dev"
+VERSION="2.28.0"
+CATEGORY="development"
+SHORT_DESC="GNOME Desktop development files"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+WANTED="gnome-desktop"
+WEB_SITE="https://www.gnome.org"
+
+DEPENDS="gnome-desktop pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib/*a $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+}

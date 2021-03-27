@@ -1,0 +1,25 @@
+# SliTaz package receipt.
+
+PACKAGE="get-palemoon"
+VERSION="lastest"	# updated for 28.2.2
+CATEGORY="non-free"
+SHORT_DESC="Browser based on Firefox that's optimised for performance. Official sse2 version."
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL"
+WEB_SITE="http://www.palemoon.org/"
+TAGS="browser"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $stuff/$PACKAGE $fs/usr/bin
+}
+
+post_install()
+{
+	echo 'Running get-palemoon command...'
+	chroot "$1/" get-palemoon
+	echo 'For media playback try to install ffmpeg package'
+}
+

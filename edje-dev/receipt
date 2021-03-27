@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="edje-dev"
+VERSION="1.7.10"
+CATEGORY="development"
+SHORT_DESC="EFL Abstract GUI layout and animation object library - Devel files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2 BSD"
+WANTED="edje"
+WEB_SITE="https://www.enlightenment.org/"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="embryo-dev ecore-dev lua-dev pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+}

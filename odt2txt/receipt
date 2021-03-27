@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="odt2txt"
+VERSION="0.5"
+CATEGORY="utilities"
+TAGS="office"
+SHORT_DESC="A simple converter from OpenDocument Text to plain text."
+MAINTAINER="milka@konstelacioj.info"
+LICENSE="GPL2"
+WEB_SITE="https://github.com/dstosberg/odt2txt"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/archive/v$VERSION.tar.gz"
+
+#SUGGESTED="odfread"
+DEPENDS="zlib"
+BUILD_DEPENDS="zlib-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make
+	mkdir -p $DESTDIR/usr/bin
+	mv $PACKAGE $DESTDIR/usr/bin/
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $install/usr/bin $fs/usr
+}

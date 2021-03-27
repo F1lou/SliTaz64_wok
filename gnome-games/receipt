@@ -1,0 +1,55 @@
+# SliTaz package receipt.
+
+PACKAGE="gnome-games"
+VERSION="2.32.1"
+CATEGORY="games"
+SHORT_DESC="A set of of simple games from Gnome."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://www.gnome.org/"
+WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION%.*}/$TARBALL"
+
+# Games: aisleriot need guile. glchess use pygtk/mesa and is splitted
+DEPENDS="clutter-gtk GConf guile libcanberra librsvg seed xorg-libXi"
+BUILD_DEPENDS="GConf-dev librsvg-dev libcroco-dev mesa-dev clutter-dev \
+clutter-gtk-dev python-dev pygtk-dev libcanberra-dev gnome-doc-utils-dev \
+libvorbis-dev libogg-dev util-linux-uuid-dev seed-dev libtool guile-dev \
+libffi-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--sysconfdir=/etc \
+		--bindir=/usr/games \
+		--localstatedir=/var \
+		--disable-scrollkeeper \
+		--enable-introspection \
+		--enable-sound \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share/$PACKAGE-common
+
+	cp -a $install/usr/games $fs/usr
+	cp -a $install/usr/lib/$PACKAGE $fs/usr/lib
+	cp -a $install/usr/lib/girepository-1.0 $fs/usr/lib
+	cp -a $install/usr/share/$PACKAGE $fs/usr/share
+	cp -a $install/usr/share/$PACKAGE-common/cards \
+		$fs/usr/share/$PACKAGE-common
+	cp -a $install/usr/share/gir-1.0 $fs/usr/share
+
+	# Remove splitted games files
+	rm -f $fs/usr/games/glchess
+	rm -f $fs/usr/games/gnome-sudoku
+	rm -f $fs/usr/share/*/glchess.desktop
+	rm -f $fs/usr/share/*/gnome-sudoku.desktop
+
+	cp -a $install/var $fs
+	chmod a+w $fs/var/games/*
+}

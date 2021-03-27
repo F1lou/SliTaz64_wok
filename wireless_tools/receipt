@@ -1,0 +1,47 @@
+# SliTaz package receipt.
+
+PACKAGE="wireless_tools"
+VERSION="29"
+CATEGORY="system-tools"
+SHORT_DESC="Wireless Tools for Linux"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+SUGGESTED="linux-wireless"
+TARBALL="${PACKAGE}.${VERSION}.tar.gz"
+WEB_SITE="https://hewlettpackard.github.io/wireless-tools/Tools.html"
+WGET_URL="http://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux/$TARBALL"
+HOST_ARCH="x86_64 i486 arm"
+
+TAGS="wireless wifi network"
+DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|PREFIX)/man|PREFIX)/share/man|' Makefile
+	make CC=${HOST_SYSTEM}-gcc PREFIX=$DESTDIR/usr
+	make PREFIX=$DESTDIR/usr install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/bin
+	cp -a $install/usr/sbin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}
+
+post_install()
+{
+	[ -z "$quiet" ] && cat <<EOT
+You may need to install linux-wireless to have wireless network drivers.
+Or install tazndis to use Windows drivers.
+EOT
+	true
+}
+
+# Rules to clean extras dirs or files
+clean_wok()
+{
+	rm -rf $WOK/$PACKAGE/${PACKAGE}.${VERSION}
+}

@@ -1,0 +1,25 @@
+# SliTaz package receipt.
+
+PACKAGE="sqlite-dev"
+_realver="3320100"
+VERSION="$(printf "%d.%d.%d" ${_realver:0:1} ${_realver:1:2} ${_realver:3:2})"
+CATEGORY="development"
+SHORT_DESC="Small SQL database engine - development files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="PublicDomain"
+WEB_SITE="https://www.sqlite.org/index.html"
+
+DEPENDS="pkg-config sqlite"
+WANTED="sqlite"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/lib/*.*a		$fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig	$fs/usr/lib
+	cp -a $install/usr/include		$fs/usr
+}

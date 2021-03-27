@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="util-linux-mount"
+VERSION="2.35.1"
+CATEGORY="base-system"
+SHORT_DESC="The mount utilities from Util Linux."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://en.wikipedia.org/wiki/Util-linux"
+
+DEPENDS="glibc-base udev util-linux-blkid util-linux-smartcols util-linux-uuid"
+WANTED="util-linux"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cook_copy_files findmnt mount libmount.so* mountpoint umount
+	rm -r $fs/usr/share
+}

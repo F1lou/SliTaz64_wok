@@ -1,0 +1,41 @@
+# SliTaz package receipt.
+
+PACKAGE="nmap"
+VERSION="7.80"
+CATEGORY="security"
+TAGS="network"
+SHORT_DESC="The Network Mapper."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://nmap.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="${WEB_SITE}dist/$TARBALL"
+
+DEPENDS="gcc-lib-base libpcap openssl pcre"
+BUILD_DEPENDS="libpcap-dev openssl-dev pcre-dev python-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+#	patch -p1 < $stuff/$PACKAGE-$VERSION-nolua.patch
+
+	./configure				\
+		--cache-file=$PWD/config.cache	\
+	 	--without-liblua		\
+		$CONFIGURE_ARGS &&
+	make 2>&1 | grep -v makefile.dep &&
+	make DESTDIR=$DESTDIR install-nmap
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/share/nmap	$fs/usr/share
+	cp -a $src/ncat/docs/ncat.1	$install/usr/share/man/man1
+}

@@ -1,0 +1,49 @@
+# SliTaz package receipt.
+
+PACKAGE="scummvm"
+VERSION="2.1.2"
+CATEGORY="games"
+SHORT_DESC="A 'virtual machine' for several classic graphical point-and-click adventure games."
+MAINTAINER="admin@trixarian.net"
+LICENSE="GPL2"
+WEB_SITE="https://www.scummvm.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="${WEB_SITE}frs/$PACKAGE/$VERSION/$TARBALL"
+
+DEPENDS="alsa-lib flac gcc-lib-base libmad libmpeg2 libogg libsdl2 libvorbis zlib"
+BUILD_DEPENDS="alsa-lib-dev flac-dev libmad-dev libmpeg2-dev libogg-dev \
+	libsdl2-dev libvorbis-dev zlib-dev"
+
+CROSS="bug: Doesn't support --build."
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure				\
+		--prefix=/usr			\
+		--datadir=/usr/games/scummvm	\
+		--backend=sdl			\
+		--disable-debug			\
+		--with-flac-prefix=/usr		\
+		--disable-fluidsynth		\
+		--host=$HOST_SYSTEM &&
+	make &&
+	make install &&
+	{
+	mkdir -p $DESTDIR/usr/share/applications
+	cp -a dists/scummvm.desktop	$DESTDIR/usr/share/applications		
+	}
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/applications
+	mkdir -p $fs/usr/games
+
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/games/scummvm	$fs/usr/games
+	cp -a $install/usr/share/applications/scummvm.desktop \
+						$fs/usr/share/applications
+}

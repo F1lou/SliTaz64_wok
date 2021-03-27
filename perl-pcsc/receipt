@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-pcsc"
+VERSION="1.4.14"
+CATEGORY="system-tools"
+SHORT_DESC="Perl Module for PC/SC SmartCard access."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL"
+WEB_SITE="https://metacpan.org/release/pcsc-perl"
+
+SOURCE="pcsc-perl"
+TARBALL="$SOURCE-$VERSION.tar.bz2"
+WGET_URL="https://cpan.metacpan.org/authors/id/W/WH/WHOM/$TARBALL"
+
+DEPENDS="pcsc-lite perl"
+BUILD_DEPENDS="pcsc-lite-dev perl"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	perl Makefile.PL &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib	$fs/usr
+}

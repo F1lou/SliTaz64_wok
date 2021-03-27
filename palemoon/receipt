@@ -1,0 +1,80 @@
+# SliTaz package receipt.
+
+PACKAGE="palemoon"
+VERSION="26.5.0"
+CATEGORY="network"
+LICENSE="MPL2"
+SHORT_DESC="Browser based on Firefox that's optimised for performance"
+WEB_SITE="http://palemoon.org"
+MAINTAINER="psychomaniak@xakep.ru"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/MoonchildProductions/Pale-Moon/archive/${VERSION}_Release.tar.gz"
+TAGS="browser web-browser"
+PROVIDE="browser-html5"
+
+DEPENDS="gtk+"
+BUILD_DEPENDS="autoconf213 gtk+-dev yasm zip unzip iw dbus-dev dbus-glib-dev \
+iw libpng-dev gstreamer gstreamer-dev gst-plugins-base-dev gst-plugins-base \
+libvpx-dev mesa-dev python-setuptools virtualenv zlib-dev bzip2-dev python-dev \
+pixman pixman-dev libffi libffi-dev" # sqlite sqlite-dev libevent libevent-dev
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|\(.\)uname -m|\1echo i686|' \
+		modules/freetype2/builds/unix/config.guess \
+		modules/freetype2/builds/unix/configure \
+		build/unix/mozconfig.linux32 \
+		build/autoconf/config.guess \
+		memory/jemalloc/src/config.guess \
+		memory/jemalloc/src/configure \
+		configure.in \
+		security/nss/coreconf/arch.mk \
+		security/nss/tests/run_niscc.sh \
+		nsprpub/build/autoconf/config.guess \
+		nsprpub/configure.in \
+		nsprpub/configure \
+		media/webrtc/trunk/build/install-build-deps.sh \
+		media/webrtc/trunk/build/common.gypi \
+		media/webrtc/trunk/build/install-chroot.sh \
+		media/webrtc/trunk/build/android/envsetup_functions.sh \
+		intl/icu/source/config.guess \
+		intl/icu/source/configure \
+		js/src/build/autoconf/config.guess \
+		js/src/ctypes/libffi/config.guess \
+		js/src/ctypes/libffi/configure \
+		ipc/chromium/src/third_party/libevent/config.guess \
+		ipc/chromium/src/third_party/libevent/configure
+	find -type f | grep duckduckgo | xargs \
+		sed -i 's|name="t" value="palemoon"|name="t" value="slitaz"|'
+	cp $stuff/mozconfig $src
+	chmod -R +x build/autoconf/* python/*
+	find . -name '*.sh' -exec chmod +x {} \;
+	export MOZBUILD_STATE_PATH="$src/mozbuild"
+	export MOZCONFIG="$src/mozconfig"
+	export CPPFLAGS="$CPPFLAGS -O2"
+	export MAKEFLAGS="$MAKEFLAGS"
+	python2 mach configure
+	python2 mach build || echo "Next =>"
+	python2 mach build
+	cd $src/obj-i686-pc-linux-gnu
+	( make package | egrep -v 'error|ERROR' ) > ./instLOG 2>&1
+	cd dist
+	for i in bin lib share/applications;
+	 do install -d $DESTDIR/usr/$i; done
+	cp -a $PACKAGE $DESTDIR/usr/lib/$PACKAGE
+	cp -a $src/browser/branding/official/$PACKAGE.desktop \
+		$install/usr/share/applications
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+	mkdir -p $fs/usr/share/pixmaps
+	rm -f  /usr/lib/$PACKAGE/$PACKAGE-bin
+	ln -sf /usr/lib/$PACKAGE/$PACKAGE $fs/usr/bin
+	ln -sf /usr/lib/$PACKAGE/browser/chrome/icons/default/default48.png \
+		$fs/usr/share/pixmaps/palemoon.png
+	ln -s palemoon $fs/usr/bin/browser-html5
+}

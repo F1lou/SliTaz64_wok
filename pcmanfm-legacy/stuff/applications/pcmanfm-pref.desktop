@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Desktop Wallpaper
+Name[fr]=Fond d'écran
+Name[ru]=Фон рабочего стола
+Name[zh_CN]=桌面壁纸
+Exec=pcmanfm --show-pref=3
+Icon=preferences-desktop-wallpaper
+Categories=Settings;DesktopSettings;

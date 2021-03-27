@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="gnome-js-common"
+VERSION="0.1.2"
+CATEGORY="system-tools"
+SHORT_DESC="Gnome JS common files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://www.gnome.org/"
+WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION%.*}/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS="intltool"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib $fs/usr
+}

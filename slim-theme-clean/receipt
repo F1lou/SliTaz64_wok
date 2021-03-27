@@ -1,0 +1,46 @@
+# SliTaz package receipt.
+
+PACKAGE="slim-theme-clean"
+VERSION="20150602"
+CATEGORY="customization"
+SHORT_DESC="Clean - theme for SLiM"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="PublicDomain"
+WEB_SITE="https://web.archive.org/web/20151101011855/http://desktopstylish.tumblr.com/post/120566561330/clean-slim-theme-download"
+TAGS="hackdorte slim"
+COOKOPTS="!pngquant"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="https://drive.google.com/uc?export=download&id=0B4Re2DvqOMqlczlac2tXa01wbTQ"
+
+DEPENDS="slim"
+BUILD_DEPENDS="imagemagick"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	theme=$install/usr/share/slim/themes/Clean
+	mkdir -p $theme
+	cp -a $src/* $theme
+	cd $theme
+	convert background.png background.jpg
+	rm background.png
+
+	chown -R root:root $install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+}
+
+post_install()
+{
+	chroot "$1/" slim-theme -s Clean
+}
+
+pre_remove()
+{
+	chroot "$1/" slim-theme -f Clean
+}

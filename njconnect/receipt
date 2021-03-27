@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="njconnect"
+VERSION="1.6"
+CATEGORY="multimedia"
+SHORT_DESC="njconnect - Jack connection manager (ncursesw)."
+MAINTAINER="xj@wp.pl"
+LICENSE="GPL2"
+WEB_SITE="https://sourceforge.net/projects/njconnect/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="$SF_MIRROR/$PACKAGE/$PACKAGE-$VERSION.tar.xz"
+
+DEPENDS="jack-audio-connection-kit ncursesw"
+BUILD_DEPENDS="jack-audio-connection-kit-dev ncursesw ncursesw-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+#	sed -i 's|curses|& -ltinfo|' Makefile
+	sed -i 's|LDFLAGS             =|& -ljack -lncursesw -ltinfo|' \
+		Makefile
+
+	make DESTDIR=$install install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/*	$fs
+}

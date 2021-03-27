@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="grisbi"
+VERSION="1.0.0"
+CATEGORY="office"
+SHORT_DESC="Personnal bank manager"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://www.grisbi.org/"
+WGET_URL="http://heanet.dl.sourceforge.net/sourceforge/grisbi/$TARBALL"
+
+DEPENDS="gtk+ xorg-libXdamage libofx libofx libssl"
+BUILD_DEPENDS="pkg-config glib gtk+ libxml2 gtk+-dev glib-dev libofx-dev \
+opensp-dev openssl-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure --prefix=/usr \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	for i in applications grisbi icons pixmaps; do
+		cp -a $install/usr/share/$i $fs/usr/share
+	done
+}

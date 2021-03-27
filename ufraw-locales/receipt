@@ -1,0 +1,17 @@
+# SliTaz package receipt.
+
+PACKAGE="ufraw-locales"
+VERSION="0.22"
+CATEGORY="misc"
+SHORT_DESC="Locales for ufraw and gimp-plugin-ufraw."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WANTED="ufraw"
+WEB_SITE="http://ufraw.sourceforge.net/"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr $fs/usr/share
+	cp -a $install/usr/share/locale $fs/usr/share
+}

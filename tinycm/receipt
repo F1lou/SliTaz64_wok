@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="tinycm"
+VERSION="1.3"
+CATEGORY="network"
+SHORT_DESC="Small and elegent CGI content manager."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="BSD"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://www.slitaz.org/"
+WGET_URL="http://hg.slitaz.org/$PACKAGE/archive/$VERSION.tar.gz"
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make && make DESTDIR=$install install
+	make DESTDIR=$install install-slitaz
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs
+	cp -a $install/* $fs
+	cd $fs/var/www
+	ln -s cgi-bin/tinycm .
+}

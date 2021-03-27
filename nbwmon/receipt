@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="nbwmon"
+VERSION="0.5.2"
+CATEGORY="network"
+SHORT_DESC="Ncurses bandwidth monitor."
+MAINTAINER="paul@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://github.com/causes-/nbwmon"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/archive/$VERSION.tar.gz"
+
+DEPENDS="ncurses"
+BUILD_DEPENDS="ncurses-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export LDFLAGS="$LDFLAGS -ltinfo"
+	make
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $src/$PACKAGE $fs/usr/bin
+}

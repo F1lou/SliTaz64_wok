@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="iasl"
+VERSION="20200214"
+CATEGORY="development"
+SHORT_DESC="Intel ACPI Source Language compiler."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="other"
+WEB_SITE="https://acpica.org"
+
+SOURCE="acpica-unix"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/sites/acpica/files/$TARBALL"
+
+BUILD_DEPENDS="bison flex"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# Fix building.
+	sed -i -e 's/-Werror//g' \
+		generate/unix/Makefile.config \
+		generate/unix/iasl/Makefile
+
+	make || return 1
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+
+	cp -a $src/generate/unix/bin/iasl	$fs/usr/bin
+	cp -a $src/generate/unix/bin/acpisrc	$fs/usr/bin
+	cp -a $src/generate/unix/bin/acpixtract	$fs/usr/bin
+}

@@ -1,0 +1,24 @@
+# SliTaz package receipt.
+
+PACKAGE="luajit-dev"
+VERSION="2.0.5"
+CATEGORY="development"
+SHORT_DESC="The luajit development files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://luajit.org"
+
+DEPENDS="luajit pkg-config"
+WANTED="luajit"
+
+#HOST_ARCH="x86_64 i486 arm"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/lib/*.*a		$fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig	$fs/usr/lib
+	cp -a $install/usr/include		$fs/usr
+}

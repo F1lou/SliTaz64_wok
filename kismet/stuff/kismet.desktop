@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=Kismet 802.11b monitoring tool
+Name[fr]=Kismet analyseur de trafic 802.11b
+Exec=xterm -e kismet
+Icon=kismet
+Terminal=false
+Categories=System;Application
+StartupNotify=true

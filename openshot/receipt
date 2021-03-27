@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="openshot"
+VERSION="1.4.3"
+CATEGORY="multimedia"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL3"
+SHORT_DESC="an open-source, non-linear video editor for Linux based on MLT framework"
+WEB_SITE="http://www.openshotvideo.com/"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://launchpad.net/openshot/${VERSION%.*}/$VERSION/+download/$TARBALL"
+TAGS=""
+
+DEPENDS="mlt-python-bindings pygoocanvas libsdl librsvg python-xdg \
+frei0r-plugins python-pil python-httplib2"
+SUGGESTED="dvgrab libquicktime libavc1394 faac jack-audio-connection-kit ladspa"
+BUILD_DEPENDS="mlt-dev librsvg-dev libsdl-dev frei0r-plugins-dev sox-dev \
+ffmpeg-dev goocanvas-dev wget"
+
+# Rules to configure and make the package.
+compile_rules() {
+	python setup.py install --root=$DESTDIR --optimize=1
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib $fs/usr
+}
+

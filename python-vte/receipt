@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="python-vte"
+VERSION="0.28.2"
+CATEGORY="development"
+SHORT_DESC="Terminal capabilities for GTK+ widgets devel files."
+WANTED="vte"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.gnome.org/"
+
+DEPENDS="vte"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	#PYTHON_LIB=python$(grep ^VERSION= $WOK/python/receipt | sed 's/.*"\(...\).*/\1/')
+	mkdir -p $fs/usr/lib $fs/usr/share
+	cp -a $install/usr/lib/python* $fs/usr/lib
+	cp -a $install/usr/share/pygtk $fs/usr/share
+}

@@ -1,0 +1,51 @@
+# SliTaz package receipt.
+
+PACKAGE="gtk-gnutella"
+VERSION="1.1.15"
+CATEGORY="network"
+SHORT_DESC="p2p client."
+MAINTAINER="allan316@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://sourceforge.net/projects/gtk-gnutella/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="expat gnutls gtk+ libgcrypt libgpg-error libtasn1 libxml2 
+	xorg-libX11 xorg-libXau xorg-libXcomposite xorg-libXcursor 
+	xorg-libXdamage xorg-libXdmcp xorg-libXext xorg-libXfixes 
+	xorg-libXinerama xorg-libXrandr xorg-libXrender"
+BUILD_DEPENDS="glib-dev gtk+-dev libxml2-dev pkg-config xorg-dev 
+	zlib-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./build.sh		\
+		--prefix=/usr	\
+		--disable-dbus	\
+		--disable-nls &&
+	make $MAKEFLAGS install INSTALL_PREFIX=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	mkdir -p $fs/usr/share/applications
+	mkdir -p $fs/usr/share/pixmaps
+	mkdir -p $fs/usr/share/gtk-gnutella/pixmaps
+
+	cp -a $install/usr/bin/gtk-gnutella	$fs/usr/bin/gtk-gnutella.bin
+
+	cat > $fs/usr/bin/gtk-gnutella <<EOT
+#!/bin/sh
+G_SLICE=always_malloc /usr/bin/gtk-gnutella.bin
+EOT
+	chmod 755 $fs/usr/bin/gtk-gnutella
+
+	cp -a $install/usr/share/applications/*	$fs/usr/share/applications
+	cp -a $install/usr/share/pixmaps/*	$fs/usr/share/pixmaps
+	cp -a $install/usr/share/gtk-gnutella/pixmaps/* \
+						$fs/usr/share/gtk-gnutella/pixmaps
+}

@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="gtkperf"
+VERSION="0.40"
+CATEGORY="utilities"
+SHORT_DESC="Application designed to test GTK+ performance."
+MAINTAINER="devl547@gmail.com"
+LICENSE="GPL2"
+TARBALL="${PACKAGE}_${VERSION}.tar.gz"
+WEB_SITE="http://gtkperf.sourceforge.net/"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="gtk+"
+BUILD_DEPENDS="gtk+-dev gettext autoconf"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|/doc|/share&|' Makefile*
+	./configure $CONFIGURE_ARGS 2>&1 | grep -v /config.rpath &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/pixmaps $fs/usr/share
+}

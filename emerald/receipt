@@ -1,0 +1,54 @@
+# SliTaz package receipt.
+
+PACKAGE="emerald"
+VERSION="0.8.14"
+CATEGORY="x-window"
+SHORT_DESC="Window decorator for Compiz."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://github.com/compiz-reloaded"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="$WEB_SITE/$PACKAGE/releases/download/v$VERSION/$TARBALL"
+
+DEPENDS="xorg-libX11 gtk+ libwnck compiz-core"
+BUILD_DEPENDS="autoconf automake xorg-dev gtk+-dev compiz-core-dev \
+libtool libwnck-dev xz"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./autogen.sh \
+		--prefix=/usr \
+		--with-gtk=2.0 \
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	# Copy emerald.mo files:
+	for lang in de es fr it pt_BR ru; do
+		mkdir -p $fs/usr/share/locale/$lang/LC_MESSAGES
+		cp -a $install/usr/share/locale/$lang/LC_MESSAGES/emerald.mo \
+			$fs/usr/share/locale/$lang/LC_MESSAGES/
+	done
+
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/$PACKAGE $fs/usr/lib
+	cp -a $install/usr/lib/libemeraldengine.so* $fs/usr/lib
+	rm -f $fs/usr/lib/$PACKAGE/*/*.*a
+	cp -a $install/usr/share/$PACKAGE $fs/usr/share
+	cp -a $install/usr/share/icons $fs/usr/share
+	# SliTaz config and theme (to move in slitaz-configs ?)
+	cp -f $stuff/settings.ini $fs/usr/share/emerald
+	cp -f $stuff/theme.ini $fs/usr/share/emerald/theme
+	cd $fs/usr/share/emerald
+	mkdir themes ; cd themes ; ln -sf ../theme SliTaz
+	mkdir default ; cd default
+	for i in `ls ../../theme/*.png`; do ln -s $i `basename $i`; done
+	cp -a $install/usr/share/emerald/theme/theme.ini .
+}

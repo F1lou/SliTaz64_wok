@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Gobby Collaborative editor
+Name[fr]=Editeur collaboratif Gobby
+Name[pt]=Editor colaborativo Gobby
+Name[pt_BR]=Editor colaborativo Gobby
+Exec=gobby
+Icon=gobby
+Type=Application
+Categories=Application;Network

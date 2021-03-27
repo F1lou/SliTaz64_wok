@@ -1,0 +1,59 @@
+#!/bin/sh
+
+. /lib/libtaz.sh
+
+PACKAGE="msttcorefonts2"
+VERSION="1.0"
+CUR_DIR=$(pwd)
+TEMP_DIR="$(mktemp -d)"
+ROOT="$1"
+
+# Check if we are root
+check_root
+
+fontdir="$TEMP_DIR/$PACKAGE-$VERSION/fs/usr/share/fonts/truetype/$PACKAGE"
+mkdir -p "$fontdir"
+cd "$fontdir"
+
+for filename in EUupdate.EXE PowerPointViewer.exe; do
+	busybox wget "http://downloads.sourceforge.net/mscorefonts2/$filename"
+	cabextract -L $filename
+	find "$fontdir" -type f -name '*.cab' -exec cabextract -L \{\} \;
+	find "$fontdir" -type f ! \( -name '*.ttf' -o -name '*.ttc' \) -delete
+done
+
+cd $TEMP_DIR
+
+cat > $PACKAGE-$VERSION/receipt <<EOT
+# SliTaz package receipt.
+
+PACKAGE="$PACKAGE"
+VERSION="$VERSION"
+CATEGORY="non-free"
+SHORT_DESC="Updated Microsoft's TrueType core fonts"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="non-free"
+WEB_SITE="http://sourceforge.net/projects/mscorefonts2/"
+TAGS="fonts"
+
+DEPENDS="fontconfig"
+
+# Pre and post install commands for Tazpkg.
+post_install()
+{
+	chroot "\$1/" /usr/bin/fc-cache /usr/share/fonts/truetype/$PACKAGE
+}
+EOT
+
+# Pack
+tazpkg pack $PACKAGE-$VERSION gzip
+
+# Clean to save RAM memory
+rm -rf $PACKAGE-$VERSION
+
+# Install pseudo package
+yes y | tazpkg install $PACKAGE-$VERSION.tazpkg --root=$ROOT
+
+# Clean
+cd $CUR_DIR
+rm -rf $TEMP_DIR

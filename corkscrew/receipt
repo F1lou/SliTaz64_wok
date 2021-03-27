@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="corkscrew"
+VERSION="2.0"
+CATEGORY="network"
+SHORT_DESC="tool for tunneling ssh through proxies"
+MAINTAINER="allan316@gmail.com"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-git-$VERSION.tar.gz"
+WEB_SITE="https://github.com/bryanpkc/corkscrew"
+WGET_URL="$WEB_SITE/archive/v$VERSION.tar.gz"
+TAGS="ssh https proxy"
+
+DEPENDS="openssh"
+BUILD_DEPENDS="automake"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	autoreconf --install
+	./configure \
+		--prefix=/usr \
+		--infodir=/usr/share/info \
+		--mandir=/usr/share/man \
+		$CONFIGURE_ARGS &&
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr $install/usr/share/doc
+	cp -a $install/usr/bin $fs/usr
+	cp $src/README $src/TODO $install/usr/share/doc
+}

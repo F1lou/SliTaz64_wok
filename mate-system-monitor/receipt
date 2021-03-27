@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="mate-system-monitor"
+VERSION="1.9.0"
+CATEGORY="utilities"
+LICENSE="GPL3"
+SHORT_DESC="MATE's system monitor."
+MAINTAINER="yuripourre@gmail.com"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://www.mate-desktop.org/"
+WGET_URL="https://github.com/mate-desktop/$PACKAGE/archive/$TARBALL"
+TAGS="MATE"
+DEPENDS="dconf dbus-glib gtk+ libgtop libwnck librsvg"
+BUILD_DEPENDS="wget dbus-dev dconf-dev cacerts autoconf automake libtool itstool \
+gtk+-dev gtk-doc dbus-glib-dev glibmm-dev gtkmm-dev libgtop-dev libwnck-dev librsvg-dev \
+yelp-tools mate-common-dev mate-icon-theme libcroco-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./autogen.sh                       \
+		--prefix=/usr                  \
+		--libexecdir=/usr/lib/$PACKAGE \
+		--with-gtk=2.0                 \
+		--disable-static               \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/glib-2.0 $fs/usr/share
+}

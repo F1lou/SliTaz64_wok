@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="glib-networking-dev"
+VERSION="2.43.1"
+CATEGORY="development"
+SHORT_DESC="The glib-networking devel files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2"
+WANTED="glib-networking"
+WEB_SITE="https://www.gtk.org/"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="glib-networking"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/gio/modules
+	cp -a $install/usr/lib/gio/modules/*.*a $fs/usr/lib/gio/modules
+}

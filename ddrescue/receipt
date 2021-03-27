@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="ddrescue"
+VERSION="1.24"
+CATEGORY="system-tools"
+TAGS="recovery toolkit tools"
+SHORT_DESC="Data recovery tool."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://www.gnu.org/software/ddrescue/"
+
+TARBALL="$PACKAGE-$VERSION.tar.lz"
+WGET_URL="http://ftp.gnu.org/gnu/ddrescue/$TARBALL"
+
+DEPENDS="gcc-lib-base"
+BUILD_DEPENDS="lzip"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure				\
+		--prefix=/usr			\
+		--infodir=/usr/share/info	\
+		--mandir=/usr/share/man		\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin	$fs/usr
+}

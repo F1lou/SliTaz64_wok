@@ -1,0 +1,18 @@
+# SliTaz package receipt.
+
+PACKAGE="nbs-dev"
+VERSION="2007svn"
+CATEGORY="development"
+SHORT_DESC="Network Broadcast Sound development files."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.asterisk.org/"
+WANTED="nbs"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+}

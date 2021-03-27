@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="TeXmacs-windows-fonts"
+VERSION="1.0"
+CATEGORY="office"
+SHORT_DESC="Fonts for using TeXmacs without TeX"
+MAINTAINER="slitaz@leledy.fr"
+LICENSE="LPPL"
+TARBALL="$PACKAGE-$VERSION-noarch.tar.gz"
+WEB_SITE="http://www.texmacs.org"
+WGET_URL="ftp://ftp.texmacs.org/pub/TeXmacs/fonts/$TARBALL"
+
+DEPENDS=""
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+     mkdir -p $fs/usr/share/TeXmacs/
+     cp -a $src $fs/usr/share/TeXmacs/fonts
+}

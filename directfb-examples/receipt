@@ -1,0 +1,47 @@
+# SliTaz package receipt.
+
+PACKAGE="directfb-examples"
+VERSION="1.7.0"
+CATEGORY="system-tools"
+SHORT_DESC="DirectFB examples."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://www.directfb.org/"
+
+SOURCE="DirectFB-examples"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="http://sources.buildroot.net/$PACKAGE/$TARBALL"
+
+DEPENDS="directfb"
+BUILD_DEPENDS="directfb-dev"
+HOST_ARCH="x86_64 i486 arm"
+
+# Handle cross compilation.
+case "$ARCH" in
+	arm) 
+		export LDFLAGS="$LDFLAGS   -L/cross/arm/sysroot/usr/lib"
+		export CPPFLAGS="$CPPFLAGS -I/cross/arm/sysroot/usr/include/directfb" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--prefix=/usr \
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make -j 1 DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/directfb-* $fs/usr/share
+}
+
+testsuite()
+{
+	readelf -h $install/usr/bin/spacedream
+}

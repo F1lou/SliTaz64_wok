@@ -1,0 +1,45 @@
+# SliTaz package receipt.
+
+PACKAGE="marble"
+VERSION="v15.03.97"
+CATEGORY="misc"
+SHORT_DESC="A virtual globe and world atlas."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="LGPL2.1 GPL3"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://marble.kde.org/"
+BRANCH="$VERSION"
+WGET_URL="git|git://anongit.kde.org/marble"
+TAGS="globe atlas"
+
+DEPENDS="libQtWebkit libQtDeclarative libQtDBus"
+BUILD_DEPENDS="git Qt4-dev cmake libQtDeclarative qmake"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir build; cd build
+	cmake	-DCMAKE_BUILD_TYPE=Release -DQTONLY=TRUE \
+		-DCMAKE_INSTALL_PREFIX=/usr .. &&
+	make &&
+	make install
+
+	# remove unwanted files
+	cd $DESTDIR/usr/share/applications
+	mv marble_osm.desktop marble.desktop
+	for i in $(sed '/MimeType/!d;s/.*=//' marble_*); do
+		sed -i "s|MimeType.*|&$i|" marble.desktop
+	done
+	rm -f marble_*.desktop marble-*.desktop
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr $fs
+
+	# remove unwanted files
+	rm -rf $fs/usr/include
+	rm -rf $fs/usr/share/marble/cmake
+	rm $fs/usr/bin/marble-mobile $fs/usr/bin/marble-touch
+}

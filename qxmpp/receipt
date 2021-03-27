@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="qxmpp"
+VERSION="0.8.0"
+CATEGORY="development"
+SHORT_DESC="Cross-platform C++ XMPP client and server library"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="LGPL2.1"
+WEB_SITE="https://github.com/qxmpp-project/qxmpp/"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/qxmpp-project/qxmpp/archive/v$VERSION.tar.gz"
+
+DEPENDS="libQtNetwork libQtXml libtheora-enc libvpx speex"
+BUILD_DEPENDS="qmake Qt4-dev speex-dev libtheora-dev libogg-dev libvpx-dev \
+doxygen wget"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's/ltheoraenc/& -logg/' src/src.pro
+	qmake PREFIX=/usr QXMPP_USE_SPEEX=1 QXMPP_USE_THEORA=1 QXMPP_USE_VPX=1 &&
+	make &&
+	mkdir -p $src/doc/html &&
+	make INSTALL_ROOT=$install install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

@@ -1,0 +1,55 @@
+# SliTaz package receipt.
+
+PACKAGE="amule"
+VERSION="2.3.2"
+CATEGORY="network"
+TAGS="p2p peer-to-peer fileshare"
+SHORT_DESC="An eMule-like client for the eD2k and Kademlia networks."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://www.amule.org/"
+
+SOURCE="aMule"
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="wxWidgets libupnp libbfd xorg-libXxf86vm cryptopp zlib"
+BUILD_DEPENDS="wxWidgets-dev libupnp-dev cryptopp zlib-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	patch -p1 < $stuff/libupnp1.8.patch || exit 1
+
+	# What works for imule (see https://aur.archlinux.org/packages/imule)
+	# might work for amule also:
+	sed -i 's/pubkey.DEREncode(asink);/pubkey.AccessMaterial().Save(asink);/g' \
+		src/ClientCreditsList.cpp
+
+	./configure \
+		--prefix=/usr \
+		$CONFIGURE_ARGS &&
+	make $MAKEFLAGS &&
+	make DESTDIR=$DESTDIR install
+	./configure \
+		--prefix=/usr \
+		--disable-monolithic \
+		--enable-amule-daemon \
+		--enable-amulecmd \
+		--enable-webserver \
+		$CONFIGURE_ARGS &&
+	make $MAKEFLAGS &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	rm -rf $install/usr/share/man/?? $install/usr/share/man/*_*
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/amule $fs/usr/share
+	# Remove unused files in this base package.
+	rm $fs/usr/share/amule/skins/kde4.zip
+	rm $fs/usr/share/amule/skins/gnome.zip
+}

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Dialog Example
+Name[fr]=Exemple de Dialog
+Name[pt]=Exemplos do Dialog
+Name[pt_BR]=Exemplos do Dialog
+Name[ru]=Пример диалога
+Name[zh_CN]=对话框示例
+Exec=xterm -e dialog --title " Title " --textbox /etc/motd 10 60
+Icon=utilities-terminal
+Categories=Development;

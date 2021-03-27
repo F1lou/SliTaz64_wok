@@ -1,0 +1,44 @@
+# SliTaz package receipt.
+
+PACKAGE="xfce4-ristretto"
+VERSION="0.6.3"
+CATEGORY="x-window"
+SHORT_DESC="Picture-viewer for Xfce"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+SOURCE="ristretto"
+TARBALL="$SOURCE-$VERSION.tar.bz2"
+WEB_SITE="https://goodies.xfce.org/projects/applications/ristretto"
+WGET_URL="http://archive.xfce.org/src/apps/$SOURCE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="libxfce4util libxfce4ui libexif dbus-glib thunar gamin xfconf"
+BUILD_DEPENDS="xfce4-dev-tools intltool libexif-dev dbus-glib-dev libxfce4util-dev \
+ libxfce4ui-dev xfconf-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure && make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr \
+		$fs/usr/share/icons/hicolor \
+		$fs/usr/share/pixmaps 
+				
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/icons/hicolor/16* $fs/usr/share/icons/hicolor
+	cp -a $install/usr/share/icons/hicolor/48* $fs/usr/share/icons/hicolor
+	ln -s /usr/share/icons/hicolor/48x48/apps/$SOURCE.png $fs/usr/share/pixmaps/$SOURCE.png
+}
+
+post_install()
+{
+	echo
+	echo "Execute post-install command"
+	gtk-update-icon-cache -f -t -q "$1/usr/share/icons/hicolor"
+}
+

@@ -1,0 +1,27 @@
+# SliTaz package receipt.
+
+PACKAGE="cpulimit"
+VERSION="1.1"
+CATEGORY="system-tools"
+SHORT_DESC="Limits the cpu usage of a process"
+MAINTAINER="allan316@gmail.com"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://cpulimit.sourceforge.net"
+WGET_URL="http://ovh.dl.sourceforge.net/sourceforge/cpulimit/$TARBALL"
+
+DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	make
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $src/cpulimit $fs/usr/bin
+}

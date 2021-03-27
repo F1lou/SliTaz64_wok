@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="gtkspell"
+VERSION="2.0.16"
+CATEGORY="development"
+SHORT_DESC="provides highlighting and replacement of misspelled words"
+MAINTAINER="allan316@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="http://gtkspell.sourceforge.net"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/download/$TARBALL"
+
+DEPENDS="cairo enchant gtk+"
+BUILD_DEPENDS="enchant-dev expat-dev gtk+-dev pkg-config"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure		\
+		$CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib $fs/usr
+}

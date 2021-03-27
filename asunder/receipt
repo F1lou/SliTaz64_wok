@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="asunder"
+VERSION="2.9.5"
+CATEGORY="multimedia"
+TAGS="audio rip"
+SHORT_DESC="GTK light CD ripper."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://littlesvr.ca/asunder/"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="$WEB_SITE/releases/$TARBALL"
+
+SUGGESTED="lame flac"
+DEPENDS="alsa-lib cdparanoia-III gtk+ libcddb vorbis-tools 
+	xorg-libXdamage"
+BUILD_DEPENDS="alsa-lib-dev cdparanoia-III-dev gtk+-dev libcddb-dev 
+	xorg-libXdamage-dev"
+
+GENERIC_PIXMAPS="no"
+COOKOPTS="!pixmaps"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure		\
+		--prefix=/usr	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install || return 1
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin	$fs/usr
+}

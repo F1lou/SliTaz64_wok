@@ -1,0 +1,61 @@
+#!/bin/sh
+# /etc/init.d/dbus: Start, stop and restart DBUS daemon on SliTaz,
+# at boot time or with the command line. Daemons options are configured
+# with /etc/daemons.conf
+#
+. /etc/init.d/rc.functions
+. /etc/daemons.conf
+
+NAME=DBUS
+DESC="$(_ 'message bus daemon')"
+DAEMON=/usr/bin/dbus-daemon
+OPTIONS=$DBUS_OPTIONS
+PIDFILE=/run/dbus/pid
+MACHINE_ID=/var/lib/dbus/machine-id
+
+if [ ! -f $MACHINE_ID ] ; then
+  dbus-uuidgen > $MACHINE_ID
+fi
+
+case "$1" in
+  start)
+    if active_pidfile $PIDFILE dbus-daemon ; then
+      _ '%s is already running.' $NAME
+      exit 1
+    fi
+    mkdir -p /run/dbus
+    action 'Starting %s: %s...' "$DESC" $NAME
+    $DAEMON $OPTIONS
+    status
+    ;;
+  stop)
+    if ! active_pidfile $PIDFILE dbus-daemon ; then
+      _ '%s is not running.' $NAME
+      exit 1
+    fi
+    action 'Stopping %s: %s...' "$DESC" $NAME
+    kill $(cat $PIDFILE)
+    rm $PIDFILE
+    status
+    ;;
+  restart)
+    if ! active_pidfile $PIDFILE dbus-daemon ; then
+      _ '%s is not running.' $NAME
+      exit 1
+    fi
+    mkdir -p /run/dbus
+    action 'Restarting %s: %s...' "$DESC" $NAME
+    kill $(cat $PIDFILE)
+    rm $PIDFILE
+    sleep 2
+    $DAEMON $OPTIONS
+    status
+    ;;
+  *)
+    emsg "<n><b>$(_ 'Usage:')</b> $0 [start|stop|restart]"
+    newline
+    exit 1
+    ;;
+esac
+
+exit 0

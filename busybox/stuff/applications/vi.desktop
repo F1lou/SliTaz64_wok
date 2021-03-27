@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Vi Text Editor
+Name[fr]=Editeur de texte Vi
+Name[pt]=Editor de textos Vi
+Name[pt_BR]=Editor de textos Vi
+Name[ru]=Текстовый редактор Vi
+Exec=terminal -e vi
+Icon=accessories-text-editor
+Categories=Development;IDE;

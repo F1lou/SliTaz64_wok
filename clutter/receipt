@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="clutter"
+VERSION="1.6.20"
+CATEGORY="x-window"
+SHORT_DESC="Animated graphical user interfaces library."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2.1"
+SUGGESTED="nvidia"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://clutter-project.org/"
+WGET_URL="http://www.clutter-project.org/sources/$PACKAGE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="atk libgio gdk-pixbuf cairo pango json-glib mesa libdrm \
+xorg-libXcomposite"
+BUILD_DEPENDS="atk-dev libgio-dev gdk-pixbuf-dev cairo-dev pango-dev \
+json-glib-dev mesa-dev libdrm-dev xorg-libXcomposite-dev \
+gobject-introspection-dev pkg-config libxml2-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure \
+		--enable-introspection \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/girepository-1.0 $fs/usr/lib
+}
+

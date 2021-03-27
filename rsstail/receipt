@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="rsstail"
+VERSION="2.1"
+CATEGORY="network"
+SHORT_DESC="RSS feed reader."
+MAINTAINER="tcg.thegamer@gmail.com"
+LICENSE="GPL"
+WEB_SITE="https://www.vanheusden.com/rsstail/"
+
+TARBALL="$PACKAGE-$VERSION.tgz"
+WGET_URL="${WEB_SITE}${TARBALL}"
+
+DEPENDS="curl libmrss libnxml"
+BUILD_DEPENDS="curl-dev libcurl libnxml-dev libmrss-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's/-liconv_hook //' Makefile
+	make prefix=$install/usr && 
+	make install prefix=$install/usr
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr/
+}

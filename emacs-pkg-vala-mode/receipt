@@ -1,0 +1,46 @@
+# SliTaz package receipt.
+
+PACKAGE="emacs-pkg-vala-mode"
+VERSION="0.1"
+CATEGORY="development"
+SHORT_DESC="An Emacs major mode for editing Vala code."
+MAINTAINER="domcox@slitaz.org"
+LICENSE="GPL3"
+BUILD_DEPENDS="emacs"
+WEB_SITE="http://live.gnome.org/Vala/Emacs"
+TAGS="emacs vala"
+
+DEPENDS="emacs"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	echo -n "Installing start file"
+	mkdir -p $fs/usr/share/emacs/site-lisp/site-start.d && \
+	cp -a stuff/80-vala-init.el $fs/usr/share/emacs/site-lisp/site-start.d
+	status
+
+	echo -n "Installing vala-mode"
+	mkdir -p $fs/usr/share/emacs/site-lisp/vala-mode && \
+	cp -a stuff/vala-mode.el $fs/usr/share/emacs/site-lisp/vala-mode
+	status
+
+	# byte-compile files, remove src
+	for file in $fs/usr/share/emacs/site-lisp/vala-mode/vala*.el ; do
+		echo -n "Byte-compiling $(basename file)"
+		emacs -batch -f batch-byte-compile $file 2> /dev/null; err=$?
+		status
+		[ "$err" = "0" ] && rm -f $file
+	done
+	true
+}
+
+post_install()
+{
+	chroot "$1/" tazpkg reconfigure emacs
+}
+
+post_remove()
+{
+	chroot "$1/" tazpkg reconfigure emacs
+}

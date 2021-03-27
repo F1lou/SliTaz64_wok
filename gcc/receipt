@@ -1,0 +1,131 @@
+# SliTaz package receipt.
+
+PACKAGE="gcc"
+VERSION="10.2.0"
+CATEGORY="development"
+SHORT_DESC="The GNU Compiler Collection."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WEB_SITE="http://gcc.gnu.org/"
+WGET_URL="ftp://gcc.gnu.org/pub/gcc/releases/gcc-$VERSION/$TARBALL"
+TAGS="compiler C"
+#HOST_ARCH="x86_64 i486 arm"
+
+# We need gawk since busybox awk is not sufficient. We have BUILD_DEPENDS
+# for cookutils that are not used by tazwok/cook-toolchain since it installs
+# and uses its own copy.
+DEPENDS="binutils libgomp libobjc gcc-lib-base mpc-library elfutils"
+BUILD_DEPENDS="mpc-library mpfr-dev gmp-dev elfutils-dev"
+
+# Handle cross compilation (native i486/ARM gcc)
+case "$ARCH" in
+	i?86)
+		ARCH_ARGS="--with-tune=$ARCH"
+		pkgversion="SliTaz"
+		languages="c,c++,objc,fortran" ;;
+	x86_64)
+		pkgversion="SliTaz"
+		languages="c,c++,fortran" ;;
+	arm*)
+		pkgversion="SliTaz ARM"
+		languages="c,c++" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# Package slitaz-toolchain use 'cook --options' when rebuilding
+	# the full SliTaz toolchain.
+	[ "$2" = "--first-pass" ] && opt=$2
+	[ "$3" = "--first-pass" ] && opt=$3
+
+	# Use libiberty.a from binutils.
+	#sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in || return 1
+
+	case "$ARCH" in
+		i?86) sed -i 's/^T_CFLAGS =$/& -fomit-frame-pointer/' gcc/Makefile.in ;;
+		x86_64) sed -e '/m64=/s/lib64/lib/' -i.orig gcc/config/i386/t-linux64 ;;
+	esac
+
+	#sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
+
+	mkdir -p ../gcc-build && cd ../gcc-build
+
+	# This is the default GCC and we want a native build to cross compile after.
+	# SliTaz target i486 host so we need a native i486 build for GCC.
+	case "$opt" in
+		--first-pass)
+			# Used by slitaz-toolchain when rebuilding the full toolchain.
+			echo "cook: configure GCC for: toolchain first pass"
+			$src/configure \
+				--libexecdir=/usr/lib \
+				--disable-nls \
+				--enable-shared \
+				--enable-languages=c,c++ \
+				--disable-libstdcxx-pch \
+				--enable-__cxa_atexit \
+				--enable-clocale=gnu \
+				--enable-threads=posix \
+				--disable-bootstrap \
+				--disable-multilib \
+				${CONFIGURE_ARGS} &&
+			make && make install ;;
+		*)
+			# Used by default to produce a full featured X86 GCC compiler.
+			echo "cook: configure GCC for: final/full build"
+			$src/configure \
+				--libexecdir=/usr/lib \
+				--disable-multilib       \
+				--disable-bootstrap      \
+				--with-system-zlib	\
+				--enable-nls \
+				--enable-languages=${languages} \
+				--enable-shared \
+				--enable-clocale=gnu \
+				--enable-objc-gc \
+				--enable-__cxa_atexit \
+				--enable-lto \
+				--enable-threads=posix \
+				--with-pkgversion="$pkgversion" \
+				${CONFIGURE_ARGS} ${ARCH_ARGS} &&
+			make && make install ;;
+	esac
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p  $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+
+	# Copy all libs. Remove libgcc_s.so and libstdc++.so they goes in
+	# the gcc-lib-base package.
+	cp -a $install/usr/lib $fs/usr
+	rm -f $fs/usr/lib/libgcc_s.so*
+	rm -f $fs/usr/lib/libstdc++.so*
+	rm -f $fs/usr/lib/libgomp.so*
+	rm -f $fs/usr/lib/libobjc.so*
+
+	# Include files.
+	cp -a $install/usr/include $fs/usr
+
+	# Gfortran goes in gfortran package.
+	rm -f $fs/usr/bin/*gfortran
+	rm -f $fs/usr/lib/libgfortran*
+	rm -f $fs/usr/lib/gcc/*/$VERSION/libgfortran*
+	rm -rf $fs/usr/lib/gcc/*/$VERSION/f*
+
+	# Remove build directory.
+	rm -rf $WOK/$PACKAGE/source/$PACKAGE-build
+	rm -rf $WOK/$PACKAGE/$PACKAGE-build
+}
+
+# Post install commands for Tazpkg.
+post_install()
+{
+	[ -f "$1/lib/cpp" ] ||
+		ln -s ../usr/bin/cpp "$1/lib"
+	[ -f "$1/usr/bin/cc" ] ||
+		ln -s gcc "$1/usr/bin/cc"
+}

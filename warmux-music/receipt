@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="warmux-music"
+VERSION="11.04.1"
+CATEGORY="games"
+SHORT_DESC="Warmux game music (~35Mb)"
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://www.wormux.org/"
+
+WANTED="warmux"
+DEPENDS="warmux"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/warmux
+	cp -a $install/usr/share/warmux/music $fs/usr/share/warmux
+}

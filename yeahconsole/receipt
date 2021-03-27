@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="yeahconsole"
+VERSION="0.3.4"
+CATEGORY="utilities"
+SHORT_DESC="Quake-like drop down terminal."
+MAINTAINER="paul@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://phrat.de/yeahtools.html"
+WGET_URL="http://phrat.de/$TARBALL"
+TAGS="terminal"
+
+DEPENDS="xterm"
+BUILD_DEPENDS="xorg-libX11-dev xorg-xproto"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp $src/yeahconsole $fs/usr/bin
+}

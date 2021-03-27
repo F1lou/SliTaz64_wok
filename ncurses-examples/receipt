@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="ncurses-examples"
+VERSION="20180127"
+CATEGORY="base-system"
+SHORT_DESC="Ncurses test functions."
+MAINTAINER="paul@slitaz.org"
+TARBALL="$PACKAGE-$VERSION.tgz"
+LICENSE="MIT"
+WEB_SITE="https://invisible-island.net/ncurses/ncurses-examples.html"
+WGET_URL="https://invisible-mirror.net/archives/$PACKAGE/$TARBALL"
+
+DEPENDS="ncurses perl"
+BUILD_DEPENDS="ncurses-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+    	cp -a $install/usr $fs
+    	mkdir -p $install/usr/share/man $install/usr/share/doc
+    	cp $src/*.6 $install/usr/share/man
+    	cp $src/README $install/usr/share/doc
+}

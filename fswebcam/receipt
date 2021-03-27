@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="fswebcam"
+VERSION="20140113"
+CATEGORY="misc"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL2"
+SHORT_DESC="Tiny and flexible webcam app"
+WEB_SITE="https://www.sanslogic.co.uk/fswebcam/"
+CONFIG_FILES="etc/fswebcam.conf"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="$WEB_SITE/files/$TARBALL"
+TAGS="webcam"
+HOST_ARCH="x86_64 i486"
+
+DEPENDS="libgd"
+BUILD_DEPENDS="libgd-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--prefix=/usr $CONFIGURE_ARGS &&
+	make && make install 
+}
+	
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/etc $fs/usr
+	cp -a stuff/fswebcam.conf $fs/etc/fswebcam.conf
+	cp -a $install/usr/bin $fs/usr
+}

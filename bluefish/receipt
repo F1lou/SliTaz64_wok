@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="bluefish"
+VERSION="2.2.10"
+CATEGORY="development"
+TAGS="text-editor language HTML programming scripting"
+SHORT_DESC="A powerful editor"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="http://bluefish.openoffice.nl/index.html"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="http://www.bennewitz.com/bluefish/stable/source/${TARBALL}"
+
+DEPENDS="gtk+ pcre xorg-libXdamage aspell libxml2 gcc-lib-base shared-mime-info "
+BUILD_DEPENDS="gtk+-dev pcre-dev intltool libxml2-dev expat-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr $fs/usr/share/locale $fs/usr/lib/bluefish
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/pixmaps $fs/usr/share
+	cp -a $install/usr/share/bluefish $fs/usr/share
+	cp -a $install/usr/share/applications $fs/usr/share
+}

@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="firmware-rt2x00"
+VERSION="20200515"
+CATEGORY="non-free"
+SHORT_DESC="Firmware files for all rt2x00 modules."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="other"
+WEB_SITE="http://git.kernel.org/cgit/linux/kernel/git/firmware/linux-firmware.git"
+WANTED="firmware"
+PROVIDE="firmware-rt73 firmware-rt2561 firmware-rt2661 firmware-rt2860 \
+firmware-rt2870 firmware-rt3070 firmware-rt3071 firmware-rt3090"
+
+DEPENDS="linux-wireless"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/lib/firmware $fs/usr/share/licenses
+	cp -a $install/lib/firmware/rt*.bin $fs/lib/firmware
+	cp -a $install/usr/share/licenses/LICENCE.ralink* $fs/usr/share/licenses
+}

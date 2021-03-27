@@ -1,0 +1,38 @@
+# SliTaz package receipt.
+
+PACKAGE="gnome-mime-data"
+VERSION="2.18.0"
+CATEGORY="x-window"
+SHORT_DESC="The GNOME Mime Data file types"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://www.gnome.org"
+WGET_URL="http://ftp.gnome.org/pub/gnome/sources/$PACKAGE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="perl-xml-parser"
+BUILD_DEPENDS="perl-xml-parser gettext"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc/gnome \
+		$CONFIGURE_ARGS &&
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share $fs/usr/lib
+	
+	cp -a $install/etc $fs/
+	cp -a $install/usr/share/application-registry $fs/usr/share
+	cp -a $install/usr/share/mime-info $fs/usr/share
+	cp -a $install/usr/share/pkgconfig $fs/usr/lib
+	
+}
+

@@ -1,0 +1,41 @@
+# SliTaz package receipt.
+
+PACKAGE="emelfm2"
+VERSION="0.9.1"
+CATEGORY="system-tools"
+SHORT_DESC="GTK powerfull file manager."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://emelfm2.net/"
+WGET_URL="http://emelfm2.net/rel/$TARBALL"
+TAGS="file-manager"
+
+DEPENDS="gtk+ xorg-libXdamage"
+BUILD_DEPENDS="pkg-config gtk+ gtk+-dev xorg-xproto libmagic-dev \
+coreutils-operations"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|uname -m|echo i486|' Makefile
+	sed -i 's|xpdf|epdfview|g' src/e2_filetype.c
+	sed -i 's|gview|viewnior|g' src/e2_filetype.c
+	sed -i 's|totem|xine|g' src/e2_filetype.c
+	sed -i 's|Totem|Xine|g' src/e2_filetype.c
+	make PREFIX=/usr &&
+	make i18n PREFIX=/usr &&
+	make install PREFIX=$DESTDIR/usr &&
+	make install_i18n PREFIX=$DESTDIR/usr
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib $fs/usr
+	cp -a $install/usr/share/pixmaps $fs/usr/share
+	cd $fs/usr/share/pixmaps
+	ln -s emelfm2/emelfm2_32.png emelfm2.png
+}

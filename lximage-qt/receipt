@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="lximage-qt"
+VERSION="0.3.0"
+CATEGORY="graphics"
+SHORT_DESC="The image viewer and screenshot tool for LXQt"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://github.com/lxde/lximage-qt"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/lxde/$PACKAGE/archive/$VERSION.tar.gz"
+TAGS="LXQt"
+
+DEPENDS="libQtCore libQtDBus libQtGui libQtXml libexif libffi libfm libgio \
+pcmanfm-qt pcre xorg-libX11 xorg-libXext xorg-libXfixes zlib"
+BUILD_DEPENDS="wget cacerts cmake Qt4-dev qmake glib-dev libexif-dev libfm-dev \
+xorg-libX11-dev xorg-libXfixes-dev xorg-xproto pcmanfm-qt-dev menu-cache-dev \
+libqtxdg-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir build; cd build
+	cmake -DCMAKE_INSTALL_PREFIX=/usr .. &&
+	make &&
+	make DESTDIR=$install install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+	rm -rf $fs/usr/share/lximage-qt
+}

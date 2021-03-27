@@ -1,0 +1,44 @@
+# SliTaz package receipt.
+
+PACKAGE="nettle"
+VERSION="3.5.1"
+CATEGORY="security"
+SHORT_DESC="A cryptographic library that is designed to fit easily in more or less any context."
+MAINTAINER="devl547@gmail.com"
+LICENSE="LGPL2.1"
+WEB_SITE="https://www.lysator.liu.se/~nisse/nettle/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="gcc-lib-base gmp"
+BUILD_DEPENDS="gcc gmp-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+		
+# Handle cross compilation.
+case "$ARCH" in
+	arm) 
+		ARCH_ARGS="--enable-arm-neon" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--libdir=/usr/lib	\
+		--enable-shared		\
+		$CONFIGURE_ARGS		\
+		${ARCH_ARGS} && 
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+}

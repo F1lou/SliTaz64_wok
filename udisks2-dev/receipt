@@ -1,0 +1,18 @@
+# SliTaz package receipt.
+
+PACKAGE="udisks2-dev"
+VERSION="2.1.8"
+CATEGORY="development"
+SHORT_DESC="D-Bus service to access and manipulate storage devices (development)"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://www.freedesktop.org/wiki/Software/udisks"
+
+WANTED="udisks2"
+DEPENDS="udisks2 libgio-dev glib-dev"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cook_copy_files *.h *.a *.la *.pc *.typelib *.gir
+}

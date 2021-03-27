@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="libpcap"
+VERSION="1.9.1"
+CATEGORY="development"
+SHORT_DESC="Library for tcpdump."
+MAINTAINER="sdaigl@lacitec.on.ca"
+LICENSE="BSD"
+WEB_SITE="https://www.tcpdump.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="http://www.tcpdump.org/release/$TARBALL";
+
+DEPENDS="libnl"
+BUILD_DEPENDS="flex bison libnl-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Handle cross compilation
+case "$ARCH" in
+	arm) 
+		BUILD_DEPENDS="" 
+		ARCH_ARGS="--with-pcap=linux" 
+		export ac_cv_linux_vers=2 ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure		\
+		$CONFIGURE_ARGS	\
+		$ARCH_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+}
+

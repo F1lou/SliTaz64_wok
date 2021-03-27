@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="libsdl-pango"
+VERSION="0.1.2"
+CATEGORY="x-window"
+SHORT_DESC="Pango SDL binding."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="LGPL2.1"
+SOURCE="SDL_Pango"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="http://sdlpango.sourceforge.net/"
+WGET_URL="$SF_MIRROR/sdlpango/$TARBALL"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="pango libsdl"
+BUILD_DEPENDS="pango-dev libsdl-dev pkg-config libxml2-dev"
+
+# Handle cross compilation
+case "$ARCH" in
+	arm*) ARCH_MAKE="LIBS=/cross/$ARCH/sysroot/usr/lib" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	patch -Np0 -i $stuff/SDL_Pango-$VERSION-API-adds.patch
+	patch -Np1 -i $stuff/matrix_declarations.patch
+	./configure \
+		$CONFIGURE_ARGS &&
+	make ${ARCH_MAKE} && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}
+

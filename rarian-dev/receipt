@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="rarian-dev"
+VERSION="0.8.1"
+CATEGORY="development"
+SHORT_DESC="devel files for rarian"
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL2 LGPL2.1"
+WEB_SITE="https://rarian.freedesktop.org/"
+WANTED="rarian"
+
+DEPENDS="rarian pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+}
+

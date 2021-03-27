@@ -1,0 +1,24 @@
+# SliTaz package receipt.
+
+PACKAGE="mplayer-codecs"
+VERSION="20110131"
+CATEGORY="multimedia"
+SHORT_DESC="All MPlayer codecs for SliTaz."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://www.mplayerhq.hu/design7/news.html"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="http://www1.mplayerhq.hu/MPlayer/releases/codecs/all-$VERSION.tar.bz2"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="mplayer"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/mplayer/codecs
+	cp -a $src/* $fs/usr/lib/mplayer/codecs
+	# Remove codec depending on libstdc++.so.5
+	rm -f $fs/usr/lib/mplayer/codecs/drvc.so
+	rm -f $fs/usr/lib/mplayer/codecs/cook.so
+}

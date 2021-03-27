@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="dirmngr"
+VERSION="1.1.1"
+CATEGORY="security"
+SHORT_DESC="DirMngr - X.509 directory manager"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL3"
+WEB_SITE="https://www.gnupg.org/"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="https://www.gnupg.org/ftp/gcrypt/dirmngr/$TARBALL"
+
+DEPENDS="libassuan libgcrypt libksba libldap pth zlib"
+BUILD_DEPENDS="pth-dev libgpg-error-dev libgcrypt-dev libassuan-dev \
+libksba-dev openldap-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# Integrity check: https://www.gnupg.org/download/integrity_check.html
+	echo "e708d4aa5ce852f4de3f4b58f4e4f221f5e5c690  $SRC/$TARBALL" | sha1sum -c || exit 1
+
+	./configure $CONFIGURE_ARGS && make && make install
+
+	find $install/usr/share/man -type f -exec gzip -9 \{\} \;
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+	rm -r $fs/usr/share/doc $fs/usr/share/info $fs/usr/share/locale
+}

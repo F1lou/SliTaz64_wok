@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="gavl-dev"
+VERSION="1.4.0"
+CATEGORY="development"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL3"
+SHORT_DESC="gavl devel files"
+WEB_SITE="http://gmerlin.sourceforge.net/"
+WANTED="gavl"
+
+DEPENDS="gavl pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+}

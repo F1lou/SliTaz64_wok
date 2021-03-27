@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="rdpdesk"
+VERSION="3.2"
+CATEGORY="network"
+SHORT_DESC="RDP, VNC & ICA client."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL3"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://web.archive.org/web/20120603061746/http://rdpdesk.com/"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="wxWidgets28 xorg-libXp xorg-libXaw libssl"
+BUILD_DEPENDS="wxWidgets28-dev xorg-imake jpeg-dev zlib-dev \
+openssl-dev xorg-libXp autoconf"
+SUGGESTED="wfica rdesktop"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# Binutils 2.22 break many packages build without LDFLAGS set correctly.
+	export LDFLAGS="$LDFLAGS -Wl,--copy-dt-needed-entries"
+
+	cd $src
+	sed -i 's|glib/.*h|glib.h|' src/proto/*Connection_nix.hpp
+	./configure --prefix=/usr $CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr $fs
+}

@@ -1,0 +1,124 @@
+# SliTaz package receipt.
+
+PACKAGE="hal"
+VERSION="0.5.14"
+CATEGORY="x-window"
+SHORT_DESC="Hardware Abstraction Layer."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://www.freedesktop.org/wiki/Software/hal"
+WGET_URL="http://hal.freedesktop.org/releases/$TARBALL"
+CROSS="error: cannot check for file existence when cross compiling"
+
+DEPENDS="dbus dbus-glib slitaz-base-files udev util-linux-blkid libusb-compat"
+BUILD_DEPENDS="dbus-dev dbus-glib dbus-glib-dev udev-dev pciutils \
+util-linux-blkid-dev expat-dev util-linux-uuid-dev glib-dev pkg-config \
+libv4l-dev"
+
+EXTRA="
+hald-addon-cpufreq
+hald-addon-hid-ups
+hald-addon-imac-backlight
+hald-addon-ipw-killswitch
+hald-probe-video4linux
+hald-probe-net-bluetooth
+hald-probe-ieee1394-unit
+hald-probe-pc-floppy
+hald-probe-printer"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	sed -i 's|linux/videodev.h|libv4l1-videodev.h|' \
+		hald/linux/probing/probe-video4linux.c
+	sed -i 's|glib/gmain|glib|' hald/linux/addons/addon-*.c
+	zcat /usr/share/misc/pci.ids.gz > /usr/share/misc/pci.ids &&
+	patch -p1 < $stuff/hal-scripts.u || return 1 &&
+	#patch -p1 < $stuff/hal-udev.patch || return 1 &&
+	grep -qs 'define u8' hald/linux/probing/linux_dvd_rw_utils.c ||
+	sed -i 's|#include <scsi/scsi.h>|#define u8 __u8\n&|' \
+		hald/linux/probing/linux_dvd_rw_utils.c
+	./configure \
+		--prefix=/usr \
+		--libexecdir=/usr/lib/hal \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--disable-usb-ids \
+		--disable-policy-kit \
+		--build=$HOST_SYSTEM \
+		--host=$HOST_SYSTEM &&
+	make &&
+	rm /usr/share/misc/pci.ids &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share
+	cp -a $install/etc $fs
+	cp -a $install/var $fs
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/sbin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/hal $fs/usr/lib
+	cp -a $install/usr/share/hal $fs/usr/share
+	chmod -R +x $fs/usr/lib/hal/scripts/*
+	# Remove a few run time lib and strip.
+	for lib in $EXTRA
+	do
+		rm $fs/usr/lib/hal/$lib
+	done
+	strip -s $fs/usr/lib/hal/* 2>/dev/null
+	# Init script
+	cp -a stuff/etc $fs
+
+	# Policy for ntfs-3g
+	cp -a stuff/policy $fs/usr/share/hal/fdi/
+	chown -R root.root $fs
+
+	# exclude unwanted fdi files
+	rm $fs/usr/share/hal/fdi/policy/10osvendor/10-cpufreq.fdi
+	rm $fs/usr/share/hal/fdi/policy/10osvendor/10-dockstation.fdi
+	rm $fs/usr/share/hal/fdi/policy/10osvendor/10-imac-backlight.fdi
+	rm $fs/usr/share/hal/fdi/policy/10osvendor/15-storage-luks.fdi
+	rm $fs/usr/share/hal/fdi/policy/10osvendor/30-wol.fdi
+	
+	# change bash to sh in hal scripts
+	sed -i 's:/bin/bash:/bin/sh:' $fs/usr/lib/hal/scripts/hal* 
+	sed -i 's:/bin/bash:/bin/sh:' $fs/usr/lib/hal/scripts/linux/hal* 
+	# use full-path
+	sed -i 's:hal-functions:/usr/lib/hal/scripts/hal-functions:' $fs/usr/lib/hal/scripts/hal* 
+	sed -i 's:hal-functions:/usr/lib/hal/scripts/hal-functions:' $fs/usr/lib/hal/scripts/linux/hal* 
+}
+
+pre_install()
+{
+	# Go for echoing on configuration files if any haldaemon user
+	# was found.
+	if ! grep -q 'haldaemon' "$1/etc/passwd"; then
+		echo -n "Adding user: messagebus..."
+		echo 'haldaemon:x:26:26:HAL Daemon User:/dev/null:/bin/false' >> "$1/etc/passwd"
+		echo 'haldaemon:!:14013:0:99999:7:::' >> "$1/etc/shadow"
+		echo 'haldaemon:x:26:' >> "$1/etc/group"
+		echo 'haldaemon:!::' >> "$1/etc/gshadow"
+		status
+	fi
+	if ! grep -q ^HALD_OPTIONS "$1/etc/daemons.conf"; then
+		echo -n "Configuring /etc/daemons.conf..."
+		cat >> "$1/etc/daemons.conf" << "EOT"
+# HAL daemon options.
+HALD_OPTIONS="--daemon=yes"
+
+EOT
+		status
+	fi
+}
+
+pre_remove()
+{
+	/etc/init.d/hald stop
+	deluser haldaemon
+}

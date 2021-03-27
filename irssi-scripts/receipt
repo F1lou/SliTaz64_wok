@@ -1,0 +1,22 @@
+# SliTaz package receipt
+
+PACKAGE="irssi-scripts"
+VERSION="2.0"
+CATEGORY="network"
+SHORT_DESC="Perl scripts for Irssi IRC client"
+MAINTAINER="taziden@slitaz.org"
+LICENSE="GPL2 BSD PublicDomain"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://scripts.irssi.org/"
+WGET_URL="http://mirror.slitaz.org/sources/packages/i/$TARBALL"
+
+DEPENDS="irssi"
+BUILD_DEPENDS=""
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/irssi/scripts
+	cp -a $src/*.pl $src/*.pm $fs/usr/share/irssi/scripts/
+}
+

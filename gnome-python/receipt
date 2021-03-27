@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="gnome-python"
+VERSION="2.28.1"
+CATEGORY="x-window"
+SHORT_DESC="Python bindings for GNOME."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://www.gnome.org/"
+WGET_URL="http://ftp.gnome.org/pub/gnome/sources/$PACKAGE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="python pygobject pygtk libgnome"
+BUILD_DEPENDS="python-dev pygobject-dev pygtk-dev libgnome-dev audiofile \
+esound libxml2-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--libexecdir=/usr/lib/$PACKAGE \
+		--sysconfdir=/etc/gnome \
+		--disable-pam $CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/share/pygtk $fs/usr/share
+	cp -a $install/usr/lib $fs/usr
+	rm -rf $fs/usr/lib/pkgconfig
+	rm -rf $fs/usr/lib/gnome-vfs-2.0/modules/*a
+}

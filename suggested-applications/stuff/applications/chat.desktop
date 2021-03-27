@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Chat
+Name[ru]=Чат
+Comment=Install applications for chatting
+Comment[ru]=Установить приложения для чата
+Exec=default-app pidgin --install "pidgin skype"
+Icon=internet-group-chat
+Categories=Network;

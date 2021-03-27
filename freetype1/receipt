@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="freetype1"
+SOURCE="freetype"
+VERSION="1.3.1"
+CATEGORY="x-window"
+SHORT_DESC="Freetype1 font engine."
+MAINTAINER="rcx@zoominternet.net"
+LICENSE="BSD"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="https://www.freetype.org/"
+WGET_URL="$SF_MIRROR/$SOURCE/$TARBALL"
+
+DEPENDS="glibc-base"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# NOTE: DESTDIR is not recognized by freetype1 make install
+
+	cd $src
+	./configure \
+		--sysconfdir=$DESTDIR/etc \
+		--prefix=$DESTDIR/usr \
+		--mandir=$DESTDIR/usr/share/man \
+		--includedir=$DESTDIR/usr/include \
+		--libdir=$DESTDIR/usr/lib \
+		--with-x --enable-gif \
+		$CONFIGURE_ARGS &&
+	make ttlib ttpo || return 1
+
+	cd lib
+	make DESTDIR=$DESTDIR -f arch/unix/Makefile install || return 1
+	cd ../po
+	make DESTDIR=$DESTDIR -f Makefile install || return 1
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

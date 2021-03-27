@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="offlineimap"
+VERSION="6.0.3"
+CATEGORY="network"
+SHORT_DESC="IMAP/Maildir synchronization and reader support"
+MAINTAINER="taziden@slitaz.org"
+LICENSE="GPL2"
+TARBALL="offlineimap_$VERSION.tar.gz"
+WEB_SITE="https://www.offlineimap.org/"
+WGET_URL="http://mirror.slitaz.org/sources/packages/${TARBALL:0:1}/$TARBALL"
+TAGS="email imap"
+
+DEPENDS="python"
+BUILD_DEPENDS="python-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir -p $DESTDIR/etc
+	cp offlineimap.conf* $DESTDIR/etc
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/applications
+	cp -a $install/etc $fs
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib $fs/usr
+	cp -a $stuff/* $fs/usr/share/applications 
+}

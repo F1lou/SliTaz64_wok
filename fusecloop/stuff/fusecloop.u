@@ -1,0 +1,2152 @@
+=== Add v3 support
+--- compressed_loop.h
++++ compressed_loop.h
+@@ -41,6 +41,80 @@
+ /* data_index (num_blocks 64bit pointers, network order)...      */
+ /* compressed data (gzip block compressed format)...             */
+ 
++struct cloop_tail
++{
++	u_int32_t table_size;
++	u_int32_t index_size;
++	u_int32_t num_blocks;
++};
++
++struct block_info
++{
++	loff_t offset;		/* 64-bit offsets of compressed block */
++	u_int32_t size;		/* 32-bit compressed block size */
++	u_int32_t optidx;	/* 32-bit index number */
++};
++
++static inline char *build_index(struct block_info *offsets, unsigned long n)
++{
++	u_int32_t *ofs32 = (u_int32_t *) offsets;
++	loff_t    *ofs64 = (loff_t *) offsets;
++	
++	if (ofs32[0] == 0) {
++		if (ofs32[2]) { /* ACCELERATED KNOPPIX V1.0 */
++			while (n--) {
++				offsets[n].offset = __be64_to_cpu(offsets[n].offset);
++				offsets[n].size = ntohl(offsets[n].size);
++			}
++			return (char *) "128BE accelerated knoppix 1.0";
++		}
++		else { /* V2.0 */
++			loff_t last = __be64_to_cpu(ofs64[n]);
++			while (n--) {
++				offsets[n].size = last - 
++					(offsets[n].offset = __be64_to_cpu(ofs64[n])); 
++				last = offsets[n].offset;
++			}
++			return (char *) "64BE v2.0";
++		}
++	}
++	else if (ofs32[1] == 0) { /* V1.0 */
++		loff_t last = __le64_to_cpu(ofs64[n]);
++		while (n--) {
++			offsets[n].size = last - 
++				(offsets[n].offset = __le64_to_cpu(ofs64[n])); 
++			last = offsets[n].offset;
++		}
++		return (char *) "64LE v1.0";
++	}
++	else if (ntohl(ofs32[0]) == (4*n) + 0x8C) { /* V0.68 */
++		loff_t last = ntohl(ofs32[n]);
++		while (n--) {
++			offsets[n].size = last - 
++				(offsets[n].offset = ntohl(ofs32[n])); 
++			last = offsets[n].offset;
++		}
++		return (char *) "32BE v0.68";
++	}
++	else { /* V3.0 */
++		unsigned long i;
++		loff_t j;
++		
++		for (i = n; i-- != 0; )
++			offsets[i].size = ntohl(ofs32[i]); 
++		for (i = 0, j = sizeof(struct cloop_head); i < n; i++) {
++			offsets[i].offset = j;
++			if (offsets[i].size & 0x80000000) {
++				unsigned long k = offsets[i].size & 0x7FFFFFFF;
++				offsets[i].offset = offsets[k].offset;
++				offsets[i].size = offsets[k].size;
++			}
++			else j += offsets[i].size;
++		}
++		return (char *) "32BE v3.0";
++	}
++}
++
+ /* Cloop suspend IOCTL */
+ #define CLOOP_SUSPEND 0x4C07
+ 
+
+--- cloopreader.h
++++ cloopreader.h
+@@ -33,7 +33,7 @@
+     int numblocks;
+     ulong blocksize;
+ 
+-    loff_t* toc; /* Data index */
++    struct block_info *toc; /* Data index */
+     size_t tocsize;
+ 
+     unsigned char* cblock;  /* Compressed block */
+
+--- cloopreader.c
++++ cloopreader.c
+@@ -59,10 +59,32 @@
+ 
+     ALLOC(c->pblock,c->blocksize);
+ 
+-    c->tocsize=sizeof *c->toc * (c->numblocks+1); /* One extra address is position of EOF */
+-    ALLOC(c->toc,c->tocsize);
++    if (c->numblocks + 1 == 0) {
++	struct cloop_tail tail;
++	loff_t end = lseek(c->fh,0,SEEK_END); /* lseek(,-n,SEEK_END) buggy ? */
++	void *p;
++	ulong toclen, len; 
+ 
+-    OP(read_all(c->fh,c->toc,c->tocsize));  /* read Data Index */
++	OP(lseek(c->fh, end - sizeof(tail), SEEK_SET)); 
++	OP(read_all(c->fh, &tail, sizeof(tail)));
++	c->numblocks = ntohl(tail.num_blocks);
++	c->tocsize = sizeof(*c->toc) * c->numblocks;
++	len = ntohl(tail.table_size);
++	toclen = (ntohl(tail.index_size) & 255) * c->numblocks;
++	OP(lseek(c->fh, end - sizeof(tail) - len, SEEK_SET));
++        ALLOC(c->toc, sizeof(*c->toc) * c->numblocks);
++        ALLOC(p,len);
++        OP(read_all(c->fh,p,len));  /* read Data Index */
++	if (uncompress((void *)c->toc,&toclen,p,len) != Z_OK)
++		exit(1);
++	free(p);
++    }
++    else {
++	c->tocsize = sizeof(*c->toc) * c->numblocks;
++        ALLOC(c->toc,c->tocsize);
++        OP(read_all(c->fh,c->toc,c->tocsize));  /* read Data Index */
++    }
++    build_index(c->toc, c->numblocks);
+     c->cblocksizecur=0;
+     c->curblock=-1;
+     return 0;
+@@ -79,10 +101,10 @@
+     if(page>=c->numblocks){errno=EFAULT;return -1;}
+     c->curblock=page;
+ 
+-    bprintf("Seeking to 0x%Lx\n",btc(c->toc[page]));
+-    OP(lseek(c->fh,btc(c->toc[page]), SEEK_SET)); 
++    bprintf("Seeking to 0x%Lx\n",c->toc[page].offset);
++    OP(lseek(c->fh,c->toc[page].offset, SEEK_SET)); 
+ 
+-    c->cblocksize=btc(c->toc[page+1]) - btc(c->toc[page]);
++    c->cblocksize=c->toc[page].size;
+     bprintf("Compressed size=%lu\n",c->cblocksize);
+     if(c->cblocksize > c->cblocksizecur){
+ 	if(c->cblocksizecur)free(c->cblock);
+
+--- extract_compressed_fs.c
++++ extract_compressed_fs.c
+@@ -1,19 +1,23 @@
+ /* Extracts a filesystem back from a compressed fs file */
++#define _LARGEFILE64_SOURCE
+ #include "common_header.h"
++#define CLOOP_PREAMBLE "#!/bin/sh\n" "#V2.0 Format\n" "modprobe cloop file=$0 && mount -r -t iso9660 /dev/cloop $1\n" "exit $?\n"
+ 
+ int main(int argc, char *argv[])
+ {
+ 	int handle;
+ 	struct cloop_head head;
+ 	unsigned int i;
++	unsigned long num_blocks, block_size, zblock_maxsize, lastlen = 0;
+ 	unsigned char *buffer, *clear_buffer;
++	struct block_info *offsets;
+ 
+-	if (argc != 2) {
+-		fprintf(stderr, "Need filename\n");
++	if (argc < 2 || argv[1][0] == '-') {
++		fprintf(stderr, "Usage: extract_compressed_fs file [--convert-to-v2] > output\n");
+ 		exit(1);
+ 	}
+ 
+-	handle = open(argv[1], O_RDONLY);
++	handle = open(argv[1], O_RDONLY|O_LARGEFILE);
+ 	if (handle < 0) {
+ 		perror("Opening compressed file\n");
+ 		exit(1);
+@@ -24,66 +28,100 @@
+ 		exit(1);
+ 	}
+ 
+-	buffer = malloc(ntohl(head.block_size) + ntohl(head.block_size)/1000
+-			+ 12 + 4);
+-	clear_buffer = malloc(ntohl(head.block_size));
+-	fprintf(stderr, "%u blocks of size %u. Preamble:\n%s\n", 
+-		ntohl(head.num_blocks), ntohl(head.block_size), head.preamble);
++	num_blocks = ntohl(head.num_blocks);
++	block_size = ntohl(head.block_size);
++	zblock_maxsize =  block_size + block_size/1000 + 12 + 4;
++	buffer = malloc(zblock_maxsize);
++	clear_buffer = malloc(block_size);
+ 
+-	for (i = 0; i < ntohl(head.num_blocks); i++) {
+-		int currpos;
+-		unsigned long destlen = ntohl(head.block_size);
+-		loff_t offset[2];
+-		unsigned int size;
++	if (num_blocks == 0xFFFFFFFF) {
++		void *table;
++		struct cloop_tail tail;
++		unsigned long len, table_size;
++		loff_t end = lseek64(handle, 0, SEEK_END);
++		
++		if (lseek64(handle, end - sizeof(tail), SEEK_SET) < 0 ||
++		    read(handle, &tail, sizeof(tail)) != sizeof(tail) ||
++		    lseek64(handle, end - sizeof(tail) - 
++		    	  ntohl(tail.table_size), SEEK_SET) < 0) {
++			perror("Reading tail\n");
++			exit(1);
++		}
++		head.num_blocks = tail.num_blocks;
++		num_blocks = ntohl(head.num_blocks);
++		table_size = ntohl(tail.table_size);
++		table = malloc(table_size);
++		len = i = num_blocks * (ntohl(tail.index_size) & 255);
++		lastlen = ntohl(tail.index_size) / 256;
++		offsets = malloc(num_blocks * sizeof(*offsets));
++		if (!table || !offsets || 
++		    read(handle, table, table_size) != table_size ||
++		    uncompress((void *)offsets, &len, table, table_size) != Z_OK ||
++		    len != i) {
++			perror("Reading index\n");
++			exit(1);
++		}
++		free(table);
++	}
++	else {
++		offsets = malloc(i = num_blocks * sizeof(*offsets));
++		if (!offsets || read(handle, offsets, i) != i) {
++			perror("Reading index\n");
++			exit(1);
++		}
++	}
++	
++	fprintf(stderr, "%lu blocks of size %lu. Preamble:\n%s\n", 
++		num_blocks, block_size, head.preamble);
++	fprintf(stderr, "Index %s.\n", build_index(offsets, num_blocks));
++	
++	if (argc > 2) {
++		unsigned n;
++		loff_t data, offset = ((num_blocks + 1) * sizeof(offset)) + sizeof(head);
++		
++		strcpy(head.preamble, CLOOP_PREAMBLE);
++		write(STDOUT_FILENO, &head, n = sizeof(head));
++		for (i = 0; i < num_blocks; i++) {
++			data = __be64_to_cpu(offset);
++			write(STDOUT_FILENO, &data, sizeof(data));
++			n += sizeof(data);
++			offset += offsets[i].size;
++		}
++		data = __be64_to_cpu(offset);
++		write(STDOUT_FILENO, &data, sizeof(data));
++		for (i = 0; i < num_blocks && lseek64(handle, offsets[i].offset, SEEK_SET) >= 0; i++) {
++			read(handle, buffer, offsets[i].size);
++			write(STDOUT_FILENO, buffer, offsets[i].size);
++			n += offsets[i].size;
++		}
++		n &= 0x1FF;
++		if (n) {
++			memset(buffer, 0, 512);
++			write(STDOUT_FILENO, buffer, 512 - n);
++		}
++		return 0;
++	}
++	
++	for (i = 0; i < num_blocks; i++) {
++		unsigned long destlen = block_size;
++		unsigned int size = offsets[i].size;
+ 
+-		read(handle, &offset, 2*sizeof(loff_t));
+-                lseek(handle, -sizeof(loff_t), SEEK_CUR);
+-                
+-		currpos = lseek(handle, 0, SEEK_CUR);
+-		if (lseek(handle, __be64_to_cpu(offset[0]), SEEK_SET) < 0) {
++		if (lseek64(handle, offsets[i].offset, SEEK_SET) < 0) {
+ 			fprintf(stderr, "lseek to %Lu: %s\n",
+-				__be64_to_cpu(offset[0]), strerror(errno));
++				offsets[i].offset, strerror(errno));
+ 			exit(1);
+ 		}
+                 
+-                size=__be64_to_cpu(offset[1])-__be64_to_cpu(offset[0]);
+-		if (size > ntohl(head.block_size) + ntohl(head.block_size)/1000
+-		    + 12 + 4) {
++		if (size > zblock_maxsize) {
+ 			fprintf(stderr, 
+ 				"Size %u for block %u (offset %Lu) too big\n",
+-				size, i, __be64_to_cpu(offset[0]));
++				size, i, offsets[i].offset);
+ 			exit(1);
+ 		}
+ 		read(handle, buffer, size);
+-		if (lseek(handle, currpos, SEEK_SET) < 0) {
+-			perror("seeking");
+-			exit(1);
+-		}
+ 
+-		fprintf(stderr, "Block %u length %u => %lu\n",
+-			i, size, destlen);
+-		if (i == 3) {
+-			fprintf(stderr,
+-				"Block head:%02X%02X%02X%02X%02X%02X%02X%02X\n",
+-				buffer[0],
+-				buffer[1],
+-				buffer[2],
+-				buffer[3],
+-				buffer[4],
+-				buffer[5],
+-				buffer[6],
+-				buffer[7]);
+-			fprintf(stderr,
+-				"Block tail:%02X%02X%02X%02X%02X%02X%02X%02X\n",
+-				buffer[3063],
+-				buffer[3064],
+-				buffer[3065],
+-				buffer[3066],
+-				buffer[3067],
+-				buffer[3068],
+-				buffer[3069],
+-				buffer[3070]);
+-		}
++		fprintf(stderr, "Block %u at %llu length %u",
++			i, offsets[i].offset, size);
+ 		switch (uncompress(clear_buffer, &destlen,
+ 				   buffer, size)) {
+ 		case Z_OK:
+@@ -105,12 +143,13 @@
+ 			fprintf(stderr, "Uncomp: unknown error %u\n", i);
+ 			exit(1);
+ 		}
+-		if (destlen != ntohl(head.block_size)) {
+-			fprintf(stderr, "Uncomp: bad len %u (%lu not %u)\n", i,
+-				destlen, ntohl(head.block_size));
++		fprintf(stderr, " => %lu\n", destlen);
++		if (destlen != block_size && i != num_blocks - 1) {
++			fprintf(stderr, "Uncomp: bad len %u (%lu not %lu)\n", i,
++				destlen, block_size);
+ 			exit(1);
+ 		}
+-		write(STDOUT_FILENO, clear_buffer, ntohl(head.block_size));
++		write(STDOUT_FILENO, clear_buffer, (lastlen != 0 && (i+1) == num_blocks) ? lastlen : block_size);
+ 	}
+ 	return 0;
+ }
+--- Makefile
++++ Makefile
+@@ -1,16 +1,19 @@
+ PROGNAME=fusecloop
+ ARCFILES=*.c *.h *.pl Makefile configure README VERSION HELP INSTALL typescript *.cloop COPYING
+-PROGS=fusecloop cloopreaderdemo extract_compressed_fs
++PROGS=fusecloop cloopreaderdemo extract_compressed_fs create_compressed_fs
+ FUSECFLAGS=`pkg-config fuse --cflags`
+ FUSELDFLAGS=`pkg-config fuse --libs` 
+ 
+ CFLAGS= -Wall
+ 
+-all: fusecloop extract_compressed_fs 
++all: fusecloop extract_compressed_fs create_compressed_fs
+ 
+ extract_compressed_fs: extract_compressed_fs.c
+ 	${CC} ${CFLAGS} ${LDFLAGS} -lz extract_compressed_fs.c -o extract_compressed_fs
+ 
++create_compressed_fs: create_compressed_fs.c md5sum.c
++	${CC} ${CFLAGS} ${LDFLAGS} -lz create_compressed_fs.c -o create_compressed_fs
++
+ fusecloop: fusecloop.c cloopreader.o strver debug.o
+ 	${CC} ${CFLAGS} ${LDFLAGS} -lz cloopreader.o ${FUSECFLAGS} ${FUSELDFLAGS} fusecloop.c debug.o -o fusecloop
+ 
+
+
+--- md5sum.c
++++ md5sum.c
+@@ -0,0 +1,246 @@
++/*
++ * Based on busybox code.
++ *
++ * Compute MD5 checksum of strings according to the
++ * definition of MD5 in RFC 1321 from April 1992.
++ *
++ * Written by Ulrich Drepper <drepper@gnu.ai.mit.edu>, 1995.
++ *
++ * Copyright (C) 1995-1999 Free Software Foundation, Inc.
++ * Copyright (C) 2001 Manuel Novoa III
++ * Copyright (C) 2003 Glenn L. McGrath
++ * Copyright (C) 2003 Erik Andersen
++ * Copyright (C) 2010 Denys Vlasenko
++ * Copyright (C) 2012 Pascal Bellard
++ *
++ * Licensed under GPLv2 or later
++ */
++
++#define ALIGN1
++
++static uint8_t wbuffer[64]; /* always correctly aligned for uint64_t */
++static uint64_t total64;    /* must be directly before hash[] */
++static uint32_t hash[8];    /* 4 elements for md5, 5 for sha1, 8 for sha256 */
++
++/* Emit a string of hex representation of bytes */
++/* static char* bin2hex(char *p)
++{
++	static const char bb_hexdigits_upcase[] ALIGN1 = "0123456789abcdef";
++	int count = 16;
++	const char *cp = (const char *) hash;
++	while (count) {
++		unsigned char c = *cp++;
++		// put lowercase hex digits
++		*p++ = bb_hexdigits_upcase[c >> 4];
++		*p++ = bb_hexdigits_upcase[c & 0xf];
++		count--;
++	}
++	return p;
++} */
++
++//#define rotl32(x,n) (((x) << (n)) | ((x) >> (32 - (n))))
++static uint32_t rotl32(uint32_t x, unsigned n)
++{
++	return (x << n) | (x >> (32 - n));
++}
++
++static void md5_process_block64(void);
++
++/* Feed data through a temporary buffer.
++ * The internal buffer remembers previous data until it has 64
++ * bytes worth to pass on.
++ */
++static void common64_hash(const void *buffer, size_t len)
++{
++	unsigned bufpos = total64 & 63;
++
++	total64 += len;
++
++	while (1) {
++		unsigned remaining = 64 - bufpos;
++		if (remaining > len)
++			remaining = len;
++		/* Copy data into aligned buffer */
++		memcpy(wbuffer + bufpos, buffer, remaining);
++		len -= remaining;
++		buffer = (const char *)buffer + remaining;
++		bufpos += remaining;
++		/* clever way to do "if (bufpos != 64) break; ... ; bufpos = 0;" */
++		bufpos -= 64;
++		if (bufpos != 0)
++			break;
++		/* Buffer is filled up, process it */
++		md5_process_block64();
++		/*bufpos = 0; - already is */
++	}
++}
++
++/* Process the remaining bytes in the buffer */
++static void common64_end(void)
++{
++	unsigned bufpos = total64 & 63;
++	/* Pad the buffer to the next 64-byte boundary with 0x80,0,0,0... */
++	wbuffer[bufpos++] = 0x80;
++
++	/* This loop iterates either once or twice, no more, no less */
++	while (1) {
++		unsigned remaining = 64 - bufpos;
++		memset(wbuffer + bufpos, 0, remaining);
++		/* Do we have enough space for the length count? */
++		if (remaining >= 8) {
++			/* Store the 64-bit counter of bits in the buffer */
++			uint64_t t = total64 << 3;
++			/* wbuffer is suitably aligned for this */
++			*(uint64_t *) (&wbuffer[64 - 8]) = t;
++		}
++		md5_process_block64();
++		if (remaining >= 8)
++			break;
++		bufpos = 0;
++	}
++}
++
++/* These are the four functions used in the four steps of the MD5 algorithm
++ * and defined in the RFC 1321.  The first function is a little bit optimized
++ * (as found in Colin Plumbs public domain implementation).
++ * #define FF(b, c, d) ((b & c) | (~b & d))
++ */
++#undef FF
++#undef FG
++#undef FH
++#undef FI
++#define FF(b, c, d) (d ^ (b & (c ^ d)))
++#define FG(b, c, d) FF(d, b, c)
++#define FH(b, c, d) (b ^ c ^ d)
++#define FI(b, c, d) (c ^ (b | ~d))
++
++/* Hash a single block, 64 bytes long and 4-byte aligned */
++static void md5_process_block64(void)
++{
++	/* Before we start, one word to the strange constants.
++	   They are defined in RFC 1321 as
++	   T[i] = (int)(4294967296.0 * fabs(sin(i))), i=1..64
++	 */
++	static const uint32_t C_array[] = {
++		/* round 1 */
++		0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
++		0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
++		0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be,
++		0x6b901122, 0xfd987193, 0xa679438e, 0x49b40821,
++		/* round 2 */
++		0xf61e2562, 0xc040b340, 0x265e5a51, 0xe9b6c7aa,
++		0xd62f105d, 0x02441453, 0xd8a1e681, 0xe7d3fbc8,
++		0x21e1cde6, 0xc33707d6, 0xf4d50d87, 0x455a14ed,
++		0xa9e3e905, 0xfcefa3f8, 0x676f02d9, 0x8d2a4c8a,
++		/* round 3 */
++		0xfffa3942, 0x8771f681, 0x6d9d6122, 0xfde5380c,
++		0xa4beea44, 0x4bdecfa9, 0xf6bb4b60, 0xbebfbc70,
++		0x289b7ec6, 0xeaa127fa, 0xd4ef3085, 0x4881d05,
++		0xd9d4d039, 0xe6db99e5, 0x1fa27cf8, 0xc4ac5665,
++		/* round 4 */
++		0xf4292244, 0x432aff97, 0xab9423a7, 0xfc93a039,
++		0x655b59c3, 0x8f0ccc92, 0xffeff47d, 0x85845dd1,
++		0x6fa87e4f, 0xfe2ce6e0, 0xa3014314, 0x4e0811a1,
++		0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391
++	};
++	static const char P_array[] ALIGN1 = {
++		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, /* 1 */
++		1, 6, 11, 0, 5, 10, 15, 4, 9, 14, 3, 8, 13, 2, 7, 12, /* 2 */
++		5, 8, 11, 14, 1, 4, 7, 10, 13, 0, 3, 6, 9, 12, 15, 2, /* 3 */
++		0, 7, 14, 5, 12, 3, 10, 1, 8, 15, 6, 13, 4, 11, 2, 9  /* 4 */
++	};
++	uint32_t *words = (uint32_t *) wbuffer;
++	uint32_t A = hash[0];
++	uint32_t B = hash[1];
++	uint32_t C = hash[2];
++	uint32_t D = hash[3];
++
++	static const char S_array[] ALIGN1 = {
++		7, 12, 17, 22,
++		5, 9, 14, 20,
++		4, 11, 16, 23,
++		6, 10, 15, 21
++	};
++	const uint32_t *pc;
++	const char *pp;
++	const char *ps;
++	int i;
++	uint32_t temp;
++
++
++	pc = C_array;
++	pp = P_array;
++	ps = S_array - 4;
++
++	for (i = 0; i < 64; i++) {
++		if ((i & 0x0f) == 0)
++			ps += 4;
++		temp = A;
++		switch (i >> 4) {
++		case 0:
++			temp += FF(B, C, D);
++			break;
++		case 1:
++			temp += FG(B, C, D);
++			break;
++		case 2:
++			temp += FH(B, C, D);
++			break;
++		case 3:
++			temp += FI(B, C, D);
++		}
++		temp += words[(int) (*pp++)] + *pc++;
++		temp = rotl32(temp, ps[i & 3]);
++		temp += B;
++		A = D;
++		D = C;
++		C = B;
++		B = temp;
++	}
++	/* Add checksum to the starting values */
++	hash[0] += A;
++	hash[1] += B;
++	hash[2] += C;
++	hash[3] += D;
++
++}
++#undef FF
++#undef FG
++#undef FH
++#undef FI
++
++/* Initialize structure containing state of computation.
++ * (RFC 1321, 3.3: Step 3)
++ */
++static void md5_begin(void)
++{
++	hash[0] = 0x67452301;
++	hash[1] = 0xefcdab89;
++	hash[2] = 0x98badcfe;
++	hash[3] = 0x10325476;
++	total64 = 0;
++}
++
++/* Used also for sha1 and sha256 */
++#define md5_hash common64_hash
++
++/* Process the remaining bytes in the buffer and put result from CTX
++ * in first 16 bytes following RESBUF.  The result is always in little
++ * endian byte order, so that a byte-wise output yields to the wanted
++ * ASCII representation of the message digest.
++ */
++#define md5_end common64_end
++
++typedef struct { char hash[16]; } md5hash;
++
++static md5hash md5sum(uint8_t *buffer, int len) 
++{
++	md5hash val;
++
++	md5_begin();
++	md5_hash(buffer, len);
++	md5_end();
++	memcpy(&val, hash, 16);
++
++	return val;
++}
+--- create_compressed_fs.c
++++ create_compressed_fs.c
+@@ -0,0 +1,226 @@
++#ifdef FIND_BEST_COMPRESSION
++#include <compress.h>
++extern "C" {
++#include <stdlib.h>
++#include <string.h>
++
++#define ZMAX 9
++static shrink_t level;
++static int pass, iter;
++static int best_compress(unsigned char *compressed,
++			 unsigned long *compressed_len,
++			 unsigned char *uncompressed,
++			 unsigned long uncompressed_len)
++{
++	int i, j, err;
++	unsigned char *buf[2];
++	unsigned len;
++	unsigned long llen,  best = *compressed_len * 2;
++	static unsigned char *buffer;
++	static unsigned long buffersz;
++
++	if (buffersz < *compressed_len) {
++		if (buffer) free(buffer);
++		buffer = (unsigned char *)  malloc(buffersz = *compressed_len);
++		if (!buffer) return Z_MEM_ERROR;
++	}
++	buf[0] = compressed;
++	buf[1] = buffer;
++	for (i = j = 0; i <= ZMAX+3 && (pass == 0 || i < pass); i++) {
++		llen = len = *compressed_len;
++		if (i >= ZMAX+1) {
++			level.level = (i == ZMAX+1) ? shrink_normal : 
++				(i == ZMAX+2) ? shrink_extra : shrink_insane;
++			err = (compress_zlib(level, buf[j],
++		     		len, uncompressed,
++		     		uncompressed_len)) ? Z_OK : Z_DATA_ERROR;
++		} else {
++			err = compress2(buf[j], &llen, uncompressed,
++				     uncompressed_len, i);
++			len = llen;
++		}
++		if (err != Z_OK) return err;
++		if (len < best) {
++			best = len;
++			j = 1 - j;
++		}
++	}
++	*compressed_len = best;
++	if (j == 0)
++		memcpy(compressed, buffer, best);
++	return err;
++}
++#define compress2(a,b,c,d,e) best_compress(a,b,c,d)
++#endif
++                        
++#include <signal.h>
++
++/* Creates a compressed file */
++#include "common_header.h"
++
++#define CLOOP_PREAMBLE "#!/bin/sh\n" "#V3.0 Format\n" "modprobe cloop file=$0 && mount -r -t iso9660 /dev/cloop $1\n" "exit $?\n"
++#define CHUNK 65536
++#define DEFAULT_BLOCKSIZE 65536
++
++static void quit(const char *s)
++{
++	fprintf(stderr, "%s\n", s);
++	exit(1);
++}
++
++static int readblock(unsigned char *buffer, int n)
++{
++	int i;
++	
++	memset(buffer, 0, n);
++	for (i = 0 ; i < n;) {
++		int j = read(STDIN_FILENO, buffer + i, n - i);
++		if (j < 0 && errno == EINTR) continue;
++		if (j <= 0) break;
++		i += j;
++	}
++	return i;
++}
++
++#ifdef FIND_BEST_COMPRESSION
++#include "md5sum.c"
++#endif
++
++static unsigned n;
++static unsigned long lastlen, pos;
++static u_int32_t *block_index;
++static unsigned char *compressed;
++static unsigned long block_size = 0;
++static void flush_index(int sig)
++{
++	static char padding[512];
++	struct cloop_tail tail;
++	unsigned long len;
++
++	fprintf(stderr, "Write index for %lu blocks\n", n);
++	if (block_size >= 0x1000000) lastlen = 0;
++	tail.index_size = ntohl(sizeof(*block_index) + 256*(lastlen % 0xFFffFF));
++	tail.num_blocks = ntohl(n);
++	n *= sizeof(*block_index);
++	len = n + n/1000 + 12;
++	compressed = (unsigned char *) realloc(compressed, len);
++	if (!compressed || compress2(compressed, &len, (unsigned char *) block_index,
++				     n, Z_BEST_SPEED) != Z_OK)
++		quit("Index compression failed");
++	tail.table_size = ntohl(len);
++	pos += len + sizeof(tail);
++	n = pos & 511;
++	// if (n) write(STDOUT_FILENO, padding, 512 - n);
++	write(STDOUT_FILENO, compressed, len);
++	write(STDOUT_FILENO, &tail, sizeof(tail));
++	exit(sig != 0);
++}
++
++int main(int argc, char *argv[])
++{
++	struct cloop_head head;
++	unsigned char *uncompressed;
++	unsigned long len;
++	unsigned indexmax, zlenmax;
++#ifdef FIND_BEST_COMPRESSION
++	unsigned i, j, hashmax;
++	md5hash *hash;
++#endif
++	
++#ifdef FIND_BEST_COMPRESSION
++	while (argc > 1) {
++		if (argv[1][0] == '-') {
++			int *p = &pass;
++			switch (argv[1][1]) {
++			case 'i' : p = &iter;
++			case 'n' : *p = atoi(argv[2]);
++				argc -= 2;
++				argv += 2;
++				continue;
++			}
++		}
++		argc--;
++		if (argv[1][0] < '0' || argv[1][0] > '9')
++			quit("Usage : create_compressed_fs [-n <pass>][ -i <iter>] [block size] < input > output");
++#else
++	if (argc > 1) {
++		if (argv[1][0] < '0' || argv[1][0] > '9')
++			quit("Usage : create_compressed_fs [block size] < input > output");
++#endif
++		block_size = atoi(argv[1]);
++	}
++	if (block_size < 4096)
++		block_size = DEFAULT_BLOCKSIZE;
++	fprintf(stderr, "Block size is %lu\n", block_size);
++	zlenmax = block_size + block_size/1000 + 12;
++
++	memset(&head, 0, sizeof(head));
++	strcpy(head.preamble, CLOOP_PREAMBLE);
++	head.num_blocks = -1;
++	head.block_size = htonl(block_size);
++	write(STDOUT_FILENO, &head, sizeof(head));
++	pos = sizeof(head);
++	
++	compressed = (unsigned char *) malloc(zlenmax);
++	uncompressed = (unsigned char *) malloc(block_size);
++	block_index = (u_int32_t *) malloc(indexmax = CHUNK);
++#ifdef FIND_BEST_COMPRESSION
++	hash = (md5hash *) malloc(hashmax = CHUNK);
++	if (!compressed || !uncompressed || !block_index || !hash)
++#else
++	if (!compressed || !uncompressed || !block_index)
++#endif
++		quit("Malloc failed");
++	
++	signal(SIGINT,flush_index);
++	signal(SIGQUIT,flush_index);
++	signal(SIGTERM,flush_index);
++
++	for (n = 0; (len = readblock(uncompressed, block_size)) != 0; n++) {
++		lastlen = len;
++		if (n * sizeof(*block_index) >= indexmax) {
++			block_index = (u_int32_t *) realloc(block_index,
++							  indexmax += CHUNK);
++			if (!block_index)
++				quit("Realloc");
++		}
++#ifdef FIND_BEST_COMPRESSION
++		if (n * sizeof(*hash) >= hashmax) {
++			hash = (md5hash *) realloc(hash, hashmax += CHUNK);
++			if (!hash)
++				quit("Realloc hash");
++		}
++		hash[n] = md5sum(uncompressed, len);
++		j = 0x7FFFFFFF;
++		if (n < j)
++			j = n;
++		for (i = 0; i < j; i++) {
++			if (* (uint32_t *) &hash[i] == * (uint32_t *) &hash[n]
++			    && !memcmp(&hash[i],&hash[n],sizeof(*hash)))
++				break;
++		}
++		if (i != j) {
++			block_index[n] = ntohl(0x80000000 | i);
++			fprintf(stderr, "Block %u length %lu => duplicate %lu\n",
++				n, block_size, i);
++		}
++		else
++#endif
++		{
++			len = zlenmax;
++			if (compress2(compressed, &len, uncompressed, lastlen, 
++					Z_BEST_SPEED) != Z_OK)
++				quit("Compression failed");
++			fprintf(stderr, "Block %u length %lu => %lu\n",
++				n, block_size, len);
++			write(STDOUT_FILENO, compressed, len);
++			pos += len;
++			block_index[n] = ntohl(len);
++		}
++	}
++	flush_index(0);
++	return 0;
++}
++#ifdef FIND_BEST_COMPRESSION
++}
++#endif
+--- fusecloop.c
++++ fusecloop.c
+@@ -65,7 +65,7 @@
+ 	
+     memcpy(stbuf,&stb,sizeof stb);
+     stbuf->st_mode&=~0222;
+-    stbuf->st_size = cd.blocksize * cd.numblocks;
++    stbuf->st_size = (loff_t) cd.blocksize * cd.numblocks;
+     /*
+     stbuf->st_mode = S_IFREG | 0444;
+     stbuf->st_nlink = 1;
+
+=== Add v4 support
+--- compressed_loop.h
++++ compressed_loop.h
+@@ -30,6 +30,54 @@
+ /* ...padding up to CLOOP_HEADROOM...                 */
+ /* block_size (32bit number, network order)           */
+ /* num_blocks (32bit number, network order)           */
++/*
++* Starting with Format V4.0 (cloop version 4.x), cloop can now have two   *
++* alternative structures:                                                 *
++* 1. Header first:                                                        *
++*   +---------------------------- FIXED SIZE ---------------------------+ *
++*   |Signature (128 bytes)                                              | *
++*   |block_size (32bit number, network order)                           | *
++*   |num_blocks (32bit number, network order)                           | *
++*   +--------------------------- VARIABLE SIZE -------------------------+ *
++*   |num_blocks * FlagsOffset (upper 4 bits flags, lower 60 bits offset)| *
++*   |compressed data blocks of variable size ...                        | *
++*   +-------------------------------------------------------------------+ *
++*                                                                         *
++* 2. Footer (header last):                                                *
++*   +--------------------------- VARIABLE SIZE -------------------------+ *
++*   |compressed data blocks of variable size ...                        | *
++*   |num_blocks * FlagsOffset (upper 4 bits flags, lower 60 bits offset)| *
++*   +---------------------------- FIXED SIZE ---------------------------+ *
++*   |Signature (128 bytes)                                              | *
++*   |block_size (32bit number, network order)                           | *
++*   |num_blocks (32bit number, network order)                           | *
++*   +-------------------------------------------------------------------+ *
++*                                                                         *
++* Offsets are always relative to beginning of file, in all formats.       *
++* The block index contains num_blocks+1 offsets, followed (1) or          *
++* preceded (2) by the compressed blocks.                                  *
++*                                                                         *
++*  CLOOP4 flags for each compressed block                                 *
++*  Value   Meaning                                                        *
++*    0     GZIP/7ZIP compression (compatible with V2.0 Format)            *
++*    1     no compression (incompressible data)                           *
++*    2     xz compression (currently best space saver)                    *
++*    3     lz4 compression                                                *
++*    4     lzo compression (fastest)                                      *
++*   15     block link                                                     *
++*/
++/* Get value of first 4 bits */
++#define CLOOP_BLOCK_FLAGS(x)  ((unsigned int)(((x) & 0xf000000000000000LLU) >> 60))
++/* Get value of last 60 bits */
++#define CLOOP_BLOCK_OFFSET(x)  ((x) & 0x0fffffffffffffffLLU)
++
++#define CLOOP_COMPRESSOR_ZLIB  0x0
++#define CLOOP_COMPRESSOR_NONE  0x1
++#define CLOOP_COMPRESSOR_XZ    0x2
++#define CLOOP_COMPRESSOR_LZ4   0x3
++#define CLOOP_COMPRESSOR_LZO   0x4
++#define CLOOP_COMPRESSOR_LINK  0xF
++
+ 
+ struct cloop_head
+ {
+@@ -43,47 +91,86 @@
+ 
+ struct cloop_tail
+ {
+-	u_int32_t table_size;
+-	u_int32_t index_size;
++	u_int32_t table_size; 
++	u_int32_t index_size; /* size:4 comp:3 ctrl-c:1 lastlen:24 */
++#define CLOOP3_INDEX_SIZE(x)    ((unsigned int)((x) & 0xF))
++#define CLOOP3_BLOCKS_FLAGS(x)  ((unsigned int)((x) & 0x70) >> 4)
++#define CLOOP3_TRUNCATED(x)     ((unsigned int)((x) & 0x80) >> 7)
++#define CLOOP3_LASTLEN(x)       (unsigned int)((x) >> 8)
+ 	u_int32_t num_blocks;
+ };
+ 
++#define GZIP_MAX_BUFFER(n)	((n) + (n)/1000 + 12)
++
+ struct block_info
+ {
+ 	loff_t offset;		/* 64-bit offsets of compressed block */
+ 	u_int32_t size;		/* 32-bit compressed block size */
+-	u_int32_t optidx;	/* 32-bit index number */
++	u_int32_t flags;	/* 32-bit compression flags */
++
+ };
+ 
+-static inline char *build_index(struct block_info *offsets, unsigned long n)
++static inline char *build_index(struct block_info *offsets, unsigned long n, 
++			unsigned long block_size, unsigned global_flags)
+ {
+ 	u_int32_t *ofs32 = (u_int32_t *) offsets;
+ 	loff_t    *ofs64 = (loff_t *) offsets;
+-	
++
++	/* v3 64bits bug: v1 assumed */
++	unsigned long	v3_64;
++	loff_t	prev;
++
++	if (ofs32[0] != 0 && ofs32[1] == 0) {
++		for (v3_64=(n+1)/2, prev=__le64_to_cpu(ofs64[v3_64]);
++		     v3_64 > 0 && __le64_to_cpu(ofs64[--v3_64]) < prev;
++		     prev=__le64_to_cpu(ofs64[v3_64]));
++	}
++
+ 	if (ofs32[0] == 0) {
+ 		if (ofs32[2]) { /* ACCELERATED KNOPPIX V1.0 */
+ 			while (n--) {
+ 				offsets[n].offset = __be64_to_cpu(offsets[n].offset);
+ 				offsets[n].size = ntohl(offsets[n].size);
++				offsets[n].flags = 0;
+ 			}
+ 			return (char *) "128BE accelerated knoppix 1.0";
+ 		}
+-		else { /* V2.0 */
+-			loff_t last = __be64_to_cpu(ofs64[n]);
+-			while (n--) {
++		else { /* V2.0/V4.0 */
++			loff_t last = CLOOP_BLOCK_OFFSET(__be64_to_cpu(ofs64[n]));
++			u_int32_t flags;
++			static char v4[11];
++			unsigned long i = n;
++
++			for (flags = 0; n-- ;) {
++				loff_t data = __be64_to_cpu(ofs64[n]); 
++
+ 				offsets[n].size = last - 
+-					(offsets[n].offset = __be64_to_cpu(ofs64[n])); 
++					(offsets[n].offset = CLOOP_BLOCK_OFFSET(data)); 
+ 				last = offsets[n].offset;
++				offsets[n].flags = CLOOP_BLOCK_FLAGS(data); 
++				flags |= 1 << offsets[n].flags;
++			}
++			if (flags < 2) return (char *) "64BE v2.0";
++			while (i--) {
++				if (offsets[i].flags == CLOOP_COMPRESSOR_LINK) {
++					offsets[i] = offsets[offsets[i].offset];
++				}
++			}
++			strcpy(v4, (char *) "64BE v4.0a");
++			v4[10] = 'a' + ((flags-1) & 0xF);	// compressors used
++			if (flags > 0x10) {			// with links ?
++				v4[10] += 'A' - 'a';
+ 			}
+-			return (char *) "64BE v2.0";
++			return v4;
+ 		}
+ 	}
+-	else if (ofs32[1] == 0) { /* V1.0 */
++	else if (ofs32[1] == 0 && v3_64 == 0) { /* V1.0 */
+ 		loff_t last = __le64_to_cpu(ofs64[n]);
+ 		while (n--) {
+ 			offsets[n].size = last - 
+ 				(offsets[n].offset = __le64_to_cpu(ofs64[n])); 
+ 			last = offsets[n].offset;
++			offsets[n].flags = 0;
+ 		}
+ 		return (char *) "64LE v1.0";
+ 	}
+@@ -93,25 +180,37 @@
+ 			offsets[n].size = last - 
+ 				(offsets[n].offset = ntohl(ofs32[n])); 
+ 			last = offsets[n].offset;
++			offsets[n].flags = 0;
+ 		}
+ 		return (char *) "32BE v0.68";
+ 	}
+ 	else { /* V3.0 */
+ 		unsigned long i;
+ 		loff_t j;
++		static char v3[11];
+ 		
++		v3_64 = (ofs32[1] == 0) ? 2 : 1;
+ 		for (i = n; i-- != 0; )
+-			offsets[i].size = ntohl(ofs32[i]); 
++			offsets[i].size = ntohl(ofs32[i*v3_64]); 
+ 		for (i = 0, j = sizeof(struct cloop_head); i < n; i++) {
+ 			offsets[i].offset = j;
++			offsets[i].flags = global_flags;
++			if ((offsets[i].size & 0x80000000) == 0) {
++				j += offsets[i].size;
++			}
++			else if (offsets[i].size == 0xFFFFFFFF) {
++				offsets[i].flags = CLOOP_COMPRESSOR_NONE;
++				j += offsets[i].size = block_size;
++			}
++		}
++		for (i = 0; i < n; i++) {
+ 			if (offsets[i].size & 0x80000000) {
+-				unsigned long k = offsets[i].size & 0x7FFFFFFF;
+-				offsets[i].offset = offsets[k].offset;
+-				offsets[i].size = offsets[k].size;
++				offsets[i] = offsets[offsets[i].size & 0x7FFFFFFF];
+ 			}
+-			else j += offsets[i].size;
+ 		}
+-		return (char *) "32BE v3.0";
++		strcpy(v3, (char *) (--v3_64) ? "64BE v3.0a" : "32BE v3.0a");
++		v3[10] += global_flags;
++		return v3;
+ 	}
+ }
+ 
+--- cloopreader.c
++++ cloopreader.c
+@@ -25,6 +25,8 @@
+ #include "debug.h"
+ #include "cloopreader.h"
+ 
++#include "cloopunpack.c"
++
+ int read_all(int fh, void* block, size_t size){
+     bfuncinfo("fh=%d block=0x%lx size=0x%lx",
+ 	    fh,(ulong)block,(ulong)size);
+@@ -50,18 +52,29 @@
+     bfuncinfo("fh=%d",fh);
+     c->fh=fh;
+     struct cloop_head head;
+-    OP(read_all(c->fh,&head,sizeof head));   /* read Header */
++    int v4_header_last, flags;
++    loff_t end;
++
++    for (v4_header_last=0;;v4_header_last++) {
++	OP(read_all(c->fh,&head,sizeof head));   /* read Header */
++	if (!memcmp(&head,"#!/bin/sh",9)) break;
++        if (v4_header_last) exit(1);
++	end = lseek(c->fh, 0, SEEK_END); 
++	OP(lseek(c->fh, end - sizeof(head), SEEK_SET)); 
++    }
+ 
+     c->numblocks=ntohl(head.num_blocks);
+     c->blocksize=ntohl(head.block_size);
+ 
+     bprintf("block_size=%lx  num_blocks=%x\n", c->blocksize, c->numblocks);
++    if (v4_header_last)
++	OP(lseek(c->fh, end - sizeof(head) - (sizeof(*c->toc) * c->numblocks), SEEK_SET)); 
+ 
+     ALLOC(c->pblock,c->blocksize);
+ 
+     if (c->numblocks + 1 == 0) {
+ 	struct cloop_tail tail;
+-	loff_t end = lseek(c->fh,0,SEEK_END); /* lseek(,-n,SEEK_END) buggy ? */
++	end = lseek(c->fh,0,SEEK_END); /* lseek(,-n,SEEK_END) buggy ? */
+ 	void *p;
+ 	ulong toclen, len; 
+ 
+@@ -70,21 +83,23 @@
+ 	c->numblocks = ntohl(tail.num_blocks);
+ 	c->tocsize = sizeof(*c->toc) * c->numblocks;
+ 	len = ntohl(tail.table_size);
+-	toclen = (ntohl(tail.index_size) & 255) * c->numblocks;
++	flags = CLOOP3_BLOCKS_FLAGS(ntohl(tail.index_size));
++	toclen = CLOOP3_INDEX_SIZE(ntohl(tail.index_size)) * c->numblocks;
+ 	OP(lseek(c->fh, end - sizeof(tail) - len, SEEK_SET));
+         ALLOC(c->toc, sizeof(*c->toc) * c->numblocks);
+         ALLOC(p,len);
+         OP(read_all(c->fh,p,len));  /* read Data Index */
+-	if (uncompress((void *)c->toc,&toclen,p,len) != Z_OK)
++	if (unpack[flags]((void *)c->toc,&toclen,p,len) != Z_OK)
+ 		exit(1);
+ 	free(p);
+     }
+     else {
++	flags = 0;
+ 	c->tocsize = sizeof(*c->toc) * c->numblocks;
+         ALLOC(c->toc,c->tocsize);
+         OP(read_all(c->fh,c->toc,c->tocsize));  /* read Data Index */
+     }
+-    build_index(c->toc, c->numblocks);
++    build_index(c->toc, c->numblocks, c->blocksize, flags);
+     c->cblocksizecur=0;
+     c->curblock=-1;
+     return 0;
+@@ -121,7 +136,8 @@
+ 	    "pblock=0x%lx &destlen=0x%lx cblock=0x%lx cblocksize=%lu\n",
+ 	    (ulong)c->pblock,(ulong)&destlen,(ulong)c->cblock,c->cblocksize
+ 	    );
+-    switch(uncompress(c->pblock,&destlen,c->cblock,c->cblocksize)){
++    if(c->toc[page].flags <= CLOOP_COMPRESSOR_MAX){
++      switch(unpack[c->toc[page].flags](c->pblock,&destlen,c->cblock,c->cblocksize)){
+ 	case Z_OK: break;
+ 	#define entry(x)\
+ 	case x: bprintf( #x"\n"); break; 
+@@ -130,7 +146,9 @@
+ 	entry(Z_DATA_ERROR)
+ 	#undef entry
+ 	default: bprintf("Z_UNKNOWN_ERROR\n");
++      }
+     }
++    else bprintf("Unsuppoted compression type\n");
+     if(destlen!=c->blocksize)bprintf("Size mismatch\n");
+     return 0;
+ }
+--- /dev/null
++++ cloopunpack.c
+@@ -0,0 +1,74 @@
++
++static int none_uncompress(Bytef *dest,  uLongf *destLen, const Bytef *source, uLongf sourceLen)
++{
++	memcpy(dest,source,*destLen = sourceLen);
++	return Z_OK;
++}
++
++#include <lzma.h>
++static int xz_uncompress(Bytef *dest,  uLongf *destLen, const Bytef *source, uLongf sourceLen)
++{
++        size_t src_pos = 0;
++        size_t dest_pos = 0;
++        uint64_t memlimit = 32*1024*1024;
++
++        lzma_ret res = lzma_stream_buffer_decode(&memlimit, 0, NULL,
++                        source, &src_pos, sourceLen, dest, &dest_pos, *destLen);
++
++        if(res == LZMA_OK && sourceLen == (int) src_pos) {
++                *destLen = dest_pos;
++		return Z_OK;
++	}
++        else return Z_ERRNO;
++}
++
++#include <lz4.h>
++static int lz4_uncompress(Bytef *dest,  uLongf *destLen, const Bytef *source, uLongf sourceLen)
++{
++	long size = LZ4_decompress_safe((const char *) source, (char *) dest, sourceLen, *destLen);
++
++	if (size < 0) return Z_ERRNO;
++        *destLen = size;
++	return Z_OK;
++}
++
++#include <lzo/lzo1x.h>
++static int lzo_uncompress(Bytef *dest,  uLongf *destLen, const Bytef *source, uLongf sourceLen)
++{
++	lzo_uint outlen = *destLen;
++
++	if (lzo1x_decompress_safe(source, sourceLen, dest, &outlen, NULL) == LZO_E_OK) {
++                *destLen = outlen;
++		return Z_OK;
++	}
++        else return Z_ERRNO;
++}
++
++#include <zstd.h>
++static int zstd_uncompress(Bytef *dest,  uLongf *destLen, const Bytef *source, uLongf sourceLen)
++{
++        const size_t res = ZSTD_decompress(dest, *destLen, source, sourceLen);
++
++        if (ZSTD_isError(res)) {
++                return Z_ERRNO;
++        }
++
++	*destLen = res;
++        return Z_OK;
++}
++
++#define CLOOP_COMPRESSOR_ZSTD  0x5
++
++#define CLOOP_COMPRESSOR_MAX CLOOP_COMPRESSOR_ZSTD
++
++#define CLOOP_COMPRESSOR_NAMES	"gzip","copy","xz","lz4","lzo","zstd"
++
++static int (*unpack[CLOOP_COMPRESSOR_MAX+1])(Bytef *dest,  uLongf *destLen, const Bytef *source, uLongf sourceLen) = {
++	uncompress,
++	none_uncompress,
++	xz_uncompress,
++	lz4_uncompress,
++	lzo_uncompress,
++	zstd_uncompress
++};
++
+--- extract_compressed_fs.c
++++ extract_compressed_fs.c
+@@ -3,14 +3,78 @@
+ #include "common_header.h"
+ #define CLOOP_PREAMBLE "#!/bin/sh\n" "#V2.0 Format\n" "modprobe cloop file=$0 && mount -r -t iso9660 /dev/cloop $1\n" "exit $?\n"
+ 
++#include "cloopunpack.c"
++static char *packnames[CLOOP_COMPRESSOR_MAX+1] = { CLOOP_COMPRESSOR_NAMES };
++
++static unsigned char *out;
++static unsigned long zblock_maxsize, block_size, num_blocks;
++static int handle, err;
++static unsigned char *buffer, *clear_buffer;
++static struct block_info *offsets;
++
++static uLongf get_block(unsigned int i, int argc)
++{
++	unsigned long len;
++	uLongf ulen;
++	int flags = offsets[i].flags;
++
++	if (flags > CLOOP_COMPRESSOR_MAX) {
++		fprintf(stderr, "Block %u: unsupported compression %d \n",
++			i, flags);
++		exit(1);
++	}
++
++	len = offsets[i].size;
++	if (len > zblock_maxsize) {
++		fprintf(stderr, 
++			"Size %lu for block %u (offset %Lu) too big\n",
++			len, i, offsets[i].offset);
++		exit(1);
++	}
++
++	if (lseek64(handle, offsets[i].offset, SEEK_SET) < 0) {
++		fprintf(stderr, "lseek to %Lu: %s\n",
++			offsets[i].offset, strerror(errno));
++		exit(1);
++	}
++                
++	read(handle, out = buffer, ulen = len);
++
++	if (flags != CLOOP_COMPRESSOR_ZLIB || argc <= 2) {
++		ulen = block_size;
++		err = unpack[flags](out = clear_buffer, &ulen, buffer, len);
++		if (err != Z_OK) {
++			fprintf(stderr, "Unpack %s block %u error %d \n",
++				packnames[flags], i, err);
++			exit(1);
++		}
++		if (ulen != block_size && i != num_blocks - 1) {
++			fprintf(stderr, "Uncomp %s: bad len %u (%lu not %lu)\n",
++				packnames[flags], i, ulen, block_size);
++			exit(1);
++		}
++		if (argc > 2) {
++			len = ulen;
++			ulen = zblock_maxsize;
++			err = compress2(out = buffer, &ulen, clear_buffer, len, Z_BEST_SPEED);
++			if (err != Z_OK) {
++				fprintf(stderr, "Compress %s block %u error %d \n",
++					packnames[flags], i, err);
++				exit(1);
++			}
++		}
++	}
++	return ulen;
++}
++
+ int main(int argc, char *argv[])
+ {
+-	int handle;
++	int flags;
+ 	struct cloop_head head;
+-	unsigned int i;
+-	unsigned long num_blocks, block_size, zblock_maxsize, lastlen = 0;
+-	unsigned char *buffer, *clear_buffer;
+-	struct block_info *offsets;
++	unsigned int i, v4_header_last, global_flags;
++	unsigned long n, len;
++	uLongf ulen;
++	loff_t end;
+ 
+ 	if (argc < 2 || argv[1][0] == '-') {
+ 		fprintf(stderr, "Usage: extract_compressed_fs file [--convert-to-v2] > output\n");
+@@ -23,23 +87,35 @@
+ 		exit(1);
+ 	}
+ 
+-	if (read(handle, &head, sizeof(head)) != sizeof(head)) {
+-		perror("Reading compressed file header\n");
++	for (v4_header_last=0;; v4_header_last++) {
++		if (read(handle, &head, sizeof(head)) != sizeof(head)) {
++			perror("Reading compressed file header\n");
++			exit(1);
++		}
++		if (!memcmp(&head,"#!/bin/sh",9)) break;
++		end = lseek64(handle, 0, SEEK_END);
++		lseek64(handle, end - sizeof(head), SEEK_SET);
++		if (v4_header_last == 0) continue;
++		perror("Not a cloop file\n");
+ 		exit(1);
+ 	}
+ 
+ 	num_blocks = ntohl(head.num_blocks);
+ 	block_size = ntohl(head.block_size);
+-	zblock_maxsize =  block_size + block_size/1000 + 12 + 4;
++	zblock_maxsize = GZIP_MAX_BUFFER(block_size);
+ 	buffer = malloc(zblock_maxsize);
+ 	clear_buffer = malloc(block_size);
+ 
++	if (v4_header_last) {
++		lseek64(handle, end - ((num_blocks+1) * sizeof(loff_t)) - sizeof(head), SEEK_SET);
++	}
++
+ 	if (num_blocks == 0xFFFFFFFF) {
+ 		void *table;
+ 		struct cloop_tail tail;
+-		unsigned long len, table_size;
+-		loff_t end = lseek64(handle, 0, SEEK_END);
++		unsigned long table_size;
+ 		
++		end = lseek64(handle, 0, SEEK_END);
+ 		if (lseek64(handle, end - sizeof(tail), SEEK_SET) < 0 ||
+ 		    read(handle, &tail, sizeof(tail)) != sizeof(tail) ||
+ 		    lseek64(handle, end - sizeof(tail) - 
+@@ -51,105 +127,108 @@
+ 		num_blocks = ntohl(head.num_blocks);
+ 		table_size = ntohl(tail.table_size);
+ 		table = malloc(table_size);
+-		len = i = num_blocks * (ntohl(tail.index_size) & 255);
+-		lastlen = ntohl(tail.index_size) / 256;
+-		offsets = malloc(num_blocks * sizeof(*offsets));
+-		if (!table || !offsets || 
+-		    read(handle, table, table_size) != table_size ||
+-		    uncompress((void *)offsets, &len, table, table_size) != Z_OK ||
+-		    len != i) {
++		len = num_blocks * CLOOP3_INDEX_SIZE(ntohl(tail.index_size));
++		global_flags = CLOOP3_BLOCKS_FLAGS(ntohl(tail.index_size));
++		if (global_flags > CLOOP_COMPRESSOR_MAX) {
++			fprintf(stderr, "Unsupported compression %d\n",
++				global_flags);
++			exit(1);
++		}
++		ulen = num_blocks * sizeof(*offsets);
++		offsets = malloc(ulen);
++		if (!table || !offsets || !buffer || !clear_buffer) {
++			fprintf(stderr,"Out of memory\n");
++			exit(1);
++		}
++		if (read(handle, table, table_size) != table_size) {
+ 			perror("Reading index\n");
+ 			exit(1);
+ 		}
++		err = unpack[global_flags]((void *) offsets, &ulen, table, table_size);
++		if (err != Z_OK) {
++			fprintf(stderr, "Unpack %s index error %d\n",
++				packnames[global_flags],err);
++			exit(1);
++		}
+ 		free(table);
+ 	}
+ 	else {
+-		offsets = malloc(i = num_blocks * sizeof(*offsets));
+-		if (!offsets || read(handle, offsets, i) != i) {
++		global_flags = 0;
++		len = num_blocks * sizeof(*offsets);
++		offsets = malloc(len);
++		if (v4_header_last) {
++			len = (num_blocks+1) * sizeof(loff_t);
++		}
++		if (!offsets || !buffer || !clear_buffer) {
++			fprintf(stderr,"Out of memory\n");
++			exit(1);
++		}
++		if (read(handle, offsets, len) != len) {
+ 			perror("Reading index\n");
+ 			exit(1);
+ 		}
+ 	}
+ 	
++	if (v4_header_last) {
++		lseek64(handle, 0, SEEK_SET);
++	}
++
+ 	fprintf(stderr, "%lu blocks of size %lu. Preamble:\n%s\n", 
+ 		num_blocks, block_size, head.preamble);
+-	fprintf(stderr, "Index %s.\n", build_index(offsets, num_blocks));
++#if 1
++	if (getenv("CLOOP_INDEX") != NULL) {
++		fprintf(stderr, "CLOOP_INDEX: binary\n");
++		write(STDOUT_FILENO, offsets, len);
++		exit(0);
++	}
++#endif
++	fprintf(stderr, "Index %s.\n", build_index(offsets, num_blocks, block_size, global_flags));
+ 	
++#if 1
++	if (getenv("CLOOP_TABLE") != NULL) {
++		fprintf(stderr, "CLOOP_TABLE ascii: offset, size, flags\n");
++		for (i = 0; i < num_blocks; i++) {
++			printf("%llu  %u  %u\n",
++				offsets[i].offset,
++				offsets[i].size,
++				offsets[i].flags);
++		}
++		exit(0);
++	}
++#endif
++
+ 	if (argc > 2) {
+-		unsigned n;
+-		loff_t data, offset = ((num_blocks + 1) * sizeof(offset)) + sizeof(head);
++		loff_t data, ofs = ((num_blocks + 1) * sizeof(ofs)) + sizeof(head);
+ 		
+ 		strcpy(head.preamble, CLOOP_PREAMBLE);
+ 		write(STDOUT_FILENO, &head, n = sizeof(head));
+ 		for (i = 0; i < num_blocks; i++) {
+-			data = __be64_to_cpu(offset);
++			data = __be64_to_cpu(ofs);
+ 			write(STDOUT_FILENO, &data, sizeof(data));
+ 			n += sizeof(data);
+-			offset += offsets[i].size;
++			if (offsets[i].flags == CLOOP_COMPRESSOR_ZLIB)
++				ofs += offsets[i].size;
++			else
++				ofs += get_block(i,argc);
+ 		}
+-		data = __be64_to_cpu(offset);
++		data = __be64_to_cpu(ofs);
+ 		write(STDOUT_FILENO, &data, sizeof(data));
+-		for (i = 0; i < num_blocks && lseek64(handle, offsets[i].offset, SEEK_SET) >= 0; i++) {
+-			read(handle, buffer, offsets[i].size);
+-			write(STDOUT_FILENO, buffer, offsets[i].size);
+-			n += offsets[i].size;
+-		}
++	}
++	for (i = 0; i < num_blocks; i++) {
++	
++		fprintf(stderr, "Block %u %s at %llu length %lu ",
++			i, packnames[offsets[i].flags], offsets[i].offset, offsets[i].size);
++		ulen = get_block(i, argc);
++		fprintf(stderr, " => %lu\n", ulen);
++		write(STDOUT_FILENO, out, ulen);
++		n += ulen;
++	}
++	if (argc > 2) {
+ 		n &= 0x1FF;
+ 		if (n) {
+ 			memset(buffer, 0, 512);
+ 			write(STDOUT_FILENO, buffer, 512 - n);
+ 		}
+-		return 0;
+-	}
+-	
+-	for (i = 0; i < num_blocks; i++) {
+-		unsigned long destlen = block_size;
+-		unsigned int size = offsets[i].size;
+-
+-		if (lseek64(handle, offsets[i].offset, SEEK_SET) < 0) {
+-			fprintf(stderr, "lseek to %Lu: %s\n",
+-				offsets[i].offset, strerror(errno));
+-			exit(1);
+-		}
+-                
+-		if (size > zblock_maxsize) {
+-			fprintf(stderr, 
+-				"Size %u for block %u (offset %Lu) too big\n",
+-				size, i, offsets[i].offset);
+-			exit(1);
+-		}
+-		read(handle, buffer, size);
+-
+-		fprintf(stderr, "Block %u at %llu length %u",
+-			i, offsets[i].offset, size);
+-		switch (uncompress(clear_buffer, &destlen,
+-				   buffer, size)) {
+-		case Z_OK:
+-			break;
+-
+-		case Z_MEM_ERROR:
+-			fprintf(stderr, "Uncomp: oom block %u\n", i);
+-			exit(1);
+-
+-		case Z_BUF_ERROR:
+-			fprintf(stderr, "Uncomp: not enough out room %u\n", i);
+-			exit(1);
+-
+-		case Z_DATA_ERROR:
+-			fprintf(stderr, "Uncomp: input corrupt %u\n", i);
+-			exit(1);
+-
+-		default:
+-			fprintf(stderr, "Uncomp: unknown error %u\n", i);
+-			exit(1);
+-		}
+-		fprintf(stderr, " => %lu\n", destlen);
+-		if (destlen != block_size && i != num_blocks - 1) {
+-			fprintf(stderr, "Uncomp: bad len %u (%lu not %lu)\n", i,
+-				destlen, block_size);
+-			exit(1);
+-		}
+-		write(STDOUT_FILENO, clear_buffer, (lastlen != 0 && (i+1) == num_blocks) ? lastlen : block_size);
+ 	}
+ 	return 0;
+ }
+--- create_compressed_fs.c
++++ create_compressed_fs.c
+@@ -7,10 +7,11 @@
+ #define ZMAX 9
+ static shrink_t level;
+ static int pass, iter;
+-static int best_compress(unsigned char *compressed,
+-			 unsigned long *compressed_len,
+-			 unsigned char *uncompressed,
+-			 unsigned long uncompressed_len)
++static int best_compress(Bytef *compressed,
++			uLongf *compressed_len,
++			const Bytef *uncompressed,
++			uLong uncompressed_len,
++			int dummy)
+ {
+ 	int i, j, err;
+ 	unsigned char *buf[2];
+@@ -19,6 +20,7 @@
+ 	static unsigned char *buffer;
+ 	static unsigned long buffersz;
+ 
++	(void) dummy;
+ 	if (buffersz < *compressed_len) {
+ 		if (buffer) free(buffer);
+ 		buffer = (unsigned char *)  malloc(buffersz = *compressed_len);
+@@ -50,9 +52,95 @@
+ 		memcpy(compressed, buffer, best);
+ 	return err;
+ }
+-#define compress2(a,b,c,d,e) best_compress(a,b,c,d)
++#else
++#include <stdlib.h>
++#include <string.h>
++#include <zlib.h>
+ #endif
++
++#include <lzma.h>
++static int xz_compress(Bytef *compressed,
++			uLongf *compressed_len,
++			const Bytef *uncompressed,
++			uLong uncompressed_len,
++			int level)
++{
++	int res = Z_ERRNO;
++	lzma_stream strm = LZMA_STREAM_INIT;
++
++	if (lzma_easy_encoder(&strm, LZMA_PRESET_DEFAULT, LZMA_CHECK_CRC32) == LZMA_OK) {
++
++		strm.next_in = uncompressed;
++		strm.avail_in = uncompressed_len;
++		strm.next_out = compressed;
++		strm.avail_out = *compressed_len;
++
++		if (lzma_code(&strm, LZMA_FINISH) == LZMA_STREAM_END) {
++
++			*compressed_len -= strm.avail_out;
++			res = Z_OK;
++		}
++	}
++	lzma_end(&strm);
++	return res;
++}
++
++#include <lz4.h>
++#include <lz4hc.h>
++#ifndef LZ4HC_CLEVEL_MAX
++#define LZ4HC_CLEVEL_MAX 12
++#endif
++static int lz4_compress(Bytef *compressed,
++			uLongf *compressed_len,
++			const Bytef *uncompressed,
++			uLong uncompressed_len,
++			int level)
++{
++	int res = LZ4_compress_HC((const char *) uncompressed, (char *) compressed,
++			 uncompressed_len, *compressed_len, LZ4HC_CLEVEL_MAX);
++	(void) level;
++	if (res <= 0) return Z_ERRNO;
++	*compressed_len = res;
++	return Z_OK;
++}
++
++static int setup_compress(Bytef *compressed,
++			uLongf *compressed_len,
++			const Bytef *uncompressed,
++			uLong uncompressed_len,
++			int level);
++
++static int (*compress3)(Bytef *compressed,
++			uLongf *compressed_len,
++			const Bytef *uncompressed,
++			uLong uncompressed_len,
++			int level) = setup_compress;
+                         
++static int setup_compress(Bytef *compressed,
++			uLongf *compressed_len,
++			const Bytef *uncompressed,
++			uLong uncompressed_len,
++			int level)
++{
++	char *s = getenv("CLOOP_COMP");
++	if (s && !strcmp(s,"XZ")) {
++		compress3 = xz_compress;
++	}
++	else if (s && !strcmp(s,"LZ4")) {
++		compress3 = lz4_compress;
++	}
++	else
++#ifdef FIND_BEST_COMPRESSION
++	if (s && !strcmp(s,"GZIP")) {
++		compress3 = compress2;
++	}
++	else compress3 = best_compress;
++#else
++	compress3 = compress2;
++#endif
++	return compress3(compressed,compressed_len,uncompressed,uncompressed_len,level);
++}
++
+ #include <signal.h>
+ 
+ /* Creates a compressed file */
+@@ -82,9 +170,7 @@
+ 	return i;
+ }
+ 
+-#ifdef FIND_BEST_COMPRESSION
+ #include "md5sum.c"
+-#endif
+ 
+ static unsigned n;
+ static unsigned long lastlen, pos;
+@@ -96,15 +182,23 @@
+ 	static char padding[512];
+ 	struct cloop_tail tail;
+ 	unsigned long len;
++	int flags = 0;
+ 
+-	fprintf(stderr, "Write index for %lu blocks\n", n);
++	fprintf(stderr, "Write index for %u blocks\n", n);
+ 	if (block_size >= 0x1000000) lastlen = 0;
+-	tail.index_size = ntohl(sizeof(*block_index) + 256*(lastlen % 0xFFffFF));
++	if (sig) flags = 0x80;
++	if (compress3 == xz_compress) {
++		flags |= (CLOOP_COMPRESSOR_XZ << 4);
++	}
++	if (compress3 == lz4_compress) {
++		flags |= (CLOOP_COMPRESSOR_LZ4 << 4);
++	}
++	tail.index_size = ntohl(sizeof(*block_index) + flags + 256*(lastlen % 0xFFffFF));
+ 	tail.num_blocks = ntohl(n);
+ 	n *= sizeof(*block_index);
+-	len = n + n/1000 + 12;
++	len = GZIP_MAX_BUFFER(n);
+ 	compressed = (unsigned char *) realloc(compressed, len);
+-	if (!compressed || compress2(compressed, &len, (unsigned char *) block_index,
++	if (!compressed || compress3(compressed, &len, (unsigned char *) block_index,
+ 				     n, Z_BEST_SPEED) != Z_OK)
+ 		quit("Index compression failed");
+ 	tail.table_size = ntohl(len);
+@@ -122,11 +216,10 @@
+ 	unsigned char *uncompressed;
+ 	unsigned long len;
+ 	unsigned indexmax, zlenmax;
+-#ifdef FIND_BEST_COMPRESSION
+-	unsigned i, j, hashmax;
++	unsigned i, j, hashmax, domd5;
+ 	md5hash *hash;
+-#endif
+ 	
++	domd5 = getenv("CLOOP_NOMD5") == NULL;
+ #ifdef FIND_BEST_COMPRESSION
+ 	while (argc > 1) {
+ 		if (argv[1][0] == '-') {
+@@ -141,11 +234,11 @@
+ 		}
+ 		argc--;
+ 		if (argv[1][0] < '0' || argv[1][0] > '9')
+-			quit("Usage : create_compressed_fs [-n <pass>][ -i <iter>] [block size] < input > output");
++			quit("Usage : [CLOOP_COMP=XZ|GZIP|LZ4] [CLOOP_NOMD5] create_compressed_fs [-n <pass>][ -i <iter>] [block size] < input > output");
+ #else
+ 	if (argc > 1) {
+ 		if (argv[1][0] < '0' || argv[1][0] > '9')
+-			quit("Usage : create_compressed_fs [block size] < input > output");
++			quit("Usage : [CLOOP_COMP=XZ|LZ4] [CLOOP_NOMD5=1] create_compressed_fs [block size] < input > output");
+ #endif
+ 		block_size = atoi(argv[1]);
+ 	}
+@@ -164,12 +257,8 @@
+ 	compressed = (unsigned char *) malloc(zlenmax);
+ 	uncompressed = (unsigned char *) malloc(block_size);
+ 	block_index = (u_int32_t *) malloc(indexmax = CHUNK);
+-#ifdef FIND_BEST_COMPRESSION
+ 	hash = (md5hash *) malloc(hashmax = CHUNK);
+ 	if (!compressed || !uncompressed || !block_index || !hash)
+-#else
+-	if (!compressed || !uncompressed || !block_index)
+-#endif
+ 		quit("Malloc failed");
+ 	
+ 	signal(SIGINT,flush_index);
+@@ -184,39 +273,42 @@
+ 			if (!block_index)
+ 				quit("Realloc");
+ 		}
+-#ifdef FIND_BEST_COMPRESSION
+-		if (n * sizeof(*hash) >= hashmax) {
+-			hash = (md5hash *) realloc(hash, hashmax += CHUNK);
+-			if (!hash)
+-				quit("Realloc hash");
+-		}
+-		hash[n] = md5sum(uncompressed, len);
+-		j = 0x7FFFFFFF;
+-		if (n < j)
+-			j = n;
+-		for (i = 0; i < j; i++) {
+-			if (* (uint32_t *) &hash[i] == * (uint32_t *) &hash[n]
+-			    && !memcmp(&hash[i],&hash[n],sizeof(*hash)))
+-				break;
+-		}
+-		if (i != j) {
+-			block_index[n] = ntohl(0x80000000 | i);
+-			fprintf(stderr, "Block %u length %lu => duplicate %lu\n",
+-				n, block_size, i);
++		if (domd5) {
++			if (n * sizeof(*hash) >= hashmax) {
++				hash = (md5hash *) realloc(hash, hashmax += CHUNK);
++				if (!hash)
++					quit("Realloc hash");
++			}
++			hash[n] = md5sum(uncompressed, len);
++			j = 0x7FFFFFFF;
++			if (n < j)
++				j = n;
++			for (i = 0; i < j; i++) {
++				if (* (uint32_t *) &hash[i] == * (uint32_t *) &hash[n]
++				    && !memcmp(&hash[i],&hash[n],sizeof(*hash)))
++					break;
++			}
++			if (i != j) {
++				block_index[n] = ntohl(0x80000000 | i);
++				fprintf(stderr, "Block %u length %lu => duplicate %u\n",
++					n, block_size, i);
++				continue;
++			}
+ 		}
+-		else
+-#endif
+-		{
+-			len = zlenmax;
+-			if (compress2(compressed, &len, uncompressed, lastlen, 
+-					Z_BEST_SPEED) != Z_OK)
+-				quit("Compression failed");
+-			fprintf(stderr, "Block %u length %lu => %lu\n",
+-				n, block_size, len);
+-			write(STDOUT_FILENO, compressed, len);
+-			pos += len;
++		len = zlenmax;
++		if (compress3(compressed, &len, uncompressed, lastlen, 
++				Z_BEST_SPEED) != Z_OK || len >= lastlen) {
++			len = lastlen;
++			block_index[n] = ntohl(0xFFFFFFFF);
++			write(STDOUT_FILENO, uncompressed, len);
++		}
++		else {
+ 			block_index[n] = ntohl(len);
++			write(STDOUT_FILENO, compressed, len);
+ 		}
++		fprintf(stderr, "Block %u length %lu => %lu\n",
++			n, block_size, len);
++		pos += len;
+ 	}
+ 	flush_index(0);
+ 	return 0;
+--- compressed_loop.h
++++ compressed_loop.h
+@@ -92,9 +92,8 @@
+ struct cloop_tail
+ {
+ 	u_int32_t table_size; 
+-	u_int32_t index_size; /* size:4 comp:3 ctrl-c:1 lastlen:24 */
++	u_int32_t index_size; /* size:4 unused:3 ctrl-c:1 lastlen:24 */
+ #define CLOOP3_INDEX_SIZE(x)    ((unsigned int)((x) & 0xF))
+-#define CLOOP3_BLOCKS_FLAGS(x)  ((unsigned int)((x) & 0x70) >> 4)
+ #define CLOOP3_TRUNCATED(x)     ((unsigned int)((x) & 0x80) >> 7)
+ #define CLOOP3_LASTLEN(x)       (unsigned int)((x) >> 8)
+ 	u_int32_t num_blocks;
+@@ -107,12 +106,12 @@
+ 	loff_t offset;		/* 64-bit offsets of compressed block */
+ 	u_int32_t size;		/* 32-bit compressed block size */
+ 	u_int32_t flags;	/* 32-bit compression flags */
+-
+ };
+ 
+-static inline char *build_index(struct block_info *offsets, unsigned long n, 
+-			unsigned long block_size, unsigned global_flags)
++static inline char *build_index(struct block_info *offsets, unsigned long n, unsigned long block_size) 
+ {
++	static char v[sizeof("64BE v4.0a")];
++	u_int32_t flags;
+ 	u_int32_t *ofs32 = (u_int32_t *) offsets;
+ 	loff_t    *ofs64 = (loff_t *) offsets;
+ 
+@@ -137,8 +136,6 @@
+ 		}
+ 		else { /* V2.0/V4.0 */
+ 			loff_t last = CLOOP_BLOCK_OFFSET(__be64_to_cpu(ofs64[n]));
+-			u_int32_t flags;
+-			static char v4[11];
+ 			unsigned long i = n;
+ 
+ 			for (flags = 0; n-- ;) {
+@@ -156,12 +153,7 @@
+ 					offsets[i] = offsets[offsets[i].offset];
+ 				}
+ 			}
+-			strcpy(v4, (char *) "64BE v4.0a");
+-			v4[10] = 'a' + ((flags-1) & 0xF);	// compressors used
+-			if (flags > 0x10) {			// with links ?
+-				v4[10] += 'A' - 'a';
+-			}
+-			return v4;
++			strcpy(v, (char *) "64BE v4.0a");
+ 		}
+ 	}
+ 	else if (ofs32[1] == 0 && v3_64 == 0) { /* V1.0 */
+@@ -174,44 +166,50 @@
+ 		}
+ 		return (char *) "64LE v1.0";
+ 	}
+-	else if (ntohl(ofs32[0]) == (4*n) + 0x8C) { /* V0.68 */
+-		loff_t last = ntohl(ofs32[n]);
+-		while (n--) {
+-			offsets[n].size = last - 
+-				(offsets[n].offset = ntohl(ofs32[n])); 
+-			last = offsets[n].offset;
+-			offsets[n].flags = 0;
+-		}
+-		return (char *) "32BE v0.68";
+-	}
+-	else { /* V3.0 */
++	else { /* V3.0 or V0.68 */
+ 		unsigned long i;
+ 		loff_t j;
+-		static char v3[11];
+ 		
+-		v3_64 = (ofs32[1] == 0) ? 2 : 1;
+-		for (i = n; i-- != 0; )
+-			offsets[i].size = ntohl(ofs32[i*v3_64]); 
++		for (i = 0; i < n && ntohl(ofs32[i]) < ntohl(ofs32[i+1]); i++);
++		if (i == n && ntohl(ofs32[0]) == (4*n) + 0x8C) { /* V0.68 */
++			loff_t last = ntohl(ofs32[n]);
++			while (n--) {
++				offsets[n].size = last - 
++					(offsets[n].offset = ntohl(ofs32[n])); 
++				last = offsets[n].offset;
++				offsets[n].flags = 0;
++			}
++			return (char *) "32BE v0.68";
++		}
++		
++		v3_64 = (ofs32[1] == 0);
++		for (i = n; i-- != 0; ) {
++			offsets[i].size = ntohl(ofs32[i << v3_64]); 
++			if (offsets[i].size == 0xFFFFFFFF) {
++				offsets[i].size = 0x10000000 | block_size;
++			}
++			offsets[i].flags = (offsets[i].size >> 28);
++			offsets[i].size &= 0x0FFFFFFF; 
++		}
+ 		for (i = 0, j = sizeof(struct cloop_head); i < n; i++) {
+ 			offsets[i].offset = j;
+-			offsets[i].flags = global_flags;
+-			if ((offsets[i].size & 0x80000000) == 0) {
++			if (offsets[i].flags < 8) {
+ 				j += offsets[i].size;
+ 			}
+-			else if (offsets[i].size == 0xFFFFFFFF) {
+-				offsets[i].flags = CLOOP_COMPRESSOR_NONE;
+-				j += offsets[i].size = block_size;
+-			}
+ 		}
+ 		for (i = 0; i < n; i++) {
+-			if (offsets[i].size & 0x80000000) {
+-				offsets[i] = offsets[offsets[i].size & 0x7FFFFFFF];
++			flags |= 1 << offsets[i].flags;
++			if (offsets[i].flags >= 8) {
++				offsets[i] = offsets[offsets[i].size];
+ 			}
+ 		}
+-		strcpy(v3, (char *) (--v3_64) ? "64BE v3.0a" : "32BE v3.0a");
+-		v3[10] += global_flags;
+-		return v3;
++		strcpy(v, (char *) (v3_64) ? "64BE v3.0a" : "32BE v3.0a");
++	}
++	v[9] = 'a' + ((flags-1) & 0xF);	// compressors used
++	if (flags > 0x10) {			// with links ?
++		v[9] += 'A' - 'a';
+ 	}
++	return v;
+ }
+ 
+ /* Cloop suspend IOCTL */
+--- cloopreader.c
++++ cloopreader.c
+@@ -52,7 +52,7 @@
+     bfuncinfo("fh=%d",fh);
+     c->fh=fh;
+     struct cloop_head head;
+-    int v4_header_last, flags;
++    int v4_header_last;
+     loff_t end;
+ 
+     for (v4_header_last=0;;v4_header_last++) {
+@@ -83,23 +83,21 @@
+ 	c->numblocks = ntohl(tail.num_blocks);
+ 	c->tocsize = sizeof(*c->toc) * c->numblocks;
+ 	len = ntohl(tail.table_size);
+-	flags = CLOOP3_BLOCKS_FLAGS(ntohl(tail.index_size));
+ 	toclen = CLOOP3_INDEX_SIZE(ntohl(tail.index_size)) * c->numblocks;
+ 	OP(lseek(c->fh, end - sizeof(tail) - len, SEEK_SET));
+         ALLOC(c->toc, sizeof(*c->toc) * c->numblocks);
+         ALLOC(p,len);
+         OP(read_all(c->fh,p,len));  /* read Data Index */
+-	if (unpack[flags]((void *)c->toc,&toclen,p,len) != Z_OK)
++	if (unpack[CLOOP_COMPRESSOR_ZLIB]((void *)c->toc,&toclen,p,len) != Z_OK)
+ 		exit(1);
+ 	free(p);
+     }
+     else {
+-	flags = 0;
+ 	c->tocsize = sizeof(*c->toc) * c->numblocks;
+         ALLOC(c->toc,c->tocsize);
+         OP(read_all(c->fh,c->toc,c->tocsize));  /* read Data Index */
+     }
+-    build_index(c->toc, c->numblocks, c->blocksize, flags);
++    build_index(c->toc, c->numblocks, c->blocksize);
+     c->cblocksizecur=0;
+     c->curblock=-1;
+     return 0;
+--- create_compressed_fs.c
++++ create_compressed_fs.c
+@@ -58,6 +58,9 @@
+ #include <zlib.h>
+ #endif
+ 
++/* Creates a compressed file */
++#include "common_header.h"
++
+ #include <lzma.h>
+ static int xz_compress(Bytef *compressed,
+ 			uLongf *compressed_len,
+@@ -78,6 +81,7 @@
+ 		if (lzma_code(&strm, LZMA_FINISH) == LZMA_STREAM_END) {
+ 
+ 			*compressed_len -= strm.avail_out;
++			*compressed_len |= (CLOOP_COMPRESSOR_XZ << 28);
+ 			res = Z_OK;
+ 		}
+ 	}
+@@ -101,6 +105,7 @@
+ 	(void) level;
+ 	if (res <= 0) return Z_ERRNO;
+ 	*compressed_len = res;
++	*compressed_len |= (CLOOP_COMPRESSOR_LZ4 << 28);
+ 	return Z_OK;
+ }
+ 
+@@ -143,9 +148,6 @@
+ 
+ #include <signal.h>
+ 
+-/* Creates a compressed file */
+-#include "common_header.h"
+-
+ #define CLOOP_PREAMBLE "#!/bin/sh\n" "#V3.0 Format\n" "modprobe cloop file=$0 && mount -r -t iso9660 /dev/cloop $1\n" "exit $?\n"
+ #define CHUNK 65536
+ #define DEFAULT_BLOCKSIZE 65536
+@@ -179,7 +181,6 @@
+ static unsigned long block_size = 0;
+ static void flush_index(int sig)
+ {
+-	static char padding[512];
+ 	struct cloop_tail tail;
+ 	unsigned long len;
+ 	int flags = 0;
+@@ -187,24 +188,21 @@
+ 	fprintf(stderr, "Write index for %u blocks\n", n);
+ 	if (block_size >= 0x1000000) lastlen = 0;
+ 	if (sig) flags = 0x80;
+-	if (compress3 == xz_compress) {
+-		flags |= (CLOOP_COMPRESSOR_XZ << 4);
+-	}
+-	if (compress3 == lz4_compress) {
+-		flags |= (CLOOP_COMPRESSOR_LZ4 << 4);
+-	}
+ 	tail.index_size = ntohl(sizeof(*block_index) + flags + 256*(lastlen % 0xFFffFF));
+ 	tail.num_blocks = ntohl(n);
+ 	n *= sizeof(*block_index);
+ 	len = GZIP_MAX_BUFFER(n);
+ 	compressed = (unsigned char *) realloc(compressed, len);
+-	if (!compressed || compress3(compressed, &len, (unsigned char *) block_index,
++#ifdef FIND_BEST_COMPRESSION
++	if (!compressed || best_compress(compressed, &len, (unsigned char *) block_index,
++#else
++	if (!compressed || compress2(compressed, &len, (unsigned char *) block_index,
++#endif
+ 				     n, Z_BEST_SPEED) != Z_OK)
+ 		quit("Index compression failed");
+ 	tail.table_size = ntohl(len);
+ 	pos += len + sizeof(tail);
+ 	n = pos & 511;
+-	// if (n) write(STDOUT_FILENO, padding, 512 - n);
+ 	write(STDOUT_FILENO, compressed, len);
+ 	write(STDOUT_FILENO, &tail, sizeof(tail));
+ 	exit(sig != 0);
+@@ -242,7 +240,7 @@
+ #endif
+ 		block_size = atoi(argv[1]);
+ 	}
+-	if (block_size < 4096)
++	if (block_size < 4096 || block_size > 0x0FFFFFFF)
+ 		block_size = DEFAULT_BLOCKSIZE;
+ 	fprintf(stderr, "Block size is %lu\n", block_size);
+ 	zlenmax = block_size + block_size/1000 + 12;
+@@ -280,7 +278,7 @@
+ 					quit("Realloc hash");
+ 			}
+ 			hash[n] = md5sum(uncompressed, len);
+-			j = 0x7FFFFFFF;
++			j = 0x0FFFFFFF;
+ 			if (n < j)
+ 				j = n;
+ 			for (i = 0; i < j; i++) {
+@@ -289,7 +287,7 @@
+ 					break;
+ 			}
+ 			if (i != j) {
+-				block_index[n] = ntohl(0x80000000 | i);
++				block_index[n] = ntohl((CLOOP_COMPRESSOR_LINK << 28) | i);
+ 				fprintf(stderr, "Block %u length %lu => duplicate %u\n",
+ 					n, block_size, i);
+ 				continue;
+@@ -297,14 +295,14 @@
+ 		}
+ 		len = zlenmax;
+ 		if (compress3(compressed, &len, uncompressed, lastlen, 
+-				Z_BEST_SPEED) != Z_OK || len >= lastlen) {
++				Z_BEST_SPEED) != Z_OK || (len & 0x0FFFFFFF) >= lastlen) {
+ 			len = lastlen;
+-			block_index[n] = ntohl(0xFFFFFFFF);
++			block_index[n] = ntohl((CLOOP_COMPRESSOR_NONE << 28) | lastlen);
+ 			write(STDOUT_FILENO, uncompressed, len);
+ 		}
+ 		else {
+ 			block_index[n] = ntohl(len);
+-			write(STDOUT_FILENO, compressed, len);
++			write(STDOUT_FILENO, compressed, len &= 0x0FFFFFFF);
+ 		}
+ 		fprintf(stderr, "Block %u length %lu => %lu\n",
+ 			n, block_size, len);
+--- extract_compressed_fs.c
++++ extract_compressed_fs.c
+@@ -69,9 +69,8 @@
+ 
+ int main(int argc, char *argv[])
+ {
+-	int flags;
+ 	struct cloop_head head;
+-	unsigned int i, v4_header_last, global_flags;
++	unsigned int i, v4_header_last;
+ 	unsigned long n, len;
+ 	uLongf ulen;
+ 	loff_t end;
+@@ -128,12 +127,6 @@
+ 		table_size = ntohl(tail.table_size);
+ 		table = malloc(table_size);
+ 		len = num_blocks * CLOOP3_INDEX_SIZE(ntohl(tail.index_size));
+-		global_flags = CLOOP3_BLOCKS_FLAGS(ntohl(tail.index_size));
+-		if (global_flags > CLOOP_COMPRESSOR_MAX) {
+-			fprintf(stderr, "Unsupported compression %d\n",
+-				global_flags);
+-			exit(1);
+-		}
+ 		ulen = num_blocks * sizeof(*offsets);
+ 		offsets = malloc(ulen);
+ 		if (!table || !offsets || !buffer || !clear_buffer) {
+@@ -144,16 +137,15 @@
+ 			perror("Reading index\n");
+ 			exit(1);
+ 		}
+-		err = unpack[global_flags]((void *) offsets, &ulen, table, table_size);
++		err = unpack[CLOOP_COMPRESSOR_ZLIB]((void *) offsets, &ulen, table, table_size);
+ 		if (err != Z_OK) {
+ 			fprintf(stderr, "Unpack %s index error %d\n",
+-				packnames[global_flags],err);
++				packnames[CLOOP_COMPRESSOR_ZLIB],err);
+ 			exit(1);
+ 		}
+ 		free(table);
+ 	}
+ 	else {
+-		global_flags = 0;
+ 		len = num_blocks * sizeof(*offsets);
+ 		offsets = malloc(len);
+ 		if (v4_header_last) {
+@@ -182,7 +174,7 @@
+ 		exit(0);
+ 	}
+ #endif
+-	fprintf(stderr, "Index %s.\n", build_index(offsets, num_blocks, block_size, global_flags));
++	fprintf(stderr, "Index %s.\n", build_index(offsets, num_blocks, block_size));
+ 	
+ #if 1
+ 	if (getenv("CLOOP_TABLE") != NULL) {

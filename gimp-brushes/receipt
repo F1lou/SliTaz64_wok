@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="gimp-brushes"
+VERSION="2.8.20"
+CATEGORY="graphics"
+SHORT_DESC="Gimp brushes set."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WANTED="gimp"
+WEB_SITE="https://www.gimp.org/"
+
+DEPENDS="gimp"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/gimp/2.0
+	cp -a $install/usr/share/gimp/2.0/brushes $fs/usr/share/gimp/2.0
+	rm -rf $fs/usr/share/gimp/2.0/brushes/Basic
+}

@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="ttf-mgopen"
+VERSION="1.1"
+CATEGORY="fonts"
+SHORT_DESC="TrueType fonts containing glyphs for the Latin and Greek alphabet"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="other"
+WEB_SITE="https://web.archive.org/web/20130719135032/http://pub.ellak.gr/fonts/mgopen/"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="ftp://ftp.fr.freebsd.org/mirrors/ftp.freebsd.org/ports/distfiles/MgOpen.tar.gz"
+TAGS="font ttf"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	TTFDIR=$fs/usr/share/fonts/TTF/MgOpen
+	mkdir -p $TTFDIR
+	install -m644 $src/*.ttf $TTFDIR
+}

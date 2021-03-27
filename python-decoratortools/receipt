@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="python-decoratortools"
+VERSION="1.8"
+CATEGORY="development"
+SHORT_DESC="Class, function, and metaclass decorators"
+MAINTAINER="taziden@slitaz.org"
+LICENSE="PSL"
+SOURCE="DecoratorTools"
+TARBALL="$SOURCE-$VERSION.zip"
+WEB_SITE="http://pypi.python.org/pypi/DecoratorTools"
+WGET_URL="http://pypi.python.org/packages/source/D/$SOURCE/$TARBALL"
+TAGS="python"
+
+DEPENDS="python"
+BUILD_DEPENDS="python python-dev python-setuptools"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr $fs
+}

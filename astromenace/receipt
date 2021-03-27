@@ -1,0 +1,68 @@
+# SliTaz package receipt.
+
+PACKAGE="astromenace"
+VERSION="1.4.1"
+CATEGORY="games"
+TAGS="arcade game shooting space"
+SHORT_DESC="Hardcore 3D space shooter with spaceship upgrade possibilities."
+MAINTAINER="hackdorte@yandex.com"
+LICENSE="GPLv3"
+WEB_SITE="https://viewizard.com/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/viewizard/$PACKAGE/archive/v$VERSION.tar.gz"
+
+DEPENDS="freealut freetype gcc83-lib-base libogg libglu-mesa libsdl2 
+	libvorbis openal xorg-libXinerama"
+BUILD_DEPENDS="cmake freealut-dev freetype-dev gcc83 libglu-mesa-dev 
+	libogg-dev libsdl2-dev libvorbis-dev mesa-dev openal-dev 
+	xorg-libXinerama-dev libatomic"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export	CC=gcc-83
+	export	CXX=g++-83
+
+	cmake	.	\
+		-DCMAKE_BUILD_TYPE=Release &&
+	make
+#	./AstroMenace --pack --rawdata=./RAW_VFS_DATA
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	GAME="astromenace"
+	GAME_DIR="usr/games/$GAME"
+
+	mkdir -p $install/$GAME_DIR
+	chmod +x $src/$GAME
+
+	cp -a $src/$GAME			$install/$GAME_DIR
+	cp -a $src/share/astromenace_64.png	$install/$GAME_DIR
+	cp -a $src/share/astromenace_128.png	$install/$GAME_DIR
+	cp -a $src/CHANGELOG.md			$install/$GAME_DIR
+	cp -a $src/gamedata.vfs			$install/$GAME_DIR
+#	cp -a $src/gpl-3.0.txt			$install/$GAME_DIR
+
+	mkdir -p $install/usr/share/pixmaps
+	cp -a $src/share/astromenace_64.png	$install/usr/share/pixmaps/astromenace.png
+
+	mkdir -p $install/usr/share/applications
+cat > $install/usr/share/applications/astromenace.desktop << EOT
+[Desktop Entry]
+Type=Application
+Name=$GAME
+Exec=/$GAME_DIR/$GAME
+Icon=$PACKAGE
+Terminal=false
+X-MultipleArgs=false
+StartupNotify=false
+Categories=Game;ActionGame;
+
+EOT
+
+	cp -a $install/*	$fs
+
+}

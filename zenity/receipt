@@ -1,0 +1,46 @@
+# SliTaz package receipt.
+
+PACKAGE="zenity"
+VERSION="3.32.0"
+CATEGORY="development"
+TAGS="dialogs gui"
+SHORT_DESC="GUI dialogs."
+MAINTAINER="allan316@gmail.com"
+LICENSE="LGPL2"
+WEB_SITE="https://wiki.gnome.org/Projects/Zenity"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="http://ftp.gnome.org/pub/GNOME/sources/$PACKAGE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="gcc83-lib-base gtk+3 libglade libnotify"
+BUILD_DEPENDS="docbook-xsl gcc83 gnome-doc-utils-dev gtk+3-dev
+	intltool itstool libglade-dev pkg-config"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure				\
+		CC=gcc-83			\
+		CXX=g++-83			\
+		--prefix=/usr			\
+		--localstatedir=/var/lib	\
+		--disable-scrollkeeper		\
+		--infodir=/usr/share/info	\
+		--mandir=/usr/share/man		\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/share/zenity	$fs/usr/share
+#	cp -a $install/usr/share/omf	$fs/usr/share
+
+	# gdialog wrapper need to be executable.
+	chmod +x $fs/usr/bin/*
+}

@@ -1,0 +1,38 @@
+# SliTaz package receipt.
+
+PACKAGE="python-serial"
+VERSION="3.4"
+CATEGORY="development"
+SHORT_DESC="Multiplataform serial port module for python"
+MAINTAINER="claudinei@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="https://pypi.org/project/pyserial/"
+
+SOURCE="pyserial"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://files.pythonhosted.org/packages/source/${SOURCE:0:1}/$SOURCE/$TARBALL"
+
+DEPENDS="python"
+BUILD_DEPENDS="python python-dev python-setuptools"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+
+	for file in `find $install | grep 'pyc$'`
+	  do
+		rm $file
+	  done
+
+	cp -a $install/usr/bin	$fs/usr
+	cp -a $install/usr/lib	$fs/usr
+}

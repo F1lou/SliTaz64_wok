@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="tazinst-gui"
+VERSION="110"
+CATEGORY="base-system"
+SHORT_DESC="SliTaz installer (GUI frontend)"
+MAINTAINER="domcox@slitaz.org"
+LICENSE="GPL3"
+WANTED="tazinst"
+WEB_SITE="http://www.slitaz.org/"
+TAGS="slitaz"
+
+DEPENDS="tazpanel tazinst syslinux syslinux-extra"
+SIBLINGS="tazinst"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+#
+genpkg_rules()
+{
+	cp -a $install/var $fs
+	chmod -R 0755 $fs/var/www/
+	chown -R root.root $fs
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/share/applications $fs/usr/share
+	cp -a $install/usr/share/locale $fs/usr/share
+	cd $fs/usr/share/locale
+	for lang in *; do
+		rm -f $lang/*/slitaz-installer.mo
+		rm -f $lang/*/tazinst.mo
+	done
+}

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=MySQL Databases
+Name[fr]=Bases de données MySQL
+Icon=b_sql
+Exec=browser http://127.0.0.1/phpmyadmin/
+Type=Application
+Categories=Development;

@@ -1,0 +1,52 @@
+# SliTaz package receipt.
+
+PACKAGE="libxml2"
+VERSION="2.9.10"
+CATEGORY="system-tools"
+SHORT_DESC="XML C parser and toolkit."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="http://xmlsoft.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="ftp://xmlsoft.org/libxml2/$TARBALL"
+
+DEPENDS="zlib"
+BUILD_DEPENDS="autoconf automake libtool python-dev zlib-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# When cross compiling Python is installed in chroot and is used
+# by cross tools, cook dont need to install it in /usr/cross/arm
+# Building with LZMA support is buggy and build fails
+case "$ARCH" in
+	arm)
+		BUILD_DEPENDS="" 
+		ARCH_ARGS="--without-lzma" ;;
+esac
+
+# Rules to configure and make the package.
+#
+# Note: libxml2 can be build using option --with-minimum
+# and binaries are splited into libxml2-tools
+compile_rules()
+{
+	autoreconf -fi &&
+	./configure				\
+		--prefix=/usr			\
+		--infodir=/usr/share/info	\
+		--mandir=/usr/share/man		\
+		--with-html-dir=/usr/share/doc	\
+		--with-threads			\
+		--with-history			\
+	$CONFIGURE_ARGS $ARCH_ARGS &&
+	make -j 1 &&
+	make DESTDIR=$DESTDIR install 2>&1 | grep -v "can't stat './..html':"
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+}

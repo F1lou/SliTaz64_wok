@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="cairo-clock"
+VERSION="0.3.4"
+CATEGORY="x-window"
+SHORT_DESC="Nice analog clock displaying the system-time."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://web.archive.org/web/20120101103112/http://macslow.thepimp.net:80/?page_id=23"
+#WGET_URL="http://macslow.thepimp.net/projects/cairo-clock/$TARBALL"
+WGET_URL="http://ftp.de.debian.org/debian/pool/main/c/$PACKAGE/${PACKAGE}_$VERSION.orig.tar.gz"
+
+DEPENDS="gtk+ cairo librsvg xorg-xcompmgr libglade libgsf"
+BUILD_DEPENDS="intltool gtk+ cairo-dev librsvg-dev libglade-dev libgsf-dev \
+libcroco gcc3"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure CC=gcc-3 $CONFIGURE_ARGS && 
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/$PACKAGE/themes
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/$PACKAGE/glade \
+		$fs/usr/share/$PACKAGE
+	cp -a $install/usr/share/$PACKAGE/themes/default \
+		$fs/usr/share/$PACKAGE/themes
+}

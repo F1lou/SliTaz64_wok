@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="python-html5lib"
+VERSION="1.0.1"
+CATEGORY="development"
+SHORT_DESC="Standards-compliant library for parsing HTML documents in Python."
+MAINTAINER="claudinei@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://github.com/html5lib/html5lib-python"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/archive/$VERSION.tar.gz"
+
+DEPENDS="python python-six"
+BUILD_DEPENDS="python-dev python-setuptools"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr	$fs
+}

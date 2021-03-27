@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="mplayer-skins"
+VERSION="1.1"
+CATEGORY="multimedia"
+SHORT_DESC="MPlayer skin selection for SliTaz."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://www.mplayerhq.hu/design7/news.html"
+
+DEPENDS="mplayer"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/mplayer/skins
+	for i in $stuff/*.tar.bz2
+	do
+		tar xjf $i -C $fs/usr/share/mplayer/skins
+	done
+}

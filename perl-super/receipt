@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-super"
+VERSION="1.20190531"
+CATEGORY="development"
+SHORT_DESC="Perl extension SUPER."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL"
+WEB_SITE="https://metacpan.org/release/SUPER"
+
+SOURCE="SUPER"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://www.cpan.org/modules/by-module/SUPER/$TARBALL"
+
+DEPENDS="perl"
+BUILD_DEPENDS="$DEPENDS"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	perl Makefile.PL &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib	$fs/usr
+}

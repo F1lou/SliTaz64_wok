@@ -1,0 +1,66 @@
+# SliTaz package receipt.
+
+PACKAGE="nano"
+VERSION="4.8"
+CATEGORY="utilities"
+TAGS="text-editor"
+SHORT_DESC="Nano Text Editor."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://nano-editor.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}dist/v${VERSION%.*}/$TARBALL"
+
+SUGGESTED="gpm"
+DEPENDS="ncursesw zlib"
+BUILD_DEPENDS="groff ncursesw-dev zlib-dev"
+SPLIT="nano-doc"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Handle cross compilation
+case "$ARCH" in
+	arm*) BUILD_DEPENDS="ncursesw-dev zlib-dev" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# no longer supported in 4.2
+	#	--disable-wrapping-as-root 
+
+	./configure			\
+		--sysconfdir=/etc	\
+		--localstatedir=/var	\
+		--enable-utf8		\
+		$CONFIGURE_ARGS		\
+		$ARCH_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/*	$fs
+	rm -r			$fs/usr/share/doc
+	rm -r			$fs/usr/share/locale
+	rm -r			$fs/usr/share/man
+
+	# Configuration file.
+	mkdir -p $fs/etc
+	cp $src/doc/sample.nanorc	$fs/etc/nanorc
+
+	cd $fs
+	patch --input=$stuff/patches/nanorc.patch \
+		etc/nanorc
+	patch --input=$stuff/patches/sh.nanorc-$VERSION \
+		usr/share/nano/sh.nanorc
+
+	# Shrink
+	for i in $fs/usr/share/nano/*.nanorc
+	  do
+		sed -i '/^#/d;/^$/d' $i
+	done
+}

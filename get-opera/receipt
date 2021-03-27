@@ -1,0 +1,18 @@
+# SliTaz package receipt.
+
+PACKAGE="get-opera"
+VERSION="1.00"
+CATEGORY="non-free"
+SHORT_DESC="Get Opera Web browser."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="http://www.opera.com/"
+TAGS="browser"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp $stuff/get-opera $fs/usr/bin
+}
+

@@ -1,0 +1,55 @@
+# SliTaz package receipt.
+
+PACKAGE="netatalk"
+VERSION="2.2.3"
+CATEGORY="system-tools"
+SHORT_DESC="The AppleTalk Protocol Suite."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://netatalk.sourceforge.net/"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+CONFIG_FILES="/etc/netatalk/AppleVolumes.* /etc/netatalk/*.conf"
+
+DEPENDS="perl libdb libcrypto cups gnutls libgcrypt libgpg-error  \
+libwrap zlib libcomerr3"
+BUILD_DEPENDS="db-dev libcrypto-dev file"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	#sed -i  -e 's/pam =/pam_x =/' -e 's/USE_PAM, 1,/USE_PAM, 0,/' \
+	#	-e 's/pam_so =/pam_so_x =/' configure.in
+	./configure --without-pam --prefix=/usr --sysconfdir=/etc \
+	--libexecdir=/usr/lib/netatalk \
+	--mandir=/usr/share/man $CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share $fs/usr/lib
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/sbin $fs/usr
+	#cp -a $install/usr/lib/netatalk $fs/usr/lib
+	cp -a $install/etc $fs
+	cp -a $stuff/etc $fs
+	rm -f $fs/etc/netatalk/uams/*a
+}
+
+# Pre and post install commands for Tazpkg.
+post_install()
+{
+	cat <<EOF
+----
+To start $PACKAGE server you can run :
+
+    /etc/init.d/$PACKAGE start
+
+Or add $PACKAGE to RUN_DAEMONS in /etc/rcS.conf
+----
+EOF
+}

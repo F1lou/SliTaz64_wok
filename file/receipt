@@ -1,0 +1,55 @@
+# SliTaz package receipt.
+
+PACKAGE="file"
+VERSION="5.38"
+CATEGORY="system-tools"
+SHORT_DESC="Determines file type using 'magic' numbers."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="https://github.com/file/file"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="ftp://ftp.astron.com/pub/file/$TARBALL"
+
+DEPENDS="libmagic zlib"
+BUILD_DEPENDS="python python-setuptools zlib-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# @maintainer: Please, update also: libmagic, libmagic-dev, python-magic.
+
+# Handle cross compilation. python is installed in a ARM cook env.
+case "$ARCH" in
+	arm) BUILD_DEPENDS="" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's/, has_debug_info = 1/, has_debug_info = 0/' \
+		src/readelf.c
+
+	./configure				\
+		--datarootdir=/usr/share	\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make install &&
+	cd python &&
+	python setup.py build &&
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/share/misc	$fs/usr/share
+}
+
+# Be sure it as cross compile.
+testsuite()
+{
+	readelf -h $install/usr/bin/file
+}

@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="gnupg"
+VERSION="2.2.19"
+CATEGORY="security"
+SHORT_DESC="Free implementation of the OpenPGP."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://www.gnupg.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="${WEB_SITE}ftp/gcrypt/gnupg/$TARBALL"
+
+DEPENDS="bzlib gnutls libassuan libcurl libgcrypt libksba libusb 
+	libusb-compat ncurses npth openldap pinentry pth readline sqlite"
+BUILD_DEPENDS="curl-dev gnutls-dev libassuan-dev libgcrypt-dev libgnutls 
+	libgpg-error-dev libksba-dev libusb-compat-dev libusb-dev 
+	npth-dev openldap-dev pth-dev readline-dev sqlite-dev zlib-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# Integrity check: https://www.gnupg.org/download/integrity_check.html
+	echo "e24a1208ffe69d7436b2f27e99542a85f34d0ac0  $SRC/$TARBALL" | sha1sum -c ||
+		exit 1
+
+	export LDFLAGS="-lrt"
+
+	./configure $CONFIGURE_ARGS &&
+	make &&
+	make install
+
+	# 2.2.19 already gzipped
+#	find $install/usr/share/man -type f -exec gzip -9 \{\} \;
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/*	$fs
+	rm -r $fs/usr/share/doc	$fs/usr/share/info \
+				$fs/usr/share/locale
+}

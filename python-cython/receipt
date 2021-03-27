@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="python-cython"
+VERSION="0.29.16"
+CATEGORY="development"
+SHORT_DESC="Language to write C extensions for Python."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="Apache"
+WEB_SITE="https://pypi.org/project/cython/"
+
+SOURCE="cython"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://github.com/$SOURCE/$SOURCE/archive/$VERSION.tar.gz"
+
+DEPENDS="python"
+BUILD_DEPENDS="python python-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py build &&
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs
+	cp -a $install/usr	$fs
+}

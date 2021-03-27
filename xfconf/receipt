@@ -1,0 +1,44 @@
+# SliTaz package receipt.
+
+PACKAGE="xfconf"
+VERSION="4.12.0"
+CATEGORY="x-window"
+SHORT_DESC="Xfce Copnfiguration Utility"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://www.xfce.org"
+WGET_URL="http://archive.xfce.org/src/xfce/$PACKAGE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="gtk+ libxfce4util dbus-glib"
+BUILD_DEPENDS="gtk+-dev libxfce4util-dev dbus-dev dbus-glib-dev intltool"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure --prefix=/usr \
+		--libexecdir=/usr/lib/$PACKAGE \
+		--infodir=/usr/share/info \
+		--disable-debug \
+		--mandir=/usr/share/man $CONFIGURE_ARGS && \
+	make && make install
+}
+
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr \
+		$fs/usr/lib \
+		$fs/usr/share/locale 
+		
+		
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/xfce4 $fs/usr/lib
+	cp -a $install/usr/share/locale/fr $fs/usr/share/locale
+	cp -a $install/usr/share/dbus-1 $fs/usr/share
+	
+	strip -s $fs/usr/lib/xfce4/$PACKAGE/*
+}

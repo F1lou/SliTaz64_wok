@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="harfbuzz-apps"
+VERSION="2.6.4"
+CATEGORY="system-tools"
+SHORT_DESC="OpenType text shaping engine, applications."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.freedesktop.org/wiki/Software/HarfBuzz/"
+
+DEPENDS="cairo-gl gcc83-lib-base harfbuzz"
+WANTED="harfbuzz"
+
+HOST_ARCH="x86_64 i486 arm"
+
+BUGS="hb-view failed when cairo built with slow xlib-xcb"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $install/usr/bin $fs/usr
+}

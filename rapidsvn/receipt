@@ -1,0 +1,41 @@
+# SliTaz package receipt.
+
+PACKAGE="rapidsvn"
+VERSION="0.12.1"
+CATEGORY="development"
+SHORT_DESC="A cross-platform GUI front-end for the Subversion revision system."
+MAINTAINER="stefanossofroniou542@gmail.com"
+LICENSE="GPL3"
+WEB_SITE="http://rapidsvn.org/"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="http://www.rapidsvn.org/download/release/$VERSION/$TARBALL"
+TAGS="subversion svn version-control versioning"
+
+DEPENDS="wxWidgets28 libsvn apr libltdl xorg-libXxf86vm libproxy libsqlite \
+libsasl apr-util"
+BUILD_DEPENDS="$DEPENDS libtool wxWidgets28-dev subversion-dev apr-dev \
+apr-util-dev cyrus-sasl-dev neon-dev libproxy-dev sqlite-dev expat-dev python \
+util-linux-uuid-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cp $stuff/client_ls.cpp src/svncpp/client_ls.cpp
+	./configure --prefix=/usr \
+		--with-apr-config=apr-1-config \
+		--with-apu-config=apu-1-config \
+		--with-neon-config=neon-config \
+		--with-wx-config=wx-config \
+		--with-svn-include=/usr/include \
+		--with-svn-lib=/usr/lib \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/bin $fs/usr
+}

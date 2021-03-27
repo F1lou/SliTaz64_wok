@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=cTorrent Download
+Name[fr]=Télécharger des torrents
+Name[ru]=Загрузка торрентов cTorrent
+Exec=torrentbox
+Icon=other
+Categories=Network;

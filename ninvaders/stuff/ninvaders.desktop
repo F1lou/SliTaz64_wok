@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=nInvaders
+GenericName=Space Invaders clone
+Type=Application
+Comment=Play to Space invaders
+Terminal=false
+Exec=xterm -e nInvaders
+Icon=ninvader
+Categories=Application;Game;
+

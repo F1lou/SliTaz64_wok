@@ -1,0 +1,83 @@
+# SliTaz package receipt.
+
+PACKAGE="wbar"
+VERSION="1.3.3"
+CATEGORY="system-tools"
+SHORT_DESC="Quick launch bar."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL"
+TARBALL="$PACKAGE-$VERSION.tbz2"
+WEB_SITE="https://github.com/rodolf0/wbar"
+WGET_URL="http://www.tecapli.com.ar/warlock/$TARBALL"
+CONFIG_FILES="/etc/wbar/dot.wbar"
+TAGS="desktop launchbar"
+
+DEPENDS="imlib2 ttf-dejavu gcc-lib-base"
+BUILD_DEPENDS="imlib2-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	patch -p0 < $stuff/gcc43_fixes.diff || return 1
+	sed -i 's|^LDFLAGS.*|& -lX11|' Makefile
+	make &&
+	mkdir -p $DESTDIR/usr/share/wbar/iconpack $DESTDIR/usr/bin &&
+	cp wbar $DESTDIR/usr/bin &&
+	cp iconpack/wbar.osx/osxbarback.png $DESTDIR/usr/share/wbar/iconpack
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/etc/wbar
+	cp -a $install/usr $fs
+	ln -s /etc/wbar/dot.wbar $fs/usr/share/wbar/dot.wbar
+	touch $fs/etc/wbar/dot.wbar
+}
+
+# Post install/remove commands for Tazpkg.
+post_install()
+{
+	rm -f "$1/etc/dot.wbar"
+	[ -s "$1/etc/wbar/dot.wbar" ] || rm -f "$1/etc/wbar/dot.wbar"
+	mv "$1/etc/wbar/dot.wbar" "$1/etc/wbar/dot.wbar.old" 2> /dev/null && cat <<EOT
+--------
+Your old wbar configuration is saved into /etc/wbar/dot.wbar.old
+--------
+EOT
+	cat > "$1/etc/wbar/dot.wbar" << EOT
+# The Bar && Font
+i: /usr/share/wbar/iconpack/osxbarback.png
+t: /usr/share/fonts/truetype/ttf-dejavu/DejaVuSans/12
+c:
+
+EOT
+	while read icon exe text; do
+		[ -x $exe ] || continue
+		cat >> "$1/etc/wbar/dot.wbar" << EOT
+i: $icon
+c: $exe
+t: $text
+
+EOT
+	done << EOT
+/usr/share/pixmaps/firefox.png /usr/bin/firefox firefox
+/usr/share/pixmaps/pidgin.png /usr/bin/pidgin pidgin
+/usr/share/pixmaps/gimp.png /usr/bin/gimp gimp
+/usr/share/pixmaps/alsaplayer.png /usr/bin/alsaplayer alsaplayer
+/usr/share/pixmaps/xterm.png /usr/bin/xterm xterm
+/usr/share/pixmaps/leafpad.png /usr/bin/leafpad leafpad
+EOT
+	grep -q 'wbar' "$1/etc/xdg/openbox/autostart.sh" ||
+	cat >> "$1/etc/xdg/openbox/autostart.sh" << EOT
+
+# Wbar icons panel.
+(sleep 2 && wbar -above-desk -pos top center -jumpf 0 -zoomf 1.5 -bpress -balfa 0) &
+EOT
+}
+
+post_remove()
+{
+	sed -i '/Wbar/ d' "$1/etc/xdg/openbox/autostart.sh"
+	sed -i '/wbar/ d' "$1/etc/xdg/openbox/autostart.sh"
+}

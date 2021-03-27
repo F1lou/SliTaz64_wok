@@ -1,0 +1,38 @@
+# SliTaz package receipt.
+
+PACKAGE="node"
+VERSION="10.15.3"
+CATEGORY="network"
+SHORT_DESC="Node.js is a platform for easily building network applications."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://nodejs.org/"
+
+TARBALL="$PACKAGE-v$VERSION.tar.gz"
+WGET_URL="http://nodejs.org/dist/v$VERSION/$TARBALL"
+
+DEPENDS="gcc-lib-base libssl python"
+BUILD_DEPENDS="gcc openssl-dev python-dev"
+
+#HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|uname -m|echo i486|' Makefile
+	export	LD_LIBRARY_PATH="/usr/libgcc83:$LD_LIBRARY_PATH"
+	export	LDFLAGS="$LDFLAGS -latomic"
+
+	./configure --prefix=/usr &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/lib/node*	$fs/usr/lib
+}

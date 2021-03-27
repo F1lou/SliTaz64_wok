@@ -1,0 +1,107 @@
+(c) GPLv2, Pascal Bellard <pascal.bellard@slitaz.org>
+
+The iso2exe tool inserts a DOS/WIN32 .EXE header in an ISO image.
+The ISO image can be launched by DOS or Windows :
+
+C:\> ren slitaz-5.0.iso slitaz.exe
+C:\> slitaz
+
+
+Why ?
+
+According to the SliTaz forum, some new users have problems burning CD-ROMs,
+creating USB Keys and booting these devices with the BIOS. Others are lost
+during the installation process or partitioning.
+
+The slitaz.exe program boots the SliTaz ISO image with a text menu:
+
+- to start SliTaz in RAM (live) in graphics mode or text mode.
+
+- to install SliTaz "a la UMSDOS" in the \slitaz\ subdirectory. The easiest
+  way to install SliTaz. No partitioning. No questions. But (very?) slow.
+
+- to create a SliTaz USB Key.
+
+When the slitaz.exe program can't boot SliTaz directly it will prompt to create
+a bootable image on a removeable media (Memory card, USB stick or ... floppy).
+
+Usage:
+
+  C:\> progname [mode]
+
+Default mode is menu. Mode can be:
+
+- menu	 	start with an interactive menu
+- live	 	launch SliTaz in RAM with graphics
+- text	 	launch SliTaz in RAM with text mode
+- install	SliTaz UMSDOS like installation
+
+If the program name includes one of the supported modes, the according mode is
+assumed. Example 'C:\> slitazlive.exe' starts SliTaz in RAM with graphics.
+
+
+Implementation:
+
+ISO9660 format begins with 32Kb unused (16 sectors). Some programs may use it:
+
+- isolinux uses the first 512 bytes for hybrid iso boot (ISO image in a
+  partition).
+- tazlito stores extra flavor info at the 2nd Kb for 'tazlito iso2flavor'.
+
+The iso2exe tool moves the isolinux boot sector, installs its own boot sector
+with a DOS .EXE header, and adds a WIN32 .EXE installer, a DOS .COM Linux
+loader, a floppy bootstrap and an initramfs in the end of the first 32Kb.
+
+The taziso tool is iso2exe aware and can handle iso image modified by iso2exe.
+
+    + - - - - - - - - +
+    |   user extras   | [optional] Customization files see README.custom
+xxM +-----------------+ --------------- Official ISO image end ---------------
+    |    untouched    | ISO9660 files including /boot/bzImage and /boot/rootfs*
+32K +-----------------+
+    |       | iso md5 | ISO9660 image (except first 32K) md5 hash (1)
+    |       +---------+
+    |  ISO initramfs  | Live loader and UMSDOS like install script
+    +-----------------+
+    | DOS .COM loader | Load bzImage, the last rootfs*.gz and the ISO initramfs
+    +-----------------+
+    | floppy bootstrap| CD-ROM emulation boot driver for hard disk ISO image
+    +-----------------+
+           unused
+    +-----------------+
+    |  WIN32 sections | Code, data and ressources
+    +-----------------+
+    |  tazlito info   | Flavor missing data for 'tazlito iso2flavor'
+    +-----------------+
+    | isohybrid boot  | Starts isolinux.bin
+    +-----------------+
+    |  iso2exe boot + | Boot starts isohybrid (2), .EXE starts DOS .COM loader
+    |  WIN32 PE .exe  | NT+ boot device creator / Win9x DOS .COM launcher.
+  0 +-----------------+ ------------------------------------------------------
+
+(1) The following script will show computed and stored md5 hash
+#!/bin/sh
+count=$(echo $(od -j 32848 -N 2 -t u2 -An $1))
+dd if=$1 bs=2k skip=16 count=$count 2>/dev/null | md5sum
+od -j 32752 -N 16 -t x1 -An $1 | sed 's/ //g'
+
+(2) Eltorito boot (i.e. bootable CD-ROM by BIOS) is not concerned by iso2exe.
+
+
+Limitations:
+
+- Only DOS and DOS based Windows (16 bits) boot supported.
+  NT/XP support via boot device creation.
+
+- The DOS Linux loader and the ISO initramfs must fit in ~30Kb.
+
+- Linux kernels before version 2.6.30 don't support multiple initramfs load.
+  They will not find the /init.exe file. The "text" mode will be forced:
+	C:\> slitaz.exe text
+
+- The ISO image must include the files /boot/bzImage and /boot/rootfs*.
+
+TODO:
+
+- floppy bootstrap
+

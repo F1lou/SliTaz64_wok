@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="libxfce4ui"
+VERSION="4.12.0"
+CATEGORY="x-window"
+SHORT_DESC="Xfce Gtk Widget library"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="LGPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://www.xfce.org"
+WGET_URL="http://archive.xfce.org/src/xfce/$PACKAGE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="gtk+ libxfce4util libxfconf startup-notification dbus-glib libglade \
+util-linux-uuid"
+BUILD_DEPENDS="gtk+-dev libxfce4util-dev libxfconf-dev \
+startup-notification-dev libglade-dev xcb-util-dev util-linux-uuid-dev intltool"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--sysconfdir=/etc \
+		--disable-debug \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$install install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/etc $fs/
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}
+

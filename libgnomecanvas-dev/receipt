@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="libgnomecanvas-dev"
+VERSION="2.30.3"
+CATEGORY="development"
+SHORT_DESC="GNOME canvas library"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WANTED="libgnomecanvas"
+WEB_SITE="https://www.gnome.org/"
+
+DEPENDS="libgnomecanvas libart_lgpl-dev gtk+-dev libglade-dev pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	
+	# Copy static and all libglade libs
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/lib/libglade $fs/usr/lib
+	
+	cp -a $install/usr/include $fs/usr
+	
+	# Remove static libs
+	rm $fs/usr/lib/libglade/*/*.so
+}
+

@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="talloc-dev"
+VERSION="2.0.7"
+CATEGORY="development"
+SHORT_DESC="Hierarchical pool based memory allocator with destructors (devel files)."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="LGPL"
+WEB_SITE="https://talloc.samba.org/talloc/doc/html/index.html"
+WANTED="talloc"
+
+DEPENDS="talloc pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/
+	cp -a $install/usr/include $fs/usr/
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+}

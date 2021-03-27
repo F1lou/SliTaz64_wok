@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=lightup
+Exec=lightup
+Icon=lightup
+Terminal=false
+Categories=Application;Game;

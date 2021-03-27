@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="libffcall"
+VERSION="2.2"
+CATEGORY="development"
+SHORT_DESC="Foreign function call libraries."
+MAINTAINER="paul@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.gnu.org/software/libffcall/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS &&
+	make -j1 &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/include	$fs/usr
+	cp -a $install/usr/lib		$fs/usr
+}

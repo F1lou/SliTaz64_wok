@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="python-reportlab"
+VERSION="3.5.42"
+CATEGORY="development"
+SHORT_DESC="PDF generation solution."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="https://pypi.org/project/reportlab/"
+
+SOURCE="reportlab"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://files.pythonhosted.org/packages/source/${SOURCE:0:1}/$SOURCE/$TARBALL"
+
+DEPENDS="freetype python"
+BUILD_DEPENDS="python python-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py build &&
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr	$fs
+}
+
+# Remove old package.
+post_install()
+{
+	[ ! -d "$1/var/lib/tazpkg/installed/reportlab" ] ||
+	rm -rf "$1/var/lib/tazpkg/installed/reportlab"
+}

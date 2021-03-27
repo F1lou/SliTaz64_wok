@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-file-rsync"
+VERSION="0.74"
+CATEGORY="development"
+SHORT_DESC="Perl Rsync client"
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL"
+SOURCE="File-RsyncP"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="https://metacpan.org/release/File-RsyncP"
+WGET_URL="https://metacpan.org/CPAN/authors/id/C/CB/CBARRATT/$TARBALL"
+
+DEPENDS="perl rsync"
+BUILD_DEPENDS="perl"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	perl Makefile.PL &&
+	make -j1 &&
+	make -j1 DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib $fs/usr
+}

@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="ytree"
+VERSION="2.02"
+CATEGORY="utilities"
+TAGS="file-manager"
+SHORT_DESC="A curses-based file manager."
+MAINTAINER="allan316@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://www.han.de/~werner/ytree.html"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://www.han.de/~werner/$TARBALL"
+
+DEPENDS="ncursesw"
+BUILD_DEPENDS="ncursesw-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# Dont use readline && utf-8 support via ncursesw && -0s to save ~10kb :-)
+	sed -i \
+		-e s"/CFLAGS.*/CFLAGS = -D_GNU_SOURCE -DWITH_UTF8 -Os -DCOLOR_SUPPORT/" \
+		-e s"/-lncurses -lreadline/-lncursesw/" \
+		Makefile &&
+	make
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $src/ytree	$fs/usr/bin
+}

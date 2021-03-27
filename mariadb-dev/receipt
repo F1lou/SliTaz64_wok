@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="mariadb-dev"
+VERSION="10.0.11"
+CATEGORY="development"
+SHORT_DESC="SQL database system devel files."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://mariadb.org/"
+WANTED="mariadb"
+PROVIDE="mysql-dev"
+
+DEPENDS="zlib"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/mysql/plugin $fs/usr/share
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/share/aclocal $fs/usr/share
+	cp -a $install/usr/lib/mysql/*.*a $fs/usr/lib/mysql
+	#~ cp -a $install/usr/lib/mysql/plugin/*.*a $fs/usr/lib/mysql/plugin
+	while read file; do
+		dir=$(dirname $file)
+		[ -d $fs$dir ] || mkdir -p $fs$dir
+		cp -a $install$file $fs$file
+	done < $wanted_stuff/$PACKAGE.files-list
+}
+

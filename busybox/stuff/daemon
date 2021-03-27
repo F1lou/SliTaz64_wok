@@ -1,0 +1,94 @@
+#!/bin/sh
+# Start, stop and restart a busybox daemon on SliTaz, at boot time or
+# with the command line.
+#
+# To start daemon at boot time, just put the right name in the $RUN_DAEMONS
+# variable of /etc/rcS.conf and configure options with /etc/daemons.conf.
+#
+. /etc/init.d/rc.functions
+
+NAME=$(basename $0)
+DESC="$(_ '%s daemon' $NAME)"
+DAEMON=$(which $NAME)
+for p in ${PATH//:/ }; do
+	[ -L $p/$NAME ] || continue
+	case "$(readlink $p/$NAME)" in
+		*busybox)
+			DAEMON=$p/$NAME
+			break
+	esac
+done
+eval $(grep -i ^${NAME}_OPTIONS /etc/daemons.conf | sed 's/.*_OPT/OPT/')
+PIDFILE=/var/run/$NAME.pid
+
+active_inetd()
+{
+if grep $DAEMON /etc/inetd.conf | grep -q ^\#; then
+    sed -i "s,^#\(.*$DAEMON.*\)$,\1," /etc/inetd.conf
+    /etc/init.d/inetd stop >/dev/null
+    exec /etc/init.d/inetd start
+else
+    _ '%s is already active.' $NAME
+    exit 1
+fi
+}
+
+inactive_inetd()
+{
+if grep $DAEMON /etc/inetd.conf | grep -q ^\#; then
+    _ '%s is not active.' $NAME
+    exit 1
+else
+    sed -i "s,^.*$DAEMON.*$,#&," /etc/inetd.conf
+    /etc/init.d/inetd stop >/dev/null
+    exec /etc/init.d/inetd start
+fi
+}
+
+case "$1" in
+  start)
+    grep -qs $DAEMON /etc/inetd.conf && active_inetd
+    if active_pidfile $PIDFILE $NAME ; then
+      _ '%s is already running.' $NAME
+      exit 1
+    fi
+    action 'Starting %s: %s...' "$DESC" $NAME
+    $DAEMON $OPTIONS
+    [ -f $PIDFILE ] ||
+    ps x | sed "/$NAME/!d;/sed/d;/etc\\/init/d" | awk '{ print $1 }' > $PIDFILE
+    active_pidfile $PIDFILE $NAME
+    status
+    ;;
+  stop)
+    grep -qs $DAEMON /etc/inetd.conf && inactive_inetd
+    if ! active_pidfile $PIDFILE $NAME ; then
+      _ '%s is not running.' $NAME
+      exit 1
+    fi
+    action 'Stopping %s: %s...' "$DESC" $NAME
+    kill $(cat $PIDFILE)
+    status
+    ;;
+  restart)
+    grep -qs $DAEMON /etc/inetd.conf && exit 0
+    if ! active_pidfile $PIDFILE $NAME ; then
+      _ '%s is not running.' $NAME
+      exit 1
+    fi
+    action 'Restarting %s: %s...' "$DESC" $NAME
+    kill $(cat $PIDFILE)
+    sleep 2
+    $DAEMON $OPTIONS
+    [ -f $PIDFILE ] ||
+    ps x | sed "/$NAME/!d;/sed/d;/etc\\/init/d" | awk '{ print $1 }' > $PIDFILE
+    active_pidfile $PIDFILE $NAME
+    status
+    ;;
+  *)
+    emsg "<n><b>$(_ 'Usage:')</b> /etc/init.d/$(basename $0) [start|stop|restart]"
+    newline
+    exit 1
+    ;;
+esac
+
+exit 0

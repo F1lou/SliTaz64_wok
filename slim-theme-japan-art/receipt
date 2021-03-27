@@ -1,0 +1,42 @@
+# SliTaz package receipt.
+
+PACKAGE="slim-theme-japan-art"
+VERSION="20150603"
+CATEGORY="customization"
+SHORT_DESC="Japan Art - theme for SLiM"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="PublicDomain"
+WEB_SITE="https://web.archive.org/web/20151101010005/http://desktopstylish.tumblr.com/post/120590949085/japan-art-slim-theme-download"
+TAGS="hackdorte slim"
+COOKOPTS="!pngquant"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="https://drive.google.com/uc?export=download&id=0B4Re2DvqOMqlUkJHVDJrXzVFRUk"
+
+DEPENDS="slim"
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	theme=$install/usr/share/slim/themes/JapanArt
+	mkdir -p $theme
+	cp -a $src/* $theme
+	chown -R root:root $install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+}
+
+post_install()
+{
+	chroot "$1/" slim-theme -s JapanArt
+}
+
+pre_remove()
+{
+	chroot "$1/" slim-theme -f JapanArt
+}

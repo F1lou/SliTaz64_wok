@@ -1,0 +1,339 @@
+#!/bin/sh
+# get-LibreOffice - create and install SliTaz package LibreOffice
+# excluding KDE and GNOME integration and test suite.
+#
+# (C) 2020 SliTaz - GNU General Public License v3.
+# Author : Ben Arnold <ben@seawolfsanctuary.com>
+#    via : get-OpenOffice3 (Eric Joseph-Alexandre <erjo@slitaz.org>)
+# modified by Hans-Günter Theisgen on 2019-04-07
+# modified by Hans-Günter Theisgen on 2020-03-17
+# modified by Hans-Günter Theisgen on 2020-07-24
+#
+
+#	=== Initialisations ===
+
+PKGS_DB="/var/lib/tazpkg"	# packages database directory
+PACKAGE="LibreOffice"		# package to create and install
+CATEGORY="office"
+SHORT_DESC="Productivity suite."
+WEB_SITE="https://www.libreoffice.org"
+LICENCE="MPL v2.0"
+
+DIR="stable"
+SUFFIX="Linux_x86_rpm.tar.gz"
+PREFIX="http://download.documentfoundation.org/libreoffice/$DIR"
+
+DEPENDS="cups"
+EXCLUDE="kde|gnome|test"
+
+# Declare functions check_root, status, ...
+. /lib/libtaz.sh
+# and make commandline options (if any) available as variables
+	
+is_installed()
+{
+	 if [ -d $root$PKGS_DB/installed/$PACKAGE ]
+	  then	#package is deemed to be installed
+	 	return 0
+	  else
+	 	return 1
+	 fi
+}
+
+# Show available commandline options, if requested by --help
+if [ "$help" = "yes" ]
+	then
+	echo "Available commandline options:
+  $0
+	--version=<version>
+	--root=<path_to_root>
+	--install=yes|no
+	--keep=no|yes
+	--srcdir=<directory_for_source_packages>
+	--tmpdir=<directory_to_build-package>"
+	exit
+fi
+
+# Check for system administrator privileges
+check_root
+
+title "Package $PACKAGE will be build as SliTaz package and installed"
+
+# Fetch latest $DIR version, unless version is set by option --version
+#[ -z "$version" ] && version="latest"
+[ -z "$version" ] && version="6.2.8.2" &&
+  echo "Newer versions than 6.2.8.2 are not available in 32-bit flavour!"
+
+# Fetch language pack according to $LANG, unless otherwise set by option --lang
+[ -z "$lang" ] && lang="automatic"
+
+# Install SliTaz package, unless inhibited by option --install=no
+[ -z "$install" ] && install="yes"
+
+# Delete SliTaz package file $PACKAGE-$VERSION.tazpkg after installation,
+# unless option --keep=yes is given
+[ -z "$keep" ] && keep="no"
+
+# Directory for temporary files
+[ -z "$tempdir" ] && TEMP_DIR="/tmp/get-$PACKAGE"
+
+# Directory for source archives
+[ -z "$srcdir" ] && SOURCE_DIR="/tmp/src-$PACKAGE"
+
+# Logging file
+LOG="/tmp/$(basename $0 .sh).log"
+
+cat <<EOT
+Options in use:
+  root            : $root/
+  version         : $version
+  lang            : $lang
+  install package : $install
+  keep tazpkg     : $keep
+  source directory: $SOURCE_DIR
+  build directory : $TEMP_DIR
+  logging file:     $LOG
+
+EOT
+
+separator; newline
+
+#	=== Remove package, if installed ===
+if is_installed
+  then
+	echo "$PACKAGE is already installed."
+	[ -n "$root" ] && exit 0
+	echo -n "Would you like to remove and reinstall this package [y/N]? "
+	read answer
+	case "$answer" in
+	(y|Y)
+		action "Removing installed version..."
+		tazpkg remove $PACKAGE --root="$root/"
+		[ ! is_installed ] &&
+		die "Can't remove installed version. Exiting." ;;
+	(*)
+		exit 0 ;;
+	esac
+fi
+
+#	=== Fetch archive file, if not existing ===
+
+if [ "$version" == "latest" ]
+  then
+	VERSIONS="$(wget -qO - $PREFIX/ | \
+		sed '/href=\"[0-9]/!d;s/.*href=\"//;s/[/\">].*//' | tac)"
+	if [ -z "$VERSIONS" ]
+	  then
+		echo "Can't detect an appropriate version. The version numbering or URL may have changed. Exiting."
+		exit 1
+	fi
+  else
+	DIR="old"
+	PREFIX="http://downloadarchive.documentfoundation.org/libreoffice/$DIR"
+	VERSIONS="$version"
+fi
+
+for VERSION in $VERSIONS
+  do	# foreach VERSION
+
+	VER="${VERSION/\-/}" # without hyphens
+	TARBALL="LibreOffice_${VER}_${SUFFIX}"
+	WGET_URL="$PREFIX/${VERSION}/rpm/x86/${TARBALL}"
+
+	# Set LANG_URL to fetch language package
+	if [ "$lang" = "automatic" ]
+	  then	# use language from $LANG of running process
+		for LOC in ${LANG/_/-} ${LANG%_*}
+		  do
+			L_SUFFIX="Linux_x86_rpm_langpack_$LOC.tar.gz"
+			L_TARBALL="LibreOffice_${VER}_${L_SUFFIX}"
+			LANG_URL="$PREFIX/${VERSION}/rpm/x86/${L_TARBALL}"
+			busybox wget -s $LANG_URL 2> /dev/null || continue
+			echo "Added language pack for $LANG ($LOC)."
+			break
+		  done
+	  else
+		L_SUFFIX="Linux_x86_rpm_langpack_$lang.tar.gz"
+		L_TARBALL="LibreOffice_${VER}_${L_SUFFIX}"
+		LANG_URL="$PREFIX/${VERSION}/rpm/x86/${L_TARBALL}"
+		busybox wget -s $LANG_URL 2> /dev/null &&
+		echo "Added language pack for $lang."
+	fi
+
+	CUR_DIR=$(pwd)
+	mkdir -p $TEMP_DIR
+	cd $TEMP_DIR
+
+	if [ -f $SOURCE_DIR/$TARBALL ]
+	  then
+		echo "Using existing archive file $TARBALL"
+	  else
+		action "Fetching the archives..."
+		newline
+		# Check if $SOURCE_DIR exists
+		[ -d $SOURCE_DIR ] || mkdir -p $SOURCE_DIR
+		wget -c $WGET_URL -O $SOURCE_DIR/$TARBALL || continue
+		if [ -n $L_TARBALL ]	 # language pack required?
+		  then
+			wget -c $LANG_URL -O $SOURCE_DIR/$L_TARBALL
+		fi
+		status
+	fi
+
+	break
+
+  done	# foreach VERSION
+
+if [ ! -f $SOURCE_DIR/$TARBALL ]
+  then
+	rm -rf $SOURCE_DIR
+	echo "Could not get $TARBALL. Exiting."
+	exit 1
+fi
+
+#	=== Extract files from archives ===
+action "Extracting the archives..."
+newline
+mkdir -p $TEMP_DIR
+for TB in $TARBALL $L_TARBALL
+  do
+	tar xvzf $SOURCE_DIR/$TB -C $TEMP_DIR > $LOG 2>&1 ||
+	(echo "Failed to extract $TB" ; exit 1)
+  done
+
+#	=== Create SliTaz package ===
+
+# Prepare metadata for SliTaz package
+
+# Get version found in archive
+# (often directory is still RC version when final is present)
+VERSION_FROM_ARCHIVE=$(cd $TEMP_DIR;find . -type d 2> /dev/null \
+	| grep LibreOffice | head -n 1 | sed 's/_/ /g' | awk '{print $2}')
+echo -n "(found v${VERSION_FROM_ARCHIVE})"
+
+# Merge language pack into main package
+if [ -n $L_TARBALL ]	# language pack required?
+  then 
+	TARBALL_NAME="${TARBALL/.tar.gz/}"
+	L_TARBALL_NAME="${L_TARBALL/.tar.gz/}"
+	mv -f	$TEMP_DIR/${L_TARBALL_NAME/$VERSION/$VERSION_FROM_ARCHIVE}/RPMS/*.rpm \
+		$TEMP_DIR/${TARBALL_NAME/$VERSION/$VERSION_FROM_ARCHIVE}/RPMS/
+fi
+status
+
+# Extracted archives can be removed
+rm -rf $SOURCE_DIR
+
+# Extract almost everything from RPMS directory
+action "Extracting RPMs..."
+newline
+cd $TEMP_DIR/${TARBALL_NAME/$VERSION/$VERSION_FROM_ARCHIVE}/RPMS
+for i in *.rpm
+  do
+	if (! echo $i | egrep -qi $EXCLUDE)
+	  then
+		echo -n "."
+		(rpm2cpio $i | cpio -id >> $LOG 2>&1 ) && rm  -f $i
+	fi
+  done
+status
+
+# Move files to package tree $PACKAGE-$VERSION/fs/
+action "Preparing package..."
+mkdir -p $PACKAGE-$VERSION/fs/usr/lib/libreoffice
+mkdir -p $PACKAGE-$VERSION/fs/usr/share
+
+# use mv instead of 'cp -a' to save space
+mv opt/libreoffice*	$PACKAGE-$VERSION/fs/usr/lib
+mv usr/share/mime	$PACKAGE-$VERSION/fs/usr/share
+mv usr/share/icons	$PACKAGE-$VERSION/fs/usr/share
+mv usr/bin		$PACKAGE-$VERSION/fs/usr
+
+# relocalised libexec directory
+bin=$PACKAGE-$VERSION/fs/usr/bin/libreoffice${VERSION:0:3}
+if [ -L $bin ]
+	then
+	  target=$(readlink $bin)
+	  rm -f $bin
+	  ln -s ${target/opt/usr\/lib\/libreoffice} $bin
+	else
+	  sed -i 's#/opt/#/usr/lib/libreoffice/#'  $bin
+fi
+
+# Create recipe for SliTaz package
+cat > $PACKAGE-$VERSION/receipt <<EOT
+# SliTaz package receipt.
+
+PACKAGE="$PACKAGE"
+VERSION="$VERSION"
+CATEGORY="$CATEGORY"
+TAGS="writer spreadsheet database"
+SHORT_DESC="$SHORT_DESC"
+LICENSE="$LICENCE"
+WEB_SITE="$WEB_SITE"
+DEPENDS="$DEPENDS"
+
+post_install()
+{
+	ln -sf	/usr/lib/libreoffice?* \\
+		/usr/lib/libreoffice
+	path_libreoffice=\$(find /usr/lib/libreoffice -name libreoffice*.*)
+
+	# Remove links, if existing
+	rm -f /usr/share/applications/libreoffice-*
+
+	# Create links
+	cd /usr/share/applications
+	ln -sf \$path_libreoffice/share/xdg/base.desktop	\\
+		libreoffice-base.desktop
+	ln -sf \$path_libreoffice/share/xdg/impress.desktop	\\
+		libreoffice-impress.desktop
+	ln -sf \$path_libreoffice/share/xdg/writer.desktop	\\
+		libreoffice-writer.desktop
+	ln -sf \$path_libreoffice/share/xdg/calc.desktop	\\
+		libreoffice-calc.desktop
+	ln -sf \$path_libreoffice/share/xdg/math.desktop	\\
+		libreoffice-math.desktop
+	ln -sf \$path_libreoffice/share/xdg/draw.desktop	\\
+		libreoffice-draw.desktop
+
+	chmod +x \$path_libreoffice/share/xdg/*.desktop
+
+	# Fix menu entries
+	sed -i 's|^\\([Ee]xec=libreoffice\\)[0-9\\.]*|\\0|'	\\
+		\$path_libreoffice/share/xdg/*.desktop
+
+        # If necessary, recreate links for soffice
+	rm -f /usr/bin/soffice
+	rm -f /usr/bin/libreoffice
+	ln -sf \$path_libreoffice/program/soffice /usr/bin/libreoffice
+	ln -sf \$path_libreoffice/program/soffice /usr/bin/soffice
+}
+
+post_remove()
+{
+	rm -f /usr/share/applications/libreoffice-*
+}
+EOT
+
+status
+
+# Create the package
+tazpkg pack $PACKAGE-$VERSION
+
+# Remove package tree
+rm -rf $PACKAGE-$VERSION
+
+#	=== Install the SliTaz package ===
+[ "$install" == "yes" ] &&
+tazpkg install $PACKAGE-$VERSION.tazpkg --root="$root"
+
+#	=== Cleanup ===
+# Preserve package file, if requested
+[ "$keep" == "yes" ] &&
+( mv $PACKAGE-$VERSION.tazpkg $CUR_DIR &&
+  echo Saved $PACKAGE-$VERSION.tazpkg to $CUR_DIR )
+
+# Remove temporary build directory
+cd $CUR_DIR
+rm -rf $TEMP_DIR

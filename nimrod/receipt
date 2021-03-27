@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="nimrod"
+VERSION="0.9.2"
+CATEGORY="development"
+SHORT_DESC="The Nimrod programming language."
+MAINTAINER="admin@trixarian.net"
+LICENSE="GPL"
+TARBALL="nimrod_$VERSION.zip"
+WEB_SITE="http://www.nimrod-code.org/"
+WGET_URL="http://nimrod-code.org/download/$TARBALL"
+
+DEPENDS="gcc glibc-base readline"
+BUILD_DEPENDS="gcc glibc-dev readline-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	sed -i "s/uname -m/echo $ARCH/" build.sh
+	chmod +x build.sh
+	chmod +x install.sh
+	./build.sh
+	./bin/nimrod c -d:release koch
+	./koch boot -d:release
+	./install.sh $DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/nimrod $fs/usr/lib
+	cp -a $install/nimrod/bin $fs/usr
+	cp -a $install/nimrod/config $fs/etc
+	cp -a $install/nimrod/lib $fs/usr/lib/nimrod
+	cp -a $install/nimrod/doc $fs/usr/share/nimrod
+}

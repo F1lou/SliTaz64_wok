@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Edit Images
+Name[pt]=Edição de Imagens
+Name[pt_BR]=Edição de Imagens
+Name[ru]=Правка изображений
+Comment=Install applications for image edit
+Comment[ru]=Установить приложения для правки изображений
+Exec=default-app gimp --install "gimp inkscape"
+Icon=applications-graphics
+Categories=Graphics;

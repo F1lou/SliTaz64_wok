@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Application
+Name=Alsaplayer Audio Player
+Name[fr]=Lecteur audio Alsaplayer 
+Name[pt]=Reprodutor de audio Alsaplayer
+Name[pt_BR]=Reprodutor de audio Alsaplayer
+Name[ru]=Аудио проигрыватель Alsaplayer
+Name[zh_CN]=Alsaplayer 音乐播放器
+Comment=Versatile audio player for the Audio Linux Sound Architecture
+Comment[fr]=Lecteur audio versatile pour Audio Linux Sound Architecture aka ALSA
+Comment[zh_CN]=Alsaplayer音乐播放器
+Exec=alsaplayer
+Icon=alsaplayer
+Categories=AudioVideo;Audio;Player;
+MimeType=audio/x-scpls;audio/x-mpegurl;audio/mpegurl;audio/mp3;audio/x-mp3;audio/mpeg;audio/x-mpeg;audio/x-wav;audio/ogg+vorbis;audio/ogg;application/flac;

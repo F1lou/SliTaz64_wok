@@ -1,0 +1,38 @@
+# SliTaz package receipt.
+
+PACKAGE="rubyripper"
+VERSION="0.6.2"
+CATEGORY="multimedia"
+SHORT_DESC="A secure audio disc ripper"
+MAINTAINER="domcox@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://github.com/bleskodev/rubyripper"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="http://rubyripper.googlecode.com/files/$TARBALL"
+TAGS="audio CD ripper"
+
+SUGGESTED="ruby-gtk2 lame vorbis-tools"
+DEPENDS="cd-discid cdparanoia-III flac normalize ruby"
+BUILD_DEPENDS="cd-discid cdparanoia-III lame normalize ruby-dev vorbis-tools"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--prefix=/usr \
+		--enable-gtk2 \
+		--enable-cli \
+		--enable-lang-all \
+		&& make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr 
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib $fs/usr
+	# launcher
+	cp -a $stuff/$PACKAGE $fs/usr/bin
+}
+

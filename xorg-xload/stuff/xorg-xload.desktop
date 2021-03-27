@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Xload Monitor
+Name[fr]=Moniteur Xload
+Exec=xload -nolabel -bg black -fg lightblue -hl orange
+Icon=applications-other
+Type=Application
+Categories=System;

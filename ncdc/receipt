@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="ncdc"
+VERSION="1.22.1"
+CATEGORY="network"
+SHORT_DESC="NCurses Direct Connect."
+MAINTAINER="paul@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://dev.yorhel.nl/ncdc"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://dev.yorhel.nl/download/$TARBALL"
+
+DEPENDS="bzip2 gnutls ncursesw pcre sqlite zlib"
+BUILD_DEPENDS="bzip2-dev glib-dev gnutls-dev libgnutls ncursesw ncursesw-dev 
+	pcre-dev sqlite-dev zlib-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export	LDFLAGS="$LDFLAGS -ltinfo"
+
+	./configure			\
+		--prefix=/usr		\
+		NCURSES_CFLAGS=" "	\
+		NCURSES_LIBS=/lib/libncursesw.so &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin	$fs/usr	
+}

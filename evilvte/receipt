@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="evilvte"
+VERSION="0.5.2~pre1"
+CATEGORY="utilities"
+SHORT_DESC="VTE based, highly customizable terminal emulator"
+MAINTAINER="devl547@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="http://www.calno.com/evilvte/"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="$WEB_SITE$TARBALL"
+TAGS="terminal"
+
+DEPENDS="gtk+ ncurses vte"
+BUILD_DEPENDS="gtk+-dev ncurses-dev vte-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure --prefix=/usr &&
+	make -j1 &&
+	make DESTDIR=$install install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}

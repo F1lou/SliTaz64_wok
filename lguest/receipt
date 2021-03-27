@@ -1,0 +1,17 @@
+# SliTaz package receipt.
+
+PACKAGE="lguest"
+VERSION="3.16.55"
+CATEGORY="base-system"
+SHORT_DESC="The Linux kernel paravirtualization tool."
+MAINTAINER="devel@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.kernel.org/"
+WANTED="linux"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/sbin
+	cp $src/tools/lguest/lguest $fs/usr/sbin
+}

@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="cbatticon"
+VERSION="1.6.10"
+CATEGORY="multimedia"
+SHORT_DESC="A lightweight and fast battery icon for the system tray."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://github.com/valr/cbatticon"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/archive/$VERSION.tar.gz"
+
+DEPENDS="glib gtk+ libnotify"
+BUILD_DEPENDS="glib-dev gtk+-dev libnotify-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make WITH_GTK3=0 DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/share/locale	$fs/usr/share
+}

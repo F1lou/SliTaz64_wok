@@ -1,0 +1,57 @@
+# SliTaz package receipt.
+
+PACKAGE="barnyard2"
+VERSION="2.1.13"
+CATEGORY="system-tools"
+SHORT_DESC="Output spool reader for Snort"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://github.com/firnsy/barnyard2"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/firnsy/$PACKAGE/archive/v${VERSION/./-}/$TARBALL"
+
+DEPENDS="libpcap"
+BUILD_DEPENDS="libpcap-dev libtool"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|typedef int SOCKET|// &|' src/output-plugins/spo_alert_fwsam.c
+	./autogen.sh &&
+	./configure \
+		--sysconfdir=/etc/barnyard2 \
+		$CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+	mkdir -p $fs/var/log/barnyard2
+}
+
+# Post install commands
+post_install()
+{
+	[ -z "$quiet" ] && echo
+
+	# addgroup snort if needed
+	if ! grep -q 'snort:' "$1/etc/group"; then
+		action 'Adding group Snort...'
+		chroot "$1/" /bin/addgroup snort
+		status
+	fi
+
+	# adduser snort if needed
+	if ! grep -q 'snort:' "$1/etc/passwd"; then
+		action 'Adding user Snort...'
+		chroot "$1/" /bin/adduser -s /bin/false -h /dev/null \
+			-g "Snort Daemon user" -H -D -S -G snort snort
+		status
+	fi
+
+	chroot "$1/" chown snort.snort /var/log/barnyard2
+}

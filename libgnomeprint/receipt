@@ -1,0 +1,48 @@
+# SliTaz package receipt.
+
+PACKAGE="libgnomeprint"
+VERSION="2.18.8"
+CATEGORY="x-window"
+SHORT_DESC="GNOME print library"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://www.gnome.org/"
+WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="gtk+ popt libxml2 libart_lgpl"
+BUILD_DEPENDS="pkg-config glib-dev pango-dev intltool flex libart_lgpl-dev \
+libxml2-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# Update for Bison 3
+	sed -e '/YYPARSE_PARAM/d' -e 's|yyerror (|&graph_t *g, |' \
+		-e 's|%pure_parser|&\n%parse-param { graph_t *graph }|' \
+		-i libgnomeprint/grammar.y
+
+	./configure \
+		--with-html-dir=/usr/share/doc \
+		--without-cups \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share/locale
+	
+	# Copy shared libs
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/$PACKAGE $fs/usr/lib
+	
+	cp -a $install/usr/share/locale/fr $fs/usr/share/locale
+	cp -a $install/usr/share/$PACKAGE $fs/usr/share
+	
+	# Remove static libs
+	rm $fs/usr/lib/$PACKAGE/$VERSION/modules/*.*a
+	rm $fs/usr/lib/$PACKAGE/$VERSION/modules/*/*.*a
+}
+

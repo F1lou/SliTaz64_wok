@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Dolibarr ERP/CRM
+Name[fr]=Dolibarr PGI/GRC
+Exec=browser http://localhost/dolibarr/
+Icon=dolibarr
+Categories=Office;

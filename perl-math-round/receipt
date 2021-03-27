@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-math-round"
+VERSION="0.07"
+CATEGORY="development"
+SHORT_DESC="Perl extension for rounding numbers."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL"
+WEB_SITE="https://metacpan.org/release/Math-Round"
+
+SOURCE="Math-Round"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://www.cpan.org/modules/by-module/Math/$TARBALL"
+
+DEPENDS="perl"
+BUILD_DEPENDS="perl"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	perl Makefile.PL &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr	$fs
+}

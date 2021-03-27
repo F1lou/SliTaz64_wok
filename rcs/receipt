@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="rcs"
+VERSION="5.9.4"
+CATEGORY="development"
+TAGS="cvs version-control versioning"
+SHORT_DESC="GNU Revision Control System."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.gnu.org/software/rcs/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="diffutils"
+BUILD_DEPENDS="diffutils ed"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# remove busybox/diff
+	[ -L /usr/bin/diff ] && tazpkg get-install diffutils --forced
+#	sed -i 's,test -w a.d || cp /dev/null a.d 2>/dev/null,false,' \
+#		src/conf.sh
+	./configure --prefix=/usr $CONFIGURE_ARGS &&
+	make
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	for p in ci co ident merge rcs rcsclean rcsdiff rcsmerge rlog
+	  do
+		install -c $src/src/$p $fs/usr/bin
+	  done
+}

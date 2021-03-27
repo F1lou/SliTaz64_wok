@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="ctags"
+VERSION="5.8"
+CATEGORY="utilities"
+SHORT_DESC="Generates an index file of language objects found in source files."
+MAINTAINER="rocky@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://ctags.sourceforge.net/"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--prefix=/usr \
+		$CONFIGURE_ARGS &&
+	make &&
+	make prefix=$DESTDIR/usr install
+
+	cook_pick_manpages ctags.1
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cook_copy_files ctags
+}

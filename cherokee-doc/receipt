@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="cherokee-doc"
+VERSION="1.2.104"
+CATEGORY="misc"
+SHORT_DESC="Documentation for cherokee"
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="http://www.cherokee.org/"
+
+DEPENDS="cherokee"
+WANTED="cherokee"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/share/doc	$fs/usr/share
+}

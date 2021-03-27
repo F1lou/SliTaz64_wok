@@ -1,0 +1,40 @@
+# SliTaz package receipt.
+
+PACKAGE="keepassx"
+VERSION="0.4.3"
+CATEGORY="graphics"
+SHORT_DESC="Cross platform password manager"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL2"
+#SOURCE="KeePassX"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://www.keepassx.org/"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+TAGS="password key"
+
+DEPENDS="xorg-libXtst libQtCore libQtGui libQtXml gcc-lib-base"
+BUILD_DEPENDS="Qt4-dev xorg-libXtst-dev xorg-libXtst qmake libegl-mesa"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src/src
+	qmake PREFIX=/usr &&
+	make &&
+	make INSTALL_ROOT=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p \
+		$fs/usr/share/keepassx \
+		$fs/usr/share/licenses \
+		$fs/usr/share/icons/hicolor/16x16/apps $fs/usr/share/icons/hicolor/48x48/apps
+
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/keepassx/icons $fs/usr/share/keepassx
+	cp -a $install/usr/share/keepassx/license.html $fs/usr/share/licenses/$PACKAGE.html
+	ln -s /usr/share/keepassx/icons/keepassx_small.png $fs/usr/share/icons/hicolor/16x16/apps/keepassx.png
+	ln -s /usr/share/keepassx/icons/keepassx_large.png $fs/usr/share/icons/hicolor/48x48/apps/keepassx.png
+}

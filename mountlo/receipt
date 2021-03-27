@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="mountlo"
+VERSION="0.6"
+CATEGORY="system-tools"
+SHORT_DESC="loopback filesystem mount implemented with FUSE."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+EXTRA_SOURCE_FILES="$PACKAGE-i386-$VERSION.tar.gz"
+WEB_SITE="https://github.com/libfuse"
+WGET_URL="$SF_MIRROR/fuse/$PACKAGE/$TARBALL"
+TAGS="filesystem"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	[ -f $SOURCES_REPOSITORY/$PACKAGE-i386-$VERSION.tar.gz ] ||
+		wget $SF_MIRROR/fuse/$PACKAGE/$VERSION/$PACKAGE-i386-$VERSION.tar.gz \
+			-P $SOURCES_REPOSITORY
+	if [ ! -f mountlo-$VERSION/mountlo ]; then
+		tar xzf $SOURCES_REPOSITORY/$PACKAGE-i386-$VERSION.tar.gz
+	fi
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $src/mountlo-$VERSION/mountlo $fs/usr/bin
+	chown root.root $fs/usr/bin/mountlo
+}

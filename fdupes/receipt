@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="fdupes"
+VERSION="2.0.0"
+CATEGORY="misc"
+SHORT_DESC="Identify or delete duplicate files in specified directories."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://github.com/adrianlopezroche/fdupes"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/adrianlopezroche/$PACKAGE/releases/download/$VERSION/$TARBALL"
+
+DEPENDS="ncurses pcre2"
+BUILD_DEPENDS="ncurses-dev pcre2-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure		\
+		--prefix=/usr	\
+		$CONFIGURE_ARGS &&
+	make
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $src/fdupes	$fs/usr/bin
+}

@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="libsdl2-mixer"
+VERSION="2.0.4"
+CATEGORY="development"
+SHORT_DESC="A multichannel sample and music mixer."
+MAINTAINER="tcg.thegamer@gmail.com"
+LICENSE="LGPL2.1"
+WEB_SITE="http://www.libsdl.org/projects/SDL_mixer/"
+
+SOURCE="SDL2_mixer"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="http://www.libsdl.org/projects/SDL_mixer/release/$TARBALL"
+
+DEPENDS="libmad libogg libsdl2 libvorbis"
+BUILD_DEPENDS="libmad-dev libogg-dev libsdl2 libsdl2-dev libvorbis-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--prefix=/usr		\
+		--enable-music-mp3-mad	\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

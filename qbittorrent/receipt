@@ -1,0 +1,47 @@
+# SliTaz package receipt.
+
+PACKAGE="qbittorrent"
+VERSION="3.1.9.2"
+CATEGORY="network"
+SHORT_DESC="A BitTorrent client in Qt4."
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://www.qbittorrent.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="libQtCore libQtDBus libQtGui libQtNetwork libQtXml libboost-system \
+	libcrypto libssl libtorrent-rasterbar zlib"
+BUILD_DEPENDS="gcc83 Qt4-dev qmake libboost-dev libtorrent-rasterbar-dev \
+	geoip openssl-dev"
+GENERIC_PIXMAPS="no"; GENERIC_MENUS="no"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export	CC=gcc-83
+	export	CXX=g++-83
+
+	./configure \
+		--prefix=/usr &&
+	make &&
+	make INSTALL_ROOT=$install install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/icons/hicolor
+
+	cp -a $install/usr/bin $fs/usr
+
+	cp -a $install/usr/share/applications $fs/usr/share
+	sdft $fs/usr/share/applications/qBittorrent.desktop -g -tf -i
+	sed -i '/^#/d' $fs/usr/share/applications/qBittorrent.desktop
+
+	for size in 16 24 32 48; do
+		cp -a $install/usr/share/icons/hicolor/${size}x$size \
+			$fs/usr/share/icons/hicolor
+	done
+}

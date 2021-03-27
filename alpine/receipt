@@ -1,0 +1,51 @@
+# SliTaz package receipt.
+
+PACKAGE="alpine"
+VERSION="2.23"
+CATEGORY="network"
+TAGS="mail client"
+SHORT_DESC="Fast, easy to use email client."
+MAINTAINER="paul@slitaz.org"
+LICENSE="Apache"
+WEB_SITE="https://repo.or.cz/alpine.git"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="http://alpine.x10host.com/$PACKAGE/release/src/$TARBALL"
+
+DEPENDS="libssl ncurses pam"
+BUILD_DEPENDS="ncurses-dev openssl-dev pam-dev"
+
+#HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure		\
+		--without-tcl	\
+		--without-ldap	\
+		--without-krb5	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}
+
+post_install()
+{
+	# link old libldap libraries
+	cd "$1/usr/lib"
+	ln -s liblber-2.4.so.2.4.2 liblber-2.3.so.0
+	ln -s libldap-2.4.so.2.4.2 libldap-2.3.so.0
+}
+
+post_remove()
+{
+	rm -f /usr/lib/liblber-2.3.so.0
+	rm -f /usr/lib/libldap-2.3.so.0
+}

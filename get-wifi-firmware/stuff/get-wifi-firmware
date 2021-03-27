@@ -1,0 +1,236 @@
+#!/bin/sh
+# install linux-wireless, wireless_tools and b43-fwcutter if needed.
+
+MODULE=$(echo $0 | sed 's/.*get-\(.*\)-firmware/\1/')
+ROOT="$2"
+PKG=$MODULE-firmware
+DEPENDS=""
+
+MODULE_LIST=""
+while read module desc ; do
+	[ "$MODULE" = "$module" ] && desc="$SHORT_DESC"
+	MODULE_LIST="$MODULE_LIST $module"
+done <<EOT
+b43		Broadcom $MODULE firmware.
+b43legacy	Broadcom $MODULE firmware (BCM4306 rev2 or 802.11b chips).
+ipw2100		Intel PRO/Wireless 2100 firmware.
+ipw2200		Intel PRO/Wireless 2200BG firmware.
+iwlwifi-3945	Intel PRO/Wireless 3945ABG/BG firmware.
+iwlwifi-4965	Intel WiFi Link 4965AGN firmware.
+iwlwifi-5000	Intel Wireless WiFi Link 5000AGN firmware.
+iwlwifi-5150	Intel Wireless WiFi Link 5150AGN firmware.
+iwlwifi-1000	Intel Wireless WiFi Link 1000BGN firmware.
+iwlwifi-6000	Intel Wireless WiFi Link 6000 Series Wi-fi Adapters.
+rt61		new RT2x00 RT61 Wireless Lan firmware.
+rt61pci		new RT2x00 RT61 Wireless Lan firmware.
+rt73		new RT2x00 RT73(RT2571W) Wireless Lan firmware.
+rt73usb		new RT2x00 RT73(RT2571W) Wireless Lan firmware.
+rt2870usb	RaLink RT2870USB (RT2870/RT2770) WiFi adapter.
+zd1211		zd1211/zd1211rw Wireless Lan firmware.
+zd1211rw	zd1211/zd1211rw Wireless Lan firmware.
+EOT
+
+case "$MODULE" in
+b43)
+	WEB_SITE="http://www.linuxwireless.org/en/users/Drivers/b43"
+	WGET_URL="http://mirror2.openwrt.org/sources"
+	VERSION=$(wget -O - $WGET_URL | sed \
+	  '/broadcom-wl-[0-9\.]*.tar/!d;s/.*com-wl-\([0-9\.]*\).tar.*/\1/' | \
+	  tail -n 1)
+	SUBDIR="broadcom-wl-$VERSION"
+	WGET_URL="$WGET_URL/$SUBDIR.tar.bz2"
+	DEPENDS="b43-fwcutter"
+	FWSET=wl_apsta_mimo.o
+	;;
+b43legacy)
+	WEB_SITE="http://downloads.openwrt.org/"
+	VERSION=$(wget -O - ${WEB_SITE}sources | sed \
+	  '/wl_apsta/!d;s/.*>wl_apsta-\(.*\).o.*/\1/')
+	WGET_URL="${WEB_SITE}sources/wl_apsta-$VERSION.o"
+	DEPENDS="b43-fwcutter"
+	FWSET=wl_apsta-$VERSION.o
+	;;
+ipw2100)
+	VERSION=$(wget -O - http://$MODULE.sourceforge.net/firmware.php?fid=2 |\
+		sed "/$MODULE-fw/!d;s/.*fw-\(.*\).tgz.*/\1/")
+	WEB_SITE="http://$MODULE.sourceforge.net/"
+	WGET_URL="http://bughost.org/firmware/${MODULE}-fw-${VERSION}.tgz"
+	;;
+ipw2200)
+	VERSION=$(wget -O - http://$MODULE.sourceforge.net/firmware.php?fid=8 |\
+		sed "/$MODULE-fw/!d;s/.*fw-\(.*\).tgz.*/\1/")
+	WEB_SITE="http://$MODULE.sourceforge.net/"
+	WGET_URL="http://bughost.org/firmware/${MODULE}-fw-${VERSION}.tgz"
+	;;
+iwlwifi-*)
+	WEB_SITE="http://www.intellinuxwireless.org/?n=Downloads"
+	VERSION=$(wget -O - $WEB_SITE | sed -e "/$MODULE-/!d" -e \
+		's/.*-ucode-\([0-9\.-]*\).t.*/\1/;q')
+	WGET_URL="http://www.intellinuxwireless.org/iwlwifi/downloads/$MODULE-ucode-$VERSION.tgz"
+	;;
+rt61*)
+	WGET_URL="http://archlinux.c3sl.ufpr.br/other/rt2x00-rt61-fw"
+	VERSION=$(wget -O - $WGET_URL | sed '/Firmware/!d;s/.*_V\(.*\).zip.*/\1/')
+	WEB_SITE="http://www.ralinktech.com/"
+	WGET_URL="$WGET_URL/RT61_Firmware_V${VERSION}.zip"
+	;;
+rt73*)
+	WGET_URL="http://archlinux.c3sl.ufpr.br/other/rt2x00-rt71w-fw"
+	VERSION=$(wget -O - $WGET_URL | sed '/Firmware/!d;s/.*_V\(.*\).zip.*/\1/')
+	WEB_SITE="http://www.ralinktech.com/"
+	WGET_URL="$WGET_URL/RT71W_Firmware_V${VERSION}.zip"
+	;;
+rt2870usb)
+	WGET_URL="http://archlinux.c3sl.ufpr.br/other/${MODULE}-fw"
+	VERSION=$(wget -O - $WGET_URL | sed '/Firmware/!d;s/.*_V\(.*\).zip.*/\1/')
+	WEB_SITE="http://www.ralinktech.com/"
+	WGET_URL="$WGET_URL/RT2870_Firmware_V${VERSION}.zip"
+	;;
+zd1211*)
+	WGET_URL="http://mirrors.kernel.org/debian/pool/non-free/z/zd1211-firmware"
+	VERSION=$(wget -O - $WGET_URL | sed -e '/zd1211-firmware/!d' \
+	  -e '/all.deb/!d' -e 's/.*>zd1211-firmware_\(.*\)_all.deb.*/\1/')
+	SHORT_DESC="zd1211/zd1211rw Wireless Lan firmware."
+	WEB_SITE="http://packages.debian.org/etch/zd1211-firmware"
+	WGET_URL="$WGET_URL/zd1211-firmware_${VERSION}_all.deb"
+	;;
+*)
+	case "$1" in
+	--install)
+		cd $(dirname $0)
+		for i in $MODULE_LIST ; do
+			ln -s get-wifi-firmware get-$i-firmware
+		done
+		exit 0 ;;
+	--get-free-firmware)
+		for i in $MODULE_LIST ; do
+			case "$i" in
+			iwlwifi*|rt*) get-$i-firmware
+			esac
+		done
+		exit 0 ;;
+	esac
+	echo "Unknown wifi driver. Please run one of the following commands:"
+	for i in $(cd $(dirname $0); ls get-*-firmware); do
+		[ -L $i ] || continue
+		[ "$(readlink $i)" = "get-wifi-firmware" ] || continue
+		echo "  $i"
+	done
+	exit 1;;
+esac
+
+# Check if user is root to install.
+if test $(id -u) != 0 ; then
+        echo -e "\nYou must be root to run `basename $0`."
+	echo -e "Please use 'su' and root password to become super-user.\n"
+	exit 0
+fi
+
+# Avoid reinstall
+if [ -d $ROOT/var/lib/tazpkg/installed/$PKG ]; then
+	echo -e "\n$PKG package is already installed.\n"
+	exit 0
+fi
+
+# We need drivers, the extractor and tools.
+for pkg in linux-wireless wireless_tools $DEPENDS
+do
+	if [ ! -d $ROOT/var/lib/tazpkg/installed/$pkg ]; then
+		tazpkg get-install $pkg --root=$ROOT
+	fi
+done
+
+# Get files
+TMP=/tmp/$(basename $0)$$
+mkdir $TMP
+TOP=$PWD
+cd $TMP
+wget $WGET_URL
+TARBALL="$(basename $WGET_URL)"
+if [ ! -s $TARBALL ]; then
+	cd $TOP
+	rm -rf $DIR
+	echo "Could not download $TARBALL. Exiting."
+	exit 1
+fi
+
+case "$WGET_URL" in
+*rpm)	rpm2cpio < $TARBALL | cpio -id;;
+*deb)	dpkg-deb -x $TARBALL . ;;
+*bz2)	tar xjf $TARBALL
+	cd $SUBDIR/driver;;
+*tar.gz|*tgz)	tar xzf $TARBALL;;
+*zip)	unzip $TARBALL;;
+*o)	;;
+*)	busybox tar xf $TARBALL;;
+esac
+	
+# Create pseudo package
+mkdir -p $PKG-$VERSION/fs/lib/firmware $PKG-$VERSION/fs/usr/share/licenses
+case "$MODULE" in 
+b43*)	b43-fwcutter -w "$PKG-$VERSION/fs/lib/firmware" $FWSET;;
+ipw2200)	cp ${MODULE}-fw-$VERSION/*LICENSE* $PKG-$VERSION/fs/usr/share/licenses/intel-$MODULE-LICENSE.txt
+			mv ${MODULE}-fw-$VERSION/* $PKG-$VERSION/fs/lib/firmware;;
+ipw2100)	cp *LICENSE* $PKG-$VERSION/fs/usr/share/licenses/intel-$MODULE-LICENSE.txt
+			mv *.fw* *LICENSE* $PKG-$VERSION/fs/lib/firmware;;
+rt*)
+	mv RT*_Firmware_V$VERSION/*.bin $PKG-$VERSION/fs/lib/firmware
+	mv RT*_Firmware_V$VERSION/*LICENSE* $PKG-$VERSION/fs/usr/share/licenses/ralink-rt61-LICENSE.txt;;
+iwlwifi*) mv iwlwifi*/iwlwifi*.ucode $PKG-$VERSION/fs/lib/firmware
+		  mv iwlwifi*/*LICENSE* $PKG-$VERSION/fs/usr/share/licenses/intel-iwlwifi-LICENSE.txt	;;
+zd1211*)
+	mv lib/firmware/zd1211 $PKG-$VERSION/fs/lib/firmware 
+	for i in $(cd usr/lib/hotplug/firmware; ls); do
+		target=$(readlink usr/lib/hotplug/firmware/$i)
+		ln -s $(basename $target) $PKG-$VERSION/fs/lib/firmware/zd1211/$i
+	done;;
+esac
+
+# Creat receipt
+cat > $PKG-$VERSION/receipt <<EOT
+PACKAGE="$PKG"
+VERSION="$VERSION"
+CATEGORY="non-free"
+SHORT_DESC="$SHORT_DESC."
+WEB_SITE="$WEB_SITE"
+DEPENDS="linux-wireless wireless_tools $DEPENDS"
+EOT
+
+# Pack
+tazpkg pack $PKG-$VERSION
+
+# Install pseudo package
+tazpkg install $PKG-$VERSION.tazpkg --root=$ROOT
+
+# Clean
+cd $TOP
+rm -rf $TMP
+
+if [ "$1" = "--firmware" ] ; then 
+    echo "just install firmare: yes"
+    JUST_INSTALL_FIRMWARE="yes"
+fi
+
+if [ ! "$JUST_INSTALL_FIRMWARE" = "yes" ]; then
+	echo "configuring and loading module ..."
+	# Check if we need wpa_supplicant
+	. $ROOT/etc/network.conf
+	if [ $WIFI_KEY_TYPE = "wpa" ] || [ $WIFI_KEY_TYPE = "WPA" ]; then
+		if [ ! -d $ROOT/var/lib/tazpkg/installed/wpa_supplicant ]; then
+			tazpkg get-install wpa_supplicant --root=$ROOT
+		fi
+	fi
+
+	# Configure /etc/network.conf and start connexion
+	sed -i s/'WIFI="no"'/'WIFI="yes"'/ $ROOT/etc/network.conf
+
+	# Load module
+	if [ -z "$ROOT" -a -n "$(modprobe -l $MODULE)" ]; then
+		echo "Loading module: $MODULE..."
+		if modprobe $MODULE ; then
+			sleep 2
+			/etc/init.d/network.sh restart
+		fi
+	fi
+fi
+

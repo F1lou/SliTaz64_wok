@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="python-pyprotocols"
+VERSION="0.9.3"
+CATEGORY="development"
+SHORT_DESC="PEP 246 and a whole lot more."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="PSL"
+SOURCE="PyProtocols"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="http://www.turbogears.org/"
+WGET_URL="http://peak.telecommunity.com/dist/$TARBALL"
+TAGS="python"
+
+DEPENDS="python"
+BUILD_DEPENDS="python python-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr $fs
+}

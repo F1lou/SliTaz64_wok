@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="xorg-server-dev"
+VERSION="1.12.4"
+CATEGORY="development"
+SHORT_DESC="Xorg server devel files needed to build drivers."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://www.x.org/"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="xorg-libxkbfile-dev xorg-libpciaccess-dev xorg-libXxf86vm-dev \
+xorg-libXfont-dev libgcrypt-dev pixman-dev udev-dev mesa-dev pkg-config \
+perl flex xorg-server xorg-xf86driproto xorg-xcmiscproto xorg-bigreqsproto \
+xorg-dri2proto xorg-xextproto xorg-xproto xorg-fontsproto xorg-inputproto \
+xorg-kbproto xorg-randrproto xorg-renderproto xorg-videoproto \
+xorg-compositeproto xorg-recordproto xorg-scrnsaverproto xorg-xf86dgaproto \
+xorg-fontcacheproto xorg-printproto xorg-resourceproto xorg-xineramaproto \
+xorg-xf86bigfontproto xorg-xf86miscproto xorg-trapproto"
+
+# Use devel files from ARCH default Xserver
+case "$ARCH" in
+	i?86) 
+		WANTED="xorg-server" ;;
+	arm) 
+		WANTED="xorg-server-light" 
+		DEPENDS="" ;;
+esac
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share
+
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/lib/X11 $fs/usr/lib
+	cp -a $install/usr/share/aclocal $fs/usr/share
+	cp -a $install/usr/include $fs/usr
+
+	rm $fs/usr/lib/X11/*/*.so*
+	rm $fs/usr/lib/X11/*/*/*.*so*
+}
+

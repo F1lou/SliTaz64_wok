@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="linux-libre-without-modules"
+VERSION="3.18.129-gnu"
+CATEGORY="base-system"
+SHORT_DESC="The Linux Libre kernel without module support."
+MAINTAINER="gokhlayeh@slitaz.org"
+LICENSE="GPL2"
+PROVIDE="linux-without-modules"
+WANTED="linux-libre"
+WEB_SITE="http://www.fsfla.org/svnwiki/selibre/linux-libre/"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/boot   
+	cp -a $install/bzImage $fs/boot/vmlinuz-$VERSION-slitaz-without-modules
+}
+

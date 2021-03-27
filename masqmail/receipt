@@ -1,0 +1,41 @@
+# SliTaz package receipt.
+
+PACKAGE="masqmail"
+VERSION="0.3.5"
+CATEGORY="network"
+TAGS="mail"
+SHORT_DESC="A mail transfer agent for workstations and servers in small networks."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://marmaro.de/prog/masqmail/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}files/$TARBALL"
+
+BUILD_DEPENDS="glib glib-dev pkg-config"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure				\
+		--prefix=/usr			\
+		--infodir=/usr/share/info	\
+		--with-user=root		\
+		--with-group=root		\
+		--mandir=/usr/share/man		\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/share/masqmail	$fs/usr/share
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/sbin			$fs/usr
+	cp -a $install/etc			$fs
+#	cp -a $install/var $fs
+}

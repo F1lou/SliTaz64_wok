@@ -1,0 +1,59 @@
+# SliTaz package receipt.
+
+PACKAGE="lxqt-common"
+VERSION="0.8.0"
+CATEGORY="system-tools"
+SHORT_DESC="Common files for LXQt"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://github.com/lxde/lxqt-common"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="http://lxqt.org/downloads/$VERSION/$TARBALL"
+TAGS="LXQt window-manager"
+
+# TODO: add more depends
+DEPENDS="xorg-xprop dbus "
+BUILD_DEPENDS="cmake Qt4-dev qmake liblxqt-dev grep libqtxdg-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir build; cd build
+	cmake -DCMAKE_INSTALL_PREFIX=/usr .. &&
+	make &&
+	make DESTDIR=$install install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/etc $fs
+	cd $fs; patch -p0 < $stuff/settings.diff
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share $fs/usr
+	# all themes but 'flat' go to 'lxqt-themes'
+	rm -rf $fs/usr/share/lxqt/themes/*
+	cp -a $install/usr/share/lxqt/themes/flat $fs/usr/share/lxqt/themes
+}
+
+post_install()
+{
+        res=$(cat "$1/etc/slim.conf" | grep ^session | sed s/"sessions. *"//)
+        # Adding WM to SLIM available sessions.
+        if ! echo "$res" | grep -q $PACKAGE; then
+		echo
+                echo -n "Adding lxqt to /etc/slim.conf..."
+                sed -i "s/^sessions.*/sessions            ${res},lxqt/" "$1/etc/slim.conf"
+                status
+        fi
+}
+
+post_remove()
+{
+        # Remove WM from SLIM available sessions.
+        if grep -q lxqt "$1/etc/slim.conf"; then
+                sed -i s/,lxqt// "$1/etc/slim.conf"
+        fi
+}
+

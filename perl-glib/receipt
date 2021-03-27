@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-glib"
+VERSION="1.3292"
+CATEGORY="development"
+SHORT_DESC="Perl wrappers for the GLib utility and Object libraries."
+MAINTAINER="claudinei@slitaz.org"
+LICENSE="LGPL2.1"
+WEB_SITE="https://metacpan.org/release/Glib"
+
+SOURCE="Glib"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://cpan.metacpan.org/authors/id/X/XA/XAOC/$TARBALL"
+
+DEPENDS="glib perl"
+BUILD_DEPENDS="glib-dev perl perl-extutils-depends perl-extutils-pkgconfig"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	perl Makefile.PL &&
+	make &&
+	make install DESTDIR=$DESTDIR
+
+	rm -rf $pkgdir/installnone
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib	$fs/usr
+}

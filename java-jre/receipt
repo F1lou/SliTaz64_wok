@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="java-jre"
+VERSION="1.9.9"
+CATEGORY="development"
+SHORT_DESC="Symlinks for the default Java Runtime Environment (icedtea6)."
+MAINTAINER="rcx@zoominternet.net"
+LICENSE="GPL2"
+WEB_SITE="http://www.iced-tea.org/"
+WANTED="icedtea6-jdk"
+SOURCE="icedtea6"
+
+DEPENDS="icedtea6-jre"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/jre-bin $fs/usr/bin
+}

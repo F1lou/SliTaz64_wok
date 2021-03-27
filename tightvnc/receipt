@@ -1,0 +1,64 @@
+# SliTaz package receipt.
+
+PACKAGE="tightvnc"
+VERSION="1.3.10"
+CATEGORY="x-window"
+SHORT_DESC="VNC server (graphical remote control)."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-${VERSION}_unixsrc.tar.bz2"
+WEB_SITE="http://www.tightvnc.com/"
+WGET_URL="$SF_MIRROR/vnc-tight/$TARBALL"
+DEPENDS="xorg-base-fonts jpeg zlib"
+BUILD_DEPENDS="xorg-imake xorg-gccmakedep xorg-cf-files xorg-libXp \
+xorg-libXaw-dev xorg-libXt-dev xorg-xproto xorg-libXau-dev xorg-libXdmcp-dev \
+xorg-libXmu-dev xorg-xextproto xorg-printproto xorg-kbproto xorg-inputproto \
+xorg-scrnsaverproto xorg-xauth jpeg-dev zlib-dev xorg-libXrandr-dev"
+TAGS="remote-desktop vnc"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	[ -d vnc_unixsrc ] && mv vnc_unixsrc $src
+	cd $src
+	sed -i	-e "s| FONTDIR =.*$| FONTDIR = /usr/share/fonts/X11|" \
+		-e 's|\(define DefaultRGBDatabase\) .*|\1 /usr/share/X11/rgb|' \
+			Xvnc/config/cf/X11.tmpl
+	xmkmf &&
+	make -j1 World &&
+	cd Xvnc &&
+	./configure --prefix=/usr $CONFIGURE_ARGS || return 1
+	  sed 's|PROTO_DEFINES =|PROTO_DEFINES = -D_XOPEN_SOURCE=500L|' \
+  	-i programs/Xserver/os/Makefile lib/font/fc/Makefile || return 1
+	find -name Makefile | xargs sed -i 's|/usr/X11R6/bin|/usr/bin|g'
+	make -j1 &&
+	make -j1 DESTDIR=$DESTDIR install
+	cd .. &&
+	make -j1 DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $install/usr/bin/Xvnc $fs/usr/bin
+	cp $src/vncpasswd/vncpasswd $fs/usr/bin
+	cat > $fs/usr/bin/startvnc <<EOM
+#!/bin/sh
+
+case "\$1" in
+''|:*)	;;
+*)	cat <<EOT
+Usage: \$0 [display] [geometry] [depth]
+Default: \$0 :1 1920x1024 24
+EOT
+	exit 1
+esac
+	
+. \$HOME/.config/slitaz/applications.conf
+Xvnc -ac -geometry \${2:-1920x1024} -depth \${3:-24} :\${1:-1} &
+export DISPLAY=:\${1:-1}
+exec \$WINDOW_MANAGER
+EOM
+	chmod +x $fs/usr/bin/startvnc
+}

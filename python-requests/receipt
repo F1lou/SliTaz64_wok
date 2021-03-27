@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="python-requests"
+VERSION="2.23.0"
+CATEGORY="network"
+SHORT_DESC="Python HTTP Requests for Humans."
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="Apache"
+WEB_SITE="https://pypi.org/project/requests/"
+
+SOURCE="requests"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://files.pythonhosted.org/packages/source/${SOURCE:0:1}/$SOURCE/$SOURCE-$VERSION.tar.gz"
+
+DEPENDS="python"
+BUILD_DEPENDS="python python-setuptools"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py install --no-compile --root=$install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/*	$fs
+}

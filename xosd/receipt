@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="xosd"
+VERSION="2.2.14"
+CATEGORY="x-window"
+SHORT_DESC="Light on screen display tool."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://sourceforge.net/projects/libxosd/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/libxosd/$TARBALL"
+
+DEPENDS="xorg-libX11"
+BUILD_DEPENDS="xorg-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS 2>&1 | grep -v './configure' &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cook_copy_files osd_cat *.so* *.png
+}

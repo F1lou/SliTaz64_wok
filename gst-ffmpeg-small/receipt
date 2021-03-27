@@ -1,0 +1,55 @@
+# SliTaz package receipt.
+
+PACKAGE="gst-ffmpeg-small"
+SOURCE="gst-ffmpeg"
+VERSION="0.10.13"
+SERIES="0.10"
+CATEGORY="multimedia"
+SHORT_DESC="GStreamer FFmpeg Plugins"
+MAINTAINER="psychomaniak@xakep.ru"
+LICENSE="GPL2"
+TARBALL="$SOURCE-$VERSION.tar.bz2"
+WEB_SITE="https://gstreamer.freedesktop.org/"
+WGET_URL="$WEB_SITE/src/$SOURCE/$TARBALL"
+
+DEPENDS="gst-plugins-base bzip2"
+BUILD_DEPENDS="gstreamer-dev gst-plugins-base-dev bzip2-dev \
+coreutils-file-format coreutils-file-special glib-dev yasm"
+SUGGESTED="gst-plugins-good"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--prefix=/usr \
+		--disable-static \
+		--with-ffmpeg-extra-configure=" \
+			--enable-runtime-cpudetect \
+			--disable-bsfs \
+			--disable-parsers \
+			--disable-encoders \
+			--disable-decoders \
+			--disable-demuxers \
+			--disable-muxers \
+			--enable-decoder=h264 \
+			--enable-decoder=aac_latm \
+			--enable-decoder=aac \
+			--enable-decoder=mpeg4 \
+			--enable-decoder=mp3float \
+			--enable-decoder=vp8 \
+			--enable-decoder=flv " \
+		--with-package-name="GStreamer FFMpeg Plugin ($SERIES)" \
+		--with-package-origin="http://www.slitaz.org/" \
+		$CONFIGURE_ARGS &&
+	sed 's/RANK_NONE/RANK_SECONDARY/g' -i $src/ext/ffmpeg/gstffmpegdec.c
+	make $MAKEFLAGS &&
+	make DESTDIR=$install install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/gstreamer-$SERIES
+	cp -a $install/usr/lib/gstreamer-$SERIES/*.so* \
+		$fs/usr/lib/gstreamer-$SERIES
+}

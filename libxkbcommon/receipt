@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="libxkbcommon"
+VERSION="0.8.4"
+CATEGORY="x-window"
+SHORT_DESC="Keyboard handling library using XKB data."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://xkbcommon.org"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="https://xkbcommon.org/download/$TARBALL"
+
+DEPENDS="libxcb xorg-xkeyboard-config"
+BUILD_DEPENDS="bison libxcb-dev xorg-util-macros xorg-xkeyboard-config-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure						\
+		--with-xkb-config-root=/usr/share/X11/xkb	\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

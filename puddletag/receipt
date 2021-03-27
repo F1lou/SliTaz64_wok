@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="puddletag"
+VERSION="1.2.0"
+CATEGORY="multimedia"
+TAGS="tagging ogg mp3 apev2 mp4 id3"
+SHORT_DESC="A simple, powerful audio tag editor."
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL3"
+WEB_SITE="https://docs.puddletag.net/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/keithgg/$PACKAGE/releases/download/v$VERSION/$TARBALL"
+
+DEPENDS="mutagen python-configobj python-pyparsing PyQt-x11-gpl"
+BUILD_DEPENDS="python"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py build
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+}

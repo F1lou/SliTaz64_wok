@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="gsynaptics"
+VERSION="0.9.16"
+CATEGORY="utilities"
+SHORT_DESC="Synaptics TouchPad driver for XOrg/XFree86 (Deprecated)."
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="http://sourceforge.jp/projects/gsynaptics/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="http://sourceforge.jp/frs/redir.php?m=keihanna&f=%2F$PACKAGE%2F38463%2F$TARBALL"
+
+DEPENDS="dbus-glib GConf gtk+ libglade ORBit2"
+BUILD_DEPENDS="dbus-glib-dev gtk+-dev libglade-dev GConf-dev gnome-doc-utils-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--disable-scrollkeeper	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/*	$fs
+}

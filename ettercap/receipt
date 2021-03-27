@@ -1,0 +1,41 @@
+# SliTaz package receipt.
+
+PACKAGE="ettercap"
+VERSION="0.8.3"
+CATEGORY="network"
+SHORT_DESC="A suite for man in the middle attacks on LAN."
+MAINTAINER="claudinei@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.ettercap-project.org"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/Ettercap/$PACKAGE/archive/v$VERSION.tar.gz"
+
+DEPENDS="curl geoip libltdl libnet libpcap libpthread-stubs openssl zlib"
+BUILD_DEPENDS="cmake curl-dev file geoip-dev libnet-dev libpcap-dev 
+	libpthread-stubs libtool ncurses-dev openssl-dev zlib-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir	build
+	cd	build
+	cmake					\
+		-DCMAKE_INSTALL_PREFIX=/usr	\
+		-DENABLE_GTK=OFF		\
+		-DENABLE_PLUGINS=ON		\
+		../
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+
+	cp -a $install/etc			$fs
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/lib			$fs/usr
+	cp -a $install/usr/share/ettercap	$fs/usr/share
+}

@@ -1,0 +1,45 @@
+# SliTaz package receipt.
+
+PACKAGE="nzbget"
+VERSION="21.0"
+CATEGORY="network"
+SHORT_DESC="The most efficient usenet downloader."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://nzbget.net/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/$PACKAGE/$PACKAGE/archive/v$VERSION.tar.gz"
+
+DEPENDS="gcc-lib-base libssl libxml2 ncurses"
+BUILD_DEPENDS="gcc libxml2-dev ncurses-dev openssl-dev zlib-dev"
+
+CONFIG_FILES="/etc/nzbget.conf"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export	LDFLAGS="$LDFLAGS -ltinfo"
+	export	ncurses_LIBS=/lib/libncurses.so
+	export	ncurses_CFLAGS=" "
+
+	./configure			\
+		--prefix=/usr		\
+		--disable-parcheck	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/nzbget
+	mkdir -p $fs/etc
+
+	cp -a $install/usr/bin				$fs/usr
+	# 21.0 functions of nzbgetd contained in nzbget
+	# cp -a $install/usr/sbin $fs/usr
+	cp -a $install/usr/share/nzbget/nzbget.conf	$fs/etc
+	cp -a $install/usr/share/nzbget/scripts		$fs/usr/share/nbzget
+}

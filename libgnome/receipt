@@ -1,0 +1,48 @@
+# SliTaz package receipt.
+
+PACKAGE="libgnome"
+VERSION="2.30.0"
+CATEGORY="x-window"
+SHORT_DESC="GNOME Library"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://www.gnome.org"
+WGET_URL="http://ftp.gnome.org/pub/gnome/sources/$PACKAGE/${VERSION%.*}/$TARBALL"
+GENERIC_PIXMAPS="no"
+
+DEPENDS="libbonobo gnome-vfs esound audiofile GConf popt alsa-lib dbus-glib \
+openssl"
+BUILD_DEPENDS="libbonobo-dev gnome-vfs-dev esound-dev audiofile-dev \
+GConf-dev popt-dev alsa-lib-dev dbus-glib-dev intltool libffi libxml2-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's/-DG_DISABLE_DEPRECATED//' libgnome/Makefile*
+	./configure \
+		--sysconfdir=/etc/gnome \
+		--localstatedir=/var/lib \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share
+	cp -a $install/etc $fs
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/bonobo $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+
+	# Background
+	cp -a $install/usr/share/gnome-background-* $fs/usr/share
+	cp -a $install/usr/share/pixmaps $fs/usr/share
+	mkdir -p $fs/usr/share/images && cd $fs/usr/share/images
+	ln -s ../pixmaps/backgrounds/gnome/background-default.jpg \
+		gnome-default.jpg
+		
+	# Clean unwated files
+	cd $fs/usr/lib ; find . -name "*.*a" -exec rm -f {} \;
+}

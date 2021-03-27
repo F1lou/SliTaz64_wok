@@ -1,0 +1,98 @@
+#!/bin/sh -e
+
+PACKAGE="teamviewer"
+WEB_SITE="http://www.$PACKAGE.com/"
+URL=${WEB_SITE}en/download/linux.aspx
+DEPENDS="bash alsa-lib zlib xorg-libXext"
+ROOT="$1"
+[ -d "$ROOT" ] || ROOT=""
+
+if test $(id -u) != 0 ; then
+        echo -e "\nYou must be root to run `basename $0`."
+        echo -e "Please type 'su' and root password to become super-user.\n"
+        exit 0
+fi
+
+if [ -d $ROOT/var/lib/tazpkg/installed/$PACKAGE ]; then
+	[ -n "$ROOT" ] && exit 1
+	tazpkg remove $PACKAGE
+	[ -d /var/lib/tazpkg/installed/$PACKAGE ] && exit 1
+fi
+
+TMP_DIR=/tmp/get-$PACKAGE-$$-$RANDOM
+CUR_DIR=$(pwd)
+mkdir -p $TMP_DIR && cd $TMP_DIR
+
+# Download deb
+URL=$(wget -O - $URL | sed '/i386/!d;s/.*"\([^"]*i386[^"]*\).*/\1/;q')
+wget $URL
+FILE=$(basename $URL)
+
+if [ ! -f $FILE ]; then
+	cd $CUR_DIR
+	rm -rf $TMP_DIR
+	echo "Could not download $FILE from $URL. Exiting."
+	exit 1
+fi
+
+mkdir $PACKAGE
+dpkg-deb -e $FILE $PACKAGE/meta
+dpkg-deb -x $FILE $PACKAGE/fs
+find $PACKAGE/fs | grep /script/ | xargs sed -i 's|--append|-a|'
+# extracted pkg can be removed: Save RAM
+rm -f $FILE
+sed '/^Description:/,$!d;s/^Description://' \
+	< $PACKAGE/meta/control > $PACKAGE/description.txt
+
+SHORT_DESC="$(sed '/^Description:/!d;s/.*: //' $PACKAGE/meta/control)"
+MAINTAINER="$(sed '/^Maintainer:/!d;s/.*: //' $PACKAGE/meta/control)"
+VERSION="$(sed '/^Version:/!d;s/.*: //' $PACKAGE/meta/control)"
+mv $PACKAGE $PACKAGE-$VERSION
+
+cd $PACKAGE-$VERSION/fs
+[ -e usr/bin/$PACKAGE ] ||
+ln -s $(cd usr/bin ; ls $PACKAGE* 2> /dev/null) \
+	usr/bin/$PACKAGE 2> /dev/null || true
+mkdir -p usr/share/applications
+sed "s|EXEC|/usr/bin/$PACKAGE|g;s!ICON!/$(find opt | grep $PACKAGE.png)!g" \
+	< $(find opt | grep -E '(desktop.template|\.desktop$)') \
+	> usr/share/applications/$PACKAGE.desktop
+sed -i 's/readlink -e/readlink $0 || echo /' \
+	$(find opt -type f | grep /$PACKAGE$)
+cd ../..
+
+cat > $PACKAGE-$VERSION/receipt <<EOT
+# SliTaz package receipt.
+
+PACKAGE="$PACKAGE"
+VERSION="$VERSION"
+CATEGORY="non-free"
+SHORT_DESC="$SHORT_DESC"
+MAINTAINER="$MAINTAINER"
+DEPENDS="$DEPENDS"
+WEB_SITE="$WEB_SITE"
+
+post_install()
+{
+	cat <<EOF
+Web viewer (needs flash): https://go.teamviewer.com/v${VERSION%%.*}/
+EOF
+}
+EOT
+
+# Pack
+tazpkg pack $PACKAGE-$VERSION
+
+# Clean to save RAM memory
+rm -rf $PACKAGE-$VERSION
+
+# Install pseudo package
+tazpkg install $PACKAGE-$VERSION.tazpkg --root=$ROOT
+case " $@ " in
+*\ --k*) mv $PACKAGE-$VERSION.tazpkg $CUR_DIR ;;
+esac
+
+# Clean
+cd $CUR_DIR
+rm -rf $TMP_DIR
+

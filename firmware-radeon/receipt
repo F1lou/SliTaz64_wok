@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="firmware-radeon"
+VERSION="20200515"
+CATEGORY="non-free"
+SHORT_DESC="Firmware files for radeon"
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="other"
+WEB_SITE="http://git.kernel.org/cgit/linux/kernel/git/firmware/linux-firmware.git"
+WANTED="firmware"
+
+DEPENDS="linux-drm"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/lib/firmware $fs/usr/share/licenses
+	cp -a $install/lib/firmware/radeon $fs/lib/firmware
+	cp -a $install/lib/firmware/r128 $fs/lib/firmware
+	cp -a $src/LICENSE.radeon $fs/usr/share/licenses
+}
+

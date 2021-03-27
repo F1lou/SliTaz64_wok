@@ -1,0 +1,42 @@
+# SliTaz package receipt.
+
+PACKAGE="giflib"
+VERSION="5.2.1"
+CATEGORY="graphics"
+SHORT_DESC="A library for processing GIFs."
+MAINTAINER="rcx@zoominternet.net"
+LICENSE="MIT"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://sourceforge.net/projects/giflib/"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="glibc-base xorg-libSM xorg-libICE xorg-libX11 xorg-libXau \
+xorg-libXdmcp"
+BUILD_DEPENDS="util-linux-uuid-dev libtool"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	patch -p0 < $stuff/restore-GifQuantizeBuffer.u
+	sed -i 's|/local||' Makefile
+	make && make DESTDIR=$DESTDIR install
+	case "$ARCH" in
+		i?86)
+			# libungif compatibility - instructions taken from Redhat specfile
+			MAJOR=`echo $VERSION | sed 's/\([0-9]\+\)\..*/\1/'`
+			gcc -shared -Wl,-soname,libungif.so.${MAJOR} \
+				-L. -lgif -o libungif.so.$VERSION
+			install -m755 libungif.so.${VERSION} "$DESTDIR/usr/lib/"
+			ln -sf libungif.so.${VERSION%%.*} "$DESTDIR/usr/lib/libungif.so" ;;
+	esac
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

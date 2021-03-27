@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="talloc"
+VERSION="2.0.7"
+CATEGORY="system-tools"
+SHORT_DESC="Hierarchical pool based memory allocator with destructors."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="LGPL"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://talloc.samba.org/talloc/doc/html/index.html"
+WGET_URL="http://samba.org/ftp/$PACKAGE/$TARBALL"
+CROSS="bug: must use --cross-compile and --cross-execute="
+
+DEPENDS="glibc-base"
+BUILD_DEPENDS="python-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure \
+		--prefix=/usr \
+		--enable-talloc-compat1 \
+		--hostcc=$HOST_SYSTEM &&
+	make $MAKEFLAGS &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/libtalloc*.so* $fs/usr/lib/
+	ln -sf /usr/lib/libtalloc.so.$VERSION $fs/usr/lib/libtalloc.so.2
+	ln -sf /usr/lib/libtalloc-compat1-$VERSION.so $fs/usr/lib/libtalloc.so.1
+}

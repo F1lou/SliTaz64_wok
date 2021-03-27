@@ -1,0 +1,11 @@
+Some utilities to make dealing with .desktop files easier:
+  * `update-desktop-database` -- build cache database of MIME types handled by
+    desktop files
+  * `desktop-file-validate` -- validate desktop entry files according to the
+    Desktop Entry specification 1.1. For information about this specification,
+    see: http://freedesktop.org/wiki/Specifications/desktop-entry-spec
+  * `desktop-file-install` -- install a desktop file
+  * `desktop-file-edit` -- edit a desktop file
+
+Utility `update-desktop-database` you can find in the desktop-file-utils
+package.

@@ -1,0 +1,38 @@
+# SliTaz package receipt.
+
+PACKAGE="xplanet"
+VERSION="1.2.2"
+CATEGORY="system-tools"
+SHORT_DESC="Render major planets into the X root window."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://xplanet.sourceforge.net/"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="perl jpeg libpng zlib tiff xorg-libX11 freetype pango fontconfig \
+glib xorg-libXau xorg-libXdmcp expat giflib xorg-libXss gcc-lib-base \
+ util-linux-uuid"
+BUILD_DEPENDS="giflib-dev jpeg-dev libpng-dev zlib-dev tiff-dev \
+xorg-libX11-dev freetype-dev pango-dev fontconfig-dev glib-dev \
+xorg-libXau-dev xorg-libXdmcp-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# Fix for gcc 4.4
+	for file in src/Satellite.cpp src/Separation.cpp ; do
+		grep -q cstdio $file || sed -i '2i\#include <cstdio>' $file
+	done
+	./configure --prefix=/usr --mandir=/usr/share/man $CONFIGURE_ARGS &&
+	make &&
+	make -j1 DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/share/xplanet $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+}

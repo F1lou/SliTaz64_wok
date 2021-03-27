@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="xorg-xf86-video-i740"
+VERSION="1.4.0"
+CATEGORY="x-window"
+TAGS="xorg display"
+SHORT_DESC="Xorg Intel i740 video driver."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://www.x.org/wiki/"
+
+SOURCE="xf86-video-i740"
+TARBALL="$SOURCE-$VERSION.tar.bz2"
+WGET_URL="$XORG_MIRROR/driver/$TARBALL"
+
+DEPENDS="xorg-server"
+BUILD_DEPENDS="xorg-server-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--mandir=/usr/share/man \
+		--localstatedir=/var \
+		--with-xorg-module-dir=/usr/lib/X11/modules \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/X11/modules/drivers
+	cp -a $install/usr/lib/X11/modules/drivers/*.so \
+		$fs/usr/lib/X11/modules/drivers/
+}

@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="xorg-libXinerama"
+VERSION="1.1.4"
+CATEGORY="x-window"
+SHORT_DESC="Xorg server module."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://www.x.org/wiki/"
+
+SOURCE="libXinerama"
+TARBALL="$SOURCE-$VERSION.tar.bz2"
+WGET_URL="$XORG_MIRROR/lib/$TARBALL"
+
+DEPENDS="xorg-libXext"
+BUILD_DEPENDS="xorg-libXext-dev xorg-xineramaproto"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--prefix=/usr		\
+		--sysconfdir=/etc	\
+		--localstatedir=/var	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

@@ -1,0 +1,50 @@
+# SliTaz package receipt
+
+PACKAGE="feh"
+VERSION="3.3"
+CATEGORY="graphics"
+TAGS="image photo viewer"
+SHORT_DESC="Lightweight and powerful image viewer and composer."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://feh.finalrewind.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="${WEB_SITE}$TARBALL"
+
+DEPENDS="freetype gcc83-lib-base giblib imlib2 jpeg libcurl libpng xorg-libX11 
+	xorg-libXau xorg-libXdmcp xorg-libXext xorg-libXinerama"
+BUILD_DEPENDS="curl-dev gcc83 giblib-dev imlib2-dev jpeg-dev libpng-dev 
+	xorg-libX11-dev xorg-xineramaproto xorg-xproto"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make			\
+		CC=gcc-83	\
+		PREFIX=/usr &&
+	make	install		\
+		PREFIX=/usr	\
+		DESTDIR=$DESTDIR  &&
+
+	# Fix path to icon and remove from menu since it need a param to
+	# load images.
+	sed -i \
+		-e s'#/home/slitaz/wok/feh/install##' \
+		-e '/Categories.*/'d \
+		$DESTDIR/usr/share/applications/feh.desktop || return 1
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	mkdir -p $fs/usr/share/feh/fonts
+	mkdir -p $fs/usr/share/feh/images
+	
+	cp -a $install/usr/bin/feh		$fs/usr/bin
+	cp -a $install/usr/share/feh/fonts	$fs/usr/share/feh
+	cp -a $install/usr/share/feh/images	$fs/usr/share/feh
+}

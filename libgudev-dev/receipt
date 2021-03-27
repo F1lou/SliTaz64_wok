@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="libgudev-dev"
+VERSION="182"
+CATEGORY="development"
+SHORT_DESC="GObject-based wrapper library for libudev. (devel files)"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WANTED="udev"
+WEB_SITE="https://www.kernel.org/pub/linux/utils/kernel/hotplug/udev.html"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="udev udev-dev pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/pkgconfig $fs/usr/include $fs/lib
+	cp -a $install/lib/libgudev*a $fs/lib
+	cp -a $install/lib/pkgconfig/gudev* $fs/usr/lib/pkgconfig
+	cp -a $install/usr/include/gudev-1.0 $fs/usr/include
+}

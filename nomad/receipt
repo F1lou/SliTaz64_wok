@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="nomad"
+VERSION="0.1"
+CATEGORY="misc"
+SHORT_DESC="user friendly wifi configure for nomads."
+WEB_SITE="http://doc.slitaz.org/en:guides:wifi-easy"
+MAINTAINER="sygne@ombres.eu"
+LICENSE="GPL3"
+
+DEPENDS="gtkdialog wireless_tools"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/sbin
+	cp -a stuff/nomad $fs/usr/sbin/
+	cp -a stuff/nomadbox $fs/usr/sbin/
+
+	mkdir $fs/etc
+	cp -a stuff/nomad.conf $fs/etc/
+}
+

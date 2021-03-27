@@ -1,0 +1,49 @@
+# SliTaz package receipt.
+
+PACKAGE="openerp-web"
+VERSION="5.0.14"
+CATEGORY="office"
+SHORT_DESC="Open source ERP web client."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MPL"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://openerp.com/"
+WGET_URL="$WEB_SITE/download/stable/source/$TARBALL"
+CONFIG_FILES="/etc/openerp/openerp-web.conf"
+# http://doc.openerp.com/install/linux/web/index.html
+
+DEPENDS="matplotlib python-turbogears python-pil python \
+python-pyxml python-pyparsing python-babel python-mako python-markupsafe"
+BUILD_DEPENDS="python-setuptools python-dev python python-pyxml python-turbogears"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr $fs/etc/openerp $fs/usr/share/applications
+	cp -a stuff/etc $fs/
+	cp -a $install/usr/config/openerp-web.cfg $fs/etc/openerp/openerp-web.conf
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib $fs/usr
+}
+
+# Pre and post install commands for Tazpkg.
+post_install()
+{
+	#sed -i "s/^RUN_DAEMONS=\"/RUN_DAEMONS=\"openerp-web /" "$1/etc/rcS.conf"
+	[ -z "$1" ] && /etc/init.d/openerp-web start
+	cat <<EOF
+----
+To start $PACKAGE server you can run :
+
+    /etc/init.d/openerp-web start
+
+Or add $PACKAGE to RUN_DAEMONS in /etc/rcS.conf
+----
+EOF
+}

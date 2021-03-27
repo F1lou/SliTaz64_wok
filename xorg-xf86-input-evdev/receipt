@@ -1,0 +1,49 @@
+# SliTaz package receipt.
+
+PACKAGE="xorg-xf86-input-evdev"
+VERSION="2.10.6"
+CATEGORY="x-window"
+SHORT_DESC="Xorg input evdev driver."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://www.x.org/wiki/"
+
+SOURCE="xf86-input-evdev"
+TARBALL="$SOURCE-$VERSION.tar.bz2"
+WGET_URL="$XORG_MIRROR/driver/$TARBALL"
+
+# We can use xorg-server-light with evdev and vesa driver.
+#DEPENDS="xorg-server"
+DEPENDS="libevdev mtdev"
+BUILD_DEPENDS="libevdev-dev mtdev-dev udev-dev xorg-server-dev"
+
+MODS='/usr/lib/X11/modules'
+
+HOST_ARCH="x86_64 i486 arm"
+
+# ARM use build system xorg-server-dev or manually install it in sysroot
+case "$ARCH" in
+	arm) BUILD_DEPENDS="udev-dev" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure				\
+		--sysconfdir=/etc		\
+		--localstatedir=/var		\
+		--with-xorg-module-dir=$MODS	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p ${fs}${MODS}/input
+	mkdir -p $fs/etc/X11/xorg.conf.d
+
+	cp -a ${install}${MODS}/input/*.so	${fs}${MODS}/input
+	cp -a $stuff/*evdev.conf		$fs/etc/X11/xorg.conf.d
+}

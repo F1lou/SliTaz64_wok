@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="tramys-server"
+VERSION="140828"
+CATEGORY="system-tools"
+SHORT_DESC="Tool for managing translation files for SliTaz GNU/Linux, server part"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL"
+WEB_SITE="http://www.slitaz.org/"
+
+DEPENDS="tramys"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	install -Dm755 -o www -g www $stuff/tramys2.cgi \
+		$fs/home/slitaz/www/cook/tramys2.cgi
+	install -Dm644 -o www -g www $stuff/tramys2.msg \
+		$fs/home/slitaz/www/cook/tramys2.msg
+}

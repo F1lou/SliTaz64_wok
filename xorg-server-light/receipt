@@ -1,0 +1,102 @@
+# SliTaz package receipt.
+
+PACKAGE="xorg-server-light"
+VERSION="1.12.4"
+CATEGORY="x-window"
+SHORT_DESC="Xorg core server light version (no dri, gl, and friends)."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+SOURCE="xorg-server"
+TARBALL="$SOURCE-$VERSION.tar.bz2"
+WEB_SITE="https://www.x.org/"
+WGET_URL="http://xorg.freedesktop.org/releases/individual/xserver/$TARBALL"
+PROVIDE="xorg-server"
+HOST_ARCH="x86_64 i486 arm"
+
+SUGGESTED="xorg-xf86-video-vesa xorg-xf86-video-fbdev"
+DEPENDS="xorg-xkeyboard-config xorg-libpciaccess xorg-libXxf86vm \
+xorg-libXfont xorg-libXau xorg-base-fonts libgcrypt pixman \
+xorg-xf86-input-evdev libgpg-error libgcrypt freetype libxcb \
+xorg-libXcomposite xorg-libXv bzip2 udev"
+BUILD_DEPENDS="xorg-libxkbfile-dev xorg-libpciaccess-dev pixman-dev \
+xorg-util-macros xorg-libXfont-dev libgcrypt-dev xorg-resourceproto \
+xorg-bigreqsproto xorg-xcmiscproto xorg-renderproto xorg-damageproto \
+xorg-compositeproto xorg-xf86dgaproto  xorg-randrproto xorg-recordproto \
+xorg-videoproto xorg-xtrans libgpg-error-dev libgcrypt-dev freetype-dev \
+libxcb-dev xorg-libXcomposite-dev xorg-libXxf86vm-dev xorg-libXv-dev \
+bzip2-dev udev-dev xorg-resourceproto xorg-xf86dgaproto xorg-bigreqsproto \
+xorg-bigreqsproto xorg-xcmiscproto xorg-bigreqsproto xorg-resourceproto"
+
+# Handle cross compilation. ARM use build host: perl flex
+case "$ARCH" in
+	arm)
+		#--disable-static
+		ARCH_ARGS="--enable-malloc0returnsnull" 
+		OS_NAME="SliTaz ARM"
+		VENDOR="http://arm.slitaz.org" ;;
+	i?86)
+		BUILD_DEPENDS="$BUILD_DEPENDS perl flex udev-dev"
+		OS_NAME="SliTaz GNU/Linux"
+		VENDOR="http://www.slitaz.org" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--with-module-dir=/usr/lib/X11/modules \
+		--with-xkb-output=/var/lib/xkb \
+		--with-serverconfig-path=/etc/X11 \
+		--with-fontrootdir=/usr/share/fonts \
+		--with-os-name="$OS_NAME" \
+		--with-vendor-web="$VENDOR" \
+		--with-builder-addr="$MAINTAINER" \
+		--enable-install-setuid \
+		--enable-xorg \
+		--enable-config-udev \
+		--disable-config-dbus \
+		--disable-screensaver \
+		--disable-glx \
+		--disable-dri \
+		--disable-dri2 \
+		--disable-xinerama \
+		--disable-libdrm \
+		--disable-xvfb \
+		--disable-xnest \
+		--disable-xfbdev \
+		--disable-xephyr \
+		--disable-xfake \
+		--disable-ipv6 \
+		--disable-docs \
+		--disable-devel-docs \
+		${CONFIGURE_ARGS} ${ARCH_ARGS} &&
+	make && make install
+}
+
+# Be sure it as cross compile
+testsuite()
+{
+	readelf -h $install/usr/bin/Xorg
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/var $fs/etc/X11/xorg.conf.d
+	cp -a $install/usr/lib/X11 $fs/usr/lib
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/var/lib $fs/var
+	cp -a $install/etc $fs
+	# Remove static libs and split Xnest
+	rm $fs/usr/lib/X11/*/*.*a
+	rm $fs/usr/lib/X11/*/*/*.*a
+}
+
+# We need /var/tmp rw to let xkbcomp builr XKB definition.
+post_install()
+{
+	chmod 1777 "$1/var/tmp"
+}

@@ -1,0 +1,42 @@
+# SliTaz package receipt.
+
+PACKAGE="fcitx"
+VERSION="4.1.2"
+CATEGORY="x-window"
+SHORT_DESC="Free Chinese Input Toy of X, a collection of Simplified Chinese input methods for Linux."
+MAINTAINER="lufeng369@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-${VERSION}_all.tar.bz2"
+WEB_SITE="https://fcitx-im.org/wiki/Fcitx"
+WGET_URL="http://fcitx.googlecode.com/files/$TARBALL"
+
+DEPENDS="libfcitx fcitx-skin-default gtk+"
+BUILD_DEPENDS="cmake intltool cairo-dev pango-dev gtk+-dev dbus-dev opencc-dev gcc"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+    mkdir -p $src/build
+    cd $src/build
+    cmake $src -DCMAKE_INSTALL_PREFIX=/usr -DENABLE_QT_IM_MODULE=OFF -DENABLE_GTK2_IM_MODULE=OFF -DENABLE_GTK3_IM_MODULE=OFF -DENABLE_OPENCC=ON || return 1
+    cd $src
+    make -C build || return 1
+    make install/fast -C build DESTDIR=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+    mkdir -p $fs/usr/bin/ $fs/usr/share/fcitx/ $fs/usr/share/applications/
+    cp -a $install/usr/bin/fcitx $fs/usr/bin/
+    cp -a $install/usr/bin/fcitx-configtool $fs/usr/bin/
+    cp -a $install/usr/bin/fcitx-remote $fs/usr/bin/
+    cp -a $install/usr/bin/fcitx4-config $fs/usr/bin/
+    cp -a $install/usr/share/fcitx/addon/ $fs/usr/share/fcitx/
+    cp -a $install/usr/share/fcitx/configdesc/ $fs/usr/share/fcitx/
+    cp -a $install/usr/share/fcitx/data/ $fs/usr/share/fcitx/
+    cp -a $install/usr/share/fcitx/pinyin/ $fs/usr/share/fcitx/
+    cp -a $install/usr/share/fcitx/table/ $fs/usr/share/fcitx/
+    cp -a $install/usr/share/applications/*.desktop $fs/usr/share/applications/
+    cp -a $install/usr/share/icons/ $fs/usr/share/
+}

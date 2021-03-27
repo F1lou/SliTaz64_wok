@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="thermald"
+VERSION="1.9.1"
+CATEGORY="system-tools"
+LICENSE="GPL2"
+SHORT_DESC="Linux thermal daemon (thermald) monitors and controls temperature."
+MAINTAINER="yuripourre@gmail.com"
+WEB_SITE="https://01.org/linux-thermal-daemon"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/intel/thermal_daemon/archive/v$VERSION.tar.gz"
+
+DEPENDS="dbus dbus-glib"
+BUILD_DEPENDS="automake dbus-dev dbus-glib-dev libxml2"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# 1.0
+#	sed -i '322s|%lu|%u|' src/thd_zone.cpp
+
+	./autogen.sh &&
+	./configure			\
+		--prefix=/usr		\
+		--sysconfdir=/etc	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+genpkg_rules()
+{
+	cp -a $install/usr	$fs
+}

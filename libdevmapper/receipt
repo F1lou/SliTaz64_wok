@@ -1,0 +1,26 @@
+# SliTaz package receipt.
+
+PACKAGE="libdevmapper"
+VERSION="2.03.08"
+CATEGORY="system-tools"
+SHORT_DESC="Linux device mapper library."
+MAINTAINER="b1+slitaz@nagel.org"
+LICENSE="GPL2"
+WEB_SITE="http://sourceware.org/dm/"
+WANTED="lvm2"
+
+DEPENDS="readline udev"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/lib $fs/etc
+	cp -a $install/usr/lib/libdevmapper*.so* $fs/usr/lib
+	cp -a $install/usr/lib/liblvm2*.so* $fs/usr/lib
+	cp -a $install/lib/udev $fs/etc
+}
+
+post_install()
+{
+	tazpkg reconfigure udev --root="$1"
+}

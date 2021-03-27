@@ -1,0 +1,79 @@
+# SliTaz package receipt.
+
+PACKAGE="openbox"
+VERSION="3.6.1"
+CATEGORY="x-window"
+SHORT_DESC="Small-footprint and standard compliant Window Manager."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://openbox.org/"
+WGET_URL="http://openbox.org/dist/openbox/$TARBALL"
+TAGS="window-manager"
+HOST_ARCH="x86_64 i486 arm"
+
+SUGGESTED="obconf spacefm pcmanfm hsetroot wbar2 conky"
+DEPENDS="pango glib xorg-libX11 fontconfig freetype xorg-libXrandr \
+xorg-libXft xorg-libXinerama xorg-libXcursor libxml2 slitaz-configs"
+BUILD_DEPENDS=" pango-dev glib-dev xorg-libXft-dev util-linux-uuid-dev \
+libxml2-dev xcb-util-dev"
+
+# Handle slitaz arch: /etc/slitaz/slitaz.conf
+case "$SLITAZ_ARCH" in 
+	i?86) DEPENDS="$DEPENDS startup-notification" ;;
+	arm*) DEPENDS="$DEPENDS hsetroot tint2" ;;
+esac
+
+# Handle cross compilation
+case "$ARCH" in 
+	i?86) BUILD_DEPENDS="$BUILD_DEPENDS startup-notification-dev xorg-dev" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	chmod +x install-sh
+	patch -p1 < ${stuff}/openbox-rounded.patch || exit 1
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--libexecdir=/usr/lib/openbox \
+		$CONFIGURE_ARGS &&
+	sed -i 's/^mkdir_p = .*/mkdir_p = mkdir -p/' po/Makefile &&
+	make &&
+	make -j1 DESTDIR=$DESTDIR install &&
+	rm -rf $install/usr/share/applications
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/openbox $fs/usr/share/themes
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/openbox $fs/usr/lib
+
+	# We dont have GNOME or KDE
+	rm $fs/usr/bin/openbox-gnome-session
+	rm $fs/usr/bin/openbox-kde-session
+	rm $fs/usr/bin/gnome-panel-control
+	rm $fs/usr/bin/gdm-control
+	chmod 0755 $fs/usr/bin/openbox-session
+
+	# Python XDG script --> openbox-python
+	rm -f $fs/usr/lib/openbox/openbox-xdg-autostart
+	patch -p1 $fs/usr/lib/openbox/openbox-autostart \
+		-i $stuff/openbox-autostart.patch || exit 1
+
+	# Just Onyx Themes --> openbox-themes
+	cp -a $install/usr/share/themes/Onyx* $fs/usr/share/themes
+
+	# Xsessions
+	cp -a $stuff/xsessions $fs/usr/share
+
+	# Pipe menu.
+	cp $stuff/open-folder-menu.sh $fs/usr/lib/openbox
+
+	# Set perms.
+	chown -R root.root $fs
+}

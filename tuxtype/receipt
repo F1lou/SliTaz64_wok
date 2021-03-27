@@ -1,0 +1,57 @@
+# SliTaz package receipt.
+
+PACKAGE="tuxtype"
+SOURCE="tuxtype_w_fonts"
+VERSION="1.8.1"
+CATEGORY="games"
+SHORT_DESC="Educational typing tutor for kids."
+MAINTAINER="claudinei@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="http://archive.wikiwix.com/cache/?url=http%3A%2F%2Ftuxtype.sourceforge.net%2F"
+WGET_URL="https://alioth.debian.org/frs/download.php/3270/$TARBALL"
+
+DEPENDS="libt4k_common libsdl librsvg libsdl-image libsdl-mixer libsdl-ttf \
+libsdl-net libsdl-pango"
+BUILD_DEPENDS="libt4k_common-dev libsdl-dev librsvg-dev libsdl-image-dev \
+libsdl-mixer-dev libsdl-ttf-dev libsdl-net-dev libsdl-pango-dev wget"
+TAGS="education"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure --sysconfdir=/etc \
+		--prefix=/usr \
+		--localstatedir=/var/games
+		$CONFIGURE_ARGS &&
+	make 
+	# Adding the games group satisfies the install script.
+	addgroup games 
+	make DESTDIR=$DESTDIR install 
+	# We don't need to leave this behind in the build environment.
+	delgroup games
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share $fs/var/games/tuxtype/words
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/tuxtype $fs/usr/share
+
+	for lang in de es fr pt; do
+		mkdir -p $fs/usr/share/locale/$lang/LC_MESSAGES
+		cp -a $install/usr/share/locale/$lang/LC_MESSAGES/tuxtype.mo \
+			$fs/usr/share/locale/$lang/LC_MESSAGES
+	done
+	
+	cp -ar $install/usr $fs
+}
+
+post_install()
+{
+	echo
+	echo "Adding games group if not already created:"
+	chroot "$1/" addgroup games
+}

@@ -1,0 +1,40 @@
+# SliTaz package receipt.
+
+PACKAGE="fwknop"
+VERSION="2.6.10"
+CATEGORY="network"
+SHORT_DESC="Single Packet Authorization (FireWall KNock OPerator)"
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://www.cipherdyne.org/fwknop/"
+WGET_URL="${WEB_SITE}download/$TARBALL"
+CONFIG_FILES="/etc/fwknop"
+
+DEPENDS="iptables gpgme gnupg libgpg-error"
+BUILD_DEPENDS="libpcap-dev gpgme-dev gnupg iptables"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure --prefix=/usr --infodir=/usr/share/info \
+		--sysconfdir=/etc \
+		--mandir=/usr/share/man \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $install/usr/share/doc
+	cp $src/README $install/usr/share/doc
+	cp $src/CREDITS $install/usr/share/doc
+	cp $src/AUTHORS $install/usr/share/doc
+	cp $src/ChangeLog $install/usr/share/doc
+	cp -a $install/etc $fs
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/sbin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

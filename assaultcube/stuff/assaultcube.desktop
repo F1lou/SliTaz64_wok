@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=AssaultCube
+Name[zh_CN]=反恐突击
+GenericName=Realistic Multiplayer FPS
+GenericName[zh_CN]=第一人称射击游戏
+Exec=assaultcube
+Icon=assaultcube
+Terminal=false
+X-MultipleArgs=false
+MimeType=text/html;
+StartupNotify=false
+Categories=Game;ActionGame;

@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="freealut-dev"
+VERSION="1.1.0"
+CATEGORY="development"
+SHORT_DESC="freealut development files"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="LGPL"
+#WEB_SITE="http://distro.ibiblio.org/rootlinux/rootlinux-ports/more/freealut/freealut-1.1.0/doc/alut.html"
+WEB_SITE="https://github.com/vancegroup/freealut"
+WANTED="freealut"
+
+DEPENDS="freealut openal-dev"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+	rm -r $fs/usr/lib/*.so*
+}

@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="wvstreams-dev"
+VERSION="4.6.1"
+CATEGORY="development"
+SHORT_DESC="wvstreams devel files."
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL2"
+WANTED="wvstreams"
+WEB_SITE="https://web.archive.org/web/20110504183753/http://alumnit.ca:80/wiki/index.php?page=WvDial"
+
+DEPENDS="pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/include/ $fs/usr	
+}

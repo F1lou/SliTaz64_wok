@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-io-stty"
+VERSION="0.04"
+CATEGORY="development"
+SHORT_DESC="Perl extension IO::Stty."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL"
+WEB_SITE="https://metacpan.org/release/IO-Stty"
+
+SOURCE="IO-Stty"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://www.cpan.org/modules/by-module/IO/$TARBALL"
+
+DEPENDS="perl"
+BUILD_DEPENDS="perl"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	perl Makefile.PL &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr	$fs
+}

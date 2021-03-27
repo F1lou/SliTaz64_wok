@@ -1,0 +1,37 @@
+# SliTaz PACKAGE receipt.
+
+PACKAGE="qupzilla"
+VERSION="1.8.5"
+CATEGORY="network"
+SHORT_DESC="QupZilla - QtWebKit browser"
+MAINTAINER="claudinei@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://github.com/QupZilla/qupzilla"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/archive/v$VERSION.tar.gz"
+GENERIC_PIXMAPS="no"
+TAGS="web-browser"
+
+DEPENDS="libQtCore libQtDBus libQtGui libQtNetwork libQtScript libQtSql \
+libQtXml libcrypto xorg-libX11 zlib cacerts xdg-utils libQtWebkit"
+BUILD_DEPENDS="wget cacerts Qt4-dev qmake openssl-dev xorg-libX11-dev"
+SUGGESTED="libQtWebkit-video qupzilla-locales"
+
+# Rules to configure and make the PACKAGE.
+compile_rules()
+{
+	qmake QupZilla.pro &&
+	make &&
+	make INSTALL_ROOT=$install install
+}
+# Rules to gen a SliTaz PACKAGE suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+	rm -rf $fs/usr/share/bash-completion
+	for size in 64 128 256; do
+		rm -rf $fs/usr/share/icons/hicolor/${size}x$size
+	done
+	rm -rf $fs/usr/share/pixmaps
+	rm -rf $fs/usr/share/qupzilla/locale
+}

@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="nagios-plugins-mysql"
+VERSION="2.3.3"
+CATEGORY="meta"
+SHORT_DESC="Dependencies for Nagios MySQL plugin."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://www.nagios-plugins.org/"
+
+DEPENDS="mysql-client nagios-plugins"
+WANTED="nagios-plugins"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/nagios/plugins
+	cp -pa $install/usr/lib/nagios/plugins/*mysql* \
+		$fs/usr/lib/nagios/plugins
+}

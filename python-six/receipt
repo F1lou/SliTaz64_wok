@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="python-six"
+VERSION="1.14.0"
+CATEGORY="development"
+SHORT_DESC="A Python 2 and 3 compatibility library."
+MAINTAINER="claudinei@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://pypi.org/project/six/"
+
+SOURCE="six"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://files.pythonhosted.org/packages/source/${SOURCE:0:1}/$SOURCE/$TARBALL"
+
+DEPENDS="python"
+BUILD_DEPENDS="python python-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr	$fs
+}

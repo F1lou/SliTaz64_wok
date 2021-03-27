@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="xerces-c"
+VERSION="3.2.3"
+CATEGORY="development"
+SHORT_DESC="A validating XML parser written in a portable subset of C++."
+MAINTAINER="rcx@zoominternet.net"
+LICENSE="Apache"
+WEB_SITE="https://xerces.apache.org/xerces-c/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="http://apache.org/dist/xerces/c/${VERSION%%.*}/sources/$TARBALL"
+
+DEPENDS="gcc-lib-base glibc-base icu libcrypto libcurl"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS &&
+	make $MAKEFLAGS &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+	cp -a $install/usr/bin		$fs/usr
+}

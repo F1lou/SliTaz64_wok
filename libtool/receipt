@@ -1,0 +1,45 @@
+# SliTaz package receipt.
+
+PACKAGE="libtool"
+VERSION="2.4.6"
+CATEGORY="development"
+SHORT_DESC="The GNU Portable Library Tool."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.gnu.org/software/libtool/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="libltdl automake autoconf"
+BUILD_DEPENDS="automake autoconf"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Handle cross compilation.
+case "$ARCH" in
+	arm) BUILD_DEPENDS="" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure		\
+		--enable-shared	\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/lib/*.*a		$fs/usr/lib
+	cp -a $install/usr/include		$fs/usr
+	cp -a $install/usr/share/aclocal	$fs/usr/share
+	cp -a $install/usr/share/libtool	$fs/usr/share
+	cp -a $install/usr/bin			$fs/usr
+}

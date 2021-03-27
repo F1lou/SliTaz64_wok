@@ -1,0 +1,42 @@
+# SliTaz package receipt.
+
+PACKAGE="minicom"
+VERSION="2.7.1"
+CATEGORY="development"
+SHORT_DESC="Menu driven communications program."
+MAINTAINER="f.lombard@free.fr"
+LICENSE="GPL2"
+WEB_SITE="https://salsa.debian.org/minicom-team/minicom"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="${WEB_SITE}/-/archive/master/v$VERSION.tar.bz2"
+
+DEPENDS="ncurses"
+BUILD_DEPENDS="automake ncurses-dev"
+CONFIG_FILES="/etc/minirc.dfl"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's/getline/get_line/' src/minicom.c
+
+	./autogen.sh &&
+	./configure				\
+		--sysconfdir=/etc		\
+		--prefix=/usr			\
+		--infodir=/usr/share/info	\
+		--mandir=/usr/share/man		\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+
+	mkdir -p $fs/etc
+	touch $fs$CONFIG_FILES
+}

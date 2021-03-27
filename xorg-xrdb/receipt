@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="xorg-xrdb"
+VERSION="1.2.0"
+CATEGORY="x-window"
+SHORT_DESC="A program used for accessing the X resources of a server."
+MAINTAINER="rocky@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://www.x.org/wiki/"
+
+SOURCE="xrdb"
+TARBALL="$SOURCE-$VERSION.tar.bz2"
+WGET_URL="$XORG_MIRROR/app/$TARBALL"
+
+DEPENDS="xorg-libXmu"
+BUILD_DEPENDS="pkg-config"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+    mkdir -p $fs/usr
+    cp -a $install/usr/bin	$fs/usr
+}

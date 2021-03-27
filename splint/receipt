@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="splint"
+VERSION="3.1.2"
+CATEGORY="development"
+SHORT_DESC="A tool for statically checking C programs for security vulnerabilities and coding mistakes."
+MAINTAINER="rocky@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.src.tgz"
+WEB_SITE="http://www.splint.org/"
+WGET_URL="http://www.splint.org/downloads/$TARBALL"
+
+BUILD_DEPENDS="flex autoconf automake libtool"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	autoreconf -i
+	./configure $CONFIGURE_ARGS && make -j1 && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+    mkdir -p $fs/usr
+    cp -a $install/usr/bin $fs/usr
+    cp -a $install/usr/share $fs/usr
+}

@@ -1,0 +1,54 @@
+# SliTaz package receipt.
+
+PACKAGE="imlib2"
+VERSION="1.6.1"
+CATEGORY="graphics"
+SHORT_DESC="Imlib graphic library."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL LGPL2"
+WEB_SITE="https://sourceforge.net/projects/enlightenment/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/enlightenment/$TARBALL"
+
+DEPENDS="bzlib freetype giflib jpeg libid3tag libpng tiff \
+	xorg-libICE xorg-libSM xorg-libX11 xorg-libXau \
+	xorg-libXdmcp xorg-libXext xorg-libXpm"
+BUILD_DEPENDS="bzip2-dev freetype-dev gcc83 giflib-dev jpeg-dev \
+	libid3tag-dev libpng-dev pkg-config tiff-dev \
+	util-linux-uuid-dev xorg-libXpm-dev xorg-xextproto \
+	zlib-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+# ARM: jpeg-dev must be installed in build chroot and libjpeg.la must
+# be modified manually
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure				\
+		--prefix=/usr			\
+		--infodir=/usr/share/info	\
+		--mandir=/usr/share/man		\
+		--with-x			\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make install
+
+	sed -i 's| @my_libs@||' $install/usr/bin/imlib2-config
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	mkdir -p $fs/usr/lib/imlib2/filters
+	mkdir -p $fs/usr/lib/imlib2/loaders
+
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+	cp -a $install/usr/lib/imlib2/filters/*.so* \
+					$fs/usr/lib/imlib2/filters
+	cp -a $install/usr/lib/imlib2/loaders/*.so* \
+					$fs/usr/lib/imlib2/loaders
+	cp -a $install/usr/bin/imlib2_*	$fs/usr/bin
+}

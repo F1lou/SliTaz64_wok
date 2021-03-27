@@ -1,0 +1,145 @@
+# SliTaz package receipt.
+
+PACKAGE="lighttpd-ssl"
+VERSION="1.4.55"
+CATEGORY="network"
+SHORT_DESC="Fast and light HTTP Web server with SSL support."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="https://www.lighttpd.net/"
+
+SOURCE="lighttpd"
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WGET_URL="https://download.lighttpd.net/$SOURCE/releases-${VERSION%.*}.x/$TARBALL"
+
+PROVIDE="lighttpd"
+SUGGESTED="lighttpd-modules perl php python"
+DEPENDS="openssl pcre"
+BUILD_DEPENDS="bzip2-dev openssl-dev pcre-dev"
+
+CONFIG_FILES="/etc/lighttpd/vhosts.conf /etc/lighttpd/lighttpd.conf /etc/ssl/lighttpd"
+
+HOST_ARCH="x86_64 i486 arm"
+
+BASE_MODULES="
+access
+accesslog
+alias
+cgi
+dirlisting
+indexfile
+staticfile
+rewrite
+status
+userdir"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i '/addrs_left/d' src/mod_extforward.c
+
+	./configure				\
+		--prefix=/usr			\
+		--libdir=/usr/lib/lighttpd	\
+		--mandir=/usr/share/man		\
+		--disable-ipv6			\
+		   --with-openssl		\
+		 --enable-shared		\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+# On SliTaz Lighttpd runs as user/group : www/www or 80/80.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	#cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/sbin $fs/usr
+
+	# Modules.
+	mkdir -p $fs/usr/lib/lighttpd
+	for module in $BASE_MODULES
+	  do
+		action "Copying : mod_${module}.so"
+		cp $install/usr/lib/lighttpd/mod_${module}.so \
+			$fs/usr/lib/lighttpd
+		status
+	  done
+
+	# Server root and configuration file.
+	cp -a $WOK/$SOURCE/stuff/etc	$fs
+	chown -R 0.0			$fs/etc
+	mkdir -p $fs/etc/ssl/lighttpd
+	cat >> $fs/etc/lighttpd/lighttpd.conf <<EOT
+
+# Enable HTTPS support
+#
+\$SERVER["socket"] == ":443" {
+  protocol = "https://"
+  ssl.engine    = "enable"
+  # Unsafe, see CVE-2014-3566 POODLE
+  ssl.use-sslv2 = "disable"
+  ssl.use-sslv3 = "disable"
+  ssl.pemfile   = "/etc/ssl/lighttpd/lighttpd.pem"
+}
+EOT
+
+	# Logs directory.
+	mkdir -p $fs/var/log/lighttpd
+	chown 80.80	$fs/var/log/lighttpd
+}
+
+# Make sure it is cross compiled properly
+testsuite()
+{
+	readelf -h $install/usr/sbin/lighttpd
+}
+
+# Pre and post install commands for Tazpkg.
+# We stop the server by default in case of upgrade.
+pre_install()
+{
+	[ -z "$1" ] &&
+	for i in httpd lighttpd ngnix apache cherokee $PACKAGE
+	  do
+		[ -f /etc/init.d/$i ] && /etc/init.d/$i stop
+	  done
+
+	# Backup configuration file.
+	if [ -d "$1/etc/lighttpd" ]
+	  then
+		cp -a "$1/etc/lighttpd" "$1/etc/lighttpd.bak"
+	fi
+}
+
+post_install()
+{
+	if [ ! -f "$1/etc/ssl/lighttpd/lighttpd.pem" ]
+	  then
+		openssl req -new -x509 \
+			-keyout "$1/etc/ssl/lighttpd/lighttpd.pem" \
+			-out "$1/etc/ssl/lighttpd/lighttpd.pem" \
+			-days 3650 -nodes <<EOT
+$(. "$1/etc/locale.conf" ; echo ${LANG#*_})
+$(cat "$1/etc/TZ")
+
+$(cat "$1/etc/hostname")
+
+
+
+EOT
+	fi
+
+	# Just in case.
+	chown www.www "$1/var/log/lighttpd"
+	if [ -z "$1" ]
+	  then
+		for i in apache
+		  do
+			[ -f /etc/init.d/$i ] && /etc/init.d/$i stop
+		  done
+		/etc/init.d/lighttpd start
+	fi
+}

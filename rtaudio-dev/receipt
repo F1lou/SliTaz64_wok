@@ -1,0 +1,25 @@
+# SliTaz package receipt.
+
+PACKAGE="rtaudio-dev"
+VERSION="5.1.0"
+CATEGORY="development"
+SHORT_DESC="Rtaudio C++ classes - development files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://www.music.mcgill.ca/~gary/rtaudio/"
+
+WANTED="rtaudio"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/include/rtaudio
+
+	# 5.1.0 no longer supplied
+#	cp -a $src/rtaudio-config	$fs/usr/bin
+
+	cp -a $src/*.h			$fs/usr/include/rtaudio
+	cp -a $src/include/*.h		$fs/usr/include/rtaudio
+	# GCC fix
+	sed -i "/inline/s/;$//" "$fs/usr/include/rtaudio/RtAudio.h"
+}

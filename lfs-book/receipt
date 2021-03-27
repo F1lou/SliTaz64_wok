@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="lfs-book"
+VERSION="8.4"
+CATEGORY="development"
+SHORT_DESC="Linux From Scratch book."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="CC-BY-NC-SA-2 MIT"
+WEB_SITE="http://www.linuxfromscratch.org/lfs/"
+
+TARBALL="LFS-BOOK-$VERSION.tar.bz2"
+WGET_URL="http://www.linuxfromscratch.org/lfs/downloads/$VERSION/$TARBALL"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/doc/$PACKAGE
+	cp -a $src/* $fs/usr/share/doc/$PACKAGE
+}

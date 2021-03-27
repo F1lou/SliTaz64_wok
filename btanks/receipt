@@ -1,0 +1,64 @@
+# SliTaz package receipt.
+
+PACKAGE="btanks"
+VERSION="0.9.8083"
+CATEGORY="games"
+SHORT_DESC="A fast 2d tank arcade game with multiplayer and split-screen modes."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="http://btanks.sourceforge.net/"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="expat mesa libsigc++ libvorbis lua5.1 openal libsdl libsdl-image libsmpeg"
+BUILD_DEPENDS="expat-dev mesa-dev libsigc++-dev libvorbis libvorbis-dev libogg \
+libogg-dev lua5.1-dev openal-dev libsdl-dev libsdl-image-dev libsmpeg-dev scons \
+chrpath pkg-config libsmpeg-dev lua5.1"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	sed -i 's/#define *NULL.*/#define NULL 0/g' engine/sl08/sl08.h
+	scons
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p \
+		$fs/usr/bin \
+		$fs/usr/lib/btanks \
+		$fs/usr/share/applications \
+		$fs/usr/share/btanks
+
+	# libs
+	cp -a $src/*.so $fs/usr/lib/btanks
+
+	ls -1 $fs/usr/lib/btanks/ | while read A; do
+		ln -s /usr/lib/btanks/$A $fs/usr/share/btanks/$A || return 1
+	done
+
+	# executables & wrappers
+	cp -a $src/btanks $fs/usr/bin/btanks-bin
+	cp -a $src/bted $fs/usr/bin/bted-bin
+
+	cp -a $stuff/btanks_script $fs/usr/bin/btanks
+	cp -a $stuff/bted_script $fs/usr/bin/bted
+	chmod +x $fs/usr/bin/btanks
+	chmod +x $fs/usr/bin/bted
+
+	ln -s /usr/bin/btanks-bin $fs/usr/share/btanks/btanks && \
+	ln -s /usr/bin/bted-bin $fs/usr/share/btanks/bted || return 1
+
+	# game data
+	cp -a $src/data $fs/usr/share/btanks
+	chown -R root:root $fs
+	chmod a-x $fs/usr/share/btanks/data/sounds/boomerang-missile.ogg
+
+	# make settings saveable
+	SETTINGS=$fs/usr/share/btanks/bt.xml
+	touch $SETTINGS
+	chgrp 100 $SETTINGS
+	chmod 664 $SETTINGS
+}

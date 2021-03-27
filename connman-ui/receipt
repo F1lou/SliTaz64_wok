@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="connman-ui"
+GITHASH="e4a8ddcca0870eb2ece5a7e3ea0296de9c86e5b2"
+VERSION=${GITHASH:0:7}
+CATEGORY="network"
+SHORT_DESC="A full-featured GTK based trayicon UI for ConnMan"
+MAINTAINER="domcox@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://github.com/tbursztyka/connman-ui"
+TARBALL="$PACKAGE-$VERSION.zip"
+WGET_URL="https://github.com/tbursztyka/connman-ui/archive/$GITHASH.zip"
+
+DEPENDS="connman dbus gtk+3"
+BUILD_DEPENDS="wget autoconf automake libtool connman-dev gtk+3-dev dbus-dev \
+libxml2-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./autogen.sh &&
+	./configure $CONFIGURE_ARGS &&
+	# remove Exite menu
+	cp -a $stuff/right_menu.ui $src/data/ui &&
+	# change some icons
+	cp -a $stuff/icons/*.png $src/data/icons &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+}

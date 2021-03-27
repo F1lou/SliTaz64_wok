@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="python-gammu"
+VERSION="2.12"
+CATEGORY="development"
+SHORT_DESC="Python bindings for Gammu."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://wammu.eu/python-gammu/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/gammu/$PACKAGE/archive/$VERSION.tar.gz"
+
+DEPENDS="gammu python"
+BUILD_DEPENDS="gammu-dev pkg-config python python-dev python-setuptools"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py build &&
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr	$fs
+}

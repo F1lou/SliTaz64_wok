@@ -1,0 +1,18 @@
+# SliTaz package receipt.
+
+PACKAGE="wesnoth-music"
+VERSION="1.14.7"
+CATEGORY="games"
+SHORT_DESC="Music files for wesnoth"
+MAINTAINER="mimas@slitaz.org"
+LICENSE="GPL2"
+WANTED="wesnoth"
+WEB_SITE="http://www.wesnoth.org/"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/wesnoth/data/core
+	cp -a $src/data/core/music $fs/usr/share/wesnoth/data/core
+}
+

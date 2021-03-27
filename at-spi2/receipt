@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="at-spi2"
+VERSION="2.15.4"
+CATEGORY="libdevel"
+LICENSE="GPL3"
+SHORT_DESC="Bridges ATK to At-Spi2 D-Bus service."
+MAINTAINER="yuripourre@gmail.com"
+SOURCE="at-spi2-core"
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WEB_SITE="https://www.gnome.org/"
+WGET_URL="http://ftp.gnome.org/pub/gnome/sources/$SOURCE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="dbus glib gobject-introspection util-linux-uuid"
+BUILD_DEPENDS="dbus-dev glib-dev gobject-introspection-dev util-linux-uuid-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+genpkg_rules()
+{
+	cp -a $install/usr $fs
+}

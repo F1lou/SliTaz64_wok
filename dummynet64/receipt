@@ -1,0 +1,52 @@
+# SliTaz package receipt.
+
+PACKAGE="dummynet64"
+VERSION="20150115"
+GITHASH="e717cdd4bef764a4aa7babedc54220b35b04c777"
+CATEGORY="network"
+SHORT_DESC="Network testing/emulation tool."
+MAINTAINER="samuel_trassare@yahoo.com"
+LICENSE="BSD"
+WEB_SITE="https://web.archive.org/web/20190131145449/http://info.iet.unipi.it/~luigi/dummynet/"
+TARBALL="$VERSION-ipfw3.zip"
+WGET_URL="https://github.com/luigirizzo/dummynet/archive/$GITHASH.zip"
+PROVIDE="dummynet:linux64"
+
+BUILD_DEPENDS="linux64-module-headers uclibc-cross-compiler-x86_64"
+
+# Aufs enable chroot
+AUFS_NOT_RAMFS="uclibc-cross-compiler-x86_64 is not compatible with aufs+tmpfs 8("
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	installed=/var/lib/tazpkg/installed
+	kvers=$(. $installed/linux64-module-headers/receipt ; echo $VERSION)
+	sed -i "s/WARN := -O1 -Wall -Werror/WARN := -O1 -Wall/" kipfw/Makefile
+	sed -i "s/uname -r/echo $kvers-slitaz64/" Makefile.inc
+	sed -i "/par = NULL/d;s|w_q = ((.*|/* & */|;s|double w_q;|/* & */|" \
+		ipfw/dummynet.c
+	sed -i "/altqptr =/d" ipfw/ipfw2.c
+	sed -i "/no-unused-but-set-variable/d" */Makefile
+	make
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin \
+		$fs/lib/modules/$kvers-slitaz/kernel/net
+	cp -a $src/ipfw/ipfw $fs/usr/bin
+	cp -a $src/kipfw-mod/ipfw_mod.ko $fs/lib/modules/$kvers-slitaz/kernel/net
+}
+
+# Post install/remove commands for Tazpkg.
+post_install()
+{
+	chroot "$1/" depmod -a ${EXTRAVERSION#_}-slitaz64
+}
+
+post_remove()
+{
+	chroot "$1/" depmod -a ${EXTRAVERSION#_}-slitaz64
+}

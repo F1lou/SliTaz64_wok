@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="libetpan"
+VERSION="1.9.4"
+CATEGORY="misc"
+SHORT_DESC="Mail library."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="https://www.etpan.org/libetpan.html"
+
+TARBALL="$VERSION.tar.gz"
+WGET_URL="https://github.com/dinhviethoa/libetpan/archive/$TARBALL"
+
+DEPENDS="expat gcc-lib-base gnutls libcurl libdb libgnutls libsasl 
+	openssl zlib"
+BUILD_DEPENDS="autoconf automake expat-dev gnutls-dev libgnutls libtool" 
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./autogen.sh			\
+		--with-openssl=no	\
+		--with-gnutls=yes	\
+	$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+}

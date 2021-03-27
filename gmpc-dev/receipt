@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="gmpc-dev"
+VERSION="11.8.16"
+CATEGORY="development"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL2"
+SHORT_DESC="gmpc devel library."
+WANTED="gmpc"
+WEB_SITE="http://gmpclient.org"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="gmpc pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib 
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib	
+}

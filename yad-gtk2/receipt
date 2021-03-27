@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="yad-gtk2"
+VERSION="0.40.0"
+CATEGORY="utilities"
+TAGS="gtk2"
+SHORT_DESC="Yet Another Dialog (GTK+2)."
+MAINTAINER="devl547@gmail.com"
+LICENSE="GPL3"
+WEB_SITE="https://sourceforge.net/projects/yad-dialog/"
+
+TARBALL="yad-$VERSION.tar.xz"
+WGET_URL="$SF_MIRROR/yad-dialog/$TARBALL"
+
+PROVIDE="yad"
+SIBLINGS="yad-gtk3 yad-gtk2-html"
+DEPENDS="atk cairo fontconfig freetype gdk-pixbuf glib glibc-base gtk+ \
+	libffi libgio pango pcre zlib"
+BUILD_DEPENDS="gtk+-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	patch -p1 -i $stuff/ru.patch
+
+	./configure			\
+		--enable-icon-browser	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/icons/hicolor/32x32/
+	cp -a $install/usr/share/icons/hicolor/32x32/apps \
+		$fs/usr/share/icons/hicolor/32x32/
+	cook_copy_files yad yad-icon-browser
+	cook_copy_icons
+}

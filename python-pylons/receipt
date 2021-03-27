@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="python-pylons"
+VERSION="1.0.3"
+CATEGORY="development"
+TAGS="python"
+SHORT_DESC="Lightweight web framework."
+MAINTAINER="taziden@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="https://pypi.org/project/Pylons/"
+
+SOURCE="Pylons"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://files.pythonhosted.org/packages/source/P/$SOURCE/$TARBALL"
+
+DEPENDS="python"
+BUILD_DEPENDS="python python-dev python-setuptools"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr	$fs
+}

@@ -1,0 +1,81 @@
+# SliTaz package receipt.
+
+PACKAGE="mplayer-svn"
+VERSION="32666"
+CATEGORY="multimedia"
+SHORT_DESC="Mplayer SVN version"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://www.mplayerhq.hu/design7/news.html"
+PROVIDE="mplayer"
+TAGS="player movie audio video"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="subversion|svn://svn.mplayerhq.hu/mplayer/trunk"
+BRANCH="$VERSION"
+SUGGESTED="libv4l"
+
+DEPENDS="gtk+ cdparanoia-III libmad xorg-libXv libtheora lame giflib \
+xorg-libXss xorg-libXxf86vm alsa-lib bzlib x264 libass"
+BUILD_DEPENDS="alsa-lib-dev gtk+-dev cdparanoia-III-dev libmad-dev xorg-libXv-dev libtheora-dev subversion yasm"
+
+# Rules to configure and make the package.
+#
+# This package is compiled against shared ffmpeg. Compiling with shared ffmpeg
+# on svn version is always challenging. Tip: Try to use the same day ffmpeg and
+# mplayer versions (use: svn info), very likely to succeed.
+#
+# To compile with in-built ffmpeg (and double the size of pkg), remove from
+# compile options:
+#	--disable-libavutil_a --disable-libavcodec_a --disable-libavformat_a
+#	--disable-libpostproc_a --disable-libswscale_a --disable-libavcodec_mpegaudio_hp
+
+compile_rules()
+{
+	cd $src
+	KERNEL_VERSION=`grep  ^VERSION= $WOK/linux/receipt | cut -d "=" -f2 | sed -e 's/"//g'`
+	sed -i "s/uname -r/echo $KERNEL_VERSION-slitaz/" configure
+	# disable unwanted features, remote control, streaming, networking, unwanted codecs, 
+	# disable video outputs, audio outputs, some advanced options
+	./configure \
+		--extra-cflags=-DHAVE_MMAP \
+		--prefix=/usr \
+		--confdir=/etc/mplayer \
+		--libdir=/usr/lib/mplayer \
+		--enable-gui --enable-freetype \
+		--language="en de es fr" \
+		--target=i386-linux \
+		--disable-largefiles --disable-dvdnav --disable-pvr --disable-enca --disable-fribidi --disable-maemo \
+		--disable-lirc --disable-lircc \
+		--disable-nemesi --disable-vstream \
+		--disable-smb --disable-live \
+		--disable-speex --disable-mng --disable-liblzo --disable-faad --disable-faad-internal \
+		--disable-libdv --disable-faac --disable-faac-lavc  --disable-ladspa --disable-libbs2b  \
+		--disable-libdca  --disable-musepack \
+		--disable-gl --disable-vdpau --disable-directfb --disable-sdl --disable-mga  \
+		--disable-jack --disable-pulse --disable-ossaudio  --disable-openal --disable-nas --disable-esd  \
+		--disable-mmx --disable-mmxext --disable-3dnow --disable-3dnowext \
+		--disable-sse --disable-sse2 --disable-ssse3 --disable-fastmemcpy  &&		
+	make $MAKEFLAGS &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/applications
+	cp -a $stuff/mplayer.desktop $fs/usr/share/applications
+	cp -a $install/usr/bin $fs/usr
+	# Mencoder goes in a splited package.
+	rm $fs/usr/bin/mencoder
+	cp -a $install/usr/share/mplayer $fs/usr/share
+	cp -a $install/usr/share/pixmaps $fs/usr/share
+	cp -a $install/etc $fs
+	cp $src/etc/example.conf $fs/etc/mplayer
+	# Config to use Xv by default.
+	cp stuff/mplayer.conf $fs/etc/mplayer
+	# default skin
+	tar xjf stuff/productive-1.0.tar.bz2 -C $fs/usr/share/mplayer/skins
+	cd $fs/usr/share/mplayer/skins && ln -s productive default
+	# Font
+	cd .. && ln -s ../fonts/truetype/ttf-dejavu/DejaVuSans.ttf subfont.ttf
+}

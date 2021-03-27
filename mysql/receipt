@@ -1,0 +1,146 @@
+# SliTaz package receipt.
+
+PACKAGE="mysql"
+VERSION="5.5.27"
+CATEGORY="office"
+SHORT_DESC="SQL database system."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://www.mysql.com/"
+WGET_URL="ftp://mirror.switch.ch/mirror/mysql/Downloads/MySQL-${VERSION%.*}/$TARBALL"
+CONFIG_FILES="/etc/mysql"
+DATABASE_FILES="/var/lib/mysql"
+TAZPANEL_DAEMON="man|edit::/etc/mysql/my.cnf|options|web::$WEB_SITE"
+CROSS="bug: can not run test programm"
+
+DEPENDS="busybox libmysqlclient mysql-client zlib slitaz-base-files \
+gcc-lib-base openssl readline"
+BUILD_DEPENDS="cmake openssl-dev zlib-dev ncurses-dev readline-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir -p $WOK/$PACKAGE/source/build
+	cd $WOK/$PACKAGE/source/build
+	# CFLAGS/CXXFLAGS as suggested upstream
+	CFLAGS="-fPIC ${CFLAGS} -fno-strict-aliasing -DBIG_JOINS=1 -fomit-frame-pointer" \
+	CXXFLAGS="-fPIC ${CXXFLAGS} -fno-strict-aliasing -DBIG_JOINS=1 -felide-constructors -fno-rtti" \
+	cmake ../$PACKAGE-$VERSION \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DSYSCONFDIR=/etc/mysql \
+		-DMYSQL_DATADIR=/var/lib/mysql \
+		-DMYSQL_UNIX_ADDR=/var/run/mysqld/mysqld.sock \
+		-DDEFAULT_CHARSET=utf8 \
+		-DDEFAULT_COLLATION=utf8_general_ci \
+		-DENABLED_LOCAL_INFILE=ON \
+		-DINSTALL_INFODIR=share/mysql/docs \
+		-DINSTALL_MANDIR=share/man \
+		-DINSTALL_PLUGINDIR=/usr/lib/mysql/plugin \
+		-DINSTALL_SCRIPTDIR=bin \
+		-DINSTALL_INCLUDEDIR=include/mysql \
+		-DINSTALL_DOCREADMEDIR=share/mysql \
+		-DINSTALL_SUPPORTFILESDIR=share/mysql \
+		-DINSTALL_MYSQLSHAREDIR=share/mysql \
+		-DINSTALL_DOCDIR=share/mysql/docs \
+		-DINSTALL_SHAREDIR=share/mysql \
+		-DWITH_READLINE=ON \
+		-DWITH_ZLIB=system \
+		-DWITH_SSL=system \
+		-DWITH_LIBWRAP=OFF \
+		-DWITH_MYSQLD_LDFLAGS="${LDFLAGS}" \
+		-DWITH_EXTRA_CHARSETS=complex \
+		-DWITH_EMBEDDED_SERVER=ON \
+		-DWITH_INNOBASE_STORAGE_ENGINE=1 \
+		-DWITH_PARTITION_STORAGE_ENGINE=1 \
+		-DWITHOUT_EXAMPLE_STORAGE_ENGINE=1 \
+		-DWITHOUT_ARCHIVE_STORAGE_ENGINE=1 \
+		-DWITHOUT_BLACKHOLE_STORAGE_ENGINE=1 \
+		-DWITHOUT_FEDERATED_STORAGE_ENGINE=1 &&
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p \
+		$fs/usr/share \
+		$fs/usr/lib/mysql/plugin \
+		$fs/etc/mysql \
+		$fs/etc/mysql.d \
+		$fs/var/lib/mysql
+
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/mysql/plugin/*.so* $fs/usr/lib/mysql/plugin
+	cp -a $install/usr/share/mysql $fs/usr/share
+
+	# Configuration file
+	cp -a $stuff/etc/init.d $fs/etc
+	cp -a $stuff/etc/mysql $fs/etc
+	grep -q "bind-address" $fs/etc/mysql/my.cnf || sed -i \
+		's/^\[mysqld\]/[mysqld]\nbind-address\t= 127.0.0.1/' \
+		$fs/etc/mysql/my.cnf
+
+	# Permissions
+	chmod 600 $fs/etc/mysql/my.cnf
+
+	cat $stuff/*.files-list | while read file; do
+		[ -f $fs$file ] && rm -f $fs$file
+	done
+
+}
+
+# Pre and post install commands for Tazpkg.
+post_install()
+{
+	
+	local user
+	local group
+	
+	user=mysql
+	group=mysql
+	
+	if ! grep -q $user "$1/etc/passwd"; then
+		echo
+		echo -n "Adding user/group $user..."
+		chroot "$1/" addgroup -S $group
+		chroot "$1/" adduser -s /bin/false -S -D -H -G $group $user
+		status
+	fi
+	# adduser mysql if needed
+	if ! grep -q ${user} "$1/etc/passwd"; then
+		echo
+		echo -n "Adding user MySQL..."
+		chroot "$1/" /bin/adduser -s /bin/false -h /dev/null \
+			-g "MySQL Daemon user" -u 27 -H -D -S -G ${group} ${user}
+		status
+	fi
+	#chroot "$1/" /bin/chown ${user}.${group} $(cat "$1/$INSTALLED/$PACKAGE/files.list")
+	chroot "$1/" /bin/chown -R ${user}.${group} /var/lib/mysql
+	chroot "$1/" mysql_install_db --user=${user} --basedir=/usr
+	cat <<EOF
+----
+To start $PACKAGE server you can run :
+
+    /etc/init.d/$PACKAGE start
+
+Or add $PACKAGE to RUN_DAEMONS in /etc/rcS.conf
+----
+EOF
+}
+
+pre_install()
+{
+	# Cleanup old files
+	rm -f "$1/usr/libexec/mysql"*
+	# Mv config
+	[ -f "$1/etc/my.cnf" ] &&
+	mv -f "$1/etc/my.cnf" "$1/etc/mysql/my.cnf" || true
+}
+
+post_remove()
+{
+	echo "Removing user/group mysql"
+	chroot "$1/" deluser mysql
+}

@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="get-virtualbox"
+VERSION="1.02"
+CATEGORY="non-free"
+SHORT_DESC="Get a x86 virtualization software."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="http://www.virtualbox.org/"
+
+DEPENDS="wget"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp $stuff/get-virtualbox $fs/usr/bin
+	
+	# Improve Slitaz support.
+	#cd $fs/usr/bin && patch -p1 -i $stuff/installer.u
+}
+

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=map
+Exec=map
+Icon=map
+Terminal=false
+Categories=Application;Game;

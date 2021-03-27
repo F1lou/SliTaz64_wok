@@ -1,0 +1,42 @@
+# SliTaz package receipt.
+
+PACKAGE="glibc-dev"
+VERSION="2.32"
+CATEGORY="development"
+SHORT_DESC="The GNU C libraries devel files (Part of SliTaz toolchain)."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WANTED="glibc"
+WEB_SITE="http://www.gnu.org/software/libc/"
+
+DEPENDS="glibc-base"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+#
+# This package is part of the toolchain. We use list to mkdir and cp files.
+#
+genpkg_rules()
+{
+    # Mass copy and then remove all files specified in stuff/base-files.list.
+    # We get the files from glibc-base. Locale files are in: glibc-locale.
+    cp -a $install/* $fs
+    
+    # Rm base files.
+    echo -n "Removing all base files..."
+    for file in `cat $WOK/glibc-base/taz/glibc-base-$VERSION/files.list`
+    do
+    	rm -f ${fs}$file
+    done
+    rm -rf $fs/etc
+    rm -rf $fs/usr/share
+    status
+    
+    # Rm locale.
+    echo -n "Removing all locale files..."
+    for file in `cat $WOK/glibc-locale/taz/glibc-locale-$VERSION/files.list`
+    do
+    	rm -f ${fs}$file
+    done
+    rm -rf $fs/usr/lib64/gconv
+    status
+}

@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="yelp-tools"
+VERSION="3.32.2"
+CATEGORY="utilities"
+SHORT_DESC="Tools to create documentation."
+MAINTAINER="yuripourre@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://wiki.gnome.org/Apps/Yelp/Tools"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION%.*}/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS="bash yelp-xsl"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export	SHELL=/bin/bash
+	export	CONFIG_SHELL=/bin/bash
+	sed -i '1s|/usr/bin/sh|/bin/bash|' install-sh
+
+	./configure \
+		--prefix=/usr \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr $fs
+}

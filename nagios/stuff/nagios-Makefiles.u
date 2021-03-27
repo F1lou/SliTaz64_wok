@@ -1,0 +1,98 @@
+--- nagios-4.4.6/Makefile.in	2020-04-28 20:48:29.000000000 +0000
++++ nagios-4.4.6/Makefile.in	2020-06-16 19:47:15.758584432 +0000
+@@ -35,8 +35,8 @@
+ datarootdir=@datarootdir@
+ LN_S=@LN_S@
+ INSTALL=@INSTALL@
+-INSTALL_OPTS=@INSTALL_OPTS@
+-COMMAND_OPTS=@COMMAND_OPTS@
++INSTALL_OPTS=
++COMMAND_OPTS=
+ HTTPD_CONF=@HTTPD_CONF@
+ LN_HTTPD_SITES_ENABLED=@LN_HTTPD_SITES_ENABLED@
+ INIT_DIR=@initdir@
+@@ -337,6 +337,7 @@
+ 	@autoconf-macros/add_group_user $(DIST) $(NAGIOS_USER) $(NAGIOS_GRP) 1
+ 
+ install-webconf:
++	$(INSTALL) -m 755 -d $(DESTDIR)$(HTTPD_CONF)
+ 	$(INSTALL) -m 644 sample-config/httpd.conf $(DESTDIR)$(HTTPD_CONF)/nagios.conf
+ 	if [ $(LN_HTTPD_SITES_ENABLED) -eq 1 ]; then \
+ 		$(LN_S) $(DESTDIR)$(HTTPD_CONF)/nagios.conf $(DESTDIR)/etc/apache2/sites-enabled/nagios.conf; \
+--- nagios-4.4.6/base/Makefile.in	2020-04-28 20:48:29.000000000 +0000
++++ nagios-4.4.6/base/Makefile.in	2020-06-16 19:47:15.758584432 +0000
+@@ -39,8 +39,8 @@
+ CGIDIR=@cgibindir@
+ HTMLDIR=@webdir@
+ INSTALL=@INSTALL@
+-INSTALL_OPTS=@INSTALL_OPTS@
+-COMMAND_OPTS=@COMMAND_OPTS@
++INSTALL_OPTS=
++COMMAND_OPTS=
+ STRIP=@STRIP@
+ 
+ CGIURL=@cgiurl@
+--- nagios-4.4.6/cgi/Makefile.in	2020-04-28 20:48:29.000000000 +0000
++++ nagios-4.4.6/cgi/Makefile.in	2020-06-16 19:47:15.758584432 +0000
+@@ -18,8 +18,8 @@
+ CGIDIR=@cgibindir@
+ HTMLDIR=@webdir@
+ INSTALL=@INSTALL@
+-INSTALL_OPTS=@INSTALL_OPTS@
+-COMMAND_OPTS=@COMMAND_OPTS@
++INSTALL_OPTS=
++COMMAND_OPTS=
+ STRIP=@STRIP@
+ 
+ CGIEXTRAS=@CGIEXTRAS@
+--- nagios-4.4.6/common/Makefile.in	2020-04-28 20:48:29.000000000 +0000
++++ nagios-4.4.6/common/Makefile.in	2020-06-16 19:47:15.762584477 +0000
+@@ -19,8 +19,8 @@
+ CGIDIR=@cgibindir@
+ HTMLDIR=@webdir@
+ INSTALL=@INSTALL@
+-INSTALL_OPTS=@INSTALL_OPTS@
+-COMMAND_OPTS=@COMMAND_OPTS@
++INSTALL_OPTS=
++COMMAND_OPTS=
+ 
+ CP=@CP@
+ 
+--- nagios-4.4.6/contrib/Makefile.in	2020-04-28 20:48:29.000000000 +0000
++++ nagios-4.4.6/contrib/Makefile.in	2020-06-16 19:47:15.762584477 +0000
+@@ -17,7 +17,7 @@
+ # Generated automatically from configure script
+ SNPRINTF_O=@SNPRINTF_O@
+ INSTALL=@INSTALL@
+-INSTALL_OPTS=@INSTALL_OPTS@
++INSTALL_OPTS=
+ 
+ 
+ prefix=@prefix@
+--- nagios-4.4.6/html/Makefile.in	2020-04-28 20:48:29.000000000 +0000
++++ nagios-4.4.6/html/Makefile.in	2020-06-16 19:47:15.762584477 +0000
+@@ -11,8 +11,8 @@
+ HTMLDIR=@webdir@
+ datarootdir=@datarootdir@
+ INSTALL=@INSTALL@
+-INSTALL_OPTS=@INSTALL_OPTS@
+-COMMAND_OPTS=@COMMAND_OPTS@
++INSTALL_OPTS=
++COMMAND_OPTS=
+ 
+ CP=@CP@
+ 
+--- nagios-4.4.6/module/Makefile.in	2020-04-28 20:48:29.000000000 +0000
++++ nagios-4.4.6/module/Makefile.in	2020-06-16 19:47:15.762584477 +0000
+@@ -18,9 +18,8 @@
+ exec_prefix=@exec_prefix@
+ BINDIR=@bindir@
+ INSTALL=@INSTALL@
+-INSTALL_OPTS=@INSTALL_OPTS@
+-COMMAND_OPTS=@COMMAND_OPTS@
+-STRIP=@STRIP@
++INSTALL_OPTS=
++COMMAND_OPTS=
+ 
+ CP=@CP@
+ 

@@ -1,0 +1,68 @@
+# SliTaz package receipt.
+
+PACKAGE="imagemagick"
+VERSION="7.0.9.26"
+SHORT_VERSION="${VERSION%.*}"
+CATEGORY="graphics"
+TAGS="image photo toolkit"
+SHORT_DESC="Images manipulation programs."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="Apache"
+WEB_SITE="https://www.imagemagick.org/"
+
+SOURCE="ImageMagick"
+TARBALL="$SOURCE-${VERSION%.*}-${VERSION##*.}.tar.xz"
+WGET_URL="${WEB_SITE}download/releases/$TARBALL"
+
+DEPENDS="bzlib cairo expat fftw fontconfig freetype gcc-lib-base 
+	graphviz ilmbase jasper jbigkit jpeg lcms libcroco libgio 
+	libgomp libgsf libltdl libpng librsvg libxml2 openexr 
+	pango tiff xorg-libXext"
+BUILD_DEPENDS="bzip2-dev cairo-dev expat-dev fftw-dev fontconfig-dev \
+	freetype-dev graphviz-dev ilmbase-dev jasper-dev jpeg-dev \
+	lcms-dev libcroco-dev libgio-dev libgsf-dev libpng-dev \
+	librsvg-dev libtool libxml2-dev openexr-dev pango-dev perl \
+	tiff-dev util-linux-uuid-dev xorg-libXext-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure				\
+		--prefix=/usr			\
+		--infodir=/usr/share/info	\
+		--mandir=/usr/share/man		\
+		--sysconfdir=/etc		\
+		--with-magick-plus-plus		\
+		--with-modules			\
+		--with-perl			\
+		--enable-hdri			\
+		$CONFIGURE_ARGS &&
+	make $MAKEFLAGS &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/share
+
+	cp -a $install/etc				$fs
+	cp -a $install/usr/bin				$fs/usr
+	cp -a $install/usr/lib/*.so*			$fs/usr/lib
+	cp -a $install/usr/lib/$SOURCE-$SHORT_VERSION	$fs/usr/lib
+	cp -a $install/usr/share/$SOURCE-*		$fs/usr/share
+
+	# CVE-2016-3714 work around v5
+	sed -i '/<policymap>/r/dev/stdin' $fs/etc/ImageMagick-7/policy.xml <<EOT
+  <policy domain="coder" rights="none" pattern="EPHEMERAL" />
+  <policy domain="coder" rights="none" pattern="URL" />
+  <policy domain="coder" rights="none" pattern="HTTPS" />
+  <policy domain="coder" rights="none" pattern="MVG" />
+  <policy domain="coder" rights="none" pattern="MSL" />
+  <policy domain="coder" rights="none" pattern="TEXT" />
+  <policy domain="coder" rights="none" pattern="SHOW" />
+  <policy domain="coder" rights="none" pattern="WIN" />
+  <policy domain="coder" rights="none" pattern="PLT" />
+EOT
+}

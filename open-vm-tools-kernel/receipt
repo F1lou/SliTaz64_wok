@@ -1,0 +1,53 @@
+# SliTaz package receipt.
+
+PACKAGE="open-vm-tools-kernel"
+VERSION="10.0.0-3000743"
+CATEGORY="utilities"
+TAGS="vmware kernel"
+SHORT_DESC="Open VMware Tools"
+MAINTAINER="nobody@slitaz.org"
+LICENSE="GPL"
+TARBALL="open-vm-tools-$VERSION.tar.gz"
+WEB_SITE="https://github.com/vmware/open-vm-tools"
+WGET_URL="https://github.com/vmware/open-vm-tools/archive/$TARBALL"
+HOST_ARCH="x86_64 i486 x86_64"
+
+DEPENDS="linux shutdown glib libffi libmspack open-vm-tools procps"
+BUILD_DEPENDS="wget cacerts linux autoconf automake libtool linux-source linux-module-headers procps glib-dev libffi-dev libdnet-dev libmspack-dev slitaz-toolchain"
+
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	[ -d /lib/modules/${kvers}-slitaz/source ] || get-linux-source
+
+	cd open-vm-tools
+	sed -i -e "s/-Werror//" configure.ac
+	autoreconf -i
+        ./configure \
+		--without-pam \
+		--without-x \
+		--without-icu \
+		--without-gtk2 \
+		--without-gtkmm \
+		--without-xmlsecurity \
+		--without-xerces \
+		--with-kernel-release=${kvers}-slitaz \
+                $CONFIGURE_ARGS && cd modules && \
+        make && make DESTDIR=$install install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	EXTRAVERSION=_${kvers}
+
+	mkdir -p $fs/lib
+	cp -a $install/lib/modules $fs/lib
+}
+
+post_install()
+{
+	chroot "$1/" depmod -a ${EXTRAVERSION#_}-slitaz
+	status
+}

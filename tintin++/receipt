@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="tintin++"
+VERSION="2.02.02"
+CATEGORY="games"
+SHORT_DESC="Terminal-based MUD client."
+MAINTAINER="samuel_trassare@yahoo.com"
+LICENSE="GPL2"
+WEB_SITE="https://tintin.sourceforge.io"
+
+SOURCE="tintin"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/$SOURCE/$TARBALL"
+
+DEPENDS="pcre"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd src &&
+	./configure $CONFIGURE_ARGS && 
+	make && 
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/*	$fs
+}

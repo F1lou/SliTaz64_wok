@@ -1,0 +1,65 @@
+iso2exe can insert your custom settings in the SliTaz live iso image:
+
+For example let's say you live in Paris and you want to add your wifi settings
+and your SSH keys into the live CD.
+
+Create a directory tree like
+
+extra
+extra/init.d
+extra/etc
+extra/etc/dropbear
+
+copy /usr/share/boot/init.custom in the root (where extra/ is)
+copy /etc/dropbear/dropbear_*_host_key files in extra/etc/dropbear
+
+either:
+	copy your network.conf in extra/etc/
+or (better, compatible with any SliTaz version):
+	add a shell script in extra/init.d/
+cat > extra/init.d/wifi <<EOT
+sed -i 's/^WIFI="no"/WIFI="yes"/' /etc/network.conf
+sed -i 's/^WIFI_ESSID=".*/WIFI_ESSID="TheCustomESSID"/' /etc/network.conf
+sed -i 's/^WIFI_KEY=".*/WIFI_KEY="TheWifiKey"/' /etc/network.conf
+EOT
+
+Create the initranfs:
+# find init.custom extra | cpio -o -H newc | gzip -9 > ../initrd.custom
+# cd ..
+
+And update the ISO image:
+# iso2exe -a "rdinit=/init.custom lang=fr_FR kmap=fr-latin1 tz=Europe/Paris" \
+	-i initrd.custom slitaz.iso -f
+
+That's it!
+
+Note you can check whether an ISO image is customized:
+$ iso2exe -l slitaz.iso
+win32.exe at 0000 (10752 bytes).
+syslinux.mbr at 2A00 (512 bytes).
+flavor.info at 2C00 (664 bytes).
+18035 free bytes in 2E98..750B
+isoboot.com at 750B (1085 bytes).
+rootfs.gz at 7948 (1704 bytes).
+boot.md5 at 7FF0 (16 bytes).
+fs.iso at 8000 (47065088 bytes).
+custom.magic at 2CEA800 (39 bytes).
+custom.append at 2CEA82F (59 bytes).
+custom.initrd at 2CEA878 (46749 bytes).
+41195 free bytes in 2CF5F15..2D00000
+MBR partitions :
+ 0:00000001  0001A7FF  EE
+EFI partitions :
+ 0:000001A4  00031C04  EFI System Partition
+
+And extract the initramfs:
+$ iso2exe -r slitaz.iso custom.initrd
+
+The taziso tool is custom live cd aware:
+# taziso slitaz.iso isomd5
+SliTaz core-4in1  2020-05-24  slitaz.iso
+Check the ISO image
+----
+Checking iso image...OK
+Checking iso hybrid boot....OK
+Checking iso custom config...OK

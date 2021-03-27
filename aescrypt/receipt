@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="aescrypt"
+VERSION="3.14"
+CATEGORY="security"
+SHORT_DESC="AES Crypt is a file encryption software."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="PublicDomain"
+WEB_SITE="https://www.aescrypt.com/"
+TARBALL="$PACKAGE-$VERSION.tgz"
+WGET_URL="${WEB_SITE}download/v3/linux/$TARBALL"
+
+DEPENDS="glibc-base"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src/src
+	make
+
+	cook_pick_manpages $src/man/aescrypt.1
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $src/src/aescrypt $fs/usr/bin
+	cp -a $src/src/aescrypt_keygen $fs/usr/bin
+}

@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="libIDL"
+VERSION="0.8.14"
+CATEGORY="development"
+SHORT_DESC="IDL Compiling Library."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://freshmeat.sourceforge.net/projects/libidl"
+WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION%.*}/$TARBALL"
+CROSS="bug: can not run test program"
+
+DEPENDS="glib"
+BUILD_DEPENDS="bison flex glib-dev pkg-config"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure \
+		--cache-file=config.cache \
+		--build=$HOST_SYSTEM \
+		--host=$HOST_SYSTEM &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib $fs/usr
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/include $fs/usr
+}

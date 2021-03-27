@@ -1,0 +1,59 @@
+# SliTaz package receipt.
+
+PACKAGE="links"
+VERSION="2.20.2"
+CATEGORY="network"
+TAGS="web-browser"
+SHORT_DESC="Light and fast web browser using Ncurses or Xlib."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://links.twibright.com/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="http://links.twibright.com/download/$TARBALL"
+
+SUGGESTED="gpm"
+DEPENDS="bzlib jpeg libcrypto libgomp liblzma libpng libssl libxcb ncurses 
+	tiff xorg-libX11 xorg-libXau xorg-libXdmcp zlib"
+BUILD_DEPENDS="bzip2-dev gpm-dev jpeg-dev libpng-dev libxcb-dev openssl-dev 
+	tiff-dev xorg-libX11-dev xorg-libXau-dev xorg-libXdmcp-dev xz-dev 
+	zlib-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Handle cross compilation
+case "$ARCH" in
+	arm*)
+		VERSION="2.7" 
+		TARBALL="$PACKAGE-$VERSION.tar.gz" 
+		WGET_URL="http://links.twibright.com/download/$TARBALL" ;;
+esac
+
+# Handle SliTaz arch
+case "$SLITAZ_ARCH" in
+	arm*) VERSION="2.7" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--prefix=/usr		\
+		--sysconfdir=/etc	\
+		--enable-graphics	\
+		--without-directfb	\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/pixmaps
+	mkdir -p $fs/usr/share/webhome
+
+	cp -a $install/usr/bin		$fs/usr
+	cp $src/graphics/links.xpm	$fs/usr/share/pixmaps
+	cp $stuff/links.html		$fs/usr/share/webhome
+}

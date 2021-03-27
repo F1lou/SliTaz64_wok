@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="tcc-win32"
+VERSION="0.9.27"
+CATEGORY="development"
+SHORT_DESC="fast Tiny C cross Compiler to win32 target."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="MIT LGPL2.1"
+WEB_SITE="https://bellard.org/tcc/"
+DEPENDS="tcc-common"
+SUGGESTED="mingw32-w32api"
+WANTED="tcc"
+TAGS="compiler C"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin $fs/usr/lib/tcc
+	cp -a $install/usr/bin/*-win*-tcc $fs/usr/bin
+	cp -a $install/usr/lib/tcc/win32 $fs/usr/lib/tcc
+}
+

@@ -1,0 +1,21 @@
+--- linux-3.16.53/scripts/Makefile.lib
++++ linux-3.16.53/scripts/Makefile.lib
+@@ -238,7 +238,8 @@
+ # ---------------------------------------------------------------------------
+ 
+ quiet_cmd_gzip = GZIP    $@
+-cmd_gzip = (cat $(filter-out FORCE,$^) | gzip -n -f -9 > $@) || \
++cmd_gzip = (cat $(filter-out FORCE,$^) | gzip -n -f -9 > $@) && \
++	( which advdef > /dev/null && advdef -z $@ ; true ) || \
+ 	(rm -f $@ ; false)
+ 
+ # DTC
+@@ -316,7 +317,7 @@
+ 
+ quiet_cmd_lzma = LZMA    $@
+ cmd_lzma = (cat $(filter-out FORCE,$^) | \
+-	lzma -9 && $(call size_append, $(filter-out FORCE,$^))) > $@ || \
++	xz -z -e --format=lzma --lzma1=mode=normal --stdout && $(call size_append, $(filter-out FORCE,$^))) > $@ || \
+ 	(rm -f $@ ; false)
+ 
+ quiet_cmd_lzo = LZO     $@

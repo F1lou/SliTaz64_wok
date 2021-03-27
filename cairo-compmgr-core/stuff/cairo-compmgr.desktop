@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Cairo Composite Manager
+Name[pt]=Gerenciador de Composite Cairo
+Name[pt_BR]=Gerenciador de Composite Cairo
+Name[ru]=Композитный менеджер Cairo
+Exec=cairo-compmgr
+Terminal=false
+Icon=/usr/share/pixmaps/cairo-compmgr/cairo-compmgr.png
+StartupNotify=false
+Categories=GTK;Settings;DesktopSettings;

@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="ttf-roboto-base"
+VERSION="1.2"
+CATEGORY="fonts"
+SHORT_DESC="Android Roboto Fonts (base family)"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="Apache"
+WEB_SITE="https://developer.android.com/design/style/typography.html"
+TARBALL="roboto-$VERSION.zip"
+WGET_URL="https://developer.android.com/downloads/design/$TARBALL"
+TAGS="font ttf"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	FONTPATH=$fs/usr/share/fonts/truetype/ttf-roboto
+	mkdir -p $FONTPATH
+
+	for FONT in Regular Bold Italic BoldItalic; do
+		install -Dm444 $src/Roboto_v$VERSION/Roboto/Roboto-$FONT.ttf $FONTPATH
+	done
+}

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Same
+Exec=sh -c "url=file:///var/www/same/index.html ; tazweb --notoolbar $url || browser $url"
+Icon=jssame
+Terminal=false
+Categories=Game;
+Comment=Chess game

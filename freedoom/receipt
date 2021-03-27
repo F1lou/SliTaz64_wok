@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="freedoom"
+VERSION="0.8"
+CATEGORY="games"
+SHORT_DESC="completely free Doom IWADS (game data)"
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="BSD"
+TARBALL="$PACKAGE-v$VERSION.tar.gz"
+WEB_SITE="http://www.nongnu.org/freedoom/"
+WGET_URL="http://savannah.nongnu.org/download/$PACKAGE/source/$TARBALL"
+
+BUILD_DEPENDS="deutex-devel python git ghostscript imagemagick htmldoc"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	make -j1
+	mkdir -p $DESTDIR/usr/share/games/doom
+	cp -a $src/wads/*.wad $DESTDIR/usr/share/games/doom
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/share $fs/usr
+}
+

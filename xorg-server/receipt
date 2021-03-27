@@ -1,0 +1,81 @@
+# SliTaz package receipt.
+
+PACKAGE="xorg-server"
+VERSION="1.12.4"
+CATEGORY="x-window"
+SHORT_DESC="Xorg core server."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+SUGGESTED="xorg-xf86-input-evdev xorg-xf86-video-vesa"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://www.x.org/"
+WGET_URL="http://xorg.freedesktop.org/releases/individual/xserver/$TARBALL"
+
+# Mesa build dep make also Xorg depends on libdrm.
+DEPENDS="xorg-xkeyboard-config xorg-libpciaccess xorg-libXxf86vm \
+xorg-libXfont xorg-libXau xorg-base-fonts libgcrypt pixman udev libdrm \
+xorg-xf86-input-evdev"
+BUILD_DEPENDS="xorg-libxkbfile-dev xorg-libpciaccess-dev xorg-libXxf86vm-dev \
+xorg-libXfont-dev libgcrypt-dev pixman-dev udev-dev mesa-dev pkg-config perl \
+flex xorg-xf86driproto xorg-xcmiscproto xorg-bigreqsproto xorg-randrproto \
+xorg-dri2proto xorg-libXau-dev xorg-dev-proto libdrm-dev xorg-glproto \
+xorg-libXv-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+
+	# Xephyr make possible to use Xorg in a chroot.
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--mandir=/usr/share/man \
+		--localstatedir=/var \
+		--with-module-dir=/usr/lib/X11/modules \
+		--with-xkb-output=/var/lib/xkb \
+		--with-serverconfig-path=/etc/X11 \
+		--enable-install-setuid \
+		--enable-xorg \
+		--enable-kdrive \
+		--enable-kdrive-kbd \
+		--enable-kdrive-mouse \
+		--enable-kdrive-evdev \
+		--enable-xfbdev \
+		--enable-xephyr \
+		--enable-config-udev \
+		--disable-config-dbus \
+		--disable-docs \
+		--disable-devel-docs \
+		--with-fontrootdir=/usr/share/fonts/X11 \
+		--with-os-name="SliTaz GNU/Linux" \
+		--with-vendor-web="http://www.slitaz.org/" \
+		--with-builder-addr=$MAINTAINER \
+		$CONFIGURE_ARGS &&
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/var $fs/etc/X11/xorg.conf.d
+	cp -a $install/usr/lib/X11 $fs/usr/lib
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/var/lib $fs/var
+	cp -a $install/etc $fs
+	# Remove static libs and split Xnest
+	rm $fs/usr/lib/X11/*/*.*a
+	rm $fs/usr/lib/X11/*/*/*.*a
+	rm $fs/usr/bin/Xnest
+	rm $fs/usr/bin/Xvfb
+	# Kdrive/tinyX --> xorg-server-Xephyr xorg-server-Xfbdev
+	rm $fs/usr/bin/Xephyr
+	rm $fs/usr/bin/Xfbdev
+}
+
+# We need /var/tmp rw to let xkbcomp builr XKB definition.
+post_install()
+{
+	chmod 1777 "$1/var/tmp"
+}
+

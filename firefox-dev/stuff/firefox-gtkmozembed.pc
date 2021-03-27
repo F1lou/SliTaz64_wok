@@ -1,0 +1,8 @@
+prefix=/usr
+libdir=/usr/lib/firefox-devel
+sdkdir=/usr/lib/firefox-devel/sdk
+includedir=/usr/include/firefox-VERSION
+
+Name: mozilla-gtkembedmoz
+Description: Mozilla Embedding Widget for Gtk+
+Version: VERSION

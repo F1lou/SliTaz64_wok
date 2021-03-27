@@ -1,0 +1,27 @@
+# SliTaz package receipt.
+
+PACKAGE="libburn"
+VERSION="1.5.2"
+CATEGORY="utilities"
+SHORT_DESC="Library for reading, mastering and writing optical disks."
+MAINTAINER="devl547@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://dev.lovelyhq.com/libburnia/libburn"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="http://files.libburnia-project.org/releases/$TARBALL"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS &&
+	make &&
+	make -j1 DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+}

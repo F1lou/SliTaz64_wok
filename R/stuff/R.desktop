@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=R
+Comment=Programming language for statistical computing
+Exec=terminal -e R
+Icon=R
+Categories=Development;

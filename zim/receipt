@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="zim"
+VERSION="0.65"
+CATEGORY="utilities"
+SHORT_DESC="A desktop wiki."
+MAINTAINER="gokhlayeh@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://zim-wiki.org/"
+WGET_URL="http://zim-wiki.org/downloads/$TARBALL"
+TAGS="wiki notebook"
+
+DEPENDS="python pygtk pygobject python-simplejson python-xdg \
+desktop-file-utils shared-mime-info xdg-utils"
+BUILD_DEPENDS="$DEPENDS pycairo-dev pygobject-dev pygtk-dev python-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./setup.py install --root=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib $fs/usr
+	cp -a $install/usr/share/zim $fs/usr/share
+}

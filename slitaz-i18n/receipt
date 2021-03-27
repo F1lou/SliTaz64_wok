@@ -1,0 +1,67 @@
+# SliTaz package receipt
+
+PACKAGE="slitaz-i18n"
+VERSION="161124"
+CATEGORY="meta"
+SHORT_DESC="SliTaz internationalization meta package to build locale pack."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="http://www.slitaz.org/"
+HOST_ARCH="x86_64 i486 arm"
+
+# Bdeps ensure packages are built so we can get generated po files.
+BUILD_DEPENDS="acl alsaplayer alsa-utils asunder atk attr dialog e2fsprogs \
+elfutils epdfview galculator gdk-pixbuf glib glibc-base glib-networking \
+gparted gpicview gtk+ gvfs kbd-base leafpad libfm libgnutls libgpg-error \
+libidn liblzma libwebkit lxappearance lxinput lxpanel lxrandr lxsession \
+lxsession-edit lxtask mhwaveedit midori mtpaint nano obconf openbox parted \
+pcmanfm polkit popt sakura shared-mime-info udisks2 util-linux-blkid \
+vorbis-tools vte xorg-xkeyboard-config yad-gtk2 tzdata"
+
+# Handle slitaz arch: /etc/slitaz/slitaz.conf
+case "$SLITAZ_ARCH" in
+	arm*) BUILD_DEPENDS="" ;;
+esac
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	# Allow to build the packages who want me...
+	sed -i "/^$PACKAGE\$/d" $CACHE/broken 2>/dev/null || true
+
+	mkdir -p $fs/usr/share/doc/slitaz
+	. $stuff/locale-pack.conf
+	for p in $CORE_PKGS; do
+		[ ! -d "$WOK/$p/install" ] && cook $p
+	done
+
+	# Cook all locale-* packages
+	for i in $LOCALE_PACK; do
+		[ -d "$WOK/locale-$i" ] && cook locale-$i
+	done
+
+	# Recook tzdata package: we move files from tzdata to locale-* packages
+	cook tzdata
+
+	cat > $fs/usr/share/doc/slitaz/i18n.txt <<EOT
+SliTaz i18n information
+================================================================================
+
+This package provides the necessary functions and configs for the SliTaz locale
+pack. SliTaz uses UTF-8 by default and tazlocale (from SliTaz tools) to
+configure the system language.
+
+
+Translated packages files included in the core languages pack (from upstream):
+----
+$(echo $CORE_PKGS | fold -s)
+----
+
+SliTaz i18n project coordination is done on the SCN and doc is on the website:
+
+	http://www.slitaz.org/i18n.php
+
+
+================================================================================
+EOT
+}

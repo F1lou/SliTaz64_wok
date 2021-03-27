@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="encfs"
+VERSION="1.9.5"
+CATEGORY="security"
+TAGS="filesystem"
+SHORT_DESC="Encryption filesystem for FUSE."
+MAINTAINER="b1+slitaz@nagel.org"
+LICENSE="GPL3"
+WEB_SITE="https://vgough.github.io/encfs/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/vgough/$PACKAGE/releases/download/v$VERSION/$TARBALL"
+
+DEPENDS="fuse gcc83-lib-base libboost-filesystem libboost-serialization 
+	libboost-system openssl rlog"
+BUILD_DEPENDS="cmake fuse-dev gcc83 glibc-dev libboost-filesystem-dev 
+	libboost-serialization-dev libboost-system-dev openssl-dev rlog-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export	CC=gcc-83
+	export	CXX=g++-83
+
+	mkdir	build
+	cd	build
+	cmake	.. -DCMAKE_INSTALL_PREFIX=/usr &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+
+	cp -a $install/usr/bin	$fs/usr
+}

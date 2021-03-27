@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="java-jdk"
+VERSION="1.9.9"
+CATEGORY="development"
+SHORT_DESC="Symlinks for the default Java Development Kit (icedtea6)."
+MAINTAINER="rcx@zoominternet.net"
+LICENSE="GPL2"
+WEB_SITE="http://www.iced-tea.org/"
+WANTED="icedtea6-jdk"
+SOURCE="icedtea6"
+TAGS="java"
+
+DEPENDS="icedtea6-jdk"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/jdk-bin $fs/usr/bin
+}

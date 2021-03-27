@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="gvfs-libmtp"
+VERSION="1.22.1"
+CATEGORY="system-tools"
+SHORT_DESC="MTP support for gvfs"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://www.gnome.org/"
+
+WANTED="gvfs"
+DEPENDS="gvfs glib glibc-base libffi libgio libgudev libmtp libusb pcre udev \
+zlib"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	. $WOK/gvfs/stuff/split
+}

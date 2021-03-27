@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="expedite"
+VERSION="1.7.10"
+CATEGORY="graphics"
+TAGS="e enlightenment"
+SHORT_DESC="Performance and correctness test suite for Evas."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="https://www.enlightenment.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://git.enlightenment.org/tools/$PACKAGE.git/snapshot/$TARBALL"
+
+DEPENDS="evas python"
+BUILD_DEPENDS="automake evas-dev libtool"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./autogen.sh &&
+	make $MAKEFLAGS &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs
+	cp -a $install/usr $fs
+}

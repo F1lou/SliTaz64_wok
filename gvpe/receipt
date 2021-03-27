@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="gvpe"
+VERSION="3.1"
+CATEGORY="network"
+TAGS="vpn tunnel network"
+SHORT_DESC="Creates a virtual ethernet network with multiple nodes."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="http://software.schmorp.de/pkg/gvpe.html"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="http://ftp.gnu.org/gnu/$PACKAGE/$TARBALL"
+
+DEPENDS="openssl zlib"
+BUILD_DEPENDS="openssl-dev zlib-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure		\
+		--prefix=/usr	\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+
+	cp -a $install/usr/bin	$fs/usr
+	cp -a $install/usr/sbin	$fs/usr
+}

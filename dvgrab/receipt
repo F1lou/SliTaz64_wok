@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="dvgrab"
+VERSION="3.5"
+CATEGORY="multimedia"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL2"
+SHORT_DESC="Saves audio and video data from an IEEE (FireWire) digital source"
+WEB_SITE="https://github.com/ddennedy/dvgrab"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="http://downloads.sourceforge.net/kino/$TARBALL"
+TAGS="firewire video"
+
+DEPENDS="libdv libavc1394 jpeg libiec61883 gcc-lib-base jpeg"
+BUILD_DEPENDS="pkg-config libdv-dev libraw1394-dev libavc1394-dev \
+libiec61883-dev jpeg-dev"
+
+# Rules to configure and make the package.
+
+compile_rules()
+{
+	./configure --prefix=/usr &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+	
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr	
+}

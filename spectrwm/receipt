@@ -1,0 +1,44 @@
+# SliTaz package receipt.
+
+PACKAGE="spectrwm"
+VERSION="3.3.0"
+CATEGORY="x-window"
+TAGS="tile window-manager"
+SHORT_DESC="Small dynamic tiling window manager for X11."
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="ISC MIT"
+WEB_SITE="https://github.com/conformal/spectrwm"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/archive/SPECTRWM_${VERSION//./_}.tar.gz"
+
+DEPENDS="xcb-util xcb-util-keysyms xcb-util-wm xorg-libXcursor xorg-libXft"
+BUILD_DEPENDS="cacerts xcb-util-dev xcb-util-keysyms-dev xcb-util-wm-dev 
+	xorg-libX11-dev xorg-libXcursor-dev xorg-libXft-dev 
+	xorg-libXrandr-dev xorg-libXt-dev"
+
+CONFIG_FILES="/etc/spectrwm.conf"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd linux
+	make PREFIX=/usr &&
+	make install PREFIX=/usr DESTDIR=$install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/etc
+
+	cp -a $install/*	$fs
+
+	# copy configuration files (few more exist in $src)
+	cp $src/spectrwm.conf		$fs/etc
+	cp $src/spectrwm_us.conf	$fs/etc
+
+	# "switch on" keyboard mapping
+	sed -i 's|# keyboard_mapping.*|keyboard_mapping = /etc/spectrwm_us.conf|' \
+		$fs/etc/spectrwm.conf
+}

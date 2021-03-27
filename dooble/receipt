@@ -1,0 +1,105 @@
+# SliTaz package receipt.
+
+PACKAGE="dooble"
+VERSION="2019.12.25"
+CATEGORY="network"
+SHORT_DESC="Private mode only (almost) worst Qt webkit browser. With builtin fm and xterm."
+MAINTAINER="psychomaniak@xakep.ru"
+LICENSE="BSD"
+WEB_SITE="https://textbrowser.github.io/dooble"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/textbrowser/$PACKAGE/archive/$VERSION.tar.gz"
+
+SUGGESTED="libQtWebkit-video"
+DEPENDS="cacerts libgcrypt libQtCore libQtDBus libQtGui libQtNetwork 
+	libQtScript libQtSql libQtWebkit libQtXml sqlite"
+BUILD_DEPENDS="cacerts libgcrypt-dev qmake Qt4-dev sqlite-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	srcdir="$src/1.x"
+	cd $srcdir &&
+	sed -i 's|local/dooble/do|bin/do|g' \
+		dooble.desktop
+
+	qmake PREFIX="/usr/" DESTDIR=$DESTDIR $PACKAGE.pro &&
+	make &&
+
+	mkdir -p $install/usr/bin
+	mkdir -p $install/usr/lib
+	mkdir -p $install/usr/share/$PACKAGE/Translations
+
+	mv $install/Dooble			$install/usr/bin
+	cp -a $srcdir/dooble.sh			$install/usr/bin
+	install $srcdir/libSpotOn/libspoton.so	$install/usr/lib
+	cp -a $srcdir/Icons			$install/usr/share/$PACKAGE
+	cp -a $srcdir/Translations/*.qm		$install/usr/share/$PACKAGE/Translations
+	cp -a $srcdir/Archived/Plugins		$install/usr/share/$PACKAGE
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/*	$fs
+
+	cd			$fs/usr/share/$PACKAGE &&
+	ln -s ../../bin/Dooble	Dooble
+
+	cd 			$fs/usr/share/$PACKAGE/Icons &&
+	rm -rf 64x64 nuovext nuvola black-and-white &&
+	ln -s faience nuovext
+
+	cd			$fs/usr/share/$PACKAGE/Translations
+	find . -size -44k -delete
+
+	# object program
+	sed -i 's|local/dooble/Dooble|bin/Dooble|g' \
+		$fs/usr/bin/$PACKAGE.sh
+
+	# shared files
+	sed -i 's|cd /usr/local/dooble|cd /usr/share/dooble|g' \
+		$fs/usr/bin/$PACKAGE.sh
+
+	sed -i 's/fusion/ /g' \
+		$fs/usr/bin/$PACKAGE.sh
+
+	cd $fs/usr/share/$PACKAGE &&
+cat>'Dooble.ini' << EOT
+[General]
+iconSet=/usr/share/dooble/Icons/faience/configuration.cfg
+desktopBackground=/usr/share/images/slitaz-background.jpg
+
+[settingsWindow]
+homeUrl=file:/usr/share/webhome/index.html
+fixedWebFont="Fixed,10,-1,5,50,0,0,0,0,0"
+p2pUrl=qrc:/search_c.html
+showAuthentication=false
+
+[mainWindow]
+searchName=DuckDuckGo
+EOT
+
+	chown -R root:root $fs
+}
+
+post_install()
+{
+	for i in $(ls "$1/home" 2> /dev/null)
+	  do
+		[ -f "$1/home/$i/.dooble/Dooble/Dooble.ini" ] &&
+		continue
+		mkdir -p "$1/home/$i/.dooble/Dooble"
+		cp "$1/usr/share/dooble/Dooble.ini"	"$1/home/$i/.dooble/Dooble"
+		rm "$1/home/$i/.local/share/applications/dooble.desktop"
+		chroot "$1/" chown -R $(stat -c "%u.%g" "$1/home/$i") "/home/$i/.dooble"
+	done
+}
+
+post_remove()
+{
+	echo -n "Removing configuration files..."
+	rm -rf /home/*/.dooble
+	status
+}

@@ -1,0 +1,80 @@
+# SliTaz package receipt.
+
+PACKAGE="ffmpeg"
+VERSION="4.2.2"
+CATEGORY="multimedia"
+TAGS="audio video convert stream"
+SHORT_DESC="Record, convert and stream audio and video."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2 LGPL2.1"
+WEB_SITE="https://ffmpeg.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="${WEB_SITE}releases/$TARBALL"
+
+SUGGESTED="ffplay"
+DEPENDS="alsa-lib bzip2 gnutls harfbuzz lame libsdl2 libtasn1 libvorbis \
+	libvpx nettle opus pcre rtmpdump x264 x265 xorg-libXau \
+	xorg-libXdmcp zlib"
+BUILD_DEPENDS="bzip2-dev coreutils-file-format coreutils-file-special \
+	gnutls-dev harfbuzz-dev lame-dev libgnutls libsdl2-dev \
+	libvorbis-dev libvpx-dev nettle-dev opus-dev pcre-dev \
+	rtmpdump-dev x264-dev x265-dev xorg-libXau-dev xorg-libXdmcp-dev \
+	yasm zlib-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+case "$SLITAZ_ARCH" in
+	arm*) DEPENDS="alsa-lib bzip2 gnutls harfbuzz lame libsdl2 libvorbis \
+		libtasn1 libvpx nettle opus pcre rtmpdump x264 x265 \
+		xorg-libXau xorg-libXdmcp zlib" ;;
+esac
+
+# Handle cross compilation. Host coreutils-file-* are used
+case "$ARCH" in
+	i?86) 
+		ARCH_ARGS="--arch=$ARCH --cpu=$ARCH" ;;
+	arm*) 
+		BUILD_DEPENDS="bzip2-dev yasm zlib-dev" 
+		ARCH_ARGS="--enable-cross-compile --arch=armel --target-os=linux \
+		--cross-prefix=$HOST_SYSTEM-" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--prefix=/usr		\
+		--enable-gpl		\
+		--enable-nonfree	\
+		--enable-shared		\
+		--disable-static	\
+		--disable-doc		\
+		--enable-libfreetype	\
+		--enable-libmp3lame	\
+		--enable-libopus	\
+		--enable-libvorbis	\
+		--enable-libvpx		\
+		--enable-libx264	\
+		--enable-libx265	\
+		--enable-avresample	\
+		--enable-gnutls		\
+		${ARCH_ARGS} &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p \
+		$fs/usr/bin \
+		$fs/usr/lib \
+		$fs/usr/share
+
+	cp -a $install/usr/lib/*so*		$fs/usr/lib
+	cp -a $install/usr/bin/ffmpeg		$fs/usr/bin
+	cp -a $install/usr/share/$PACKAGE	$fs/usr/share
+
+	rm -rf					$fs/usr/share/$PACKAGE/examples
+}

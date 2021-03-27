@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="python-pastedeploy"
+VERSION="2.1.0"
+CATEGORY="development"
+TAGS="python"
+SHORT_DESC="Load, configure, and compose WSGI applications and servers."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://pypi.org/project/PasteDeploy/"
+
+SOURCE="PasteDeploy"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://files.pythonhosted.org/packages/source/${SOURCE:0:1}/$SOURCE/$TARBALL"
+
+DEPENDS="python python-paste"
+BUILD_DEPENDS="$DEPENDS python-dev python-setuptools"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr	$fs
+}

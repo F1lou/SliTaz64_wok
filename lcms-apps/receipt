@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="lcms-apps"
+VERSION="1.19"
+CATEGORY="development"
+SHORT_DESC="Tiny appsa and tools from the LCMS project."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WANTED="lcms"
+WEB_SITE="http://www.littlecms.com/"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="lcms jpeg tiff zlib"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}

@@ -1,0 +1,97 @@
+# SliTaz package receipt.
+
+PACKAGE="conky-theme-onsea"
+VERSION="0.1"
+CATEGORY="x-window"
+SHORT_DESC="A smooth theme for conky with smoke color."
+MAINTAINER="hackdorte@sapo.pt"
+LICENSE="PublicDomain"
+SOURCE="onsea"
+WEB_SITE="http://people.slitaz.org/~leonardolaporte"
+STUFF_DIR="lab.slitaz/5.0/pkg/conky/1.9.0"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}/$STUFF_DIR/$TARBALL"
+TAGS="conky desktop monitoring theme"
+HOST_ARCH="x86_64 i486"
+
+DEPENDS="conky"
+BUILD_DEPENDS="wget"
+
+BAK_DIR=".conky-backup"
+BAK_FILE="old_conkyrc"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+  mkdir -p $install/usr/share/conky/themes/$SOURCE
+  cp -a $src/.conkyrc $install/usr/share/conky/themes/$SOURCE/.conkyrc
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+  cp -a $install/* $fs
+}
+
+pre_install()
+{
+# Build current ".conkyrc" backup.
+if [ -e $1/home/$USER/.conkyrc ]; then
+  mkdir -p $1/home/$USER/$BAK_DIR/$BAK_FILE
+  mv $1/home/$USER/.conkyrc $1/home/$USER/$BAK_DIR/$BAK_FILE
+
+# README (Alert file only).
+cat > $1/home/$USER/$BAK_DIR/README <<EOT
+
+  $PACKAGE Backup
+  ==============================================
+  $(date)
+
+  Please do not remove this directory manually.
+
+  Run: tazpkg remove $PACKAGE
+
+EOT
+fi
+}
+
+post_install()
+{
+# Install new ".conkyrc" to (home/user).
+# And create a link to the original file.
+  cd $1/home/$USER
+  ln -s /usr/share/conky/themes/$SOURCE/.conkyrc $1/home/$USER/.conkyrc
+  ### chmod 755 $1/home/$USER/.conkyrc
+
+# Check the conky process and run new theme.
+[ "$1" ] ||
+  if busybox pidof conky >>/dev/null 2>&1; then
+    su - $USER -c "killall conky" && su - $USER -c "conky &";
+  else
+    su - $USER -c "conky &";
+  fi
+}
+
+pre_remove()
+{
+# Restore old ".conkyrc" backup.
+  if [ -e $1/home/$USER/$BAK_DIR/$BAK_FILE/.conkyrc ]; then
+    mv $1/home/$USER/$BAK_DIR/$BAK_FILE/.conkyrc $1/home/$USER
+    chmod 777 $1/home/$USER/.conkyrc
+    rm -rf $1/home/$USER/$BAK_DIR/$BAK_FILE
+    rm -rf $1/home/$USER/$BAK_DIR/README
+  else
+    rm -irf $1/home/$USER/.conkyrc
+  fi
+}
+
+post_remove()
+{
+# Check the conky process and run old theme.
+[ "$1" ] ||
+  if busybox pidof conky >>/dev/null 2>&1; then
+    su - $USER -c "killall conky" && su - $USER -c "conky &";
+  else
+    su - $USER -c "conky &";
+  fi
+}

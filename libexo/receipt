@@ -1,0 +1,27 @@
+# SliTaz package receipt.
+
+PACKAGE="libexo"
+VERSION="0.10.3"
+CATEGORY="x-window"
+SHORT_DESC="Xfce extension library"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+WANTED="exo"
+SUGGESTED="exo-tools"
+WEB_SITE="https://www.xfce.org"
+
+DEPENDS="libxfce4util startup-notification libnotify"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib 
+
+	cp -a $install/etc $fs/
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/xfce4 $fs/usr/lib
+
+	# Strip files
+	#strip -s $fs/usr/lib/libexo/* 2> /dev/null
+}

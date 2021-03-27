@@ -1,0 +1,46 @@
+# SliTaz package receipt
+
+PACKAGE="mpfr"
+VERSION="4.0.2"
+CATEGORY="development"
+SHORT_DESC="C library for multiple-precision floating-point computations."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://www.mpfr.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="${WEB_SITE}$PACKAGE-$VERSION/$TARBALL"
+
+DEPENDS="gmp"
+BUILD_DEPENDS="gmp-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+#--with-gmp-lib=/cross/$ARCH/sysroot/usr/lib
+#--with-gmp-include=/cross/$ARCH/sysroot/usr/include
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	case "$ARCH" in
+	i?86)
+		./configure			\
+			--enable-thread-safe	\
+			$CONFIGURE_ARGS &&
+		make &&
+		make check &&
+		make install ;;
+	*)
+		./configure			\
+			--enable-thread-safe	\
+			$CONFIGURE_ARGS &&
+		make &&
+		make install ;;
+	esac
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cook_copy_files *.so*
+}

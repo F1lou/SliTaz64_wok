@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="dstat"
+VERSION="0.7.4"
+CATEGORY="system-tools"
+TAGS="resource system monitor stats statistics"
+SHORT_DESC="Versatile tool for generating system resource statistics."
+MAINTAINER="paul@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://dag.wieers.com/home-made/dstat/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/dagwieers/dstat/archive/v$VERSION.tar.gz"
+
+DEPENDS="python"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/share/dstat	$fs/usr/share
+}

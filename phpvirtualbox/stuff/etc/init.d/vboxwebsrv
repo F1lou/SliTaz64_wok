@@ -1,0 +1,58 @@
+#!/bin/sh
+# Start, stop and restart vboxwebsrv daemon on SliTaz, at boot time or
+# with the command line.
+#
+# To start daemon at boot time, just put vboxwebsrv in the $RUN_DAEMONS
+# variable of /etc/rcS.conf and configure options with /etc/daemons.conf.
+#
+. /etc/init.d/rc.functions
+
+NAME=$(basename $0)
+DESC="$(_ '%s daemon' $NAME)"
+DAEMON=$(which $NAME)
+OPTIONS="-b --logfile /dev/null"
+eval $(grep -i ^${NAME}_OPTIONS /etc/daemons.conf | sed 's/.*_OPT/OPT/')
+PIDFILE=/var/run/$NAME.pid
+
+case "$1" in
+  start)
+    if active_pidfile $PIDFILE $NAME ; then
+      _ '%s is already running.' $NAME
+      exit 1
+    fi
+    action 'Starting %s: %s...' "$DESC" $NAME
+    $DAEMON $OPTIONS >/dev/null 2>&1
+    [ -f $PIDFILE ] || pidof $NAME | awk '{print $1}' > $PIDFILE
+    active_pidfile $PIDFILE $NAME
+    status
+    ;;
+  stop)
+    if ! active_pidfile $PIDFILE $NAME ; then
+      _ '%s is not running.' $NAME
+      exit 1
+    fi
+    action 'Stopping %s: %s...' "$DESC" $NAME
+    kill $(cat $PIDFILE)
+    status
+    ;;
+  restart)
+    if ! active_pidfile $PIDFILE $NAME ; then
+      _ '%s is not running.' $NAME
+      exit 1
+    fi
+    action 'Restarting %s: %s...' "$DESC" $NAME
+    kill $(cat $PIDFILE)
+    sleep 2
+    $DAEMON $OPTIONS >/dev/null 2>&1
+    [ -f $PIDFILE ] || pidof $NAME | awk '{print $1}' > $PIDFILE
+    active_pidfile $PIDFILE $NAME
+    status
+    ;;
+  *)
+    emsg "<n><b>$(_ 'Usage:')</b> $0 [start|stop|restart]"
+    newline
+    exit 1
+    ;;
+esac
+
+exit 0

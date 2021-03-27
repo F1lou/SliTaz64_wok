@@ -1,0 +1,38 @@
+# SliTaz package receipt.
+
+PACKAGE="which"
+VERSION="2.21"
+CATEGORY="base-system"
+SHORT_DESC="A utility to show the full path of commands."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL3"
+WEB_SITE="https://savannah.gnu.org/projects/which/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="glibc-base"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure				\
+		--prefix=/usr			\
+		--infodir=/usr/share/info	\
+		--mandir=/usr/share/man		\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}
+
+post_remove()
+{
+	ln -s /bin/busybox /usr/bin/which
+}

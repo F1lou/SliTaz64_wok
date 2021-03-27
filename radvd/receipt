@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="radvd"
+VERSION="2.18"
+CATEGORY="network"
+TAGS="ipv6"
+SHORT_DESC="IPv6 Router Advertisement Daemon."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="http://www.litech.org/radvd/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="${WEB_SITE}dist/$TARBALL"
+
+BUILD_DEPENDS="flex"
+
+CONFIG_FILES="/etc/radvd.conf"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--prefix=/usr		\
+		--sysconfdir=/etc	\
+		--mandir=/usr/share/man	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	mkdir -p $fs/etc
+
+	touch $fs/etc/radvd.conf
+	cp -a $install/usr/sbin $fs/usr
+}

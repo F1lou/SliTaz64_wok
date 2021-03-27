@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="wifi"
+VERSION="1.0"
+CATEGORY="meta"
+SHORT_DESC="Meta package to install all wifi related packages."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="BSD"
+SUGGESTED="b43-fwcutter cabextract unshield"
+WEB_SITE="http://www.slitaz.org/"
+TAGS="wireless"
+
+DEPENDS="linux-wireless wireless_tools ndiswrapper"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+}

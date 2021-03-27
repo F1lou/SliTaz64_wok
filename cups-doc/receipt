@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="cups-doc"
+VERSION="2.3.1"
+CATEGORY="misc"
+SHORT_DESC="Documentation for cups."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL2 LGPL2"
+WEB_SITE="https://www.cups.org/"
+
+WANTED="cups"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	# We need the doc for CSS, images and help in the web interface.
+	cp -a $install/usr/share/doc	$fs/usr/share
+}

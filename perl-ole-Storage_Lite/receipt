@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-ole-Storage_Lite"
+VERSION="0.20"
+CATEGORY="development"
+SHORT_DESC="Perl extension OLE::Storage_Lite."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL"
+WEB_SITE="https://metacpan.org/release/OLE-Storage_Lite"
+
+SOURCE="OLE-Storage_Lite"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://www.cpan.org/modules/by-module/OLE/$TARBALL"
+
+DEPENDS="perl"
+BUILD_DEPENDS="perl"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	perl Makefile.PL &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib	$fs/usr
+}

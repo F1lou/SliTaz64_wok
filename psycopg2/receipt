@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="psycopg2"
+VERSION="2.8.4"
+CATEGORY="development"
+SHORT_DESC="PostgreSQL database adapter for the Python."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="LGPL3"
+WEB_SITE="http://initd.org/psycopg/"
+
+Version=${VERSION%.*}
+Version=${Version/./-}
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}tarballs/PSYCOPG-$Version/$TARBALL"
+
+DEPENDS="egenix-mx-base libpostgresqlclient python"
+BUILD_DEPENDS="postgresql-dev python-dev python-setuptools"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's/,PSYCOPG_DEBUG$//' setup.cfg
+
+	python setup.py build &&
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr $fs
+}

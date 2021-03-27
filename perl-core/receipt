@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-core"
+VERSION="5.14.1"
+CATEGORY="development"
+SHORT_DESC="Minimal Perl interpreter."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL"
+SOURCE="perl"
+WANTED="perl"
+WEB_SITE="https://www.perl.org/"
+
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $install/usr/bin/perl${VERSION} $fs/usr/bin/
+	cd $fs/usr/bin
+	ln -s perl${VERSION} perl
+}
+
+# Pre install commands for Tazpkg.
+# Remove perl link to microperl if any.
+#
+pre_install()
+{
+	rm -f "$1/usr/bin/perl"
+}

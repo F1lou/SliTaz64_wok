@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="ode"
+VERSION="0.16.1"
+CATEGORY="misc"
+SHORT_DESC="An open source, high performance library for simulating rigid body dynamics."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="LGPL2.1 BSD"
+WEB_SITE="https://www.ode.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://bitbucket.org/odedevs/$PACKAGE/downloads/$TARBALL"
+
+DEPENDS="gcc-lib-base"
+BUILD_DEPENDS="gcc libtool"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure				\
+		--prefix=/usr			\
+		--infodir=/usr/share/info	\
+		--mandir=/usr/share/man		\
+		--enable-shared			\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+}

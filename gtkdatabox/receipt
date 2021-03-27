@@ -1,0 +1,38 @@
+# SliTaz package receipt.
+
+PACKAGE="gtkdatabox"
+VERSION="0.9.1.1"
+CATEGORY="development"
+SHORT_DESC="Widget for live display of large amounts of fluctuating data."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2.1"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://sourceforge.net/projects/gtkdatabox/"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="gtk+"
+BUILD_DEPENDS="pkg-config libffi gtk+-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+
+	# Fix from gentoo
+	# http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/x11-libs/gtkdatabox/gtkdatabox-0.9.1.1.ebuild?view=markup
+	# Remove -D.*DISABLE_DEPRECATED cflags
+	find . -iname 'Makefile.am' -exec \
+	sed -e '/-D[A-Z_]*DISABLE_DEPRECATED/d' -i {} + && \
+	# Do Makefile.in after Makefile.am to avoid automake maintainer-mode
+	find . -iname 'Makefile.in' -exec \
+	sed -e '/-D[A-Z_]*DISABLE_DEPRECATED/d' -i {} + && \
+
+	./configure $CONFIGURE_ARGS && make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

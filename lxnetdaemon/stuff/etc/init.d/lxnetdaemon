@@ -1,0 +1,57 @@
+#!/bin/sh
+# /etc/init.d/lxnetdaemon: Start, stop and restart LXnetdaemon daemon on
+# SliTaz, at boot time or with the command line.
+#
+# To start daemon at boot time, just put the right name in the $RUN_DAEMONS
+# variable of /etc/rcS.conf and configure options with /etc/daemons.conf.
+#
+. /etc/init.d/rc.functions
+. /etc/daemons.conf
+
+NAME=LXnetdaemon
+DESC="$(_ 'Network daemon')"
+DAEMON=/usr/bin/lxnetdaemon
+PIDFILE=/var/run/lxnetdaemon.pid
+
+case "$1" in
+  start)
+    if active_pidfile $PIDFILE lxnetdaemon ; then
+      _ '%s is already running.' $NAME
+      exit 1
+    fi
+    action 'Starting %s: %s...' "$DESC" $NAME
+    $DAEMON $OPTIONS
+    status
+    pidof lxnetdaemon > $PIDFILE
+    ;;
+  stop)
+    if ! active_pidfile $PIDFILE lxnetdaemon ; then
+      _ '%s is not running.' $NAME
+      exit 1
+    fi
+    action 'Stopping %s: %s...' "$DESC" $NAME
+    kill $(cat $PIDFILE)
+    rm $PIDFILE
+    status
+    ;;
+  restart)
+    if ! active_pidfile $PIDFILE lxnetdaemon ; then
+      _ '%s is not running.' $NAME
+      exit 1
+    fi
+    action 'Restarting %s: %s...' "$DESC" $NAME
+    kill $(cat $PIDFILE)
+    rm $PIDFILE
+    sleep 2
+    $DAEMON $OPTIONS
+    status
+    pidof lxnetdaemon > $PIDFILE
+    ;;
+  *)
+    emsg "<n><b>$(_ 'Usage:')</b> $0 [start|stop|restart]"
+    newline
+    exit 1
+    ;;
+esac
+
+exit 0

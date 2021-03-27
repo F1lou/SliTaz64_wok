@@ -1,0 +1,40 @@
+# SliTaz package receipt.
+
+PACKAGE="goaccess"
+VERSION="1.3"
+CATEGORY="network"
+SHORT_DESC="Visual web log analyzer."
+MAINTAINER="paul@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://goaccess.io"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://tar.goaccess.io/$TARBALL"
+
+DEPENDS="ncurses geoip"
+BUILD_DEPENDS="ncurses-dev geoip-dev glib-dev pkg-config"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--prefix=/usr \
+		--enable-geoip \
+		--enable-utf8 &&
+
+	# hack for curses.h path
+	mkdir /usr/include/ncursesw && ln -s /usr/include/curses.h /usr/include/ncursesw/curses.h
+
+	make -j 1 &&
+	make DESTDIR=$DESTDIR install
+
+	# and remove hack
+	rm -rf /usr/include/ncursesw
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}

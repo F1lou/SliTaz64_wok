@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-file-find-rule"
+VERSION="0.34"
+CATEGORY="development"
+SHORT_DESC="Perl Module File::Find::Rule."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL"
+WEB_SITE="https://metacpan.org/release/File-Find-Rule/"
+
+SOURCE="File-Find-Rule"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://www.cpan.org/modules/by-module/File/$TARBALL"
+
+DEPENDS="perl perl-number-compare perl-text-glob"
+BUILD_DEPENDS="$DEPENDS"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	perl Makefile.PL &&
+	make &&
+	make install DESTDIR=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+
+	cp -a $install/usr/bin	$fs/usr
+	cp -a $install/usr/lib	$fs/usr
+}

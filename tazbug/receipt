@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="tazbug"
+VERSION="152"
+CATEGORY="network"
+SHORT_DESC="SliTaz Bug Tracker - Client side tools"
+MAINTAINER="pankso@slitaz.org"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+LICENSE="BSD"
+WEB_SITE="http://bugs.slitaz.org/"
+WGET_URL="http://hg.slitaz.org/tazbug/archive/$VERSION.tar.gz"
+TAGS="slitaz"
+
+DEPENDS="busybox gettext-base slitaz-base-files"
+BUILD_DEPENDS="gettext"
+SIBLINGS="tazbug-website"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make && make install
+}
+
+genpkg_rules()
+{
+	cp -a $install/* $fs
+	chown -R root.root $fs
+}

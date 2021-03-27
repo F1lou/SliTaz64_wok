@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-io-compress"
+VERSION="2.093"
+CATEGORY="development"
+SHORT_DESC="PERL interface to zlib compression library."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL"
+WEB_SITE="https://metacpan.org/release/IO-Compress"
+
+SOURCE="IO-Compress"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://cpan.metacpan.org/authors/id/P/PM/PMQS/$TARBALL"
+
+DEPENDS="perl perl-compress-raw-bzip2 perl-compress-raw-zlib"
+BUILD_DEPENDS="perl perl-compress-raw-bzip2 perl-compress-raw-zlib"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	perl Makefile.PL &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib	$fs/usr
+}

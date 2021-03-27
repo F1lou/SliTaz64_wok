@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="cdparanoia-III"
+VERSION="10.2"
+CATEGORY="multimedia"
+SHORT_DESC="CMDline CD ripper used by Asunder."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2 LGPL2.1"
+WEB_SITE="https://www.xiph.org/paranoia/"
+TARBALL="$PACKAGE-$VERSION.src.tgz"
+WGET_URL="https://downloads.xiph.org/releases/cdparanoia/$TARBALL"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	fgrep -qs 'define u8' interface/low_interface.h ||
+	sed -i 's|#include <scsi/scsi.h>|#define u8 __u8\n&|' \
+		interface/low_interface.h
+
+	./configure \
+		--prefix=/usr \
+		--infodir=/usr/share/info \
+		--mandir=/usr/share/man \
+		$CONFIGURE_ARGS &&
+	make -j1
+
+	cook_pick_manpages cdparanoia.1
+	mkdir -p $install/usr/share/man/jp/man1
+	cp -a cdparanoia.1.jp $install/usr/share/man/jp/man1/cdparanoia.1
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin $fs/usr/lib
+	cp -a $src/cdparanoia $fs/usr/bin
+	cp -a $src/interface/libcdda_interface.so* $fs/usr/lib
+	cp -a $src/paranoia/libcdda_paranoia.so* $fs/usr/lib
+}

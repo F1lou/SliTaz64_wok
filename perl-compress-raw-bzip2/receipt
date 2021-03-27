@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-compress-raw-bzip2"
+VERSION="2.093"
+CATEGORY="development"
+SHORT_DESC="PERL low-level interface to bzip2."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL"
+WEB_SITE="https://metacpan.org/release/Compress-Raw-Bzip2"
+
+SOURCE="Compress-Raw-Bzip2"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://cpan.metacpan.org/authors/id/P/PM/PMQS/$TARBALL"
+
+DEPENDS="perl"
+BUILD_DEPENDS="perl"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	perl Makefile.PL &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib	$fs/usr
+}

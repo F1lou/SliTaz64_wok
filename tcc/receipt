@@ -1,0 +1,47 @@
+# SliTaz package receipt.
+
+PACKAGE="tcc"
+VERSION="0.9.27"
+CATEGORY="development"
+SHORT_DESC="Fast Tiny C Compiler."
+MAINTAINER="pascal.bellard@slitaz.org"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+LICENSE="MIT LGPL2.1"
+WEB_SITE="https://bellard.org/tcc/"
+WGET_URL="http://download.savannah.nongnu.org/releases/tinycc/$TARBALL"
+TAGS="compiler C assembler"
+#HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="tcc-common"
+BUILD_DEPENDS="perl texinfo"
+
+# Perl is installed in a cross env.
+case "$ARCH" in
+	arm) BUILD_DEPENDS="" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|uname -m|echo i686|' configure
+	case "$ARCH" in
+		arm)
+			./configure \
+				--prefix=/usr \
+				--cross-prefix=arm-slitaz-linux-gnueabi- \
+				--cpu=armv4l ;;
+		*)
+			./configure \
+				--prefix=/usr \
+				--enable-cross ;;
+	esac &&
+	make && make -j 1  test &&
+	make -j 1 DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $install/usr/bin/tcc $fs/usr/bin
+}

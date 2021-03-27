@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="soprano"
+VERSION="2.8.0"
+CATEGORY="system-tools"
+SHORT_DESC="Soprano is the Qt/C++ RDF framework"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://soprano.sourceforge.net/"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="libQtCore libQtNetwork raptor libiodbc"
+BUILD_DEPENDS="cmake qmake Qt4-dev raptor-dev libiodbc-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir -p build && cd build
+	cmake \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		.. &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/soprano $fs/usr/lib
+	cp -a $install/usr/share $fs/usr
+}

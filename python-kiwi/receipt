@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="python-kiwi"
+SOURCE="kiwi"
+VERSION="1.9.29"
+CATEGORY="development"
+SHORT_DESC="A framework for python applications with graphical user interfaces."
+MAINTAINER="claudinei@slitaz.org"
+LICENSE="LGPL2.1"
+SUGGESTED="zopeinterface libglade"
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WEB_SITE="https://pypi.org/project/$SOURCE/"
+WGET_URL="https://download.gnome.org/sources/kiwi/${VERSION%.*}/$TARBALL"
+
+DEPENDS="python gtk+ pygobject pygtk"
+BUILD_DEPENDS="python-dev gtk+-dev pygobject-dev pygtk-dev wget"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr $fs
+}
+

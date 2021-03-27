@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="fish"
+VERSION="3.0.2"
+CATEGORY="system-tools"
+SHORT_DESC="The FrIendly SHell."
+MAINTAINER="tcg.thegamer@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://fishshell.com"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/fish-shell/fish-shell/releases/download/$VERSION/$TARBALL"
+
+DEPENDS="gcc83-lib-base ncurses"
+BUILD_DEPENDS="gcc83 ncurses-dev ncursesw-extra"
+
+compile_rules()
+{
+	export LDFLAGS="$LDFLAGS -ltinfo"
+
+	./configure		\
+		CC=gcc-83	\
+		CXX=g++-83	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/etc		$fs
+	cp -a $install/usr/share/fish	$fs/usr/share
+	cp -a $install/usr/share/locale	$fs/usr/share
+}

@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="libmatemixer-dev"
+VERSION="1.9.2"
+CATEGORY="development"
+LICENSE="GPL3"
+SHORT_DESC="Mixer library for MATE Desktop, devel files."
+WEB_SITE="http://www.mate-desktop.org/"
+MAINTAINER="yuripourre@gmail.com"
+WANTED="libmatemixer"
+DEPENDS="libmatemixer pkg-config"
+TAGS="MATE"
+
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/include
+	cp -a $install/usr/lib/*.la $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/include/* $fs/usr/include
+}

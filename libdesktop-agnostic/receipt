@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="libdesktop-agnostic"
+VERSION="0.3.90"
+CATEGORY="x-window"
+SHORT_DESC="Config API, a unified vfs API, and a desktop item editor for GLib."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2.1"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://launchpad.net/libdesktop-agnostic"
+WGET_URL="https://launchpad.net/libdesktop-agnostic/0.4/$VERSION/+download/$TARBALL"
+
+DEPENDS="glib gobject-introspection"
+BUILD_DEPENDS="$DEPENDS python python-dev pygtk-dev glib-dev vala \
+gobject-introspection-dev pygobject-dev GConf-dev wget"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	# Skip *.gir files...
+	sed -i 's/.*gir = .*/#&/' libdesktop-agnostic/wscript 
+	./waf configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--config-backends=gconf \
+		--vfs-backends=gio \
+		--desktop-entry-backends=glib &&
+	./waf &&
+	./waf install \
+		--prefix=/usr \
+		--destdir=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/etc $fs
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib $fs/usr
+}
+

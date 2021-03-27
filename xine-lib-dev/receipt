@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="xine-lib-dev"
+VERSION="1.2.10"
+CATEGORY="development"
+SHORT_DESC="Xine video library - development files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://www.xinehq.de/"
+
+DEPENDS="pkg-config"
+WANTED="xine-lib"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/bin			$fs/usr
+	chmod 755				$fs/usr/bin/*
+	cp -a $install/usr/include		$fs/usr
+	cp -a $install/usr/lib/*.*a		$fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig	$fs/usr/lib
+	cp -a $install/usr/share/aclocal	$fs/usr/share
+}

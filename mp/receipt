@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="mp"
+VERSION="5.2.10"
+CATEGORY="development"
+SHORT_DESC="A text editor for programmers"
+MAINTAINER="allan316@gmail.com"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://triptico.com/software/mp.html"
+WGET_URL="https://triptico.com/download/mp/$TARBALL"
+TAGS="text-editor"
+
+DEPENDS="gtk+"
+BUILD_DEPENDS="gtk+-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir -p $DESTDIR/usr/bin
+	# sed -i 's/TRY_DRIVERS()/(0)/' mp_core.c
+	./config.sh \
+		--prefix=/usr \
+		--without-qt4 \
+		$CONFIGURE_ARGS
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/mp-5 $fs/usr/share
+}

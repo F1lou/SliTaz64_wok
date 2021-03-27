@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="cmake"
+VERSION="3.15.5"
+CATEGORY="development"
+SHORT_DESC="Cross-platform Make."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="https://www.cmake.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://www.cmake.org/files/v${VERSION%.*}/$TARBALL"
+
+DEPENDS="gcc83-lib-base libidn openssl"
+BUILD_DEPENDS="gcc83 gcc83-lib-base ncurses-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export	CXX=g++-83
+
+	./bootstrap				\
+		--prefix=/usr			\
+		--docdir=/share/doc/$PACKAGE	\
+		--mandir=/share/man &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr $fs
+	rm -rf $fs/usr/share/man
+}

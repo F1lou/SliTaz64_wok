@@ -1,0 +1,10 @@
+prefix=/usr
+libdir=/usr/lib/firefox-devel/sdk/lib
+sdkdir=/usr/lib/firefox-devel/sdk
+includedir=/usr/include/firefox-VERSION
+
+Name: JavaScript
+Description: The Mozilla JavaScript Library
+Version: VERSION
+Libs: -L${sdkdir}/sdk/lib -lmozjs
+Cflags: -I${includedir} -DXP_UNIX -DJS_THREADSAFE

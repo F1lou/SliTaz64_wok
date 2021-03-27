@@ -1,0 +1,52 @@
+# SliTaz package receipt.
+
+# FIXME : Check if the tarball comes with a .desktop and a pixmap files
+# Then remove the section in genpkg_rules() that creates them
+
+PACKAGE="pingus"
+VERSION="0.7.3"
+CATEGORY="games"
+SHORT_DESC="Pingus is a free Lemmings-like game."
+MAINTAINER="chadi.elahmad@gmail.com"
+LICENSE="GPL2"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://pingus.seul.org/"
+WGET_URL="http://pingus.seul.org/files/$TARBALL"
+
+DEPENDS="libsdl libsdl-image libsdl-mixer 
+libboost-signals gcc-lib-base"
+
+BUILD_DEPENDS="scons 
+libsdl-dev libsdl-image-dev libsdl-mixer-dev 
+libboost-dev libboost-signals-dev "
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	scons
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin $fs/usr/share/pingus
+	cp -a $src/pingus $fs/usr/bin
+	cp -a $src/data $fs/usr/share/pingus
+
+	# the tarball doesn't contain any .desktop file, nor a pixmap
+	# let's create them
+	mkdir -p $fs/usr/share/pixmaps
+	mkdir -p $fs/usr/share/applications
+	cp -a $src/data/images/core/editor/actions.png \
+		$fs/usr/share/pixmaps/pingus.png
+	cat > $fs/usr/share/applications/pingus.desktop <<EOF
+[Desktop Entry]
+Name=Pingus
+Exec=pingus -w
+Type=Application
+Categories=Application;Game;
+Icon=pingus
+EOF
+}

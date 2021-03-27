@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="extrema"
+VERSION="4.4.5"
+CATEGORY="office"
+SHORT_DESC="Powerful visualization and data analysis tool."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://exsitewebware.com/extrema/"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+TAGS="data visualization analysis"
+
+DEPENDS="gtk+ wxWidgets28 xorg-libXxf86vm libxml2"
+BUILD_DEPENDS="gtk+-dev wxWidgets28-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i "s|^pkgdatadir = |&$DESTDIR|" src/Makefile*
+	sed -i 's/<vector>/&\n#include <cstddef>/' \
+		src/Graphics/GRA_thiessenTriangulation.h
+	mkdir -p $DESTDIR/usr/share/extrema
+	./configure \
+		--enable-shared \
+		$CONFIGURE_ARGS &&
+	make &&	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/share/extrema $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+}

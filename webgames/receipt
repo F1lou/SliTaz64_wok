@@ -1,0 +1,61 @@
+# SliTaz package receipt.
+
+PACKAGE="webgames"
+VERSION="1.0"
+CATEGORY="games"
+SHORT_DESC="Set of online games"
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="http://www.slitaz.org/"
+
+mline()
+{
+	type=$1
+	IFS='|'; set -- $2
+	echo "$type=$1"
+	while [ "$2" ]; do
+		echo "$type${2%]*}]=${2#*]}"
+		shift
+	done
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/applications
+	while read url name comment icon; do
+		cat > $fs/usr/share/applications/$(echo ${name%|*} | \
+			tr [A-Z\ ] [a-z_]).desktop <<EOT
+[Desktop Entry]
+Type=Application
+$(mline Name "$name")${comment:+
+$(mline Comment "$comment")}
+Exec=sh -c "url=$url; tazweb --notoolbar \$url || browser \$url"
+Terminal=false
+Categories=Game;
+Icon=${icon:-applications-games}
+EOT
+	done <<EOT
+https://sokoban.info/		Sokoban\
+	Plateform\ game|[fr]Jeu\ de\ plateforme	applications-internet
+http://chinese-checkers.net/	Chinese\ Checkers|[fr]Dames\ chinoises\
+	Chinese\ Checkers|[fr]Dames\ chinoises	applications-internet
+http://games.slitaz.org/2048/index.html	2048
+http://games.slitaz.org/sudoku/index.html Sudoku	Puzzle
+http://games.slitaz.org/loderunner/lodeRunner.html\
+	Lode\ Runner	Plateform\ game|[fr]Jeu\ de\ plateforme
+http://games.slitaz.org/digger/digger.html\
+	Digger		Plateform\ game|[fr]Jeu\ de\ plateforme
+http://games.slitaz.org/same/index.html	Same
+http://games.slitaz.org/alieninvasion/index.html\
+	Alien\ Invasion		Galaga\ clone
+http://games.slitaz.org/spaceinvaders/index.html Space\ Invaders
+http://games.slitaz.org/javascript-racer/v4.final.html\
+	Racer		Tux\ racer\ clone
+http://games.slitaz.org/GreenMahjong/index.html	Mahjong
+http://games.slitaz.org/checkers/index.html	Checkers|[fr]Dames\ anglaises
+http://games.slitaz.org/Connect-Four/index.html	Connect\ four|[fr]4\ en\ ligne
+http://games.slitaz.org/minesweeper/index.html 	Mine\ sweeper|[fr]Démineur
+http://games.slitaz.org/pacman/index.html	Pacman
+EOT
+}

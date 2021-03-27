@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-exporter-tiny"
+VERSION="1.002001"
+CATEGORY="development"
+SHORT_DESC="Perl extension Exporter::Tiny."
+MAINTAINER="nneul@neulinger.org"
+LICENSE="GPL"
+WEB_SITE="https://metacpan.org/release/Exporter-Tiny"
+
+SOURCE="Exporter-Tiny"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://www.cpan.org/modules/by-module/Exporter/$TARBALL"
+
+DEPENDS="perl"
+BUILD_DEPENDS="$DEPENDS"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	perl Makefile.PL &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr	$fs
+}

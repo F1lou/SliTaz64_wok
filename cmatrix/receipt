@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="cmatrix"
+VERSION="1.2a"
+CATEGORY="misc"
+SHORT_DESC="Matrix screensaver."
+MAINTAINER="paul@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://www.asty.org/cmatrix/"
+WGET_URL="https://www.asty.org/cmatrix/dist/$TARBALL"
+
+DEPENDS="ncurses"
+BUILD_DEPENDS="ncurses-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export LDFLAGS="$LDFLAGS -ltinfo"
+	./configure \
+		--prefix=/usr \
+		--infodir=/usr/share/info \
+		--mandir=/usr/share/man \
+		$CONFIGURE_ARGS &&
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}

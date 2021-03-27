@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="xcursor-comix"
+VERSION="0.9.1"
+CATEGORY="customization"
+TAGS="cursor-theme"
+SHORT_DESC="Comix cursor theme."
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL"
+WEB_SITE="https://limitland.de/comixcursors"
+
+TARBALL="ComixCursors-$VERSION.tar.bz2"
+WGET_URL="https://limitland.gitlab.io/comixcursors/$TARBALL"
+
+DEPENDS="xorg-libXcursor"
+BUILD_DEPENDS=""
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/icons
+	cp -a $src/* $fs/usr/share/icons
+}

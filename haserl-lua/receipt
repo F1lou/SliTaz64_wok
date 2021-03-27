@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="haserl-lua"
+VERSION="0.9.35"
+CATEGORY="network"
+SHORT_DESC="Small program that uses shell or Lua script to create cgi web scripts."
+MAINTAINER="milka@konstelacioj.info"
+LICENSE="GPL2"
+WEB_SITE="http://haserl.sourceforge.net/"
+
+SOURCE="haserl"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/$SOURCE/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS="glibc-dev lua lua-dev pkg-config"
+SUGGESTED="bash lua lua-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--bindir=/usr/bin	\
+		--with-lua		\
+		--program-suffix=-lua	\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}

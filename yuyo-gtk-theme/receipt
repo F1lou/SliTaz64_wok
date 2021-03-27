@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="yuyo-gtk-theme"
+VERSION="1.0"
+CATEGORY="customization"
+LICENSE="GPL3"
+SHORT_DESC="Yuyo is a GTK theme belonging to the Ubuntu MATE project."
+MAINTAINER="yuripourre@gmail.com"
+COMMIT_SHA="8f75db1db0f5f2f926c22384c4eb37fb2ed340b8"
+TARBALL="$COMMIT_SHA.zip"
+WEB_SITE="https://github.com/Acidburn0zzz/yuyo-gtk-theme"
+WGET_URL="$WEB_SITE/archive/$TARBALL"
+HOST_ARCH="x86_64 any"
+
+DEPENDS="gdk-pixbuf gtk2-engine-murrine"
+BUILD_DEPENDS="wget"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/themes
+	rm -Rf $src/Yuyo/gtk-3.0
+	rm -Rf $src/Yuyo/unity
+	rm -Rf $src/Yuyo-Dark/gtk-3.0
+	rm -Rf $src/Yuyo-Dark/unity
+
+	cp -a $src/Yuyo $fs/usr/share/themes
+	cp -a $src/Yuyo-Dark $fs/usr/share/themes
+}

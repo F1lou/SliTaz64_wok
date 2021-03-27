@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="extundelete"
+VERSION="0.2.4"
+CATEGORY="base-system"
+SHORT_DESC="Recover deleted files from an ext3 or ext4 partition."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://extundelete.sourceforge.net/"
+WGET_URL="$SF_MIRROR/extundelete/$TARBALL"
+
+DEPENDS="e2fsprogs gcc-lib-base"
+BUILD_DEPENDS="e2fsprogs-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|i_dir_acl|i_size_high|' src/insertionops.cc
+	sed -i 's/*inode;/inodebuf;/' src/block.c
+	./configure LDFLAGS="$LDFLAGS  -Wl,--copy-dt-needed-entries -lcom_err" \
+		-prefix=/usr $CONFIGURE_ARGS &&
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr $fs
+}

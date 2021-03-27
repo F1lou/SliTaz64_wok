@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="vlc-plugin"
+VERSION="2.0.0"
+CATEGORY="multimedia"
+SHORT_DESC="VLC Web Browser Plug-in that will allow to play video and audio"
+MAINTAINER="domcox@slitaz.org"
+LICENSE="LGPL2.1"
+WEB_SITE="http://www.videolan.org/vlc"
+SOURCE="npapi-vlc"
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WGET_URL="http://download.videolan.org/pub/videolan/vlc/$VERSION/$TARBALL"
+
+DEPENDS="libvlc dbus"
+BUILD_DEPENDS="firefox-dev libvlc-dev dbus-dev gtk+-dev util-linux-uuid-dev"
+TAGS="browser plug-in"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS && make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/mozilla/plugins
+	cp -a $install/usr/lib/mozilla/plugins/*so $fs/usr/lib/mozilla/plugins
+}

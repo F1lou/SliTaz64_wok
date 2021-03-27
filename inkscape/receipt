@@ -1,0 +1,72 @@
+# SliTaz package receipt.
+
+PACKAGE="inkscape"
+VERSION="0.92.5"
+CATEGORY="graphics"
+TAGS="image vector editor svg"
+SHORT_DESC="Vector-based drawing program."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.inkscape.org"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="https://media.inkscape.org/dl/resources/file/$TARBALL"
+
+DEPENDS="aspell gc gcc-lib-base glibmm gsl gtk+ gtkmm gtkspell 
+	lcms2 libgiomm libgomp libpng libsigc++ libxml2 libxslt poppler 
+	popt xorg-libXdamage"
+BUILD_DEPENDS="atkmm-dev cairomm-dev cmake gc-dev gettext glibmm-dev 
+	gtk+-dev gtkmm-dev gsl-dev gtkspell-dev intltool lcms2-dev 
+	libboost-dev libgiomm-dev libsigc++-dev libtool libxml2-dev 
+	libxslt-dev pkg-config poppler-dev popt-dev xorg-libXau-dev 
+	xorg-libXdmcp-dev zlib-dev util-linux-uuid-dev"
+
+COOKOPTS="!svgz !fixdesktops"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+#	for patchfile in $(cat $stuff/patches/series); do
+#		patch -p1 -i $stuff/patches/$patchfile
+#	done
+
+	# hack to define '_' and 'Q_' functions
+	rm	src/2geom/!PLEASE*		# avoid sed errors
+	rm	src/libdepixelize/!PLEASE*	# avoid sed errors
+	for file in $(find $src/src -type f)
+	  do
+		sed -i 's|glibmm/i18n.h|glib/gi18n.h|g' $file
+	  done
+
+	mkdir	_build
+	cd	_build
+	cmake	..				\
+		-DCMAKE_INSTALL_PREFIX=/usr	\
+		-DCMAKE_BUILD_TYPE=Release &&
+	make $MAKEFLAGS &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/inkscape
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/lib/inkscape/lib*.so* \
+						$fs/usr/lib/inkscape
+
+	# Copy all Inkscape files and remove tutorials (19,2 Mb) + misc files
+	cp -a $install/usr/share/inkscape	$fs/usr/share
+	rm -rf					$fs/usr/share/inkscape/clipart
+	rm -rf					$fs/usr/share/inkscape/tutorials
+	rm -rf					$fs/usr/share/inkscape/examples
+
+	# Desktop file
+	cp -a $install/usr/share/applications	$fs/usr/share
+
+	# Icons
+	cp -a $install/usr/share/icons		$fs/usr/share
+	rm -rf					$fs/usr/share/icons/hicolor/256x256
+}

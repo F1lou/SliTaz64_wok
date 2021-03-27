@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="readom"
+VERSION="1.1.11"
+CATEGORY="utilities"
+SHORT_DESC="readom as readcd for use with graveman"
+MAINTAINER="allan316@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="http://www.cdrkit.org/"
+WANTED="cdrkit"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp $install/usr/bin/readom $fs/usr/bin
+
+	# Make symlinks for cdrtools compatibility
+	cd $fs/usr/bin
+	ln -s readom readcd
+}

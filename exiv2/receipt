@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="exiv2"
+VERSION="0.27.3"
+CATEGORY="graphics"
+SHORT_DESC="Exif and Iptc metadata manipulation library and tools."
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.exiv2.org/"
+
+TARBALL="$PACKAGE-$VERSION-Source.tar.gz"
+WGET_URL="${WEB_SITE}builds/$TARBALL"
+
+DEPENDS="expat gcc-lib-base zlib"
+BUILD_DEPENDS="cmake expat-dev gcc-lib-base zlib-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir build
+	cd build
+	cmake ..				\
+		-G "Unix Makefiles"		\
+		-DCMAKE_INSTALL_PREFIX=/usr &&
+	cmake --build . &&
+	make -j 1 &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+}

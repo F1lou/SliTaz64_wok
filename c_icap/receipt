@@ -1,0 +1,84 @@
+# SliTaz package receipt.
+
+PACKAGE="c_icap"
+VERSION="0.5.6"
+CATEGORY="network"
+SHORT_DESC="Implementation of an ICAP server."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="LGPL2.1"
+WEB_SITE="http://c-icap.sourceforge.net/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/c-icap/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure				\
+		--sysconfdir=/etc/c-icap	\
+		--enable-large-files		\
+		$CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/$PACKAGE
+	mkdir -p $fs/etc/init.d
+	mkdir -p $fs/var/log/c-icap
+
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/lib/*.so*		$fs/usr/lib
+	cp -a $install/usr/lib/$PACKAGE/*.so*	$fs/usr/lib/$PACKAGE
+	cp -pa $install/etc			$fs/
+	cp -pa $stuff/c-icapd			$fs/etc/init.d
+
+	# Cleanup
+	rm -f $fs/usr/bin/c-icap-config
+
+	# Fix configuration file
+	sed -i	-e "s|YourServerName|localhost|"	\
+		-e "s|/usr/var/log|/var/log/c-icap/|"	\
+		-e "s|/usr/var/run/|/var/run/c-icap|"	\
+		-e "s|/usr/etc|/etc/c-icap|"		\
+		$fs/etc/c-icap/c-icap.conf
+	chmod -x $fs/etc/c-icap/*
+}
+
+post_install()
+{
+	[ -z "$1" -a ! -s /aufs-umount.sh ] &&
+	/etc/init.d/c-icapd start
+
+	cat <<EOF
+	
+----
+To start $PACKAGE server you can run :
+
+    /etc/init.d/$PACKAGE start
+
+Or add $PACKAGE to RUN_DAEMONS in /etc/rcS.conf
+----
+EOF
+}
+
+pre_remove()
+{
+		echo "Stopping daemon..."
+		if (ps | grep -q c-icap)
+		  then
+			chroot "$1/" /etc/init.d/c-icapd stop
+		fi
+}
+
+post_remove()
+{
+	echo "Removing stalled files..."
+	test -d "$1/var/log/c-icap" && rm -rf "$1/var/log/c-icap"
+	test -d "$1/usr/run/c-icap" && rm -rf "$1/usr/run/c-icap"
+}

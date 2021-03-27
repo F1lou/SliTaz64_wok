@@ -1,0 +1,43 @@
+#!/bin/sh
+# /etc/init.d/pcscd: Start, stop and restart pcsc-lite daemon on SliTaz,
+# at boot time or with the command line. Daemons options are configured
+# with /etc/daemons.conf
+#
+. /etc/init.d/rc.functions
+. /etc/daemons.conf
+
+NAME=Pcscd
+DESC="$(_ 'PC/SC smart card daemon')"
+DAEMON=/usr/sbin/pcscd
+PIDFILE=/run/pcscd/pcscd.pid
+
+case "$1" in
+	start)
+		if active_pidfile $PIDFILE pcscd ; then
+			_ '%s is already running.' $NAME
+			exit 1
+		fi
+		action 'Starting %s: %s...' "$DESC" $NAME
+		mkdir -p $(dirname $PIDFILE)
+		$DAEMON $PCSCD_OPTIONS
+		status ;;
+	stop)
+		if ! active_pidfile $PIDFILE pcscd ; then
+			_ '%s is not running.' $NAME
+			exit 1
+		fi
+		action 'Stopping %s: %s...' "$DESC" $NAME
+		kill $(cat $PIDFILE)
+		[ -e $PIDFILE ] && rm -f $PIDFILE
+		status ;;
+	restart)
+		$0 stop
+		sleep 2
+		$0 start ;;
+	*)
+		emsg "<n><b>$(_ 'Usage:')</b> $0 [start|stop|restart]"
+		newline
+		exit 1 ;;
+esac
+
+exit 0

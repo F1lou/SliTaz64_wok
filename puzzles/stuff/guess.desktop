@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=guess
+Exec=guess
+Icon=guess
+Terminal=false
+Categories=Application;Game;

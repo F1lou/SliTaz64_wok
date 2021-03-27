@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="miau"
+VERSION="0.6.6"
+CATEGORY="network"
+SHORT_DESC="Another IRC-bouncer/proxy."
+MAINTAINER="christophe.paris@free.fr"
+LICENSE="GPL2"
+WEB_SITE="http://miau.sourceforge.net/"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="http://downloads.sourceforge.net/miau/$TARBALL"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure				\
+		--prefix=/usr			\
+		--infodir=/usr/share/info	\
+		--mandir=/usr/share/man		\
+		--docdir=/usr/share/doc		\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/share	$fs/usr
+}

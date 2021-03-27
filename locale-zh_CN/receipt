@@ -1,0 +1,58 @@
+# SliTaz package receipt
+
+PACKAGE="locale-zh_CN"
+VERSION="5.0"
+CATEGORY="localization"
+SHORT_DESC="Chinese Simplified locale pack."
+MAINTAINER="lufeng369@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="http://www.slitaz.org/"
+HOST_ARCH="x86_64 i486 arm"
+
+WANTED="glibc slitaz-i18n xorg-libX11 flag-icons tzdata"
+DEPENDS="glibc-base wqy-microhei"
+
+LOCALE="zh_CN"
+LOCALE_DEPENDS="iso14651_t1_pinyin" # for zh_CN
+KBD=""
+KB_FLAGS="CN:cn"
+GCONV="EUC-CN GBK GB18030   libGB"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	. $WOK/slitaz-i18n/stuff/locale-pack.functions
+	. $WOK/slitaz-i18n/stuff/locale-pack.conf
+	get_locale
+
+	# do really zh_CN locale need this?
+	#GCONV_MODULES="
+	#	BIG5.so    GBBIG5.so   GBGBK.so
+	#	UTF-32.so  GB18030.so  EUC-CN.so
+	#	GBK.so     UTF-7.so    libGB.so"
+	#mkdir -p $fs/usr/bin
+	#mkdir -p $fs/usr/lib/gconv
+
+	#cp /usr/bin/iconv $fs/usr/bin
+	#for i in $GCONV_MODULES; do
+	#	cp $WOK/glibc/install/usr/lib/gconv/$i $fs/usr/lib/gconv
+	#done
+}
+
+post_install()
+{
+	if [ -z "$1" ]; then
+		echo LANG=zh_CN.UTF-8 > /etc/locale.conf
+		echo Asia/Shanghai > /etc/TZ
+		export TZ=Asia/Shanghai
+		[ -e /dev/misc/rtc ] && hwclock --hctosys
+	fi
+	:
+}
+
+# Back to C if it's the last used locale.
+post_remove()
+{
+	grep -qs =$LOCALE /etc/locale.conf &&
+	echo -e "LANG=C\nLC_ALL=C" > /etc/locale.conf
+}

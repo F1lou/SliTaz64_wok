@@ -1,0 +1,59 @@
+#!/bin/sh
+# /etc/init.d/nrpe : Start, stop and restart NRPE Server on SliTaz, at
+# boot time or with the command line.
+#
+# To start SSH server at boot time, just put nagios in the $RUN_DAEMONS
+# variable of /etc/rcS.conf and configure options with /etc/daemons.conf
+#
+. /etc/init.d/rc.functions
+. /etc/daemons.conf
+
+NAME=NRPE
+DESC="$(_ '%s daemon' NRPE)"
+DAEMON=/usr/bin/nrpe
+CONFIG_FILE="/etc/nagios/nrpe.cfg"
+OPTIONS="-n -c $CONFIG_FILE -d"
+PIDFILE=/var/run/nagios/nrpe.pid
+
+if [ ! -d /var/run/nagios ]; then
+  mkdir -p /var/run/nagios
+  chown nagios.nagios /var/run/nagios
+fi
+case "$1" in
+  start)
+    if active_pidfile $PIDFILE nrpe ; then
+      _ '%s is already running.' $NAME
+      exit 1
+    fi
+    action 'Starting %s: %s...' "$DESC" $NAME
+    $DAEMON $OPTIONS
+    status
+    ;;
+  stop)
+    if ! active_pidfile $PIDFILE nrpe ; then
+      _ '%s is not running.' $NAME
+      exit 1
+    fi
+    action 'Stopping %s: %s...' "$DESC" $NAME
+    kill $(cat $PIDFILE)
+    status
+    ;;
+  restart|reload)
+    if ! active_pidfile $PIDFILE nrpe ; then
+      _ '%s is not running.' $NAME
+      exit 1
+    fi
+    action 'Restarting %s: %s...' "$DESC" $NAME
+    kill $(cat $PIDFILE)
+    sleep 2
+    $DAEMON $OPTIONS
+    status
+    ;;
+  *)
+    emsg "<n><b>$(_ 'Usage:')</b> $0 [start|stop|restart|reload]"
+    newline
+    exit 1
+    ;;
+esac
+
+exit 0

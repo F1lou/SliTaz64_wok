@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="exo"
+VERSION="0.10.3"
+CATEGORY="meta"
+SHORT_DESC="Xfce Exo library and tools"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://www.xfce.org"
+WGET_URL="http://archive.xfce.org/xfce/4.10/src/$TARBALL"
+COOK_OPT="!fs"
+
+DEPENDS="exo-tools libexo util-linux-uuid libgio"
+BUILD_DEPENDS="libxfce4util-dev perl-uri startup-notification-dev intltool \
+util-linux-uuid-dev libgio-dev glib-dev gtk+-dev libxfce4ui-dev libxml2-dev \
+xcb-util-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	patch -p1 -i $stuff/helpers.rc.u
+	export LDFLAGS="$LDFLAGS -lxcb-util"
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--libexecdir=/usr/lib/libexo \
+		--disable-debug \
+		--mandir=/usr/share/man \
+		--disable-python \
+		$CONFIGURE_ARGS && \
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir $fs/usr
+}

@@ -1,0 +1,44 @@
+# SliTaz package receipt.
+
+PACKAGE="gsim51"
+VERSION="1.1"
+CATEGORY="development"
+SHORT_DESC="Text based simulator for the 8051 microcontroller."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+SOURCE="gSim51"
+TARBALL="${SOURCE}v$VERSION.tar.gz"
+WEB_SITE="http://$PACKAGE.sourceforge.net/"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+TAGS="8051"
+
+DEPENDS="ncurses"
+BUILD_DEPENDS="ncurses-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src/src
+	sed -i 's/-lncurses/& -ltinfo/' Makefile
+	sed -i 's|sim51.hlp|/usr/share/gsim51/&|' *funcs3.c
+	make
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin $fs/usr/share/gsim51 $fs/usr/share/applications
+	mkdir -p $install/usr/share
+	cp -a $src/docs $install/usr/share/doc
+	cp -a $src/bin/gSim51 $fs/usr/bin
+	cp -a $src/bin/sim51.hlp $fs/usr/share/gsim51/sim51.hlp
+	cat > $fs/usr/share/applications/gsim51.desktop <<EOT
+[Desktop Entry]
+Type=Application
+Name=8051 simulator
+Name[fr]=Simulateur de 8051
+Exec=terminal -e gSim51
+Icon=computer
+Categories=ConsoleOnly;Utility;Development;
+EOT
+}

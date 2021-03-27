@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Nathive Image Editor
+Name[pt]=Editor de imagens Nathive
+Name[pt_BR]=Editor de imagens Nathive
+Comment=A fast GTK+ Image Viewer
+Exec=nathive %f
+Terminal=false
+Type=Application
+Icon=gpicview
+Categories=GTK;Graphics;2DGraphics;Viewer;
+MimeType=image/bmp;image/gif;image/jpeg;image/jpg;image/png;
+

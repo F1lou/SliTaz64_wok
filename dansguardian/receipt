@@ -1,0 +1,48 @@
+# SliTaz package receipt.
+
+PACKAGE="dansguardian"
+VERSION="2.12.0.3"
+CATEGORY="network"
+SHORT_DESC="Web content filter."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://dansguardian.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="$SF_MIRROR/$PACKAGE/files/$TARBALL"
+
+SUGGESTED="clamav"
+DEPENDS="squid"
+BUILD_DEPENDS="pcre-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure				\
+		--prefix=/usr			\
+		--localstatedir=/var		\
+		--sysconfdir=/etc		\
+		--enable-fancydm=no		\
+		--with-proxyuser=nobody		\
+		--with-proxygroup=nogroup	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/sbin
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/sbin			$fs/usr
+	cp -a $install/usr/share/${PACKAGE}	$fs/usr/share
+	cp -a $install/var			$fs
+	cp -a $install/etc			$fs
+}
+
+post_install()
+{
+	chown nobody.nogroup "$1/var/log/dansguardian"
+}

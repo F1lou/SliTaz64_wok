@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="listpatron"
+VERSION="0.1.1"
+CATEGORY="office"
+SHORT_DESC="GTK+2 application for maintaining lists of information.."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://www.electricmonk.nl/Programmings/ListPatron"
+WGET_URL="http://projects.electricmonk.nl/projects/$PACKAGE/$TARBALL"
+
+DEPENDS="gtk+ xorg-libXdamage"
+BUILD_DEPENDS="gtk+-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure \
+		--prefix=/usr \
+		--libexecdir=/usr/lib/$PACKAGE \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+    mkdir -p $fs/usr/share/applications
+    cp -a $stuff/listpatron.desktop $fs/usr/share/applications
+    cp -a $install/usr/bin $fs/usr
+    cp -a $install/usr/share/pixmaps $fs/usr/share
+    cp -a $install/usr/share/xml $fs/usr/share
+    cd $fs/usr/share/pixmaps
+    ln -s listpatron/icons/listpatron-col-add.png listpatron.png
+}
+

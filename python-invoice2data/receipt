@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="python-invoice2data"
+VERSION="0.2.93"
+CATEGORY="development"
+TAGS="pdf"
+SHORT_DESC="Extract structured data from PDF invoices."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://github.com/m3nu/invoice2data"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/archive/v$VERSION.tar.gz"
+
+DEPENDS="poppler-apps python"
+BUILD_DEPENDS="python python-setuptools"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr	$fs
+}

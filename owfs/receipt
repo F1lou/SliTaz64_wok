@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="owfs"
+VERSION="3.2p3"
+CATEGORY="misc"
+SHORT_DESC="One Wire File System."
+MAINTAINER="l.lemarinel@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://owfs.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/$PACKAGE/$PACKAGE/archive/v$VERSION.tar.gz"
+
+DEPENDS="fuse libusb"
+BUILD_DEPENDS="fuse-dev libtool libusb libusb-dev libusb-compat"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./bootstrap &&
+	./configure			\
+		--prefix=/usr		\
+		--bindir=/usr/bin	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}

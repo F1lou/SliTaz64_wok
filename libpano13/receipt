@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="libpano13"
+VERSION="2.9.19"
+CATEGORY="development"
+SHORT_DESC="Panorama tools library."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://panotools.sourceforge.net/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/panotools/$TARBALL"
+
+DEPENDS="jpeg libpng tiff"
+BUILD_DEPENDS="bash jpeg-dev libpng-dev tiff-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--prefix=/usr		\
+		--build=$HOST_SYSTEM	\
+		--host=$HOST_SYSTEM &&
+	make -j 1 &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.   
+genpkg_rules()                                      
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/lib/*.so*		$fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig	$fs/usr/lib
+	cp -a $install/usr/bin			$fs/usr
+}

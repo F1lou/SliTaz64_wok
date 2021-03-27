@@ -1,0 +1,11 @@
+prefix=/usr
+libdir=/usr/lib/firefox-devel/sdk/lib
+sdkdir=/usr/lib/firefox-devel/sdk
+includedir=/usr/include/firefox-VERSION
+idldir=/usr/share/idl/firefox-VERSION
+
+Name: libxul
+Description: The Mozilla Runtime and Embedding Engine
+Version: VERSION
+Libs: -L${sdkdir}/lib -lxpcomglue_s -lxul -lxpcom
+Cflags: -I${includedir} -fshort-wchar

@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="gettext-tools"
+VERSION="0.19.8.1"
+CATEGORY="libs"
+SHORT_DESC="GNU gettext tools to manage translations"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL3"
+WEB_SITE="http://www.gnu.org/software/gettext/"
+
+WANTED="gettext"
+DEPENDS="acl attr glib libcroco libgomp liblzma libxml2 pcre zlib"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cook_copy_files msgcat msgfmt msgmerge xgettext libgettextlib*.so* \
+		libgettextsrc*.so*
+}

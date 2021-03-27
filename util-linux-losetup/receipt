@@ -1,0 +1,27 @@
+# SliTaz package receipt.
+
+PACKAGE="util-linux-losetup"
+VERSION="2.35.1"
+CATEGORY="base-system"
+SHORT_DESC="The losetup utility from Util Linux."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://en.wikipedia.org/wiki/Util-linux"
+
+SUGGESTED="linux-cloop util-linux-mount"
+DEPENDS="glibc-base"
+WANTED="util-linux"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cook_copy_files losetup
+	rm -r $fs/usr/share
+}
+
+post_remove()
+{
+	ln -s /bin/busybox "$1/sbin/losetup"
+}

@@ -1,0 +1,47 @@
+# SliTaz package receipt.
+
+PACKAGE="celestia"
+VERSION="1.6.1"
+CATEGORY="games"
+SHORT_DESC="Real-time 3D Space Simulation."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="http://celestia.sourceforge.net/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="freeglut glew gtk+ gtkglext jpeg libglu-mesa libjpeg libtheora 
+	lua5.1 mesa xorg-libXmu zlib"
+BUILD_DEPENDS="autoconf freeglut-dev gettext glew-dev gtk+-dev gtkglext-dev 
+	jpeg-dev libglu-mesa libogg-dev libpng-dev libtheora-dev lua5.1-dev 
+	mesa-dev xorg-libXmu-dev zlib-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export LDFLAGS="$LDFLAGS -Wl,--copy-dt-needed-entries -ldl"
+	# 1.6.0
+#	patch -p0 -i $stuff/celestia-1.6.0-gcc45.patch
+#	patch -p1 -i $stuff/make-dereferenced-temporaries-explicit
+	sed -i 's/NULL/0/' src/celengine/frametree.h
+
+	./configure				\
+		--prefix=/usr			\
+		--infodir=/usr/share/info	\
+		--mandir=/usr/share/man		\
+		--with-gtk			\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/applications
+
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/share/celestia	$fs/usr/share
+	cp -a $install/usr/share/pixmaps	$fs/usr/share
+}

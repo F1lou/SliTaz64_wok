@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-json"
+VERSION="4.02"
+CATEGORY="development"
+SHORT_DESC="Perl Module JSON."
+MAINTAINER="nneul@neulinger.org"
+LICENSE="Artistic"
+WEB_SITE="https://metacpan.org/release/JSON/"
+
+SOURCE="JSON"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://www.cpan.org/modules/by-module/JSON/$TARBALL"
+
+DEPENDS="perl"
+BUILD_DEPENDS="perl"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	perl Makefile.PL &&
+	make && 
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib	$fs/usr
+
+	# remove perllocal.pod and .packlist
+	find $fs -name perllocal.pod -delete
+	find $fs -name .packlist -delete
+}

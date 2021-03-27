@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="p7zip-full"
+SOURCE="p7zip"
+VERSION="16.02"
+CATEGORY="utilities"
+SHORT_DESC="A file archiver with a high compression ratio (full version with restricted codecs)"
+MAINTAINER="milka@konstelacioj.info"
+LICENSE="LGPL2.1"
+TARBALL="${SOURCE}_${VERSION}_src_all.tar.bz2"
+WEB_SITE="http://p7zip.sourceforge.net/"
+WGET_URL="$SF_MIRROR/$SOURCE/$TARBALL"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|HOME)/man|HOME)/share/man|' makefile
+	make all3
+	make DEST_HOME=$DESTDIR/usr install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib $fs/usr
+	
+	# Fix pathname in 7z scripts
+	sed -i -e "s#.*$install#\"#" $fs/usr/bin/7z \
+		$fs/usr/bin/7za $fs/usr/bin/7zr
+}

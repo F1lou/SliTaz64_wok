@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="virtualenv"
+VERSION="16.7.7"
+CATEGORY="development"
+TAGS="python"
+SHORT_DESC="Virtual Python Environment Builder."
+MAINTAINER="taziden@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://virtualenv.pypa.io/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/pypa/$PACKAGE/archive/$VERSION.tar.gz"
+
+DEPENDS="python python-dev"
+BUILD_DEPENDS="python python-dev python-setuptools"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr $fs
+}

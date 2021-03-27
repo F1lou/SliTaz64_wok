@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="nethogs"
+VERSION="0.8.5"
+CATEGORY="network"
+TAGS="network"
+SHORT_DESC="Small 'net top' tool."
+MAINTAINER="paul@slitaz.org"
+LICENSE="GPL"
+WEB_SITE="https://github.com/raboof/nethogs"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}/archive/v$VERSION.tar.gz"
+
+DEPENDS="gcc-lib-base libpcap ncursesw"
+BUILD_DEPENDS="libpcap libpcap-dev ncursesw-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+#	sed -i 's|lncurses|& -ltinfo|' Makefile
+	export	LDFLAGS="$LDFLAGS -lncursesw"
+
+	make 
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/sbin
+	cp $src/src/nethogs	$fs/usr/sbin
+}

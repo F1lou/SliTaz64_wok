@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="jsmin"
+COMMIT="1bf6ce5f74a9f8752ac7f5d115b8d7ccb31cfe1b"
+VERSION="${COMMIT:0:10}"
+CATEGORY="development"
+SHORT_DESC="JavaScript minification filter"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="other"
+WEB_SITE="https://github.com/douglascrockford/JSMin"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/archive/$COMMIT.tar.gz"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS=""
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make jsmin
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $src/jsmin $fs/usr/bin
+}

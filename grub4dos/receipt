@@ -1,0 +1,46 @@
+# SliTaz package receipt.
+
+PACKAGE="grub4dos"
+VERSION="0.4.4"
+CATEGORY="system-tools"
+SHORT_DESC="Some enhancments of grub boot loader."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION-src.zip"
+WEB_SITE="http://grub4dos.sourceforge.net/"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+BUILD_DEPENDS="lzma gcc3 binutils"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	for i in $stuff/*.diff ; do
+		[ -f $(basename $i) ] && continue
+		patch -p1 < $i
+		touch $(basename $i)
+	done
+	sed -i 's/\[ .grub-probe.*\]/mount | grep $grubdir | grep -q xfs/' \
+		util/grub-install.in
+	sed -i 's|-O binary conftest|--only-section=.text &|' acinclude.m4 configure
+	sed -i 's|-O binary |&-R .note -R .comment -R .note.gnu.build-id |' stage?/Makefile*
+	sh ./configure CC=gcc-3 \
+		--enable-preset-menu=$stuff/menu.lst \
+		--without-curses \
+	$CONFIGURE_ARGS &&
+	make -j 1 && make -j 1 install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/boot \
+		$fs/usr/bin
+	
+	lzma e $install/usr/lib/grub/*/grub.exe $fs/usr/share/boot/grub.exe.lzma
+	lzma e $install/usr/lib/grub/*/grldr $fs/usr/share/boot/grldr.lzma
+	
+	cp $install/usr/lib/grub/*/bootlace.com $fs/usr/bin/bootlace
+	chmod +x $fs/usr/bin/bootlace
+	# Skip hmload.com badgrub.exe grldr.mbr
+}

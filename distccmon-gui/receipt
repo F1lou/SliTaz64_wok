@@ -1,0 +1,26 @@
+# SliTaz package receipt.
+
+PACKAGE="distccmon-gui"
+VERSION="3.3.3"
+CATEGORY="development"
+SHORT_DESC="Distcc monitor GUI."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://distcc.github.io/"
+
+DEPENDS="distcc gtk+"
+WANTED="distcc"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	mkdir -p $fs/usr/share/applications
+	mkdir -p $fs/usr/share/pixmaps
+
+	cp -a $install/usr/bin/distccmon-gnome \
+				$fs/usr/bin/distccmon-gui
+	cp -a $install/usr/share/distcc/distccmon-gnome-icon.png \
+				$fs/usr/share/pixmaps/distccmon-gui.png
+	cp stuff/*.desktop	$fs/usr/share/applications
+}

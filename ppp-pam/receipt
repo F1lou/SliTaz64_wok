@@ -1,0 +1,41 @@
+# SliTaz package receipt.
+
+PACKAGE="ppp-pam"
+VERSION="2.4.7"
+CATEGORY="network"
+SHORT_DESC="Implements the Point-to-Point Protocol (PPP) with PAM support."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="BSD GPL"
+SOURCE="ppp"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="https://ppp.samba.org/"
+WGET_URL="https://github.com/paulusmack/ppp/archive/$TARBALL"
+CONFIG_FILES="/etc/ppp/options"
+SECRET_FILES="/etc/ppp/*secrets"
+
+DEPENDS="pam"
+BUILD_DEPENDS="wget pam pam-dev"
+PROVIDE="ppp:pam"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's/#USE_PAM/USE_PAM/' pppd/Makefile.linux
+	./configure --prefix=/usr \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR/usr install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/sbin $fs/usr
+	[ -d "$install/usr/lib" ] && cp -a $install/usr/lib $fs/usr
+}
+
+pre_remove()
+{
+    tazpkg get-install  ${PACKAGE%-pam}
+}

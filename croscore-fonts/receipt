@@ -1,0 +1,24 @@
+# SliTaz package receipt.
+
+PACKAGE="croscore-fonts"
+VERSION="1.31.0"
+CATEGORY="fonts"
+TAGS="font ttf"
+SHORT_DESC="Chrome OS Fonts: Arimo (sans), Cousine (monospace), and Tinos (serif)"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="SIL_OFL"
+WEB_SITE="http://fedoraproject.org/wiki/Google_Croscore_fonts"
+
+TARBALL="croscorefonts-$VERSION.tar.bz2"
+WGET_URL="http://gsdview.appspot.com/chromeos-localmirror/distfiles/$TARBALL"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	FONTPATH=$fs/usr/share/fonts/truetype/croscore
+	mkdir -p $FONTPATH
+
+	for FILE in $src/*.ttf; do
+		install -Dm444 $FILE $FONTPATH
+	done
+}

@@ -1,0 +1,49 @@
+# SliTaz package receipt.
+
+PACKAGE="lynx"
+VERSION="2.8.9rel1"
+CATEGORY="network"
+SHORT_DESC="Terminal-based text-only browser."
+MAINTAINER="samuel_trassare@yahoo.com"
+LICENSE="GPL2"
+WEB_SITE="https://lynx.browser.org/"
+
+TARBALL="$PACKAGE${VERSION/rel/rel.}.tar.bz2"
+WGET_URL="https://invisible-mirror.net/archives/$PACKAGE/tarballs/$TARBALL"
+
+# Will require build dep libtirpc after glibc is upgraded to 2.14.
+DEPENDS="libssl ncurses zlib"
+BUILD_DEPENDS="ncurses-dev openssl-dev zlib-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS	\
+		--sysconfdir=/etc	\
+		--mandir=/usr/share/man	\
+		--enable-ipv6		\
+		--enable-gnutls-compat	\
+		--enable-nls		\
+		--with-ssl		\
+		--with-gnutls		\
+		--with-zlib		\
+		--with-nss-compat &&
+	make -j 1 && 
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+
+	cp -a $install/usr/bin	$fs/usr
+	cp -a $install/etc	$fs/
+}
+
+testsuite()
+{
+	readelf -h $install/usr/bin/lynx
+}

@@ -1,0 +1,48 @@
+# SliTaz package receipt.
+
+PACKAGE="freeciv"
+VERSION="2.6.1"
+CATEGORY="games"
+TAGS="strategy"
+SHORT_DESC="Empire-building strategy game"
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://www.freeciv.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="bzip2 gettext-base gtk+3 libsdl-mixer ncurses readline 
+	xorg-libXdamage zlib"
+BUILD_DEPENDS="bzip2-dev curl-dev expat-dev gettext glibc-locale 
+	gtk+3-dev libsdl-mixer-dev ncurses-dev readline-dev zlib-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's/--best/-9/'	\
+		Makefile*	\
+		data/scenarios/Makefile*
+
+	./configure			\
+		--enable-client=gtk	\
+		--enable-shared		\
+		$CONFIGURE_ARGS &&
+	make -j1 &&
+	make -j1 install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/lib/*.so*		$fs/usr/lib
+	cp -a $install/usr/share/freeciv	$fs/usr/share
+
+	# Add icons for desktop files
+	cp -a $install/usr/share/icons/hicolor/32x32/apps \
+						$fs/usr/share/pixmaps
+}

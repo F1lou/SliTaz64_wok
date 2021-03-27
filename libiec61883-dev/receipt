@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="libiec61883-dev"
+VERSION="1.2.0"
+CATEGORY="development"
+SHORT_DESC="libiec61883 is a standard defining a high speed serial bus."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2.1"
+WANTED="libiec61883"
+WEB_SITE="https://ieee1394.wiki.kernel.org/index.php/Main_Page"
+
+DEPENDS="pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/dev
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+}
+

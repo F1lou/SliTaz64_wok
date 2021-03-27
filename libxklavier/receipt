@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="libxklavier"
+VERSION="5.4"
+CATEGORY="system-tools"
+SHORT_DESC="Library providing high-level API for XKB."
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://freedesktop.org/wiki/Software/LibXklavier/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="https://cgit.freedesktop.org/$PACKAGE/snapshot/$TARBALL"
+
+DEPENDS="glib xorg-libXi xorg-libxkbfile"
+BUILD_DEPENDS="automake file glib-dev gtk-doc iso-codes \
+	xz gettext-tools libtool libxml2-dev xorg-xkbcomp"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./autogen.sh &&
+	./configure			\
+		--disable-static	\
+		--disable-gtk-doc	\
+		--enable-xkb-support	\
+		--enable-xmodmap-support\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

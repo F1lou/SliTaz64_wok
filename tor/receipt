@@ -1,0 +1,40 @@
+# SliTaz package receipt.
+
+PACKAGE="tor"
+VERSION="0.4.3.5"
+CATEGORY="network"
+SHORT_DESC="An anonymizing overlay network for TCP."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="https://www.torproject.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}dist/$TARBALL"
+
+DEPENDS="libevent liblzma libssl zstd"
+BUILD_DEPENDS="libevent-dev liblzma-dev openssl-dev zstd-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--sysconfdir=/etc	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+
+	cp -a $install/usr/bin		$fs/usr
+	#cp -a $install/usr/share/tor	$fs/usr/share
+	
+	# configuration file.
+	cp -a $install/etc		$fs
+	mv $fs/etc/tor/torrc.sample	$fs/etc/tor/torrc
+}

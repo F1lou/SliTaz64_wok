@@ -1,0 +1,129 @@
+# SliTaz package receipt.
+
+PACKAGE="dropbear"
+VERSION="2020.81"
+CATEGORY="security"
+SHORT_DESC="Lightweight SSH2 server and client"
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="MIT"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://matt.ucc.asn.au/dropbear/dropbear.html"
+WGET_URL="https://matt.ucc.asn.au/dropbear/releases/$TARBALL"
+CONFIG_FILES="/etc/dropbear/banner"
+SECRET_FILES="/etc/dropbear/*key"
+SUGGESTED="sftp-server"
+PROVIDE="ssh"
+TAGS="ssh"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="zlib"
+BUILD_DEPENDS="zlib-dev pam pam-dev"
+
+# Handle multiarch compilation.
+case "$ARCH" in
+	arm)
+		BUILD_DEPENDS=""
+		CROSS_ARGS="--disable-zlib"
+		CROSS_BUGS="Fails to find zlib: -lz... no" ;;
+esac
+
+current_version()
+{
+	wget -O - $WEB_SITE 2>/dev/null | \
+	sed "/tar/!d;s|.*$PACKAGE-\\(.*\\).tar.*\".*|\\1|;q"
+}
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	local i
+	local DROPBEARS
+	DROPBEARS="dropbearkey dropbearconvert dbclient scp"
+	cat > localoptions.h <<EOT
+#define SFTPSERVER_PATH "/usr/sbin/sftp-server"
+#define DROPBEAR_X11FWD 1
+EOT
+	sed -i 's|shell arch|shell uname -m|' libtommath/makefile_include.mk
+	./configure --prefix=/usr --without-pam $CONFIGURE_ARGS $CROSS_ARGS &&
+	make PROGRAMS="dropbear $DROPBEARS" MULTI=1 SCPPROGRESS=1 &&
+	install -d -m 755 $DESTDIR/usr/sbin &&
+	install -m 755 dropbearmulti $DESTDIR/usr/sbin/dropbear &&
+	chown 0.0 $DESTDIR/usr/sbin/dropbear || exit 1
+
+	# No pam support in ARM
+	case "$ARCH" in
+		arm) echo "Skipping Dropbear PAM..." ;;
+		i?86)
+			cat >> localoptions.h <<EOT
+#define DROPBEAR_SVR_PASSWORD_AUTH 0
+#define DROPBEAR_SVR_PAM_AUTH 1
+EOT
+			./configure --prefix=/usr --enable-pam $CONFIGURE_ARGS &&
+			make PROGRAMS="dropbear $DROPBEARS" MULTI=1 SCPPROGRESS=1 &&
+			install -m 755 dropbearmulti $DESTDIR/usr/sbin/dropbear-pam &&
+			chown 0.0 $DESTDIR/usr/sbin/dropbear-pam || exit 1 ;;
+	esac
+
+	install -d -m 755 $DESTDIR/usr/bin &&
+	for i in $DROPBEARS ssh; do
+		ln -s ../sbin/dropbear $DESTDIR/usr/bin/$i || exit 1
+	done
+	install -d -m 755 $DESTDIR/usr/share/man/man1 &&
+	install -m 644 $src/*.1 $DESTDIR/usr/share/man/man1 && 
+	install -d -m 755 $DESTDIR/usr/share/man/man8 &&
+	install -m 644 $src/*.8 $DESTDIR/usr/share/man/man8 &&
+	install -d -m 755 $DESTDIR/usr/share/doc &&
+	install -m 644 $src/[A-Z][A-Z]* $DESTDIR/usr/share/doc
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/sbin $fs/usr
+	rm -f $fs/usr/sbin/dropbear-pam
+	# Config file and init script.
+	mkdir -p $fs/etc
+	cp -a $stuff/dropbear $fs/etc
+	cp -a $stuff/init.d $fs/etc
+	ln -s daemon $fs/etc/init.d/sshd
+	cp -a $stuff/sshx $fs/usr/bin
+	ln -s sshx $fs/usr/bin/pppssh
+	ln -s sshx $fs/usr/bin/sshfbvnc
+	touch $fs/etc/dropbear/dropbear_dss_host_key \
+		$fs/etc/dropbear/dropbear_rsa_host_key \
+		$fs/etc/dropbear/dropbear_ecdsa_host_key \
+		$fs/etc/dropbear/dropbear_ed25519_host_key
+
+	# Fix dropbear initscript perms
+	chown -R root.root $fs
+}
+
+# Post message when installing.
+post_install()
+{
+	while read dropbear openssh ; do
+		[ -s "$1/$openssh" ] || continue
+		[ -s "$1/$dropbear" ] && continue
+		chroot "$1/" dropbearconvert openssh dropbear $openssh $dropbear
+		chroot "$1/" dropbearkey -y -f $dropbear | grep Fingerprint
+	done <<EOT
+/etc/dropbear/dropbear_rsa_host_key	/etc/ssh/ssh_host_rsa_key
+/etc/dropbear/dropbear_dss_host_key	/etc/ssh/ssh_host_dsa_key
+/etc/dropbear/dropbear_ecdsa_host_key	/etc/ssh/ssh_host_ecdsa_key
+/etc/dropbear/dropbear_ed25519_host_key	/etc/ssh/ssh_host_ed25519_key
+EOT
+	grep -q ssh "$1/etc/inetd.conf" || cat >> "$1/etc/inetd.conf" <<EOT
+#ssh	stream	tcp	nowait	root	dropbear	dropbear	-i -b /etc/dropbear/banner
+EOT
+	[ -n "$quiet" ] && return
+	echo -e "\nTo starts $PACKAGE server you can run :\n"
+	echo "/etc/init.d/$PACKAGE start"
+	echo -e "Or add $PACKAGE to RUN_DAEMONS in /etc/rcS.conf\n"
+}
+
+post_remove()
+{
+	grep -q dropbear "$1/etc/inetd.conf" && sed -i '/dropbear/d' "$1/etc/inetd.conf"
+}

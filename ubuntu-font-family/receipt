@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="ubuntu-font-family"
+VERSION="0.83"
+CATEGORY="fonts"
+SHORT_DESC="Set of new libre/open fonts."
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="other"
+WEB_SITE="https://design.ubuntu.com/font/"
+
+TARBALL="$PACKAGE-$VERSION.zip"
+WGET_URL="https://assets.ubuntu.com/v1/0cef8205-$TARBALL"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/fonts/truetype/ubuntu
+	cp $src/*	$fs/usr/share/fonts/truetype/ubuntu
+}

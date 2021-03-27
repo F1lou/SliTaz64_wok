@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="lxappearance-dev"
+VERSION="0.6.3"
+CATEGORY="development"
+SHORT_DESC="LXDE GTK+ theme switcher (development)"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WANTED="lxappearance"
+WEB_SITE="https://wiki.lxde.org/en/LXAppearance"
+TAGS="LXDE"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="gtk+-dev pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib $fs/usr
+	cp -a $install/usr/include $fs/usr
+}

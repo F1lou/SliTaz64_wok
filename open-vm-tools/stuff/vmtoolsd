@@ -1,0 +1,60 @@
+#!/bin/sh
+# /etc/init.d/vmtoolsd : Start, stop and restart Open VM Tools daemon on SliTaz, at
+# boot time or with the command line.
+#
+# To start VMTools daemon at boot time, just put vmtoolsd in the $RUN_DAEMONS
+# variable of /etc/rcS.conf and configure options with /etc/daemons.conf
+#
+. /etc/init.d/rc.functions
+. /etc/daemons.conf
+
+NAME=VMTools
+DESC="$(_ '%s daemon' VMTools)"
+DAEMON=/usr/bin/vmtoolsd
+PIDFILE=/var/run/vmtoolsd.pid
+OPTIONS="-b $PIDFILE"
+
+case "$1" in
+  start)
+    if active_pidfile $PIDFILE vmtoolsd ; then
+      _ '%s is already running.' $NAME
+      exit 1
+    fi
+    action 'Starting %s: %s...' "$DESC" $NAME
+    modprobe vmblock
+    modprobe vmhgfs
+    modprobe vmci
+    modprobe vmsync
+    modprobe vsock
+    $DAEMON $OPTIONS
+    status
+    ;;
+  stop)
+    if ! active_pidfile $PIDFILE vmtoolsd ; then
+      _ '%s is not running.' $NAME
+      exit 1
+    fi
+    action 'Stopping %s: %s...' "$DESC" $NAME
+    kill `cat $PIDFILE`
+    status
+    ;;
+  restart)
+    if ! active_pidfile $PIDFILE vmtoolsd ; then
+      _ '%s is not running.' $NAME
+      exit 1
+    fi
+    action 'Restarting %s: %s...' "$DESC" $NAME
+    kill $(cat $PIDFILE)
+    sleep 2
+    $DAEMON $OPTIONS
+    status
+    ;;
+  *)
+    emsg "<n><b>$(_ 'Usage:')</b> $0 [start|stop|restart]"
+    newline
+    exit 1
+    ;;
+esac
+
+exit 0
+

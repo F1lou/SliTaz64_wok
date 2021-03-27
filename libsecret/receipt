@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="libsecret"
+VERSION="0.18.5"
+SERIES="0.18"
+SHORT_DESC="GObject based library for accessing the Secret Service API"
+MAINTAINER="devl547@gmail.com"
+LICENSE="LGPL2.1"
+CATEGORY="security"
+WEB_SITE="https://gnome.org/"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="$GNOME_MIRROR/$PACKAGE/$SERIES/$TARBALL"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="libgio libgpg-error"
+BUILD_DEPENDS="libgcrypt-dev gobject-introspection-dev vala"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--disable-manpages \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

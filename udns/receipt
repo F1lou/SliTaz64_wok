@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="udns"
+VERSION="0.4"
+CATEGORY="network"
+TAGS="network DNS"
+SHORT_DESC="Synchronous and asynchronous DNS resolver."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="LGPL2.1"
+WEB_SITE="https://www.corpit.ru/mjt/$PACKAGE.html"
+
+TARBALL="${PACKAGE}-$VERSION.tar.gz"
+WGET_URL="https://www.corpit.ru/mjt/$PACKAGE/$TARBALL"
+
+BUILD_DEPENDS="bash"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# GCC 4.5 fix
+	sed -i 's/"$@" >/$@ >/' configure.lib
+	bash ./configure &&
+	make staticlib sharedlib rblcheck_s dnsget_s
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/bin
+
+	cp -a $src/libudns.so.0		$fs/usr/lib
+	ln -s /usr/lib/libudns.so.0	$fs/usr/lib/libudns.so
+	cp -a $src/dnsget_s		$fs/usr/bin/dnsget
+	cp -a $src/rblcheck_s		$fs/usr/bin/rblcheck
+}

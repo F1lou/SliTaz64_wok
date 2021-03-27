@@ -1,0 +1,10 @@
+/etc
+/lib64
+/usr/bin
+/usr/lib64/gconv
+/usr/lib64/locale
+/usr/share/zoneinfo/America
+/usr/share/zoneinfo/Europe
+/usr/share/i18n/locales
+/usr/share/i18n/charmaps
+/usr/share/locale

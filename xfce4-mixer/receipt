@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="xfce4-mixer"
+VERSION="4.10.0"
+CATEGORY="x-window"
+SHORT_DESC="Xfce Audio Mixer"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://www.xfce.org"
+WGET_URL="http://archive.xfce.org/src/apps/$PACKAGE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="gtk+ libxfce4util gtk+ xfconf xfce4-panel gst-plugins-base startup-notification
+ util-linux-uuid libunique"
+BUILD_DEPENDS="gtk+-dev libxfce4util-dev xfconf-dev xfce4-panel-dev
+ gst-plugins-base-dev intltool libxfce4ui-dev gstreamer-dev startup-notification-dev \
+ util-linux-uuid-dev libxml2-dev libunique-dev xcb-util-dev"
+ 
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure --prefix=/usr \
+		--libexecdir=/usr/lib/$PACKAGE $CONFIGURE_ARGS && \
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/locale 
+		
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib $fs/usr
+	cp -a $install/usr/share/xfce4 $fs/usr/share
+	cp -a $install/usr/share/pixmaps $fs/usr/share
+	cp -a $install/usr/share/xfce4-mixer $fs/usr/share
+	
+	rm -rf $fs/usr/share/xfce4-mixer/icons/hicolor/scalable
+	
+	# Strip everything
+	find $fs/usr/lib/ -exec strip -s {} 2> /dev/null \;
+}

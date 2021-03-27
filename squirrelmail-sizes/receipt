@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="squirrelmail-sizes"
+VERSION="1.5-1.4.0"
+CATEGORY="network"
+SHORT_DESC="Folder sizes plugin for Web mail."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+SOURCE="folder_sizes"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="http://www.squirrelmail.org/"
+WGET_URL="${WEB_SITE}plugins/$TARBALL"
+HOST_ARCH="x86_64 any"
+
+DEPENDS="squirrelmail"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir -p $DESTDIR
+	cp -a $src $DESTDIR/$SOURCE
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/squirrelmail/plugins
+	cp -a  $install/$SOURCE $fs/usr/share/squirrelmail/plugins
+}
+
+post_install()
+{
+	echo "\$plugins[] = '$SOURCE';" >> "$1/etc/squirrelmail/config_local.php"
+}
+
+pre_remove()
+{
+	sed -i "/\$plugins.. = '$SOURCE';/d" /etc/squirrelmail/config_local.php
+}

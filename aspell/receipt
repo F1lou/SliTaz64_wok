@@ -1,0 +1,40 @@
+# SliTaz package receipt.
+
+PACKAGE="aspell"
+VERSION="0.60.8"
+CATEGORY="system-tools"
+TAGS="spell check"
+SHORT_DESC="GNU spell checker."
+MAINTAINER="paul@slitaz.org"
+LICENSE="LGPL2"
+WEB_SITE="http://aspell.net/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="ftp://ftp.gnu.org/gnu/aspell/$TARBALL"
+
+DEPENDS="ncursesw"
+BUILD_DEPENDS="libtinfo ncursesw-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export LDFLAGS="$LDFLAGS -ltinfo"
+	./configure $CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+	cp -a $install/usr/lib/aspell*	$fs/usr/lib
+
+	# Remove unneeded files
+	rm -f				$fs/usr/lib/aspell*/*.*a
+}

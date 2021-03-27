@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="liblo"
+VERSION="0.31"
+CATEGORY="multimedia"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="LGPL2.1"
+SHORT_DESC="Lightweight OSC implementation: an implementation of the Open Sound Control protocol for POSIX systems"
+WEB_SITE="https://sourceforge.net/projects///liblo"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="gcc83-lib-base"
+BUILD_DEPENDS="gcc83"
+
+# Rules to configure and make the package.
+
+compile_rules()
+{
+	./configure		\
+		CC=gcc-83	\
+		CXX=g++-83	\
+		--prefix=/usr	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+	
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/lib/*so*	$fs/usr/lib
+}

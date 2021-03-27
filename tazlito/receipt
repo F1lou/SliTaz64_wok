@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="tazlito"
+VERSION="529"
+CATEGORY="base-system"
+SHORT_DESC="SliTaz Live Tool."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL3"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://www.slitaz.org/"
+WGET_URL="http://hg.slitaz.org/tazlito/archive/$VERSION.tar.gz"
+CONFIG_FILES="/etc/tazlito"
+TAGS="slitaz"
+
+DEPENDS="lzma cdrkit"
+SUGGESTED="tazpanel"
+BUILD_DEPENDS="gettext"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i "s/^VERSION=.*/VERSION=$VERSION/" tazlito
+	make DESTDIR=$DESTDIR VERSION=$VERSION install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs
+	cp -a $install/* $fs
+	chown -R root.root $fs
+	chmod 755 $fs/usr/bin/tazlito*
+	# Declare /etc/tazlito/distro-packages.list & /etc/tazlito/tazlito.conf
+	touch $fs/etc/tazlito/tazlito.conf
+	touch $fs/etc/tazlito/distro-packages.list
+}

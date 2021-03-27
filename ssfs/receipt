@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="ssfs"
+VERSION="108"
+CATEGORY="network"
+SHORT_DESC="SSFS is SliTaz Secure File Storage."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="http://ssfs.slitaz.org/"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="http://hg.slitaz.org/$PACKAGE/archive/$VERSION.tar.gz"
+SUGGESTED="yad"
+
+DEPENDS="rsync lsyncd"
+SPLIT="ssfs-server"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/applications $fs/usr/share
+	cp -a $install/usr/share/locale $fs/usr/share
+	cp -a $install/usr/share/doc $fs/usr/share
+}

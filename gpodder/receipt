@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="gpodder"
+VERSION="3.10.13"
+CATEGORY="multimedia"
+SHORT_DESC="A simple and usable podcast consumption."
+MAINTAINER="claudinei@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://gpodder.org"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/$PACKAGE/$PACKAGE/archive/$VERSION.tar.gz"
+
+DEPENDS="dbus-python feedparser py3k pygtk python-mygpoclient"
+BUILD_DEPENDS="feedparser intltool py3k-dev python-mygpoclient"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/lib			$fs/usr
+	cp -a $install/usr/share/gpodder	$fs/usr/share
+	cp -a $install/usr/share/dbus-1		$fs/usr/share
+}

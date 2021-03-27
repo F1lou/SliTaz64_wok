@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="mate-settings-daemon-dev"
+VERSION="1.9.5"
+CATEGORY="development"
+LICENSE="GPL3"
+SHORT_DESC="Settings daemon for MATE desktop, devel files."
+WEB_SITE="http://www.mate-desktop.org/"
+MAINTAINER="yuripourre@gmail.com"
+WANTED="mate-settings-daemon"
+TAGS="MATE"
+
+DEPENDS="mate-settings-daemon pkg-config"
+
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/include
+	cp -a $install/usr/lib/$WANTED/*.la $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/include/* $fs/usr/include
+}

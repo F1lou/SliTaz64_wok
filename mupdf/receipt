@@ -1,0 +1,54 @@
+# SliTaz package receipt.
+
+PACKAGE="mupdf"
+VERSION="1.4"
+CATEGORY="utilities"
+SHORT_DESC="A lightweight PDF and XPS viewer"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://mupdf.com/"
+TARBALL="$PACKAGE-$VERSION-source.tar.gz"
+WGET_URL="https://mupdf.com/downloads/$TARBALL"
+#HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="bzlib freetype fontconfig jbig2dec openjpeg xorg-libXext"
+BUILD_DEPENDS="freetype-dev fontconfig-dev jbig2dec-dev jpeg-dev \
+openjpeg-dev zlib-dev"
+
+# Rules to configure and make the package.  
+compile_rules()
+{
+	# Use system wide libraries instead of included ones
+	rm -rf $src/thirdparty
+	
+	case "$ARCH" in
+		arm*)
+			ARCH_ARGS='OS="slitaz-arm"'
+			unset CC CFLAGS
+			make generate
+			cat >> Makerules << EOT
+ifeq "\$(OS)" "slitaz-arm"
+SYS_FREETYPE_INC = -I/cross/$ARCH/sysroot/usr/include
+CC = ${HOST_SYSTEM}-gcc
+LD = ${HOST_SYSTEM}-ld
+AR = ${HOST_SYSTEM}-ar
+CFLAGS += -I/cross/$ARCH/sysroot/usr/include -O2 -march=armv6 -ftree-vectorize -ffast-math -fsingle-precision-constant
+CROSSCOMPILE=yes
+endif
+EOT
+			ln -s /usr/include/freetype2/freetype/ /usr/include/freetype ;;
+			
+*)			# apply debian 1.4-1 patch
+			patch -p1 < $stuff/use_openjpeg_1.5.patch
+	esac
+	make ${ARCH_ARGS} build=release &&
+	make ${ARCH_ARGS} build=release prefix=/usr install
+	rm -rf /usr/include/freetype
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $install/usr/bin/mupdf* $fs/usr/bin
+}

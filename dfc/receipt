@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="dfc"
+VERSION="3.1.1"
+CATEGORY="utilities"
+SHORT_DESC="Displays file system space usage using graphs and colors."
+MAINTAINER="paul@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="https://projects.gw-computing.net/projects/dfc"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://projects.gw-computing.net/attachments/download/615/$TARBALL"
+
+DEPENDS="ncurses"
+BUILD_DEPENDS="ncurses-dev cmake gettext"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cmake . \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DSYSCONF_INSTALL_DIR=/etc
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share $fs/etc
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/doc $fs/usr/share
+	cp -a $install/usr/share/locale $fs/usr/share
+	cp -a $install/usr/etc/* $fs/etc
+}

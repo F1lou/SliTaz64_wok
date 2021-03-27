@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="gimp-console"
+VERSION="2.8.20"
+CATEGORY="graphics"
+SHORT_DESC="The GIMP console."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WANTED="gimp"
+WEB_SITE="https://www.gimp.org/"
+
+DEPENDS="babl pango cairo gimp glib xorg-libX11 xorg-libXau"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $install/usr/bin/gimp-console* $fs/usr/bin
+}

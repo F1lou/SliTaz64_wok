@@ -1,0 +1,26 @@
+# SliTaz package receipt.
+
+PACKAGE="firmware"
+VERSION="20200515"
+CATEGORY="meta"
+SHORT_DESC="Firmware files for Linux"
+MAINTAINER="mojo@slitaz.org"
+LICENSE="other"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://git.kernel.org/cgit/linux/kernel/git/firmware/linux-firmware.git"
+WGET_URL="git|git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
+BUILD_DEPENDS="git"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make install	
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $install/usr/share/licenses
+        cp -a $src/LICENCE.* $install/usr/share/licenses
+}
+

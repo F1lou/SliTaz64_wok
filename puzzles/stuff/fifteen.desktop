@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=fifteen
+Exec=fifteen
+Icon=fifteen
+Terminal=false
+Categories=Application;Game;

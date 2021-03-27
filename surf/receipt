@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="surf"
+VERSION="0.6"
+CATEGORY="network"
+SHORT_DESC="Surf is a simple web browser based on WebKit/GTK+"
+MAINTAINER="mallory@sweetpeople.org"
+LICENSE="MIT"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://surf.suckless.org/"
+WGET_URL="http://dl.suckless.org/$PACKAGE/$TARBALL"
+SUGGESTED="dmenu"
+TAGS="web-browser"
+
+DEPENDS="libwebkit libsoup libxml2 gnutls gtk+"
+BUILD_DEPENDS="libwebkit-dev libsoup-dev libxml2-dev gnutls-dev gtk+-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	sed -i 's/^LIBS.*/& -lX11/' config.mk
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	# Surf binary
+	mkdir -p $fs/usr
+	cp -a $install/usr/local/bin $fs/usr
+}
+

@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="dietlibc"
+VERSION="0.34"
+CATEGORY="development"
+SHORT_DESC="A libc optimized for small size."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.fefe.de/dietlibc/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="${WEB_SITE}$TARBALL"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|uname -m|echo i486|' libpthread/Makefile Makefile
+	sed -i 's|.*/nice.S.*|// &|' i386/dyn_syscalls.S
+
+	make prefix=/usr/lib/diet && 
+	#make dyn prefix=/usr/lib/diet && 
+	make prefix=/usr/lib/diet DESTDIR=$DESTDIR install 2> /dev/null
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin $fs/usr/include
+	cp -a $install/* $fs
+	cp -a $install/usr/lib/diet/man $install/usr
+	ln -s ../lib/diet/include $fs/usr/include/diet
+	ln -s /usr/lib/diet/bin/diet $fs/usr/bin
+	ln -s /usr/lib/diet/bin/diet-dyn $fs/usr/bin
+	ln -s /usr/lib/diet/bin/elftrunc $fs/usr/bin
+}

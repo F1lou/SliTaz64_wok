@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="gtk+3-demo"
+VERSION="3.14.8"
+CATEGORY="development"
+SHORT_DESC="The GIMP Toolkit 3.x example code and demo"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2"
+WEB_SITE="https://www.gtk.org/"
+
+DEPENDS="gtk+3"
+WANTED="gtk+3"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p \
+		$fs/usr/bin \
+		$fs/usr/share/pixmaps
+	cp -a $install/usr/bin/gtk3-demo* $fs/usr/bin
+	cp -a $install/usr/share/gtk-3.0 $fs/usr/share
+	cp -a $stuff/gtk-demo.png $fs/usr/share/pixmaps
+}

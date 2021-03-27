@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<title>SliTaz EeePC flavors</title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<style type="text/css"><!--
+	body { font: 90% sans-serif, vernada, arial; margin: 0; }
+	#header { background: #f0ba08; color: black; height: 50px;
+		border-top: 1px solid black; border-bottom: 1px solid black; }
+	#content { margin: 0px 50px 26px 50px; }
+	h1 { margin: 14px 0px 0px 16px; color: #3e1220; }
+	h3 { color: #6c0023; }
+	li { line-height: 1.4em; }
+	pre { padding: 5px; color: black; background: #e1e0b0; }
+	pre.script { padding: 10px; color: black; background: #e8e8e8;
+		border: 1px inset #333333; }
+	code { font-size: 100%; color: #669900; background: transparent; }
+	hr { color: white; background: white; height: 1px; border: 0; }
+	--></style>
+</head>
+
+<body>
+
+<div id="header">
+<h1>SliTaz GNU/Linux EeePC flavor</h1>
+</div>
+
+<!-- Start content -->
+<div id="content">
+
+<h3>About</h3>
+<p>
+Welcome to the SliTaz EeePC flavor. This can be used from a
+cdrom on a standard desktop to create a LiveUSB system. On the EeePC
+you can easily boot from a USB key or a SD card - just press <code>Esc</code>
+when powered on to select the wanted device. The SliTaz EeePC flavor provides
+the tools and drivers used on the EeePC: 701, 901 and 1000.
+</p>
+
+<h3>Live USB media</h3>
+<p>
+To use this system on the EeePC, you will need to create a LiveUSB device. The
+simplest option to generate one is to boot the LiveCD on a standard
+desktop and then run: System Tools &rarr; LiveUSB Tool. If you already run
+SliTaz from a core LiveCD or an installed system, you can generate the
+LiveUSB media directly using the ISO image. If you want to create the media
+using the command line, please read the Handbook or TazUSB manual.
+</p>
+
+<h3>Networking</h3>
+<p>
+When booting the Live system on an EeePC, the Wireless network interface is
+enabled by default if the driver is installed. To manage Wireless network
+connections you can use Wifibox from the menu: System Tools &rarr; Wireless
+networks connections. To use an Ethernet cable connection you can use Netbox
+from the menu and start the DHCP client.
+</p>
+
+<h3>Package slitaz-eeepc</h3>
+<p>
+The package slitaz-eeepc provides a small tool named <code>tazee</code>,
+and a boot script to configure an EeePC. The configuration is stored in
+the <code>/etc/eeepc.conf</code> file. To read the current configuration you
+can open it in a text editor, use SliTaz EeePC Box from the menu or use
+the command: <code>tazeee show-config</code>.
+</p>
+
+<h3>Installation</h3>
+<ul>
+	<li>Boot from LiveUSB media.</li>
+	<li>Start the installer with the dedicated button in the Slitaz EeePC Box
+	or use this command from a terminal: <code>su -c 'tazeee install'</code>.
+	To use the first SSD disk: format /dev/hdc1 (on 901), install GRUB
+	and then exit the installer to let tazeee finish the configuration.</li>
+	<li>Reboot and enjoy.</li>
+</ul>
+
+<!-- End content -->
+</div>
+
+</body>
+</html>

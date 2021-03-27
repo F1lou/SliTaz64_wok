@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="caja-dev"
+VERSION="1.9.3"
+CATEGORY="libdevel"
+LICENSE="GPL3"
+SHORT_DESC="Library to develop caja extensions."
+WEB_SITE="http://www.mate-desktop.org/"
+MAINTAINER="yuripourre@gmail.com"
+WANTED="caja"
+DEPENDS="caja pkg-config"
+
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/include
+	cp -a $install/usr/lib/*.la $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/include/* $fs/usr/include
+}

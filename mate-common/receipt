@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="mate-common"
+VERSION="1.9.0"
+CATEGORY="utilities"
+LICENSE="GPL3"
+SHORT_DESC="Common package for MATE applications."
+MAINTAINER="yuripourre@gmail.com"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://www.mate-desktop.org/"
+WGET_URL="https://github.com/mate-desktop/$PACKAGE/archive/$TARBALL"
+TAGS="MATE"
+DEPENDS=""
+BUILD_DEPENDS="wget cacerts autoconf automake"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|automake-1.14|automake-1.16 automake-1.15 &|' macros/mate-autogen
+	./autogen.sh                   \
+		--prefix=/usr          \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/mate-common $fs/usr/share
+
+	rm -rf $install/usr/share/man
+}

@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="emotion-dev"
+VERSION="1.7.10"
+CATEGORY="development"
+SHORT_DESC="EFL video and audio codec playback library - Devel files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="BSD"
+WANTED="emotion"
+WEB_SITE="https://www.enlightenment.org/"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="edje-dev eio-dev eeze-dev xine-lib-dev pkg-config"
+OPTIONAL_DEPENDS="gstreamer-dev gst-plugins-base-dev"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	case "$ARCH" in
+		i?86) edje_mods="/usr/lib/edje/modules/emotion/linux-gnu-i486-1.0.0" ;;
+		arm) edje_mods="/usr/lib/edje/modules/emotion/linux-gnueabi-arm-1.0.0" ;;
+	esac
+	mkdir -p $fs/usr/lib/emotion ${fs}${edje_mods}
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/lib/emotion/*.*a $fs/usr/lib/emotion
+	cp -a ${install}${edje_mods}/*.*a ${fs}${edje_mods}
+}

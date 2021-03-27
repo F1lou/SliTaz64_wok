@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="stjerm-terminal"
+SOURCE="stjerm"
+VERSION="0.18"
+CATEGORY="x-window"
+TAGS="terminal"
+SHORT_DESC="A quake-like terminal emulator. It's window is shown with a key shortcut."
+MAINTAINER="mallory@sweetpeople.org"
+LICENSE="GPL2"
+WEB_SITE="https://github.com/stjerm/stjerm"
+
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/archive/v$VERSION.tar.gz"
+
+DEPENDS="vte"
+BUILD_DEPENDS="automake glib-dev gtk+-dev vte-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./autogen.sh
+	./configure				\
+		--prefix=/usr			\
+		--infodir=/usr/share/info	\
+		--mandir=/usr/share/man		\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}

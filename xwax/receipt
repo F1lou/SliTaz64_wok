@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="xwax"
+VERSION="1.7"
+CATEGORY="multimedia"
+SHORT_DESC="An open-source Digital Vinyl System (DVS) for Linux."
+MAINTAINER="Lucas Levrel <llev@slitaz.org>"
+LICENSE="GPL2"
+WEB_SITE="https://xwax.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}releases/$TARBALL"
+
+DEPENDS="alsa-lib libsdl libsdl-ttf"
+BUILD_DEPENDS="alsa-lib-dev libsdl-dev libsdl-ttf-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure		\
+		--enable-alsa	\
+		--prefix /usr	\
+		$CONFIGURE_ARGS &&
+	LDFLAGS=-Os make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+}

@@ -1,0 +1,42 @@
+# SliTaz package receipt.
+
+PACKAGE="gambas2"
+VERSION="2.24.0"
+CATEGORY="development"
+SHORT_DESC="Free development environment based on a Basic interpreter"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://gambas.sourceforge.net/"
+WGET_URL="$SF_MIRROR/gambas/$TARBALL"
+TAGS="interpreter basic"
+
+DEPENDS="poppler util-linux-uuid lcms tiff jpeg libpng"
+BUILD_DEPENDS="poppler-dev util-linux-uuid-dev lcms-dev tiff-dev jpeg-dev \
+libpng-dev autoconf automake libtool freetype-dev fontconfig-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i '/0.17.0 poppler/{N;p;s/17/20/g}'  gb.pdf/configure.ac
+	cp $stuff/CPdfDocument.cpp gb.pdf/src/CPdfDocument.cpp
+	./reconf-all
+	./configure \
+		--prefix=/usr \
+		--infodir=/usr/share/info \
+		--mandir=/usr/share/man \
+		$CONFIGURE_ARGS &&
+	make &&
+	make -j 1 DESTDIR=$DESTDIR install 2>&1 | \
+	sed 's/ERROR:/Error:/;s/: No such file/: no such file/'
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib $fs/usr
+	cp -a $install/usr/share $fs/usr
+}
+

@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="srcpd"
+VERSION="2.1.3"
+CATEGORY="games"
+SHORT_DESC="Simple Railroad Command Protocol Daemon."
+MAINTAINER="rcx@zoominternet.net"
+LICENSE="GPL2"
+WEB_SITE="http://srcpd.sourceforge.net/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="glibc-base libxml2 zlib"
+BUILD_DEPENDS="libxml2-dev zlib-dev"
+
+CONFIG_FILES="/etc/srcpd.conf"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--sysconfdir=/etc	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+
+	cp -a $install/usr/sbin	$fs/usr
+	cp -a $install/etc	$fs
+}

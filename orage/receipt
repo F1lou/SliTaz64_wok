@@ -1,0 +1,46 @@
+# SliTaz package receipt.
+
+PACKAGE="orage"
+VERSION="4.12.1"
+CATEGORY="office"
+TAGS="office"
+SHORT_DESC="Xfce calendar."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.xfce.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="https://archive.xfce.org/src/apps/$PACKAGE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="atk dbus cairo libgio libnotify libxfcegui4 pango popt xfce4-panel"
+BUILD_DEPENDS="dbus-dev gtk+-dev intltool libnotify-dev libxfcegui4-dev \
+	popt-dev xfce4-panel-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure				\
+                --prefix=/usr			\
+                --enable-dbus			\
+                --enable-libnotify		\
+		--libexecdir=/usr/lib/$PACKAGE	\
+                $CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/lib			$fs/usr
+	cp -a $install/usr/share/applications	$fs/usr/share
+	cp -a $install/usr/share/xfce4		$fs/usr/share
+	cp -a $install/usr/share/orage		$fs/usr/share
+	cp -a $install/usr/share/orage		$fs/usr/share
+	cp -a $install/usr/share/dbus-1		$fs/usr/share
+	cp -a $install/usr/share/icons		$fs/usr/share
+}
+

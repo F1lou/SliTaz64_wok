@@ -1,0 +1,59 @@
+# SliTaz package receipt.
+
+# TODO : Regularly check if the install script automatically
+# installs the pixmap and the .desktop file. Then remove the
+# part in genpkg_rules() where it's done manually.
+
+PACKAGE="kobodeluxe"
+SOURCE="KoboDeluxe"
+VERSION="0.5.1"
+CATEGORY="games"
+SHORT_DESC="Kobo Deluxe is a third person scrolling 2D shooter game."
+MAINTAINER="chadi.elahmad@gmail.com"
+LICENSE="GPL2"
+TARBALL="$SOURCE-$VERSION.tar.bz2"
+WEB_SITE="http://www.olofson.net/kobodl"
+WGET_URL="http://www.olofson.net/kobodl/download/$TARBALL"
+TAGS="shooting"
+
+DEPENDS="libsdl libsdl-image gcc-lib-base"
+BUILD_DEPENDS="libsdl-dev libsdl-image-dev "
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	sed -i 's/pipe2/pipe_2/' enemy.cpp enemies.h
+	sed -i 's/strchr.txt/strchr((char *) txt/' graphics/window.cpp
+	./configure \
+		--prefix=/usr \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
+		--sharedstatedir=/var/games \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	# manually moving the pixmap and the .desktop
+	mkdir -p $install/usr/share/pixmaps
+	mkdir -p $install/usr/share/applications
+	tar xzf $src/icons.tar.gz -C $src
+	cp -a $src/icons/Ubuntu/*.xpm $install/usr/share/pixmaps
+	cp -a $src/icons/Ubuntu/*.desktop $install/usr/share/applications
+
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share $fs/usr/share
+
+	mkdir -p $fs/var/games/kobo-deluxe/scores
+	chmod 667 $fs/var/games/kobo-deluxe/scores
+}
+
+pre_remove()
+{
+	rm -rf /var/games/kobo-deluxe/*
+}

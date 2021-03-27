@@ -1,0 +1,53 @@
+# SliTaz package receipt.
+
+PACKAGE="qtwebkit"
+VERSION="2.3.4"
+CATEGORY="network"
+SHORT_DESC="KDE version of Qt Webkit browser engine."
+MAINTAINER="psychomaniak@xakep.ru"
+LICENSE="GPL"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://code.qt.io/cgit/qt/qtwebkit.git/"
+WGET_URL="$WEB_SITE/stable/$PACKAGE-${VERSION:0:3}/$VERSION/src/$TARBALL"
+
+PROVIDE="libQtWebkit"
+CONFIG_FILES="/etc/fonts/conf.d/10-QtWebkit-monospace.conf"
+
+DEPENDS="libQtCore libQtDBus libQtGui libQtXml libQtNetwork libQtOpenGL \
+mesa sqlite gstreamer orc gst-plugins-base"
+BUILD_DEPENDS="Qt4-dev libQtDeclarative qmake bison flex gperf ruby-dev mesa-dev \
+sqlite-dev libpng-dev jpeg-dev gstreamer-dev gst-plugins-base-dev gst-plugins-base"
+
+compile_rules()
+{
+	sed 's|FixedFont, default.*$|FixedFont, QLatin1String("monospace"));|' -i \
+		$src/Source/WebKit/qt/Api/qwebsettings.cpp
+	QTDIR=/usr QMAKE_CXXFLAGS=$CFLAGS \
+	Tools/Scripts/build-webkit \
+		--qt \
+		--makeargs=$MAKEFLAGS \
+		--prefix=/usr \
+		--no-webkit2 \
+		--no-force-sse2 \
+		DEFINES+=ENABLE_JIT=0 \
+		DEFINES+=ENABLE_YARR_JIT=0 \
+		DEFINES+=ENABLE_ASSEMBLER=0 \
+		DEFINES+=ENABLE_SMOOTH_SCROLLING=1
+	make INSTALL_ROOT=$DESTDIR -C WebKitBuild/Release install
+
+}
+
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/bin $fs/etc/fonts/conf.d
+	cat > $fs/etc/fonts/conf.d/10-QtWebkit-monospace.conf <<EOT
+<fontconfig><alias>
+ <family>monospace</family>
+  <prefer>
+	<family>DejaVu Sans Mono</family>
+  </prefer>
+</alias></fontconfig>
+EOT
+	cp -a $src/WebKitBuild/Release/bin/Qt* $fs/usr/bin
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

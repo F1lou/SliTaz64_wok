@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="slim-theme-default"
+VERSION="1.3.5"
+CATEGORY="customization"
+SHORT_DESC="Default theme bundled with SLiM."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://sourceforge.net/projects/slim.berlios/"
+
+DEPENDS="slim"
+WANTED="slim"
+RELATED="slim slim-pam"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/slim
+	cp -a $install/usr/share/slim/themes $fs/usr/share/slim
+}
+
+post_install()
+{
+	chroot "$1/" slim-theme -sdefault
+}
+
+pre_remove()
+{
+	chroot "$1/" slim-theme -fdefault
+}

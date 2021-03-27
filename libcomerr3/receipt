@@ -1,0 +1,24 @@
+# SliTaz package receipt.
+
+PACKAGE="libcomerr3"
+VERSION="1.18"
+CATEGORY="security"
+SHORT_DESC="The libcomerr v3 library files."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://web.mit.edu/kerberos/"
+WANTED="krb5"
+
+DEPENDS="libkrb5support"
+PROVIDE="libcomerr"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	while read file; do
+		dir=$(dirname "$file")
+		[ -d $fs$dir ] || mkdir -p $fs$dir
+		cp -a $install$file $fs$dir
+		chmod +x $fs$file
+	done < $wanted_stuff/$PACKAGE.files-list
+}

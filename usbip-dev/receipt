@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="usbip-dev"
+VERSION="3.16.55"
+CATEGORY="development"
+SHORT_DESC="general USB device sharing system over IP network, development files."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://usbip.sourceforge.net/"
+WANTED="linux"
+TAGS="usb"
+
+DEPENDS="usbip udev-dev"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usbip/usr/include $fs/usr
+	cp -a $install/usbip/usr/lib/*a $fs/usr/lib
+}

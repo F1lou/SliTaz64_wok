@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="fcitx-dev"
+VERSION="4.1.2"
+CATEGORY="development"
+SHORT_DESC="The fcitx-dev package includes the header files for the FCITX package."
+MAINTAINER="devel@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://fcitx-im.org/wiki/Fcitx"
+WANTED="fcitx"
+
+DEPENDS="libfcitx xorg-libX11-dev pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+    mkdir -p $fs/usr/lib/pkgconfig/ $fs/usr/share/
+    cp -a $install/usr/lib/libfcitx*.so $fs/usr/lib/
+    cp -a $install/usr/lib/pkgconfig/*.pc $fs/usr/lib/pkgconfig/
+    cp -a $install/usr/share/cmake/ $fs/usr/share/
+    cp -a $install/usr/include/ $fs/usr/
+}

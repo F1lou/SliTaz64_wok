@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="oxygen-icons"
+VERSION="5.68.0"
+CATEGORY="customization"
+SHORT_DESC="Oxygen icon theme."
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="LGPL3"
+WEB_SITE="https://kde.org/"
+
+TARBALL="${PACKAGE}-${VERSION}.tar.xz"
+WGET_URL="https://download.kde.org/stable/frameworks/${VERSION%.*}/${PACKAGE}${VERSION%.*.*}-$VERSION.tar.xz"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/icons/oxygen
+
+	for size in 16 22 32 48
+	  do
+		cp -a $src/${size}x$size	$fs/usr/share/icons/oxygen
+	  done
+	cp -a $src/index.theme			$fs/usr/share/icons/oxygen
+}
+
+qtfix="usr/share/icons/hicolor/index.theme"
+
+post_install()
+{
+	sed '/Inherits=/s|=.*$|=oxygen|' -i "$1/$qtfix"
+}
+
+pre_remove()
+{
+	sed '/Inherits=/s|=.*$|=SliTaz|' -i "$1/$qtfix"
+}

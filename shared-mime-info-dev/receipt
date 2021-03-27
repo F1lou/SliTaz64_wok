@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="shared-mime-info-dev"
+VERSION="1.15"
+CATEGORY="development"
+SHORT_DESC="Freedesktop shared-mime-info - development files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://freedesktop.org/wiki/Software/shared-mime-info"
+
+DEPENDS="shared-mime-info pkg-config"
+WANTED="shared-mime-info"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+    mkdir -p $fs/usr/lib
+    cp -a $install/usr/share/pkgconfig	$fs/usr/lib
+}

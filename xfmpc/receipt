@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="xfmpc"
+VERSION="0.2.2"
+CATEGORY="x-window"
+SHORT_DESC="MPD client for Xfce."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://goodies.xfce.org/projects/applications/xfmpc"
+WGET_URL="http://archive.xfce.org/src/apps/$PACKAGE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="libxfcegui4 libxfce4util libmpd startup-notification"
+BUILD_DEPENDS="libxfcegui4-dev libxfce4util-dev libmpd-dev intltool \
+libxfce4ui-dev startup-notification-dev util-linux-uuid-dev gtk+-dev \
+xcb-util-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure \
+		--prefix=/usr \
+		--infodir=/usr/share/info \
+		--mandir=/usr/share/man \
+		$CONFIGURE_ARGS &&
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}
+

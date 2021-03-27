@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="librsvg-dev"
+VERSION="2.40.16"
+CATEGORY="development"
+SHORT_DESC="SVG Rendering Library, development files"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://librsvg.sourceforge.net/"
+HOST_ARCH="x86_64 i486 arm"
+
+WANTED="librsvg"
+DEPENDS="librsvg pkg-config glib-dev libgio-dev gdk-pixbuf-dev cairo-dev"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cook_copy_files *.h *.la *.pc *.typelib *.gir
+}

@@ -1,0 +1,40 @@
+# SliTaz package receipt.
+
+PACKAGE="gnustep-base"
+VERSION="1.26.0"
+CATEGORY="x-window"
+SHORT_DESC="GNUstep base package."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://www.gnustep.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="ftp://ftp.gnustep.org/pub/gnustep/core/$TARBALL"
+
+DEPENDS="gnutls icu libbfd libcrypto libffi libobjc libssl libtasn1 libxslt"
+BUILD_DEPENDS="gnustep-make gnutls-dev icu-dev libcrypto-dev libffi-dev 
+	libgnutls libtasn1-dev libxslt-dev openssl-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|\(buf->buffer\)->content.*)|xmlBufContent(\1), xmlBufUse(\1))|' \
+		Source/Additions/GSXML.m
+	sed -i 's/.*gnutls_transport_set_lowat.*/#if GNUTLS_VERSION_NUMBER < 0x020c00\n&\n#endif/' Source/GSSocketStream.m
+
+	./configure							\
+		--prefix=/usr						\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+	cp -a $install/usr/lib/GNUstep	$fs/usr/lib
+}

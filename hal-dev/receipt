@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="hal-dev"
+VERSION="0.5.14"
+CATEGORY="development"
+SHORT_DESC="Hal devel files."
+WANTED="hal"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://www.freedesktop.org/wiki/Software/hal"
+
+DEPENDS="hal dbus-dev pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+}

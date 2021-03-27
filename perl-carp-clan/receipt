@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-carp-clan"
+VERSION="6.08"
+CATEGORY="development"
+SHORT_DESC="Perl extension Carp::Clan; Report errors from perspective of caller of a "clan" of modules"
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL"
+WEB_SITE="https://metacpan.org/release/Carp-Clan/"
+
+SOURCE="Carp-Clan"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://www.cpan.org/modules/by-module/Carp/$TARBALL"
+
+DEPENDS="perl"
+BUILD_DEPENDS="perl"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	perl Makefile.PL &&
+	make &&
+	make install DESTDIR=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib	$fs/usr
+}

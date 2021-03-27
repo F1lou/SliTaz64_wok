@@ -1,0 +1,42 @@
+# SliTaz package receipt.
+
+PACKAGE="parted"
+VERSION="3.2"
+CATEGORY="system-tools"
+SHORT_DESC="GNU parted partition editor."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WEB_SITE="http://www.gnu.org/software/parted/index.shtml"
+WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="util-linux-uuid util-linux-blkid"
+BUILD_DEPENDS="e2fsprogs-dev util-linux-uuid-dev util-linux-blkid-dev"
+SUGGESTED="btrfs-progs e2fsprogs f2fs-tools dosfstools mtools hfsutils \
+hfsprogs jfsutils util-linux lvm2 nilfs-utils ntfsprogs reiser4progs \
+reiserfsprogs xfsprogs"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	patch -p1 < $stuff/device_mapper.u
+	grep -qs 'define u8' libparted/arch/linux.c ||
+	sed -i 's|#include <scsi/scsi.h>|#define u8 __u8\n&|' \
+		libparted/arch/linux.c
+	./configure \
+		--disable-debug \
+		--disable-Werror \
+		--without-readline \
+		--disable-device-mapper \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/sbin $fs/usr
+}

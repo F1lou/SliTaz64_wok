@@ -1,0 +1,53 @@
+# SliTaz package receipt.
+
+PACKAGE="evince"
+VERSION="2.32.0"
+CATEGORY="office"
+SHORT_DESC="Document viewer for Gnome"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://projects.gnome.org/evince/"
+WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION:0:4}/$TARBALL"
+TAGS="viewer pdf tiff ps postscript dvi"
+
+DEPENDS="lcms poppler tiff dbus-glib glib util-linux-uuid"
+BUILD_DEPENDS="gnome-doc-utils-dev docbook-xml libxml2-dev \
+gnome-icon-theme gtk+-dev intltool lcms-dev util-linux-uuid-dev \
+poppler-dev tiff-dev dbus-glib-dev xorg-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure --prefix=/usr \
+		--libexecdir=/usr/lib/$PACKAGE \
+		--disable-nautilus \
+		--disable-scrollkeeper \
+		--disable-comics \
+		--without-gconf \
+		--without-keyring \
+		--disable-schemas-install \
+		--disable-gtk-doc-html \
+		--with-help-formats=none \
+		--disable-help \
+		$CONFIGURE_ARGS &&
+	make -j1 && make -j1 DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/glib-2.0 $fs/usr/lib $fs/usr/share/applications
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/evince $fs/usr/lib
+
+	cp -a $install/usr/share/dbus-1 $fs/usr/share
+	cp -a $install/usr/share/icons $fs/usr/share
+	cp -a $install/usr/share/evince $fs/usr/share
+	cp -a $install/usr/share/glib-2.0/schemas $fs/usr/share/glib-2.0
+	cp -a $stuff/evince.desktop $fs/usr/share/applications
+
+	# Removing unwanted files
+	find $fs/usr/lib -name "*.*a" -exec rm -rf {} \;
+}

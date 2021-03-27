@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="libmcs-dev"
+VERSION="0.7.2"
+WEB_SITE="https://github.com/atheme-legacy/libmcs/"
+MAINTAINER="mimas@slitaz.org"
+LICENSE="BSD"
+CATEGORY="development"
+WANTED="libmcs"
+SHORT_DESC="Library for configuration storage"
+
+DEPENDS="libmowgli-dev pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/include $fs/usr/
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+}
+

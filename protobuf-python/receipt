@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="protobuf-python"
+VERSION="3.11.4"
+CATEGORY="network"
+SHORT_DESC="Protocol buffers - Google's data interchange format (python)."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="BSD"
+WEB_SITE="https://github.com/protocolbuffers/protobuf/"
+
+SOURCE="protobuf"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}archive/v$VERSION.tar.gz"
+
+DEPENDS="protobuf python"
+BUILD_DEPENDS="libatomic protobuf-dev python-dev python-setuptools"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src/python
+	python setup.py install --prefix=/usr --root $DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+}

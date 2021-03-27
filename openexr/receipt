@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="openexr"
+VERSION="2.5.3"
+CATEGORY="x-window"
+SHORT_DESC="Openexr library for EXR images."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="BSD"
+WEB_SITE="https://www.openexr.com/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/$PACKAGE/$PACKAGE/archive/v$VERSION/$TARBALL"
+
+DEPENDS="gcc-lib-base ilmbase zlib"
+BUILD_DEPENDS="cmake gcc ilmbase-dev zlib-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir	build &&
+	cd	build &&
+	cmake	..			\
+		-DCMAKE_INSTALL_PREFIX=/usr &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+}

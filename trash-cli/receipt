@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="trash-cli"
+VERSION="0.17.1.14"
+CATEGORY="utilities"
+SHORT_DESC="Command line interface to the freedesktop.org trashcan."
+MAINTAINER="paul@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://github.com/andreafrancia/trash-cli"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/archive/$VERSION.tar.gz"
+
+DEPENDS="python"
+BUILD_DEPENDS="python-dev python-setuptools"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py build
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir $fs/usr
+
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib $fs/usr
+}

@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="ethumb"
+VERSION="1.7.10"
+CATEGORY="graphics"
+SHORT_DESC="EFL Thumbnail generation library."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2.1"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://www.enlightenment.org/"
+WGET_URL="http://download.enlightenment.org/releases/$TARBALL"
+TAGS="e enlightenment efl"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="eet ecore eio evas edje embryo emotion eeze edbus libexif"
+BUILD_DEPENDS="eet-dev ecore-dev eio-dev evas-dev edje-dev embryo-dev \
+eeze-dev emotion-dev edbus-dev libexif-dev lua-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--libexecdir=/usr/lib/$PACKAGE \
+		--disable-doc \
+		$CONFIGURE_ARGS &&
+	make $MAKEFLAGS && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/ethumb $fs/usr/lib
+	cp -a $install/usr/share $fs/usr
+}

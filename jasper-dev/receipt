@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="jasper-dev"
+VERSION="2.0.16"
+CATEGORY="development"
+SHORT_DESC="Jasper development files."
+MAINTAINER="jozee@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="http://www.ece.uvic.ca/~mdadams/jasper/"
+
+WANTED="jasper"
+DEPENDS="jasper pkg-config"
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+
+	#cp -a $install/usr/lib/*.*a $fs/usr/lib
+	#cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/include	$fs/usr
+}

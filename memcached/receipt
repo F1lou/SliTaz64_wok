@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="memcached"
+VERSION="1.6.6"
+CATEGORY="system-tools"
+SHORT_DESC="High-performance, distributed memory object caching system."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="https://memcached.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}files/$TARBALL"
+
+DEPENDS="libevent"
+BUILD_DEPENDS="libevent-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir $fs/usr
+	cp -a $install/usr/bin	$fs/usr
+}

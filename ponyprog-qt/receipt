@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="ponyprog-qt"
+VERSION="3.0.0"
+CATEGORY="system-tools"
+SHORT_DESC="PonyProg is the universal programmer for many serial devices."
+MAINTAINER="psychomaniak@xakep.ru"
+LICENSE="GPL"
+WEB_SITE="http://www.lancos.com/prog.html"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/lancos/ponyprog/archive/v${VERSION}.tar.gz"
+
+EXTRA_SOURCE_FILES="qhexedit2-5f3ca79.tar.gz"
+WGET_URL2="https://github.com/lancos/qhexedit2/archive/5f3ca79.tar.gz"
+
+DEPENDS="libQtGui"
+BUILD_DEPENDS="Qt4-dev qmake cmake"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	[ -s $SOURCES_REPOSITORY/$EXTRA_SOURCE_FILES ] || \
+                wget -O $SOURCES_REPOSITORY/$EXTRA_SOURCE_FILES $WGET_URL2
+	busybox tar -xf $SOURCES_REPOSITORY/$EXTRA_SOURCE_FILES
+	rm -rf qhexedit2
+	mv -f  qhexedit2-* qhexedit2
+	sed 's|c++11|c++0x|g' -i ponyprog.pro CMakeLists.txt 
+
+	qmake && make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin		$fs/usr/share/applications
+	cp -a $src/build/ponyprog	$fs/usr/bin
+	cp -a $src/desktop/*.desktop	$fs/usr/share/applications
+	chown -R root:root $fs
+}

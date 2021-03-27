@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="gtk+3-widget-factory"
+VERSION="3.14.8"
+CATEGORY="development"
+SHORT_DESC="The GIMP Toolkit 3.x widget factory"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2"
+WEB_SITE="https://www.gtk.org/"
+
+WANTED="gtk+3"
+DEPENDS="gtk+3"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $install/usr/bin/gtk3-widget-factory $fs/usr/bin
+}

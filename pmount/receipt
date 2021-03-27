@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="pmount"
+VERSION="0.9.23"
+CATEGORY="system-tools"
+SHORT_DESC="Mount arbitrary hotpluggable devices as normal user."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL3"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://packages.debian.org/unstable/utils/pmount"
+WGET_URL="http://alioth.debian.org/frs/download.php/3310/$TARBALL"
+CONFIG_FILES="/etc/pmount.allow"
+
+DEPENDS="dbus hal sysfsutils"
+BUILD_DEPENDS="util-linux-blkid-dev intltool"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	sed -i 's/ -D / /' src/Makefile*
+	./configure $CONFIGURE_ARGS && 
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/locale
+	cp -a $install/etc $fs
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/locale/fr $fs/usr/share/locale
+	cp -a $install/usr/share/locale/de $fs/usr/share/locale
+}
+

@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="rox-filer-locales"
+VERSION="2.11"
+CATEGORY="localization"
+SHORT_DESC="locales for the rox-filer."
+MAINTAINER="sygne@ombres.eu"
+LICENSE="GPL2"
+WEB_SITE="http://rox.sourceforge.net/desktop/ROX-Filer"
+
+SOURCE="rox-filer"
+TARBALL="$SOURCE-$VERSION.tar.bz2"
+WGET_URL="$SF_MIRROR/rox/$TARBALL"
+
+WANTED="rox-filer"
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	
+	mkdir -p $DESTDIR
+	cp -r $src/ROX-Filer/Messages $DESTDIR/
+	
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/rox-filer
+	cp -r $install/* $fs/usr/share/rox-filer/
+	
+	strip -s $fs/usr/share/rox-filer/* || true
+}
+

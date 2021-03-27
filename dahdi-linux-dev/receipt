@@ -1,0 +1,18 @@
+# SliTaz package receipt.
+
+PACKAGE="dahdi-linux-dev"
+VERSION="2.11.1"
+CATEGORY="development"
+SHORT_DESC="Digium Asterisk Hardware Device Interface: kernel modules dev files."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.asterisk.org/"
+WANTED="dahdi-linux"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	EXTRAVERSION=_${kvers}
+	mkdir -p $fs/usr
+	cp -a $install/usr/include $fs/usr
+}

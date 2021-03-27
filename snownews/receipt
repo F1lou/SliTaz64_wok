@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="snownews"
+VERSION="1.5.12"
+CATEGORY="network"
+SHORT_DESC="Text mode RSS newsreader."
+MAINTAINER="paul@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://github.com/kouya/snownews"
+WGET_URL="https://kiza.kcore.de/software/snownews/download/$TARBALL"
+
+DEPENDS="libxml2 ncurses zlib libcrypto"
+BUILD_DEPENDS="zlib-dev libxml2-dev ncurses-dev gettext perl \
+openssl-dev acl libcroco wget"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|lncurses|& -ltinfo|' *
+	./configure --prefix=/usr &&
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/locale $fs/usr/share
+}

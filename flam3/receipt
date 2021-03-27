@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="flam3"
+VERSION="3.1.1"
+CATEGORY="graphics"
+SHORT_DESC="Tools to create and display fractal flames: algorithmically generated images and animations."
+MAINTAINER="gokhlayeh@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://flam3.com/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/scottdraves/$PACKAGE/archive/v$VERSION.tar.gz"
+
+DEPENDS="expat libjpeg libpng libxml2"
+BUILD_DEPENDS="expat-dev jpeg-dev libpng-dev libxml2-dev git"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--prefix=/usr \
+		--infodir=/usr/share/info \
+		--mandir=/usr/share/man \
+		$CONFIGURE_ARGS &&
+	make -j 1 $MAKEFLAGS &&
+	make -j 1 DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/bin $fs/usr/
+	cp -a $install/usr/share/flam3 $fs/usr/share/
+}

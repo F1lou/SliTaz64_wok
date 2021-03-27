@@ -1,0 +1,18 @@
+# SliTaz package receipt.
+
+PACKAGE="get-java6-jre"
+VERSION="1.1.0"
+CATEGORY="non-free"
+SHORT_DESC="SUN Java Runtime"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="http://www.java.com"
+TAGS="java"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	install -o root -g root -m755 stuff/get-java6-jre $fs/usr/bin
+}
+

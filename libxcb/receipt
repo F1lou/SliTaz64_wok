@@ -1,0 +1,59 @@
+# SliTaz package receipt.
+
+PACKAGE="libxcb"
+VERSION="1.14"
+ARM_VERSION="1.9.1"
+CATEGORY="x-window"
+SHORT_DESC="A C binding to the X11 protocol."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="other"
+WEB_SITE="https://xcb.freedesktop.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="${WEB_SITE}dist/$TARBALL"
+
+DEPENDS="glibc-base xorg-libXau xorg-libXdmcp"
+BUILD_DEPENDS="autoconf automake libtool libxslt-dev xcb-proto xorg-libXau-dev 
+	xorg-libXdmcp-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Handle SliTaz arch
+case "$SLITAZ_ARCH" in
+	arm*) VERSION="$ARM_VERSION" ;;
+esac
+
+case "$ARCH" in
+	arm*)
+		# We need host xcb-proto libxslt-dev file installed
+		VERSION="$ARM_VERSION"
+		TARBALL="$PACKAGE-$VERSION.tar.bz2"
+		WGET_URL="${WEB_SITE}dist/$TARBALL"
+		BUILD_DEPENDS="libxslt-dev xcb-proto xorg-libXau-dev xorg-libXdmcp-dev" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# http://www.linuxfromscratch.org/blfs/view/svn/x/libxcb.html
+	sed -i "s|pthread-stubs||" $src/configure.ac &&
+	autoreconf -fi &&
+	./configure			\
+		--enable-xinput		\
+		--enable-xkb		\
+		--disable-build-docs	\
+		--disable-static	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/share/licenses
+
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+	cp -a $src/COPYING		$fs/usr/share/licenses/$PACKAGE.txt
+}

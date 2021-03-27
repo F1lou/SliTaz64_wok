@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="qutim"
+VERSION="0.3.1"
+CATEGORY="network"
+SHORT_DESC="Multiprotocol IM, written in qt4"
+MAINTAINER="devl547@gmail.com"
+LICENSE="GPL LGPL CC-BY"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://qutim.org"
+WGET_URL="$WEB_SITE/dwnl/40/$TARBALL"
+
+DEPENDS="qt4 qca qt4-phonon xorg-libXss libjreen Qt4-qca-ossl"
+BUILD_DEPENDS="Qt4-dev qmake cmake qca-dev xorg-libXss-dev dbus-dev libjreen-dev mesa-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i  -e 's/ moc_options /&moc_target /' \
+		-e 's/\(QT4_CREATE_MOC_COMMAND.*\))/\1 "${moc_target}")/' \
+			core/cmake/QutIMMacros.cmake
+	mkdir ../qutim-build && cd ../qutim-build
+	cmake ../$PACKAGE-$VERSION -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=release \
+	-DQUTIM_ENABLE_ALL_PLUGINS=on &&
+	make $MAKEOPTS &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib $fs/usr
+	cp -a $install/usr/share $fs/usr
+}

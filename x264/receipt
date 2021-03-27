@@ -1,0 +1,41 @@
+# SliTaz package receipt.
+
+PACKAGE="x264"
+VERSION="20191217-2245"
+CATEGORY="multimedia"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL2"
+SHORT_DESC="Free library for encoding H264/AVC video streams."
+WEB_SITE="https://www.videolan.org/developers/x264.html"
+
+SOURCE="$PACKAGE-snapshot"
+TARBALL="$SOURCE-$VERSION.tar.bz2"
+WGET_URL="http://ftp.videolan.org/pub/videolan/x264/snapshots/$TARBALL"
+
+DEPENDS="glibc-base"
+BUILD_DEPENDS="nasm"
+
+#HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure		\
+		--enable-shared	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make	install			\
+		DESTDIR=$DESTDIR	\
+		bindir=/usr/bin		\
+		libdir=/usr/lib		\
+		includedir=/usr/include
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/lib/*so*	$fs/usr/lib/
+}

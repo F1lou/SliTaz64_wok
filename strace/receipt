@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="strace"
+VERSION="5.6"
+CATEGORY="development"
+TAGS="analysis debugger diagnostic"
+SHORT_DESC="System call tracer."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="https://strace.io/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="https://github.com/$PACKAGE/$PACKAGE/releases/download/v$VERSION/$TARBALL"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS &&
+	make &&
+	make install
+
+	find $install -name strace.1 -exec gzip -9 \{\} \;
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/*	$fs
+}

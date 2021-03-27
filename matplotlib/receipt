@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="matplotlib"
+VERSION="2.2.4"
+CATEGORY="graphics"
+SHORT_DESC="2D plotting library for the Python."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="PSL BSD"
+WEB_SITE="http://matplotlib.sourceforge.net/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://pypi.io/packages/source/m/$PACKAGE/$TARBALL"
+
+DEPENDS="expat freetype gcc-lib-base gtk+ libpng pygtk python python-numpy 
+	xorg-libXau xorg-libXcomposite xorg-libXcursor xorg-libXdmcp 
+	xorg-libXext xorg-libXfixes xorg-libXinerama xorg-libXrandr 
+	xorg-libXrender zlib"
+BUILD_DEPENDS="freetype-dev libpng-dev pygtk-dev python python-dev 
+	python-numpy python-setuptools zlib-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cp -a $stuff/setup.cfg .
+	python setup.py build &&
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr	$fs
+}

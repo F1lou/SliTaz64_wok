@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="rhino"
+VERSION="1.7R2"
+CATEGORY="development"
+SHORT_DESC="JavaScript for Java."
+MAINTAINER="rcx@zoominternet.net"
+LICENSE="MPL"
+TARBALL="${PACKAGE}1_7R2.zip"
+WEB_SITE="http://www.mozilla.org/rhino/"
+WGET_URL="ftp://ftp.mozilla.org/pub/mozilla.org/js/$TARBALL"
+TAGS="java javascript"
+
+DEPENDS=""
+BUILD_DEPENDS=""
+
+SUGGESTED="java-jre"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir -p $install/usr/share/java
+	cp -a js*.jar $install/usr/share/java
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs
+	cp -a $install/usr $fs
+}

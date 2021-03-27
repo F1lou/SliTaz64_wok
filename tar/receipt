@@ -1,0 +1,49 @@
+# SliTaz package receipt.
+
+PACKAGE="tar"
+VERSION="1.32"
+CATEGORY="utilities"
+TAGS="archive compression"
+SHORT_DESC="GNU tar archiving tools."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://www.gnu.org/software/tar/"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="xz"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# this is needed since configure can't be run as root with out it
+	export FORCE_UNSAFE_CONFIGURE=1
+
+	./configure				\
+		--prefix=/usr			\
+		--libexecdir=/usr/lib/$PACKAGE	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+    mkdir -p $fs
+    cp -a $install/usr/bin $fs
+}
+
+# Prevent erasing busybox...
+pre_install()
+{
+	rm -f "$1/bin/tar"
+}
+
+post_remove()
+{
+	ln -s /bin/busybox /bin/tar
+}

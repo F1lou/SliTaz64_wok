@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="tig"
+VERSION="2.5.1"
+CATEGORY="network"
+SHORT_DESC="Text-mode interface for git."
+MAINTAINER="paul@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://jonas.github.io/tig/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/jonas/$PACKAGE/archive/$TARBALL"
+
+DEPENDS="ncurses"
+BUILD_DEPENDS="libtool ncurses-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./autogen.sh &&
+	./configure			\
+		--prefix=/usr		\
+		--sysconfdir=/etc &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	mkdir -p $fs/etc
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/etc/tigrc	$fs/etc
+}

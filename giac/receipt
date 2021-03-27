@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="giac"
+VERSION="1.5.0.85"
+CATEGORY="misc"
+SHORT_DESC="A free computer algebra system."
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL3"
+WEB_SITE="https://www-fourier.ujf-grenoble.fr/~parisse/giac.html"
+
+TARBALL="${PACKAGE}_${VERSION%.*}-${VERSION##*.}.tar.gz"
+WGET_URL="https://www-fourier.ujf-grenoble.fr/~parisse/debian/dists/stable/main/source/$TARBALL"
+
+DEPENDS="cocoalib fltk gf2x gmp gsl libpng mpfr ntl pari readline"
+BUILD_DEPENDS="bison cocoalib expat-dev fltk-2.0.x-gl fltk-dev gf2x-dev 
+	gfortran gmp-dev gsl-dev libboost-system-dev libpng-dev 
+	libtool libxml2-dev mesa-dev mpfr-dev ntl pari-dev readline-dev 
+	xorg-libX11-dev xorg-libXinerama-dev" # lapack
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's| doc | |' Makefile*
+	cp /usr/include/FL/Fl_PostScript.H	/usr/include/FL/Fl_PostScript.H.ORG
+	cp /usr/include/FL/Fl_Input.H		/usr/include/FL/Fl_Input.H.ORG
+	sed -i 's/protected:/public:/' \
+		/usr/include/FL/Fl_Input.H \
+		/usr/include/FL/Fl_PostScript.H
+	export LDFLAGS="$LDFLAGS -lgf2x -lboost_system"
+
+	./configure $CONFIGURE_ARGS &&
+	make &&
+	make install
+
+	mv -f /usr/include/FL/Fl_PostScript.H.ORG	/usr/include/FL/Fl_PostScript.H
+	mv -f /usr/include/FL/Fl_Input.H.ORG		/usr/include/FL/Fl_Input.H
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+}

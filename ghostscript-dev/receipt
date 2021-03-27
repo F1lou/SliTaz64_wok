@@ -1,0 +1,17 @@
+# SliTaz package receipt.
+
+PACKAGE="ghostscript-dev"
+VERSION="9.02"
+CATEGORY="development"
+SHORT_DESC="Ghostscript devel file"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL3"
+WANTED="ghostscript"
+WEB_SITE="http://ghostscript.com/" 
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/include
+	cp -a $install/usr/include $fs/usr
+}

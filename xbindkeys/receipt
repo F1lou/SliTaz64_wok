@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="xbindkeys"
+VERSION="1.8.6"
+CATEGORY="x-window"
+TAGS="keyboard"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL2"
+SHORT_DESC="Launch shell commands with your keyboard or your mouse under X."
+WEB_SITE="https://www.nongnu.org/xbindkeys"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/$TARBALL"
+
+DEPENDS="xorg-libX11"
+BUILD_DEPENDS="xorg-libX11-dev"
+
+# Rules to configure and make the package.
+
+compile_rules()
+{
+	./configure		\
+		--prefix=/usr	\
+		--disable-tk	\
+		--disable-guile &&
+	make &&
+	make DESTDIR=$DESTDIR install 
+}
+	
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr 
+	cp -a $install/usr/bin $fs/usr	
+}

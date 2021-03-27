@@ -1,0 +1,46 @@
+# SliTaz package receipt.
+
+PACKAGE="xorg-dev-proto"
+VERSION="7.7"
+CATEGORY="meta"
+SHORT_DESC="Meta-package to install all Xorg protocols."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://www.x.org/"
+
+DEPENDS="
+xorg-bigreqsproto
+xorg-compositeproto
+xorg-damageproto
+xorg-dri2proto
+xorg-fixesproto
+xorg-fontcacheproto
+xorg-fontsproto
+xorg-glproto
+xorg-inputproto
+xorg-kbproto
+xorg-printproto
+xorg-randrproto
+xorg-recordproto
+xorg-renderproto
+xorg-resourceproto
+xorg-scrnsaverproto
+xorg-trapproto
+xorg-videoproto
+xorg-xcmiscproto
+xorg-xextproto
+xorg-xf86bigfontproto
+xorg-xf86dgaproto
+xorg-xf86driproto
+xorg-xf86miscproto
+xorg-xf86vidmodeproto
+xorg-xineramaproto
+xorg-util-macros
+xorg-xproto"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	# Just to have a dir.
+	mkdir -p $fs/usr/share/X11
+}

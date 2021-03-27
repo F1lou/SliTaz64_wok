@@ -1,0 +1,117 @@
+# SliTaz package receipt.
+
+PACKAGE="awstats"
+VERSION="7.7"
+CATEGORY="network"
+TAGS="log analysis web mail ftp"
+SHORT_DESC="Log file analyzer"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL"
+WEB_SITE="http://awstats.sourceforge.net/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://downloads.sourceforge.net/project/$PACKAGE/AWStats/$VERSION/$TARBALL"
+
+DEPENDS="perl"
+SUGGESTED="perl-net-xwhois perl-geo-ipfree"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/awstats/extras \
+		$fs/var/www/cgi-bin \
+		$fs/var/lib/awstats \
+		$fs/etc/awstats \
+		$install/usr/share
+
+	cp -a $src/docs $install/usr/share/doc
+	cp -a $src/wwwroot/classes $fs/usr/share/awstats
+	cp -a $src/wwwroot/css $fs/usr/share/awstats
+	cp -a $src/wwwroot/icon $fs/usr/share/awstats
+	cp -a $src/wwwroot/js $fs/usr/share/awstats
+	cp -a $src/wwwroot/cgi-bin/lang $fs/usr/share/awstats
+	cp -a $src/wwwroot/cgi-bin/lib $fs/usr/share/awstats
+	cp -a $src/wwwroot/cgi-bin/plugins $fs/usr/share/awstats
+
+	cp -a $src/wwwroot/cgi-bin/awstats.pl  $fs/var/www/cgi-bin
+	cp -a $src/wwwroot/cgi-bin/awstats.model.conf  $fs/etc/awstats
+
+	cp $stuff/* $fs/usr/share/awstats/extras
+
+	# Add a link using google map
+	sed -i 's|Full Whois Field"|Full Whois Field <a href=\\"http://en.utrace.de/?query=".$HostResolved."\\">?</a>"|' \
+		$fs/usr/share/awstats/plugins/hostinfo.pm
+
+	# Avoid alias conflicts
+	for i in classes css icon ; do
+		sed -i "s| /$i| /awstats$i|" \
+			$fs/usr/share/awstats/extras/awstats-apache.conf
+		sed -i "s|\"/$i|\"/awstats$i|" \
+			$fs/usr/share/awstats/extras/awstats-lighttpd.conf
+	done
+	sed -i -e '/\/css\//d' -e 's|DirIcons="/icon"|DirIcons="/awstatsicon"|' \
+		$fs/etc/awstats/awstats.model.conf
+	sed -i 's/classes/awstatsclasses/' \
+		$fs/usr/share/awstats/plugins/graphapplet.pm
+
+	chown -R root:root $fs
+	find $fs -type f -exec chmod a-x \{\} \;
+	chmod a+x \
+		$fs/usr/share/awstats/extras/update \
+		$fs/var/www/cgi-bin/awstats.pl \
+		$fs/usr/share/awstats/classes/src/Makefile.pl
+}
+
+post_install()
+{
+	# Set lighttpd or apache config
+	if [ -f "$1/etc/apache/httpd.conf" ]; then
+		if [ ! -f "$1/etc/apache/conf.d/awstats.conf" ]; then
+			
+			cp "$1/usr/share/awstats/extras/awstats-apache.conf" \
+				"$1/etc/apache/conf.d/awstats.conf"
+		fi
+		if [ -z "$1" ]; then
+			# Start Web server if necessary.
+			if [ -f /var/run/apache/httpd.pid ]; then
+				/etc/init.d/apache restart
+			fi
+		fi
+	fi
+
+	if [ -f "$1/etc/lighttpd/lighttpd.conf" ]; then
+		if [ ! -f "$1/etc/lighttpd/awstats.conf" ]; then
+			cp "$1/usr/share/awstats/extras/awstats-lighttpd.conf" \
+				"$1/etc/lighttpd/awstats.conf"
+		fi
+					# Start Web server if necessary.
+		if [ -f /var/run/lighttpd.pid ]; then
+			/etc/init.d/lighttpd restart
+		fi
+	fi
+	[ "$quiet" ] || cat <<EOT
+
+You should add in your crontab something like;
+
+0 0 * * * /usr/share/awstats/extras/update
+EOT
+}
+
+post_remove()
+{
+		echo "Remove orphan dirctories."
+		[ -d /usr/share/awstats ] && rm -rf /usr/share/awstats
+
+		# FIXME
+		echo "All database and configuratoin files will be removed"
+		echo -n "Please confirm removing (y/N) : "; read answer
+
+		case $answer in
+			y|Y)
+				rm -rf /var/lib/awstats
+				rm -rf /etc/awstats
+				;;
+			*)
+				;;
+		esac
+}

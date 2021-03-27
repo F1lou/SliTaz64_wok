@@ -1,0 +1,83 @@
+# SliTaz package receipt.
+
+PACKAGE="lirc64"
+SOURCE="lirc"
+VERSION="0.9.0"
+CATEGORY="utilities"
+SHORT_DESC="Enables decoding and sending signals of many commonly used remote controls."
+MAINTAINER="rcx@zoominternet.net"
+LICENSE="GPL2"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="https://www.lirc.org/"
+WGET_URL="$SF_MIRROR/$SOURCE/$TARBALL"
+PROVIDE="lirc:linux64"
+
+DEPENDS="glibc-base libusb libusb-compat libftdi xorg-libXau libirman \
+portaudio alsa-lib util-linux-uuid lirc-bin"
+BUILD_DEPENDS="linux64-module-headers python libusb-dev libirman-dev \
+portaudio-dev alsa-lib-dev libusb-compat-dev util-linux-uuid-dev \
+libftdi-dev jack-audio-connection-kit-dev uclibc-cross-compiler-x86_64"
+
+# Aufs enable chroot
+AUFS_NOT_RAMFS="uclibc-cross-compiler-x86_64 is not compatible with aufs+tmpfs 8("
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|__devexit ||;s|__devinit ||' \
+		drivers/lirc_serial/lirc_serial.c drivers/lirc_sir/lirc_sir.c
+	sed -i 's|#include <asm/system.h>|#define __devexit_p(x) x|' \
+		drivers/lirc_serial/lirc_serial.c drivers/lirc_sir/lirc_sir.c
+
+	sed -i '/smp_lock.h/d' drivers/lirc_atiusb/lirc_atiusb.c
+	sed -i 's|err(|printk(KERN_ERR|' drivers/*/*.c
+
+	# Up through at least lirc 0.8.5, lirc_gpio doesn't build with kernel 2.6.22+
+	#echo "Disabling build of drivers/lirc_gpio due to kernel incompatibility"
+	#sed -i -e "s:lirc_gpio\.o::" drivers/lirc_gpio/Makefile.am
+	#sed -i -e "s:lirc_gpio\.o::" drivers/lirc_gpio/Makefile.in
+
+	# lirc_parallel is not SMP safe
+	echo "Disabling build of drivers/lirc_parallel due to SMP incompatibility"
+	sed -i -e "s:lirc_parallel\.o::" drivers/lirc_parallel/Makefile.am
+	sed -i -e "s:lirc_parallel\.o::" drivers/lirc_parallel/Makefile.in
+
+	echo "Disabling build of drivers/lirc_i2c due to kernel 2.6.38+ incompatibility"
+	sed -i -e "s:lirc_i2c\.o::" drivers/lirc_i2c/Makefile.am
+	sed -i -e "s:lirc_i2c\.o::" drivers/lirc_i2c/Makefile.in
+
+	echo "Disabling build of drivers/lirc_wpc8769l due to kernel incompatibility"
+	sed -i -e "s:lirc_wpc8769l\.o::" drivers/lirc_wpc8769l/Makefile.am
+	sed -i -e "s:lirc_wpc8769l\.o::" drivers/lirc_wpc8769l/Makefile.in
+
+	KERNEL_VERSION=`grep  ^VERSION= $WOK/linux/receipt | cut -d "=" -f2 | sed -e 's/"//g'`
+	sed -i "s/uname -r/echo $KERNEL_VERSION-slitaz64/g" configure
+
+	./configure \
+		--prefix=/usr \
+		--with-x \
+		--with-driver=all \
+		--with-kerneldir=/usr/src/linux \
+		--with-moduledir=/lib/modules/$KERNEL_VERSION-slitaz/kernel/misc \
+		$CONFIGURE_ARGS &&
+	make 2>&1 | sed 's/ERROR/Error/;/lirc_dev\/Module/d' &&
+	make DESTDIR=$DESTDIR install 2>&1 | sed '/depmod:/d'
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/dev $fs
+	cp -a $install/lib $fs
+}
+
+# Post install/remove commands for Tazpkg.
+post_install()
+{
+	chroot "$1/" depmod -a ${EXTRAVERSION#_}-slitaz64
+}
+
+post_remove()
+{
+	chroot "$1/" depmod -a ${EXTRAVERSION#_}-slitaz64
+}

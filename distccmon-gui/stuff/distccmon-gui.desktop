@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Distcc Monitor
+Exec=distccmon-gui
+Icon=distccmon-gui
+StartupNotify=true
+Categories=Development;

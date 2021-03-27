@@ -1,0 +1,41 @@
+# SliTaz package receipt.
+
+PACKAGE="xmgrace"
+VERSION="5.1.25"
+CATEGORY="math"
+SHORT_DESC="Grace is a WYSIWYG 2D plotting tool."
+MAINTAINER="Lucas Levrel <llev@slitaz.org>"
+LICENSE="GPL2"
+SOURCE="grace"
+WEB_SITE="https://plasma-gate.weizmann.ac.il/Grace/"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="ftp://plasma-gate.weizmann.ac.il/pub/grace/src/stable/$TARBALL"
+
+DEPENDS="libjpeg libpng fftw lesstif"
+BUILD_DEPENDS="jpeg-dev libpng-dev fftw-dev lesstif-dev xorg-printproto bison"
+
+compile_rules()
+{
+	sed -i 's|/man/|/share&|' doc/Makefile*
+	./configure $CONFIGURE_ARGS \
+		--prefix=/usr   --sharedstatedir=/var/lib --localstatedir=/var \
+		--enable-grace-home=/usr/share/grace \
+		--without-pdf-library \
+		--disable-netcdf --disable-editres \
+		--with-editor="editor" --with-helpviewer="browser %s" \
+		--disable-xmhtml &&
+	make &&
+	make install &&
+	make links
+	mkdir -p $install/usr/share/applications
+	cp -a $stuff/xmgrace.desktop $install/usr/share/applications
+}
+
+genpkg_rules()
+{
+	cp -a $install/* $fs
+	rm -r $fs/usr/share/grace/auxiliary/magic.grace \
+		$fs/usr/share/grace/doc/*.pdf \
+		$fs/usr/share/grace/doc/*.1 \
+		$fs/usr/man
+}

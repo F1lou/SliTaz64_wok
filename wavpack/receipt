@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="wavpack"
+VERSION="5.3.0"
+CATEGORY="multimedia"
+SHORT_DESC="Auto compression format with lossless, lossy, and hybrid compression modes."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="BSD"
+WEB_SITE="http://www.wavpack.com/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/dbry/WavPack/archive/$VERSION.tar.gz"
+
+DEPENDS="glibc-base"
+BUILD_DEPENDS="autoconf automake libtool"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./autogen.sh				\
+		--prefix=/usr			\
+		--infodir=/usr/share/info	\
+		--mandir=/usr/share/man		\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+}

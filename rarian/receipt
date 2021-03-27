@@ -1,0 +1,42 @@
+# SliTaz package receipt.
+
+PACKAGE="rarian"
+VERSION="0.8.1"
+CATEGORY="misc"
+SHORT_DESC="Documentation meta-data library, designed as a replacement for Scrollkeeper."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL2 LGPL2.1"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://rarian.freedesktop.org/"
+WGET_URL="http://ftp.gnome.org/pub/gnome/sources/$PACKAGE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="libxslt"
+BUILD_DEPENDS="libxslt-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	patch -p0 -i $stuff/user-segfault.patch
+	./configure \
+		--prefix=/usr \
+		--infodir=/usr/share/info \
+		--mandir=/usr/share/man \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--disable-static \
+		$CONFIGURE_ARGS &&
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share/librarian
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/share/librarian/rarian-sk-cl.xml $fs/usr/share/librarian
+	cp -a $install/usr/share/librarian/Templates $fs/usr/share/librarian
+	cp -a $install/var $fs/
+}
+

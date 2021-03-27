@@ -1,0 +1,50 @@
+# SliTaz package receipt.
+
+PACKAGE="octave"
+VERSION="5.2.0"
+CATEGORY="development"
+TAGS="programming language"
+SHORT_DESC="Language for numerical computations."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://www.gnu.org/software/octave/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="http://ftp.gnu.org/gnu/$PACKAGE/$TARBALL"
+
+DEPENDS="bash expat fltk freetype gcc83 gcc83-lib-base gnuplot lapack libcurl libdrm \
+	libgfortran libglu-mesa mesa ncurses pcre readline xorg-libX11 \
+	xorg-libXau xorg-libXdamage xorg-libXdmcp xorg-libXext xorg-libXxf86vm \
+	xorg-libXfixes zlib"
+BUILD_DEPENDS="$DEPENDS curl-dev expat-dev fltk-dev freetype-dev gawk gfortran \
+	lapack libdrm-dev libxml2-dev mesa-dev ncurses-dev pcre-dev perl \
+	readline-dev tar texinfo xorg-dev zlib-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export LDFLAGS="$LDFLAGS -ltinfo"
+
+	# http://www.nabble.com/Random-rounding-errors-td16010966.html
+	export	FFLAGS="-O -ffloat-store"
+
+	./configure				\
+		CC=gcc-83			\
+		CXX=g++-83			\
+		--prefix=/usr			\
+		--infodir=/usr/share/info	\
+		--libexecdir=/usr/lib/$PACKAGE	\
+		--mandir=/usr/share/man		\
+		--enable-shared			\
+		--disable-static		\
+		--disable-docs			\
+		$CONFIGURE_ARGS &&
+	LANG=C make $MAKEFLAGS &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/*	$fs
+}

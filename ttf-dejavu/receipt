@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="ttf-dejavu"
+VERSION="2.37"
+CATEGORY="fonts"
+TAGS="font"
+SHORT_DESC="DejaVu TrueType fonts (minimum)."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="other"
+WEB_SITE="https://dejavu-fonts.github.io/"
+
+TARBALL="dejavu-fonts-ttf-$VERSION.tar.bz2"
+WGET_URL="$SF_MIRROR/dejavu/$TARBALL"
+
+BUILD_DEPENDS="fontforge"
+SPLIT="ttf-dejavu-extra"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	. $stuff/compile.rules
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cook_copy_files			\
+		DejaVuSans.ttf		\
+		DejaVuSans-Bold.ttf	\
+		DejaVuSansMono.ttf	\
+		*sans.conf		\
+		*mono.conf
+}

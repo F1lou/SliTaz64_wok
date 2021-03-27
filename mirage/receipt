@@ -1,0 +1,26 @@
+# SliTaz package receipt.
+
+PACKAGE="mirage"
+VERSION="0.9.5.2"
+CATEGORY="graphics"
+SHORT_DESC="A fast and simple image viewer."
+MAINTAINER="paul@slitaz.org"
+LICENSE="GPL3"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://mirageiv.sourceforge.net/"
+WGET_URL="http://download.berlios.de/mirageiv/$TARBALL"
+
+DEPENDS="python pygtk xorg-libX11 xorg-libXau xorg-libXdmcp libffi"
+BUILD_DEPENDS="python python-dev xorg-xproto xorg-libX11-dev gettext"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr $fs
+}

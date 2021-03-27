@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="xcb-util-image"
+VERSION="0.4.0"
+CATEGORY="x-window"
+SHORT_DESC="Utility libraries for XC Binding - Port of Xlib's XImage and XShmImage functions."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="other"
+WEB_SITE="https://xcb.freedesktop.org/XcbUtil/"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="https://xcb.freedesktop.org/dist/$TARBALL"
+
+DEPENDS="libxcb xcb-util"
+BUILD_DEPENDS="libxcb-dev xcb-util-dev xorg-util-macros"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--disable-static	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+}

@@ -1,0 +1,77 @@
+# SliTaz package receipt.
+
+PACKAGE="ardour"
+VERSION="2.8.14"
+CATEGORY="multimedia"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL2"
+SHORT_DESC="A multichannel hard disk recorder and digital audio workstation"
+WEB_SITE="http://ardour.org"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="ftp://ftp.archlinux.org/other/ardour/$TARBALL"
+TAGS="audio recorder mixer"
+
+DEPENDS="liblrdf ladspa liblo libgnomecanvas libusb-compat aubio libsndfile \
+libsamplerate raptor fftw libxslt libgnomecanvasmm soundtouch"
+BUILD_DEPENDS="scons libboost-dev libboost-thread-dev libboost-math-dev \
+jack-audio-connection-kit-dev alsa-lib-dev liblo-dev aubio-dev libxslt-dev \
+libsndfile-dev ladspa-dev liblrdf-dev libart_lgpl-dev libusb-dev \
+libsamplerate-dev curl-dev fftw-dev soundtouch-dev raptor-dev \
+libgnomecanvasmm-dev libgnomecanvas-dev pkg-config liblrdf-dev gtkmm-dev \
+libboost-system-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# glibmm >=2.31 fix
+	grep -lr signal_timeout * | xargs sed -i '1i#include <glibmm/main.h>'
+
+	sed -i 's/uname -m/echo i686/' tools/config.guess
+	sed -i '/-O3/d' SConstruct
+	mkdir -p $DESTDIR
+
+	CFLAGS="$CFLAGS -Wl,--copy-dt-needed-entries -lboost_system"
+	scons ${MAKEFLAGS} ARCH="x86_64 ${CFLAGS}" \
+		PREFIX=/usr \
+		NLS=1 \
+		FREEDESKTOP=0 \
+		SYSLIBS=1 \
+		VST=0 \
+		WIIMOTE=0 \
+		LV2=0 \
+		FREESOUND=1 \
+		LIBLO=1 \
+		AUBIO=1 \
+		TRANZPORT=1 \
+		DIST_LIBDIR=lib
+
+	scons ${MAKEFLAGS} ARCH="x86_64 ${CFLAGS}" \
+		PREFIX=/usr \
+		NLS=1 \
+		FREEDESKTOP=0 \
+		SYSLIBS=1 \
+		VST=0 \
+		WIIMOTE=0 \
+		LV2=0 \
+		FREESOUND=1 \
+		LIBLO=1 \
+		AUBIO=1 \
+		TRANZPORT=1 \
+		DIST_LIBDIR=lib \
+		DESTDIR=$DESTDIR install
+
+	cook_pick_manpages $src/ardour.1
+	for i in es fr ru; do
+		mkdir -p $install/usr/share/man/$i/man1
+		cp -a $src/ardour.1.$i $install/usr/share/man/$i/man1/ardour.1
+	done
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/ardour2 $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/ardour2/*so* $fs/usr/lib/ardour2
+	cp -a $install/usr/share/ardour2 $fs/usr/share
+}

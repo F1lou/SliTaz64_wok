@@ -1,0 +1,42 @@
+# SliTaz package receipt.
+
+PACKAGE="linux64-video"
+VERSION="3.16.55"
+CATEGORY="base-system"
+SHORT_DESC="The Linux kernel video modules."
+MAINTAINER="devel@slitaz.org"
+LICENSE="GPL2"
+DEPENDS="linux64"
+WANTED="linux"
+PROVIDE="linux-video:linux64"
+WEB_SITE="https://www.kernel.org/"
+
+# Modules paths and list
+MOD_PATH="lib/modules/$VERSION-slitaz64/kernel"
+MODULES="drivers/video/backlight"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	src=$WOK/linux64/source/tmp
+	install=$install/linux64
+	mkdir -p ${fs}/${MOD_PATH}
+	for module in $MODULES
+	do
+		dir=$MOD_PATH/$(dirname $module)
+		[ -d $fs/$dir ] || mkdir -p $fs/$dir
+		cp -a $install/$MOD_PATH/$module $fs/$dir
+	done
+}
+
+# Post install/remove commands for Tazpkg.
+post_install()
+{
+	chroot "$root/" depmod -a $VERSION-slitaz64
+}
+
+post_remove()
+{
+	chroot "$root/" depmod -a $VERSION-slitaz64
+}
+

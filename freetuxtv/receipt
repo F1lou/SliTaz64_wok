@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="freetuxtv"
+VERSION="0.6.8"
+CATEGORY="network"
+SHORT_DESC="FreetuxTV is a free GTK+ WebTV and Web Radio player for Linux."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://github.com/freetuxtv/freetuxtv"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/freetuxtv/freetuxtv/archive/$TARBALL"
+
+DEPENDS="gtk+ glib dbus-glib libsqlite libvlc libcurl libnotify"
+BUILD_DEPENDS="gtk+-dev glib-dev dbus-glib-dev libsqlite sqlite-dev \
+libvlc-dev libvlc curl-dev libnotify-dev intltool file automake libtool"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|_box_new(.*HORIZONTAL|_hbox_new(FALSE|' src/*.c
+	sed -i 's|_box_new(.*VERTICAL|_vbox_new(FALSE|' src/*.c
+	./autogen.sh
+	./configure --prefix=/usr \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/applications
+	cp -a $install/* $fs
+	cp $stuff/freetuxtv.desktop $fs/usr/share/applications
+}

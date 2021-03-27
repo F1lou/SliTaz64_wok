@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="pangox-compat"
+VERSION="0.0.2"
+CATEGORY="x-window"
+SHORT_DESC="X Window System font support for Pango"
+MAINTAINER="yuripourre@gmail.com"
+LICENSE="LGPL2"
+WEB_SITE="https://www.gnome.org/"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="glib glibc-base libffi pango pcre xorg-libX11"
+BUILD_DEPENDS="pango-dev glib-dev xorg-libX11-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		$CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/etc $fs
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

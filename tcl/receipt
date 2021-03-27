@@ -1,0 +1,41 @@
+# SliTaz package receipt.
+
+PACKAGE="tcl"
+VERSION="8.6.10"
+CATEGORY="development"
+TAGS="language programming"
+SHORT_DESC="The Tool Command Language."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="https://www.tcl.tk/"
+
+TARBALL="${PACKAGE}${VERSION}-src.tar.gz"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+HOST_ARCH="x86_64"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src/unix
+	./configure				\
+		 --enable-shared		\
+		--disable-symbols		\
+		--mandir=/usr/share/man		\
+		--enable-64bit			\
+		$CONFIGURE_ARGS &&
+	make &&
+	make install install-private-headers
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/lib/tcl${VERSION:0:1}*	$fs/usr/lib
+	cp -a $install/usr/lib/*.so*			$fs/usr/lib
+	cp -a $install/usr/bin				$fs/usr
+
+	ln -sf tclsh${VERSION:0:3}			$fs/usr/bin/tclsh
+}

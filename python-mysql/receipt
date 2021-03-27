@@ -1,0 +1,38 @@
+# SliTaz package receipt.
+
+PACKAGE="python-mysql"
+SOURCE="MySQL-python"
+VERSION="1.2.3"
+CATEGORY="development"
+SHORT_DESC="A Python interface to MySQL ."
+MAINTAINER="claudinei@slitaz.org"
+LICENSE="GPL"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="http://mysql-python.sourceforge.net/"
+WGET_URL="$SF_MIRROR/mysql-python/$TARBALL"
+
+DEPENDS="python libmysqlclient zlib openssl"
+BUILD_DEPENDS="python-dev python-setuptools mysql-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's/threadsafe = True/threadsafe = False/' $src/site.cfg
+	python setup.py build
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib $fs/usr
+}
+
+# Remove old package.
+post_install()
+{
+	[ ! -d "$1/var/lib/tazpkg/installed/mysql-python" ] ||
+		rm -rf "$1/var/lib/tazpkg/installed/mysql-python"
+}
+

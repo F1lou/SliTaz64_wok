@@ -1,0 +1,59 @@
+#!/bin/sh
+# /etc/init.d/unfsd : Start, stop and restart Partimage Server on SliTaz, at
+# boot time or with the command line.
+#
+# To start  Partimage  Server at boot time, just put Partimage in the $RUN_DAEMONS
+# variable of /etc/rcS.conf and configure options with /etc/daemons.conf
+#
+. /etc/init.d/rc.functions
+. /etc/daemons.conf
+
+NAME=partimaged
+DESC="$(_ '%s server' Partimage)"
+DAEMON=/usr/sbin/partimaged
+IMAGES_DIR=/var/lib/partimaged
+OPTIONS="-D -d ${IMAGES_DIR}"
+PIDFILE=/var/run/$NAME.pid
+
+
+test -f $DAEMON || exit 0
+
+case "$1" in
+  start)
+    if active_pidfile $PIDFILE $NAME ; then
+      _ '%s is already running.' $NAME
+      exit 1
+    fi
+
+    check_conf
+    action 'Starting %s: %s...' "$DESC" $NAME
+    $DAEMON $OPTIONS
+    status
+
+    # registering PID
+    if [ $? -eq 0 ]; then
+      pidof -s $NAME > $PIDFILE
+    fi
+    ;;
+  stop)
+    if ! active_pidfile $PIDFILE $NAME ; then
+      _ '%s is not running.' $NAME
+      exit 1
+    fi
+    action 'Stopping %s: %s...' "$DESC" $NAME
+    kill $(cat $PIDFILE)
+    rm -f $PIDFILE
+    status
+    ;;
+  restart)
+    $0 stop
+    $0 start
+    ;;
+  *)
+    emsg "<n><b>$(_ 'Usage:')</b> $0 [start|stop|restart]"
+    newline
+    exit 1
+    ;;
+esac
+
+exit 0

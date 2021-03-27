@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="gejengel"
+VERSION="0.1.4"
+CATEGORY="network"
+SHORT_DESC="A simple, light and clean audio player."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://github.com/dirkvdb/gejengel"
+WGET_URL="http://gejengel.googlecode.com/files/$TARBALL"
+
+DEPENDS="glibmm cairomm gtkmm libsigc++ taglib imagemagick libxdg-basedir \
+alsa-lib flac ffmpeg sqlite"
+BUILD_DEPENDS="glibmm-dev cairomm-dev gtkmm-dev libsigc++-dev taglib-dev \
+imagemagick-dev imagemagick libxdg-basedir-dev alsa-lib-dev flac-dev \
+ffmpeg-dev lcms-dev fftw-dev openexr-dev ilmbase-dev graphviz-dev libgnutls \
+util-linux-uuid-dev libogg-dev intltool libcroco sqlite-dev gtk+-dev libtool"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|ImageMagick++|Magick++|' configure* 
+	sed -i	-e 's/CODEC_TYPE_AUDIO/AVMEDIA_TYPE_AUDIO/' \
+		-e 's/SAMPLE_FMT_S16/AV_&/' -e 's/SAMPLE_FMT_U8/AV_&/' \
+		-e 's/SAMPLE_FMT_S32/AV_&/' \
+		-e 's/AVCODEC_MAX_AUDIO_FRAME_SIZE/192000/' \
+		-e 's/av_open_input_file\(.*\), NULL/avformat_open_input\1/' \
+		-e 's/avcodec_open(\([^)]*\)/avcodec_open2(\1, NULL/' \
+		-e 's/av_close_input_file(/avformat_close_input(\&/' \
+		-e 's/av_\(find_stream_info(m_pFormatContext\)/avformat_\1,NULL/' \
+			src/AudioDecoder/ffmpegdecoder.cpp
+	find . -name '*.h' -o -name '*.c*' | xargs sed -i 's|glibmm/i18n|glib/gi18n|'
+	./configure --enable-alsa --enable-ffmpeg --enable-flac \
+		$CONFIGURE_ARGS && make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr $fs/etc
+	cp -a $install/usr/bin $fs/usr
+}

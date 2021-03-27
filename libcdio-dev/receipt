@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="libcdio-dev"
+VERSION="2.1.0"
+CATEGORY="development"
+SHORT_DESC="GNU Compact Disk Input and Control Library - development files."
+MAINTAINER="rj.rohit@gmail.com"
+LICENSE="GPL3"
+WEB_SITE="https://www.gnu.org/software/libcdio/"
+
+DEPENDS="libcdio pkg-config"
+WANTED="libcdio"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/pkgconfig
+
+	cp -a $install/usr/lib/*.*a	$fs/usr/lib
+	cp -a $install/usr/include	$fs/usr
+
+	find $src -name '*.pc' -exec cp -a {} $fs/usr/lib/pkgconfig \;
+}

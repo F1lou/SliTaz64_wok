@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="gvfs-smb"
+VERSION="1.22.1"
+CATEGORY="system-tools"
+SHORT_DESC="Samba support for gvfs (smb:///)"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.gnome.org/"
+
+WANTED="gvfs"
+DEPENDS="gvfs glib glibc-base libcomerr libcomerr3 libcrypto libffi libgio \
+libkrb5 libldap libssl pcre samba-common smbclient talloc zlib"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	. $WOK/gvfs/stuff/split
+}

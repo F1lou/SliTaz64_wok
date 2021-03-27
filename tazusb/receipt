@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="tazusb"
+VERSION="209"
+CATEGORY="base-system"
+SHORT_DESC="SliTaz LiveUSB utility"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="http://www.slitaz.org/"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="http://hg.slitaz.org/$PACKAGE/archive/$VERSION.tar.bz2"
+TAGS="slitaz"
+
+DEPENDS="lzma"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make DESTDIR=$DESTDIR VERSION=$VERSION install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+#
+genpkg_rules()
+{
+	mkdir -p $fs
+	cp -a $install/usr $fs
+	chown -R root.root $fs
+}

@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="testdisk"
+VERSION="7.1"
+CATEGORY="system-tools"
+TAGS="recovery rescue"
+SHORT_DESC="Data recovery tools (testdisk + photorec)."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.cgsecurity.org/wiki/TestDisk"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="https://www.cgsecurity.org/$TARBALL"
+
+SUGGESTED="btrfs-progs dosfstools e2fsprogs f2fs-tools hfsprogs hfsutils \
+	jfsutils lvm2 mtools nilfs-utils ntfsprogs reiser4progs \
+	reiserfsprogs util-linux xfsprogs"
+DEPENDS="e2fsprogs jpeg krb5 libcomerr3 ncurses ncursesw ntfs-3g ntfsprogs zlib"
+BUILD_DEPENDS="e2fsprogs-dev jpeg-dev ncurses-dev ntfs-3g-dev ntfsprogs-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i '/alloc_data_t list_search_space={/{s/={/;/;n;s/.list /list_search_space&/;s/$/;/;nd}' \
+		src/qphotorec.cpp
+	sed -i '/file_info_t dir_list = {/{s/= {/;/;n;s/.list /dir_list&/;s/,$/;/;n;s/.name/dir_list&/;s/$/;/;nd}' \
+		src/qpsearch.cpp
+	sed -i 's/COLOR_RED/COLOR_YELLOW/' \
+		src/intrfn.c
+
+	./configure		\
+		--with-ntfs3g	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}

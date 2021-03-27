@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="amsn"
+VERSION="0.98.9"
+CATEGORY="network"
+SHORT_DESC="Alvaro's Messenger"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://amsn-project.net/"
+TARBALL="$PACKAGE-$VERSION-src.tar.gz"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+TAGS="chat messenger im"
+
+DEPENDS="tk glib tls jpeg xorg-libICE xorg-libSM xorg-libX11 xorg-libXau \
+xorg-libXdmcp xorg-libXss zlib libpng libv4l gcc-lib-base"
+BUILD_DEPENDS="tls glib-dev tcl-dev tk-dev jpeg-dev xorg-libICE-dev \
+xorg-libSM-dev xorg-libX11-dev xorg-libXau-dev xorg-libXdmcp-dev \
+xorg-libXss-dev zlib-dev libpng-dev libv4l-dev autoconf automake"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	sed -i 's|uname -m|echo i486|' Makefile*
+	patch -Np0 -i $stuff/$PACKAGE-v4l2.patch
+	patch -Np0 -i $stuff/$PACKAGE-0.98.9-no-rebuild-on-install.patch
+	./configure --prefix=/usr \
+	 --with-tcl=/usr/lib $CONFIGURE_ARGS && \
+	make && \
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share $fs/usr
+	for ext in png xml css; do
+		find $fs -type f -name '*.'$ext -exec chmod a-x \{\} \;
+	done
+}
+

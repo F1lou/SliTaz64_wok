@@ -1,0 +1,79 @@
+# SliTaz package receipt.
+
+PACKAGE="php-auth-pam"
+VERSION="0.4"
+CATEGORY="development"
+SHORT_DESC="PHP extension for PAM"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="BSD"
+TARBALL="${PACKAGE}_${VERSION}.orig.tar.gz"
+WEB_SITE="http://packages.debian.org/"
+WGET_URL="http://ftp.de.debian.org/debian/pool/main/p/php-auth-pam/$TARBALL"
+
+DEPENDS="php-apache pam"
+BUILD_DEPENDS="php-dev pam pam-dev autoconf automake sed coreutils-conditions"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	phpize
+	patch -p1 < $stuff/php-auth-pam-Makefile.global0.4.u || exit 1
+	sed -i 's/^function_entry/zend_&/;s/pval /zval /' pam_auth.c # php 5.4
+
+	sed -e 's|(\(\*[a-z]*)\)->value.str.val;|Z_STRVAL(*\1;|' \
+		-e 's|(\*status)->value.str.val|Z_STR(**status)|' \
+		-e 's|(\*status)->value.str.len|Z_STRLEN(**status)|' \
+		-e 's|(\*status)->type|Z_TYPE_INFO(**status)|' \
+		-i pam_auth.c # php 7.3
+	
+	./configure $CONFIGURE_ARGS \
+		--prefix=/usr &&
+	
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/php
+	cp -a $install/usr/lib/php/extensions/*/*.so $fs/usr/share/php
+}
+
+post_install()
+{
+	grep -q ^extension=pam_auth.so "$1/etc/php.ini" || \
+	    sed -e 's|extension=bz2.so|extension=bz2.so\nextension=pam_auth.so|' -i "$1/etc/php.ini"
+	# Start Web server.
+	while read daemon file; do
+		[ -z "$1" ] || continue
+		if [ -z "$1" -a -f "/var/run/$file" ]; then
+			/etc/init.d/$daemon stop
+			sleep 2
+		fi
+		if [ -z "$1" -a -f /etc/init.d/$daemon ]; then
+			/etc/init.d/$daemon start
+		fi
+	done <<EOT
+apache apache/httpd.pid
+lighttpd lighttpd.pid
+EOT
+	true
+}
+
+# Pre and post remove commands for Tazpkg.
+pre_remove()
+{
+	sed -i '/.*=pam_auth.so.*/d' /etc/php.ini
+
+	# Start Web server.
+	while read daemon file; do
+		if [ -f /etc/init.d/$daemon -a -f "/var/run/$file" ]; then
+			/etc/init.d/$daemon stop
+			sleep 2
+			/etc/init.d/$daemon start
+		fi
+	done <<EOT
+apache apache/httpd.pid
+lighttpd lighttpd.pid
+EOT
+}

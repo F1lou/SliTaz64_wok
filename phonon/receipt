@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="phonon"
+VERSION="4.10.2"
+CATEGORY="development"
+SHORT_DESC="KDE multimedia framework."
+MAINTAINER="psychomaniak@xakep.ru"
+LICENSE="LGPL2.1"
+WEB_SITE="https://github.com/KDE/phonon/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="http://download.kde.org/stable/$PACKAGE/$VERSION/$TARBALL"
+
+DEPENDS="libQtCore libQtDBus libQtGui libQtXml"
+BUILD_DEPENDS="automoc4 cmake qmake Qt4-dev"
+
+compile_rules()
+{
+	mkdir build
+	cd build
+	cmake	..							\
+		-DCMAKE_INSTALL_PREFIX=/usr				\
+		-DCMAKE_BUILD_TYPE=Release				\
+		-DCMAKE_SKIP_RPATH=ON					\
+		-DCMAKE_INSTALL_PREFIX=/usr				\
+		-DPHONON_INSTALL_QT_EXTENSIONS_INTO_SYSTEM_QT=ON	\
+		-DCMAKE_INSTALL_LIBDIR=lib &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/lib* $fs/usr/lib
+}

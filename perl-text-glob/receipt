@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-text-glob"
+VERSION="0.11"
+CATEGORY="development"
+SHORT_DESC="Match globbing patterns against text."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL"
+DEPENDS="perl"
+BUILD_DEPENDS="perl"
+SOURCE="Text-Glob"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="https://metacpan.org/release/Text-Glob"
+WGET_URL="https://cpan.metacpan.org/authors/id/R/RC/RCLAMP/$TARBALL"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	perl Makefile.PL &&
+	make &&
+	make install DESTDIR="$DESTDIR"
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib $fs/usr
+}

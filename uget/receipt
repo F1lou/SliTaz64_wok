@@ -1,0 +1,41 @@
+# SliTaz package receipt.
+
+PACKAGE="uget"
+VERSION="2.2.1"
+CATEGORY="network"
+SHORT_DESC="Download manager using gtk+ and libcurl."
+MAINTAINER="devl547@gmail.com"
+LICENSE="LGPL2.1"
+WEB_SITE="https://ugetdm.com/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/urlget/$TARBALL"
+
+DEPENDS="curl glib gtk+3 pcre"
+BUILD_DEPENDS="curl-dev glib-dev gtk+3-dev intltool pcre-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--prefix=/usr		\
+		--sysconfdir=/etc	\
+		--disable-gstreamer	\
+		--disable-notify	\
+		--with-gtk3		\
+		$CONFIGURE_ARGS		\
+		LDFLAGS='-Wl,-O1 -Wl,--as-needed' &&
+	make -j2 -s &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/bin			$fs/usr/
+	cp -a $install/usr/share/applications/	$fs/usr/share
+	cp -a $install/usr/share/icons/		$fs/usr/share
+	cp -a $install/usr/share/sounds/	$fs/usr/share
+}

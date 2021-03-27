@@ -1,0 +1,38 @@
+# SliTaz package receipt.
+
+PACKAGE="foomatic-filters"
+VERSION="4.0.17" 
+CATEGORY="system-tools"
+TAGS="printer driver printing"
+SHORT_DESC="Foomatic filters needed to run print queues with Foomatic PPDs."
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://wiki.linuxfoundation.org/openprinting/database/foomatic"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="http://www.openprinting.org/download/foomatic/$TARBALL"
+
+DEPENDS="gcc-lib-base ghostscript"
+BUILD_DEPENDS="a2ps autoconf cups cups-dev dbus-dev ghostscript-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--prefix=/usr		\
+		--sysconfdir=/etc	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/etc
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/lib/cups	$fs/usr/lib
+	cp -a $install/etc		$fs
+}

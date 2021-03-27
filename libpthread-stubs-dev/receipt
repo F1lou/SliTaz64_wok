@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="libpthread-stubs-dev"
+VERSION="0.2"
+CATEGORY="development"
+SHORT_DESC="Weak aliases for pthread functions development files"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://xcb.freedesktop.org"
+HOST_ARCH="x86_64 i486 arm"
+
+WANTED="libpthread-stubs"
+DEPENDS="libpthread-stubs pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.la $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+}

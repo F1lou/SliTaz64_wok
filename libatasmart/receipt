@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="libatasmart"
+VERSION="0.19"
+CATEGORY="system-tools"
+SHORT_DESC="A disk reporting library."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2.1"
+WEB_SITE="http://0pointer.de/blog/projects/being-smart.html"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="http://0pointer.de/public/$TARBALL"
+
+DEPENDS="udev"
+BUILD_DEPENDS="udev-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--disable-static	\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+	cp -a $install/usr/sbin		$fs/usr
+}

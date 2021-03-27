@@ -1,0 +1,18 @@
+#!/bin/sh
+#
+# SliTaz GNU/Linux Fluxbox system wide session script.
+#
+
+# Start DBUS session.
+if [ ! "$DBUS_SESSION_BUS_ADDRESS" ]; then
+	dbus-launch --sh-syntax --exit-with-session &
+fi
+
+# Start PCmanFM as daemon (Can be used for wallpaper and desktop icons).
+#pcmanfm -d &
+
+# Set a background image using hsetroot.
+hsetroot -fill /usr/share/images/slitaz-background.jpg &
+
+# Start the composite manager th get full Flucbox transparency
+xcompmgr &

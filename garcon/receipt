@@ -1,0 +1,42 @@
+# SliTaz package receipt.
+
+PACKAGE="garcon"
+VERSION="0.4.0"
+CATEGORY="misc"
+SHORT_DESC="Xfce menu library"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="LGPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://www.xfce.org"
+WGET_URL="http://archive.xfce.org/src/xfce/garcon/${VERSION%.*}/$TARBALL"
+
+DEPENDS="libgio glib gtk+ libxfce4ui libxfce4util util-linux-uuid startup-notification"
+BUILD_DEPENDS="intltool libgio libgio-dev glib-dev libxfce4ui-dev libxfce4util-dev \
+		util-linux-uuid-dev gtk+-dev startup-notification-dev xcb-util-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure \
+		--prefix=/usr \
+		--infodir=/usr/share/info \
+		--sysconfdir=/etc \
+		--disable-login \
+		--mandir=/usr/share/man \
+		$CONFIGURE_ARGS &&
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr \
+		$fs/usr/share \
+		$fs/usr/lib
+	
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/etc $fs/
+	cp -a $install/usr/share/desktop* $fs/usr/share
+}
+

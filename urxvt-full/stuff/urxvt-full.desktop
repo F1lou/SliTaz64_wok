@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Urxvt-full
+GenericName=Unicode Terminal
+Comment=Terminal emulator with unicode CJK support
+Exec=urxvt -bg black -fg white -cr orange -pr green
+Icon=utilities-terminal
+Categories=Utility;Terminal;

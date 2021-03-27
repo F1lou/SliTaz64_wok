@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="libsvn"
+VERSION="1.13.0"
+CATEGORY="system-tools"
+SHORT_DESC="Subversion Source Code Management access"
+MAINTAINER="lehswe@gmail.com"
+LICENSE="Apache"
+WANTED="subversion"
+WEB_SITE="http://subversion.tigris.org"
+
+DEPENDS="apr libsasl libssl libkrb5 util-linux-uuid expat zlib neon libsqlite \
+libgnutls libcomerr libcomerr3"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

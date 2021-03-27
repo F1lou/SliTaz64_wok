@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="xpad"
+VERSION="4.1"
+CATEGORY="utilities"
+SHORT_DESC="Sticky note application for X"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://launchpad.net/xpad"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="https://launchpad.net/xpad/trunk/$VERSION/+download/$TARBALL"
+HANDBOOK_URL="http://www.slitaz.org/doc/handbook/utilities.html#xpad"
+
+DEPENDS="gtk+ util-linux-uuid xorg-libICE xorg-libSM"
+BUILD_DEPENDS="gtk+-dev xorg-libSM-dev wget"
+GENERIC_PIXMAPS="no"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i '/#include <glib\/glist.h>/d' src/xpad-undo.c
+	./configure $CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/icons/hicolor/48x48/apps/
+	cp -a $install/usr/bin $fs/usr
+	cp -a $stuff/xpad.png $fs/usr/share/icons/hicolor/48x48/apps/
+}

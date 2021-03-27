@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="bcrypt"
+VERSION="1.1"
+CATEGORY="security"
+SHORT_DESC="File encryption utility"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="http://bcrypt.sourceforge.net/"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="http://bcrypt.sourceforge.net/${TARBALL}"
+TAGS="encrypt"
+
+DEPENDS="zlib"
+BUILD_DEPENDS="zlib-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make
+
+	cook_pick_manpages bcrypt.1
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $src/bcrypt $fs/usr/bin
+}

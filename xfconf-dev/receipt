@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="xfconf-dev"
+VERSION="4.12.0"
+CATEGORY="development"
+SHORT_DESC="Xfce Configuration Utility dev files"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+WANTED="xfconf"
+WEB_SITE="https://www.xfce.org"
+
+DEPENDS="xfconf glib-dev dbus-dev dbus-glib-dev pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr \
+		$fs/usr/lib
+		
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+}

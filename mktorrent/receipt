@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="mktorrent"
+VERSION="1.1"
+CATEGORY="network"
+SHORT_DESC="Command line utility to create BitTorrent metainfo files."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://github.com/Rudde/mktorrent/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}archive/v$VERSION/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS=""
+
+HOST_ARCH="x86_64 i486 arm x86_64"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/local/bin $fs/usr
+}
+
+testsuite()
+{
+	readelf -h $install/usr/local/bin/$PACKAGE
+}

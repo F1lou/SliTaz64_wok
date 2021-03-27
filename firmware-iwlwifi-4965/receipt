@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="firmware-iwlwifi-4965"
+VERSION="20200515"
+CATEGORY="non-free"
+SHORT_DESC="Firmware files for iwlwifi 4965 (legacy)"
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="other"
+WEB_SITE="http://git.kernel.org/cgit/linux/kernel/git/firmware/linux-firmware.git"
+WANTED="firmware"
+PROVIDE="iwlwifi-4965"
+
+DEPENDS="linux-wireless"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/lib/firmware $fs/usr/share/licenses
+	cp -a $install/lib/firmware/iwlwifi-4965*.ucode $fs/lib/firmware
+	cp -a $install/usr/share/licenses/LICENCE.iwlwifi_firmware $fs/usr/share/licenses
+}

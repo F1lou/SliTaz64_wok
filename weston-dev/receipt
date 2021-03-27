@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="weston-dev"
+VERSION="1.4.0"
+CATEGORY="development"
+SHORT_DESC="Weston compositor devel files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WANTED="weston"
+WEB_SITE="http://www.bluez.org/"
+
+DEPENDS="weston pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/weston $fs/usr/share
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib/weston/*.*a $fs/usr/lib/weston
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+}

@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="obby"
+VERSION="0.4.8"
+CATEGORY="network"
+TAGS="collaboration text"
+SHORT_DESC="Realtime collaborative text-editing functionality."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://gobby.github.io/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="http://releases.0x539.de/obby/$TARBALL"
+
+DEPENDS="gcc-lib-base gnutls libgcrypt libgpg-error libsigc++ libtasn1 \
+	net6 zlib"
+BUILD_DEPENDS="$DEPENDS gnutls-dev libgcrypt-dev libgnutls libgpg-error-dev \
+	libsigc++-dev net6-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure				\
+		--prefix=/usr			\
+		--infodir=/usr/share/info	\
+		--mandir=/usr/share/man		\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

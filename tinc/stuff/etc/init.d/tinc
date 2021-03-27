@@ -1,0 +1,54 @@
+#!/bin/sh
+# /etc/init.d/tinc: Start, stop and restart tinc daemon on SliTaz, at boot
+# time or with the command line.
+#
+# To start daemon at boot time, just put the right name in the $RUN_DAEMONS
+# variable of /etc/rcS.conf and configure options with /etc/daemons.conf.
+#
+. /etc/init.d/rc.functions
+. /etc/daemons.conf
+
+NAME=tinc
+DESC="$(_ '%s daemon' tinc)"
+DAEMON=/usr/sbin/tincd
+OPTIONS=$TINC_OPTIONS
+PIDFILE=/var/run/tinc.pid
+
+case "$1" in
+  start)
+    if active_pidfile $PIDFILE tincd ; then
+      _ '%s is already running.' $NAME
+      exit 1
+    fi
+    action 'Starting %s: %s...' "$DESC" $NAME
+    $DAEMON $OPTIONS
+    status
+    ;;
+  stop)
+    if ! active_pidfile $PIDFILE tincd ; then
+      _ '%s is not running.' $NAME
+      exit 1
+    fi
+    action 'Stopping %s: %s...' "$DESC" $NAME
+    $DAEMON -k
+    status
+    ;;
+  restart)
+    if ! active_pidfile $PIDFILE tincd ; then
+      _ '%s is not running.'
+      exit 1
+    fi
+    action 'Restarting %s: %s...' "$DESC" $NAME
+    $DAEMON -k
+    sleep 2
+    $DAEMON $OPTIONS
+    status
+    ;;
+  *)
+    emsg "<n><b>$(_ 'Usage:')</b> $0 [start|stop|reload|restart]"
+    newline
+    exit 1
+    ;;
+esac
+
+exit 0

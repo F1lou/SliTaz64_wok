@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="QtDesigner"
+VERSION="4.8.7"
+CATEGORY="development"
+SHORT_DESC="Qt Designer"
+MAINTAINER="allan316@gmail.com"
+LICENSE="GPL3 LGPL2.1"
+WEB_SITE="http://qt-project.org/"
+WANTED="qt4"
+TAGS="qt"
+
+DEPENDS="libQtCore libQtGui libQtNetwork libQtSvg libQtXml libQtDesigner libQtScript \
+expat fontconfig freetype glib xorg-libICE xorg-libSM xorg-libX11 xorg-libXau \
+xorg-libXdmcp xorg-libXext xorg-libXi xorg-libXrandr xorg-libXrender zlib \
+libpng gcc-lib-base"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin \
+			 $fs/usr/share/pixmaps \
+			 $fs/usr/share/applications
+
+	cp -a $install/usr/bin/designer* $fs/usr/bin
+	cp -a $install/usr/bin/linguist* $fs/usr/bin
+	cp -a $install/usr/bin/assistant* $fs/usr/bin
+		
+	# add missing icons
+	cp -a $src/tools/assistant/tools/assistant/images/assistant.png $fs/usr/share/pixmaps
+	cp -a $src/tools/designer/src/designer/images/designer.png $fs/usr/share/pixmaps
+	cp -a $src/tools/linguist/linguist/images/icons/linguist-16-32.png  $fs/usr/share/pixmaps
+	
+	# add .desktop files
+	cp -a stuff/*  $fs/usr/share/applications
+}

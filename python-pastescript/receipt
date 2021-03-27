@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="python-pastescript"
+VERSION="3.2.0"
+CATEGORY="development"
+TAGS="python"
+SHORT_DESC="A pluggable command-line frontend, including commands to setup package file layouts."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://pypi.org/project/PasteScript/"
+
+SOURCE="PasteScript"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://files.pythonhosted.org/packages/source/${SOURCE:0:1}/$SOURCE/$TARBALL"
+
+DEPENDS="python python-paste python-pastedeploy"
+BUILD_DEPENDS="python python-setuptools"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr	$fs
+}

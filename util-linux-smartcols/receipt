@@ -1,0 +1,18 @@
+# SliTaz package receipt.
+
+PACKAGE="util-linux-smartcols"
+VERSION="2.35.1"
+CATEGORY="system-tools"
+SHORT_DESC="The smartcols library from Util Linux."
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://en.wikipedia.org/wiki/Util-linux"
+
+DEPENDS="glibc-base"
+WANTED="util-linux"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cook_copy_files libsmartcols.so*
+}

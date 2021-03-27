@@ -1,0 +1,44 @@
+# SliTaz package receipt.
+
+PACKAGE="btrfs-progs"
+VERSION="5.7"
+CATEGORY="system-tools"
+TAGS="filesystem fault-tolerance"
+SHORT_DESC="Btrfs Filesystem user space tools."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://btrfs.wiki.kernel.org/index.php/Main_Page"
+
+TARBALL="$PACKAGE-v$VERSION.tar.xz"
+WGET_URL="https://www.kernel.org/pub/linux/kernel/people/kdave/$PACKAGE/$TARBALL"
+
+PROVIDE="btrfs-tools"
+DEPENDS="acl btrfs-mkfs lzo util-linux-blkid util-linux-uuid zlib zstd"
+BUILD_DEPENDS="acl-dev autoconf automake e2fsprogs e2fsprogs-dev 
+	lzo-dev py3k-dev util-linux-blkid-dev util-linux-uuid-dev 
+	zlib-dev zstd-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./autogen.sh &&
+	./configure			\
+		--prefix=/usr		\
+		--sysconfdir=/etc	\
+		--disable-documentation	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR prefix=/usr -j 1 install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr $install/usr/share/man
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $src/Documentation/*.?	$install/usr/share/man
+
+	# Split mkfs --> btrfs-mkfs
+	rm				$fs/usr/bin/mkfs.btrfs
+}

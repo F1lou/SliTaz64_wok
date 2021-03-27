@@ -1,0 +1,23 @@
+# SliTaz package receipt."
+
+PACKAGE="xfce4-panel-dev"
+VERSION="4.12.0"
+CATEGORY="development"
+SHORT_DESC="Xfce Panel dev files"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+WANTED="xfce4-panel"
+WEB_SITE="https://www.xfce.org/"
+
+DEPENDS="xfce4-panel pkg-config"
+
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/xfce4 \
+	$fs/usr/lib/xfce4/panel/plugins 
+	
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/xfce4/panel/plugins/*.*a $fs/usr/lib/xfce4/panel/plugins
+}

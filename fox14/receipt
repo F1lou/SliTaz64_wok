@@ -1,0 +1,40 @@
+# SliTaz package receipt.
+
+PACKAGE="fox14"
+SOURCE="fox"
+VERSION="1.4.35"
+CATEGORY="x-window"
+SHORT_DESC="Fox toolkit."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2.1"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="http://www.fox-toolkit.org/"
+WGET_URL="http://ftp.fox-toolkit.org/pub/$TARBALL"
+SUGGESTED="adie calculator pathfinder shutterbug"
+
+DEPENDS="libpng jpeg tiff xorg-libXft bzlib mesa libglu-mesa"
+BUILD_DEPENDS="libpng jpeg tiff xorg-libXft bzlib \
+xorg-libXrender xorg-libXrender-dev fontconfig fontconfig-dev freetype freetype-dev \
+libpng-dev jpeg-dev tiff-dev xorg-libXft-dev mesa libglu-mesa expat-dev libxml2-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	sed -i 's/(gzFile\*)/(gzFile)/' src/FXGZStream.cpp
+	./configure  LDFLAGS="-lXft -lfreetype -lfontconfig -lXrender" \
+		--prefix=/usr \
+		--mandir=/usr/share/man \
+		--with-xft \
+		$CONFIGURE_ARGS &&
+	make $MAKEFLAGS &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

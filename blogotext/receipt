@@ -1,0 +1,24 @@
+# SliTaz package receipt.
+
+PACKAGE="blogotext"
+VERSION="3.7.6"
+CATEGORY="network"
+SHORT_DESC="Simple blog engine."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://github.com/BlogoText/blogotext"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/archive/$VERSION.tar.gz"
+
+DEPENDS="php-gd"
+BUILD_DEPENDS=""
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/var/www/blogotext
+	cp -a $src/*	$fs/var/www/blogotext/
+
+	find $fs -type f -exec chmod a-x \{\} \;
+	chown -R 80.80 $fs/var/www/blogotext
+}

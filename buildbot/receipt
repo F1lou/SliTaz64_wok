@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="buildbot"
+VERSION="2.5.1"
+CATEGORY="development"
+TAGS="python buildtools"
+SHORT_DESC="Tool to automate the compile and test cycle of source code."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.buildbot.net/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/$PACKAGE/$PACKAGE/releases/download/v$VERSION/$TARBALL"
+
+DEPENDS="py3k twisted"
+BUILD_DEPENDS="py3k py3k-dev python-setuptools"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python3 setup.py install --root=$DESTDIR
+	cook_pick_manpages docs/buildbot.1
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/*	$fs
+	rm -r			$fs/usr/share/man
+}

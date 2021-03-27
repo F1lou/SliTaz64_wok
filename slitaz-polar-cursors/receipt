@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="slitaz-polar-cursors"
+VERSION="1.0"
+CATEGORY="customization"
+SHORT_DESC="SliTaz cursor theme based on Polar Cursor Theme"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+TARBALL=$PACKAGE-$VERSION.tar.gz
+WEB_SITE="http://www.slitaz.org/"
+WGET_URL="ftp://download.tuxfamily.org/slitaz/sources/artwok/$TARBALL"
+HOST_ARCH="x86_64 i486 arm"
+
+BUILD_DEPENDS="xorg-xcursorgen"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src/Source
+	./Build.sh && cd ..
+	mkdir -p $DESTDIR/usr/share/icons/slitaz-polar
+	cp index.theme $DESTDIR/usr/share/icons/slitaz-polar
+	cp -a Source/cursors $DESTDIR/usr/share/icons/slitaz-polar
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/icons
+	cp -a stuff/default $fs/usr/share/icons
+	cp -a $install/* $fs
+	chown -R root.root $fs
+}
+

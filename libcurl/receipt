@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="libcurl"
+VERSION="7.72.0"
+CATEGORY="network"
+SHORT_DESC="Curl library files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WANTED="curl"
+WEB_SITE="https://curl.haxx.se/"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="libidn libssl zlib libcrypto"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

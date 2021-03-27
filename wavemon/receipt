@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="wavemon"
+VERSION="0.9.1"
+CATEGORY="network"
+SHORT_DESC="An ncurses-based monitoring application for wireless network devices."
+MAINTAINER="paul@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://github.com/uoaerg/wavemon/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}archive/v$VERSION.tar.gz"
+
+DEPENDS="libcap libnl ncurses"
+BUILD_DEPENDS="libcap-dev libnl-dev ncurses-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	ln -s /usr/include/libnl3/netlink /usr/include/netlink
+	export LDFLAGS="$LDFLAGS -ltinfo -lpthread"
+
+	./configure		\
+		--prefix=/usr	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin	$fs/usr
+}

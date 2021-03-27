@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="rack"
+VERSION="1.3.5"
+CATEGORY="network"
+SHORT_DESC="Webserver Interface for Ruby"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="MIT"
+TARBALL="$PACKAGE-$VERSION.gem"
+WEB_SITE="https://rubygems.org/gems/$PACKAGE"
+WGET_URL="http://gems.rubyforge.org/gems/$TARBALL"
+COOK_OPT="!repack_src !unpack"
+
+DEPENDS="ruby activerecord"
+BUILD_DEPENDS="$DEPENDS ruby-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	local _gemdir="$(ruby -rrubygems -e'puts Gem.default_dir')"
+	gem install --ignore-dependencies -i "$DESTDIR/$_gemdir" $SOURCES_REPOSITORY/$TARBALL
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr $fs
+}

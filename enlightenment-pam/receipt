@@ -1,0 +1,85 @@
+# SliTaz package receipt.
+
+PACKAGE="enlightenment-pam"
+SOURCE="enlightenment"
+VERSION="0.17.6"
+CATEGORY="x-window"
+SHORT_DESC="Enlightenment window manager (E17) with PAM, Bluez and connman support."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="BSD"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="https://www.enlightenment.org/"
+WGET_URL="http://download.enlightenment.org/releases/$TARBALL"
+PROVIDE="enlightenment:pam"
+TAGS="e enlightenment window-manager"
+LOCALES="cs da de el es fr fr_CH hu it pl pt pt_BR ru sl sv zh_CN zh_TW"
+
+# Add PAM and bluez support (enlightenment is smaller).
+DEPENDS="emotion efreet edbus alsa-lib pam xcb-util-keysyms"
+BUILD_DEPENDS="emotion-dev efreet-dev edbus-dev
+xcb-util-keysyms-dev alsa-lib-dev
+bluez-dev connman-dev pam-dev pm-utils"
+SUGGESTED="bluez wpa_supplicant connman pm-utils"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	CFLAGS="$CFLAGS -fvisibility=hidden"
+	LDFLAGS="$LDFLAGS -fvisibility=hidden"
+	export LDFLAGS
+
+	./configure \
+		--sysconfdir=/etc \
+		--disable-mount-hal \
+		--disable-doc \
+		--build=${ARCH}-slitaz-gnulinux \
+		$CONFIGURE_ARGS &&
+	make $MAKEFLAGS && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share/applications $fs/usr/share/locale
+	# Use a modified sysactions.conf
+	cp -a $stuff/etc $fs
+
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/enlightenment $fs/usr/lib
+	cp -a $install/usr/share/enlightenment $fs/usr/share
+	cp -a $install/usr/share/xsessions/enlightenment.desktop $fs/usr/share/applications
+
+	# Remove devel files *.a/*.la
+	rm -rf $fs/usr/lib/$SOURCE/preload/*.*a
+	rm -rf $fs/usr/lib/$SOURCE/modules/*/*/*.*a
+
+	# Rm backgrouds (1,6 Mb) and desktop file already provides by other.
+	rm -rf $fs/usr/share/enlightenment/data/backgrounds/*
+
+	# locales
+	for locale in $LOCALES; do
+		cp -a $install/usr/share/locale/$locale $fs/usr/share/locale
+	done
+}
+
+post_install()
+{
+	res=$(grep ^session < "$1/etc/slim.conf" | sed s/"sessions. *"// \
+		| sed s/,e17//)
+	# Adding WM to SLIM available sessions.
+	if ! echo "$res" | grep -q enlightenment; then
+		echo
+		echo -n "Adding enlightenment to /etc/slim.conf..."
+		sed -i "s/^sessions.*/sessions            enlightenment,${res}/" \
+			/etc/slim.conf
+		status
+	fi
+}
+
+post_remove()
+{
+	# Remove WM from SLIM available sessions.
+	if grep -q enlightenment "$1/etc/slim.conf"; then
+		sed -i s/enlightenement,// "$1/etc/slim.conf"
+	fi
+}

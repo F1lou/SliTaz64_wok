@@ -1,0 +1,40 @@
+# SliTaz package receipt.
+
+PACKAGE="dar"
+VERSION="2.6.7"
+CATEGORY="system-tools"
+TAGS="backup"
+SHORT_DESC="Disk archive."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://dar.linux.free.fr/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="attr bzip2 gcc83-lib-base libgcrypt lzo"
+BUILD_DEPENDS="attr-dev bzip2-dev e2fsprogs-dev gcc83 
+	libgcrypt-dev lzo-dev"
+
+TODO="split package into dar and dar-dev ?"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure				\
+		CC=gcc-83			\
+		CXX=g++-83			\
+		--prefix=/usr			\
+		--infodir=/usr/share/info	\
+		--libdir=/lib			\
+		--mandir=/usr/share/man		\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/*	$fs
+}

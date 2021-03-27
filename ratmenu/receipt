@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="ratmenu"
+VERSION="2.3.22"
+CATEGORY="x-window"
+SHORT_DESC="Menu generator created for ratpoison, but works with any window manager."
+MAINTAINER="gokhlayeh@slitaz.org"
+LICENSE="other"
+WEB_SITE="http://packages.debian.org"
+
+TARBALL="${PACKAGE}_$VERSION.tar.xz"
+WGET_URL="http://ftp.de.debian.org/debian/pool/main/r/ratmenu/$TARBALL"
+
+DEPENDS="xorg-libX11"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make PREFIX=/usr &&
+	make PREFIX=$DESTDIR/usr MANDIR=$DESTDIR/usr/share/man install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}

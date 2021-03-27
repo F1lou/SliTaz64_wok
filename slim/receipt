@@ -1,0 +1,73 @@
+# SliTaz package receipt.
+
+PACKAGE="slim"
+VERSION="1.3.5"
+CATEGORY="x-window"
+SHORT_DESC="Desktop-independent graphical login manager for X11"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://sourceforge.net/projects/slim.berlios/"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="http://download.berlios.de/slim/$TARBALL"
+CONFIG_FILES="/etc/slim.conf"
+HOST_ARCH="x86_64 i486 arm"
+COOKOPTS="!pngquant op8"
+
+RELATED="slim-pam slim-theme-default" # don't forget to upgrade them too
+SUGGESTED="slim-theme-default slitaz-configs"
+DEPENDS="gcc-lib-base libjpeg libpng xorg-libXft xorg-libXmu"
+BUILD_DEPENDS="freetype-dev jpeg-dev libpng-dev xorg-libXft-dev xorg-libXmu-dev"
+
+# Handle cross compilation
+case "$ARCH" in
+	i?86) 
+		BUILD_DEPENDS="$BUILD_DEPENDS cmake" 
+		INCL=/usr/include
+		LIBS=/usr/lib ;;
+	arm*)
+		INCL=/cross/$ARCH/sysroot/usr/include
+		LIBS=/cross/$ARCH/sysroot/usr/lib ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	patch -p1 < $stuff/$PACKAGE-$VERSION.patch || return 1
+	mkdir build; cd build
+	cmake \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DX11_Xmu_LIB="$LIBS/libXmu.so" \
+		-DX11_Xft_INCLUDE_PATH=${INCL} \
+		-DX11_Xmu_INCLUDE_PATH= ${INCL} \
+		.. &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/slim
+	cp -a $install/etc $fs
+	cp -a $install/usr/bin $fs/usr
+	cp -a $stuff/themes $fs/usr/share/slim
+
+	# Config file and rc script.
+	cp -a $stuff/etc $fs
+	chown -R root.root $fs
+
+	# slim-theme manager & default strings
+	install -m755 $stuff/slim-theme $fs/usr/bin/slim-theme
+	install -m644 $stuff/strings $fs/usr/share/slim/strings
+}
+
+post_install()
+{
+	local USER
+	USER=$(awk -F: '/:1000:1000:/ { print $1 }' < "$1/etc/passwd")
+	[ -n "$USER" ] &&
+	sed -i s/"default_user .*"/"default_user        $USER"/ "$1/etc/slim.conf"
+	sed -i 's|>/tmp/X-output||' "$1/etc/slim.conf"
+}
+
+testsuite() { ldd $install/usr/bin/slim; }

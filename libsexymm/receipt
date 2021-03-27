@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="libsexymm"
+VERSION="0.1.9"
+CATEGORY="x-window"
+SHORT_DESC="Gtkmm binding for libsexy."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2.1"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://osiris.chipx86.com/projects/libsexy/"
+WGET_URL="http://releases.chipx86.com/libsexy/libsexymm/$TARBALL"
+
+DEPENDS="glibmm libgiomm cairomm gtkmm libsexy libsigc++"
+BUILD_DEPENDS="glibmm-dev libgiomm-dev cairomm-dev gtkmm-dev libsexy-dev \
+libsigc++-dev libxml2-dev gtk+-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS && make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

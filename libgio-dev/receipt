@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="libgio-dev"
+VERSION="2.43.3"
+CATEGORY="development"
+SHORT_DESC="Glib libgio devel files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WANTED="glib"
+WEB_SITE="https://www.gtk.org/"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="libgio pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/pkgconfig $fs/usr/include
+	cp -a $install/usr/lib/libgio*.*a $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig/gio*.pc $fs/usr/lib/pkgconfig
+	cp -a $install/usr/include/gio-unix-2.0 $fs/usr/include
+}

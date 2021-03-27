@@ -1,0 +1,46 @@
+# SliTaz package receipt.
+
+PACKAGE="lxrandr"
+VERSION="0.3.2"
+CATEGORY="utilities"
+TAGS="LXDE"
+SHORT_DESC="LXDE monitor configuration tool."
+MAINTAINER="gokhlayeh@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://wiki.lxde.org/en/LXRandR"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="$SF_MIRROR/lxde/$TARBALL"
+
+DEPENDS="gtk+ xorg-xrandr"
+BUILD_DEPENDS="gtk+-dev xorg-libXrandr-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# Fix sources.
+	echo "Icon=video-display" >> data/lxrandr.desktop.in 
+	touch po/stamp-it 
+
+	./configure		\
+		$CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/share	$fs/usr
+
+	# Remove man pages and locales
+	rm -rf				$fs/usr/share/man
+	rm -rf				$fs/usr/share/locale
+
+	sed -i 's|^Icon=.*$|Icon=preferences-desktop-display|' \
+		$fs/usr/share/applications/lxrandr.desktop
+}

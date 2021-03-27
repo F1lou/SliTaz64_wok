@@ -1,0 +1,52 @@
+# SliTaz package receipt.
+
+PACKAGE="ndiswrapper-driver"
+VERSION="1.62"
+CATEGORY="system-tools"
+TAGS="windows wireless network"
+SHORT_DESC="Add Windows network drivers support to Linux kernel."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL"
+WEB_SITE="https://sourceforge.net/projects/ndiswrapper"
+
+SOURCE="ndiswrapper"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/$SOURCE/stable/$TARBALL"
+
+DEPENDS="linux"
+BUILD_DEPENDS="linux-module-headers xz"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|error Multiple|echo Multiple|' driver/Makefile
+
+	make KBUILD=/usr/src/linux KVER=linux-${kvers}-slitaz
+
+	xz driver/ndiswrapper.ko
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	EXTRAVERSION=_${kvers}
+	mkdir -p $fs/sbin
+	mkdir -p $fs/lib/modules/${kvers}-slitaz/kernel/misc
+
+	# Install utilities
+	install -o root -m 0755 $src/utils/loadndisdriver \
+		$fs/sbin/
+	install -o root -m 0644 $src/driver/ndiswrapper.ko.xz \
+		$fs/lib/modules/${kvers}-slitaz/kernel/misc/ndiswrapper.ko.xz
+}
+
+# Post install/remove commands for Tazpkg.
+post_install()
+{
+	chroot "$1/" depmod -a ${EXTRAVERSION#_}-slitaz
+}
+
+post_remove()
+{
+	chroot "$1/" depmod -a ${EXTRAVERSION#_}-slitaz
+}

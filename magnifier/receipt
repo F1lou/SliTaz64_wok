@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="magnifier"
+VERSION="3.5"
+CATEGORY="utilities"
+SHORT_DESC="Virtual magnifying glass"
+MAINTAINER="paul@slitaz.org"
+LICENSE="GPL2"
+SOURCE="magnifier-linux"
+TARBALL="$SOURCE-$VERSION.tar.bz2"
+WEB_SITE="http://magnifier.sourceforge.net/"
+WGET_URL="http://downloads.sourceforge.net/magnifier/$TARBALL"
+
+DEPENDS="expat gtk+ xorg-libX11 xorg-libXau xorg-libXcomposite \
+xorg-libXcursor xorg-libXdmcp xorg-libXext xorg-libXfixes xorg-libXinerama \
+xorg-libXrandr xorg-libXrender xorg-libXdamage"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./install.sh DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/pixmaps
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share $fs/usr
+	cp $install/usr/share/magnifier/icon3.ico $fs/usr/share/pixmaps/icon3.png
+}
+

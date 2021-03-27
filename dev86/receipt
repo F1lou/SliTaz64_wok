@@ -1,0 +1,45 @@
+# SliTaz package receipt.
+
+PACKAGE="dev86"
+VERSION="0.16.21"
+CATEGORY="development"
+SHORT_DESC="Linux 8086 development environment."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://www.debath.co.uk/"
+WGET_URL="https://github.com/lkundrak/dev86/archive/v$VERSION.tar.gz"
+TAGS="compiler C assembler 8086"
+
+BUILD_DEPENDS="wget"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|include/malloc.h|& 2> /dev/null|' libc/malloc/Makefile
+	sed -i 's|/usr/man|/usr/share/man|' man/Makefile
+	sed -i 's|REFIX)/man|REFIX)/share/man|' Makefile */Makefile
+	make -j 1 PREFIX=/usr &&
+	make -j 1 DIST=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib $fs/usr
+	cp -a $stuff/com2exe $fs/usr/bin
+}
+
+# Pre and post install commands for Tazpkg.
+post_install()
+{
+	[ "$1" ] && return
+	register=/proc/sys/fs/binfmt_misc/register
+	[ -f $register ] || modprobe binfmt_misc 2> /dev/null || true
+	[ -f $register ] && cat > $register <<EOT
+:i86-elks:M::\x01\x03\x20\x00:\xff\xff\xff\x83:/usr/bin/elksemu:
+EOT
+	true
+}

@@ -1,0 +1,148 @@
+#!/bin/sh
+# sdft - SliTaz Desktop Files Tools
+#      - tools for editing and pretty printing .desktop files for SliTaz Linux
+# Aleksej Bobylev <al.bobylev@gmail.com>, 2014-2017
+
+VERSION="170314"
+
+### functions ###
+usage() {
+	cat <<EOT
+sdft - SliTaz Desktop Files Tools, v. $VERSION
+Tools for editing and pretty printing .desktop files for SliTaz Linux
+
+Usage:
+sdft /path/to/file.desktop [COMMAND ...]
+
+Commands:
+-a "LINE"  Add a LINE to .desktop file
+-r "LINE"  Remove all lines with LINE
+-s "LINE"  Substitute existing LINE (like '-r' then '-a')
+-g         Remove GenericName lines (who uses it?)
+-x         Remove X- lines
+-t         Remove Terminal line
+-tf        Remove Terminal=false line
+-te        Remove TryExec line
+-o         Remove sections other than '[Desktop Entry]'
+-k "LIST"  Keep only specified locales and remove the rest
+-i         In-place edit (replace original)
+
+Examples:
+sdft \$src/my.desktop -a "Name[en_GB]=Desktop"
+sdft \$src/my.desktop -r "Name[en_GB]"
+sdft \$src/my.desktop -s "Categories=Utility;Calculator;"
+sdft \$src/my.desktop -r "X-GNOME-.*"
+sdft \$src/my.desktop -a "Name[en_GB]=Desktop" -g -o
+sdft \$src/my.desktop -k "en pt ru"  # keeps en en_GB en_US pt pt_BR ru ru_UA...
+
+EOT
+}
+
+extract() {
+	local EX="${1//[/\[}"; EX="${EX//]/\]}"
+	grep -e "^$EX="   $WORKING/section
+	sed -i "/^$EX=/d" $WORKING/section
+}
+
+extract_no_repeat() {
+	local IT_NAME="$1" IT_CONTENT
+	IT_CONTENT=$(extract "$IT_NAME" | sed "s|$IT_NAME=\(.*\)|\1|")
+	[ -n "$IT_CONTENT" ] && echo "$IT_NAME=$IT_CONTENT"
+	extract "$IT_NAME[.*]" | sort #| sed -n "/$IT_NAME\[.*\]=$IT_CONTENT$/!p"
+}
+
+semicolon() {
+	sed -e 's|.*|&;|' -e 's|;;|;|g'
+}
+
+### /functions ###
+
+
+
+case "$1" in
+	''|-h|--help)    usage;                   exit 0 ;;
+	-v|-V|--version) echo "sdft v. $VERSION"; exit 0 ;;
+esac
+
+[ ! -s "$1" ] && exit 1
+
+
+# working dir
+WORKING=$(mktemp -d)
+# original .desktop file to process it
+ORIGINAL="$WORKING/original.desktop"
+DESKTOP="$1"; cp "$DESKTOP" $ORIGINAL
+
+SECTION="Desktop Entry"
+if ! grep -qF "[$SECTION]" "$ORIGINAL"; then
+	echo "Seems $1 is not a Desktop file. Abort" >&2
+	exit 1
+fi
+
+# extract section content
+sed -n "/^\[$SECTION\]$/,/^\[.*\]$/{/^\[/!p}" $ORIGINAL > $WORKING/section
+
+# rest of the file
+sed "/^\[$SECTION\]$/,/^\[.*\]$/{/^[^\[]/d}" $ORIGINAL | sed "/^\[$SECTION\]$/d" > $WORKING/rest
+
+shift
+while [ -n "$1" ]; do
+	case "$1" in
+		-a)  shift;                                             echo "$1" >> $WORKING/section; shift ;;
+		-r)  shift; extract           "$1"          >/dev/null; shift ;;
+		-s)  shift; extract           "${1%%=*}"    >/dev/null; echo "$1" >> $WORKING/section; shift ;;
+		-g)  shift; extract_no_repeat 'GenericName' >/dev/null ;;
+		-x)  shift; extract           'X-.*'        >/dev/null ;;
+		-t)  shift; extract           'Terminal'    >/dev/null ;;
+		-te) shift; extract           'TryExec'     >/dev/null ;;
+		-tf) shift; sed -i            '/^Terminal=false$/d'                  $WORKING/section ;;
+		-o)  shift; REMOVE_OTHER='yes' ;;
+		-k)  shift; klocales="$1"; shift ;;
+		-i)  shift; IN_PLACE='yes' ;;
+		*)   echo "Unknown command '$1'" >&2; shift ;;
+	esac
+done
+
+{
+	echo "[$SECTION]"
+	extract 'Encoding' >/dev/null
+	extract 'Version'  >/dev/null
+	extract 'Type'
+	extract_no_repeat 'Name'
+	extract_no_repeat 'GenericName'
+	extract_no_repeat 'Comment'
+	extract 'Terminal'
+	extract 'StartupNotify'
+	extract 'TryExec'
+	extract 'Exec'
+	extract 'Icon'
+	extract 'Icon[.*]' >/dev/null
+	extract 'Categories' | sed 's|Application;||' | semicolon
+	extract 'NoDisplay'
+	extract 'MimeType' | semicolon
+
+	sort < $WORKING/section | sed -n '/^$/!p'
+	[ "$REMOVE_OTHER" != 'yes' ] && sed -n '/^$/!p' < $WORKING/rest
+} > $WORKING/new
+
+
+if [ -n "$klocales" ]; then
+	# Existing locales from Name, GenericName and Comment
+	elocales=" $(sed -n 's%\(Name\|Comment\)\[\([a-zA-Z@_]*\)\].*%\2%p' $WORKING/new | sort -u | tr '\n' ' ') "
+	for klocale in $klocales; do
+		elocales=${elocales//$klocale}
+	done
+	for elocale in $elocales; do
+		sed -i "/\[$elocale\]/d" $WORKING/new
+	done
+fi
+
+
+if [ "$IN_PLACE" == 'yes' ]; then
+	cp -f $WORKING/new "$DESKTOP"
+else
+	cat $WORKING/new
+fi
+
+# clean
+rm -rf $WORKING

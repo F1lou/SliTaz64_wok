@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="rails"
+VERSION="6.0.2.2"
+CATEGORY="development"
+SHORT_DESC="REST on Rails."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://rubygems.org/gems/rails"
+
+TARBALL="$PACKAGE-$VERSION.gem"
+WGET_URL="https://rubygems.org/downloads/$TARBALL"
+
+DEPENDS="actionmailer actionpack activerecord activeresource activesupport ruby"
+BUILD_DEPENDS="$DEPENDS ruby-dev"
+
+COOK_OPT="!repack_src !unpack"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	local _gemdir="$(ruby -rrubygems -e'puts Gem.default_dir')"
+	gem install --ignore-dependencies -i "$DESTDIR/$_gemdir" $SOURCES_REPOSITORY/$TARBALL
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr	$fs
+}

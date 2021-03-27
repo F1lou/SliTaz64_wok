@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="emacs-pkg-text-translator"
+VERSION="0.6.6.1"
+CATEGORY="development"
+SHORT_DESC="Translates strings by using translation services on the web."
+MAINTAINER="domcox@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://web.archive.org/web/20190506181932/https://khiker.hatenablog.jp/entry/20070503/emacs_text_translator"
+TAGS="emacs"
+
+DEPENDS="emacs"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	echo -n "Installing start file"
+	mkdir -p $fs/usr/share/emacs/site-lisp/site-start.d && \
+	cp -a stuff/90*.el $fs/usr/share/emacs/site-lisp/site-start.d
+	status
+
+	echo -n "Installing text-translator"
+	mkdir -p $fs/usr/share/emacs/site-lisp/text-translator && \
+	cp -a stuff/text*.el $fs/usr/share/emacs/site-lisp/text-translator
+	status
+}
+
+post_install()
+{
+	chroot "$1/" tazpkg reconfigure emacs
+}
+
+post_remove()
+{
+	chroot "$1/" tazpkg reconfigure emacs
+}

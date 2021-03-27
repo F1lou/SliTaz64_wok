@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="libirman"
+VERSION="0.4.5"
+CATEGORY="utilities"
+SHORT_DESC="Library for Irman."
+MAINTAINER="rcx@zoominternet.net"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://www.lirc.org/html/install.html"
+WGET_URL="https://www.lirc.org/software/snapshots/$TARBALL"
+CONFIG_FILES="/etc/irman.conf"
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/etc $fs
+}

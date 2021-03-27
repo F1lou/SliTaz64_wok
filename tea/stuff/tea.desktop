@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=TEA Text Editor
+Name[fr]=Editeur de text TEA
+Name[pt]=Editor de texto TEA
+Name[pt_BR]=Editor de texto TEA
+Icon=tea
+Exec=tea %U
+Terminal=false
+StartupNotify=true
+Categories=Application;Utility;TextEditor;

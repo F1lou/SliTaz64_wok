@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="lyx-locales"
+VERSION="2.3.4.4"
+CATEGORY="localization"
+SHORT_DESC="Locale files for LyX."
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://www.lyx.org"
+
+DEPENDS="lyx"
+WANTED="lyx"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/share/locale	$fs/usr/share
+}

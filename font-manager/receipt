@@ -1,0 +1,54 @@
+# SliTaz package receipt.
+
+PACKAGE="font-manager"
+VERSION="0.5.7"
+CATEGORY="utilities"
+SHORT_DESC="A font management application for the GNOME desktop."
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL3"
+WEB_SITE="https://fontmanager.github.io/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/FontManager/$PACKAGE/archive/$VERSION.tar.gz"
+
+DEPENDS="fontconfig freetype libxml2-python pycairo pygtk pygobject python \
+	sqlite"
+BUILD_DEPENDS="bash fontconfig-dev freetype-dev glib-dev gnome-doc-utils
+	intltool pango-dev python-dev sqlite-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export	CONFIG_SHELL=/bin/bash
+	export	SHELL=/bin/bash
+
+	chmod	u+x	configure
+	chmod	u+x	install-sh
+	chmod	u+x	po/pogen.sh
+
+	sed -i 's|FT_XFREE86_H|&\n#define W_OK (2)|' \
+		src/lib/fm-fontutils.c
+	./configure			\
+		--enable-bytecode	\
+		--enable-nls		\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$install install
+
+	# fix translations
+	for p in $(ls po | grep -e '.po$')
+	  do
+		msgfmt $src/po/$p -o $install/usr/share/locale/${p%.po}/LC_MESSAGES/font-manager.mo
+	  done
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+
+	# fix paths
+	sed -i "s|$install||g" $fs/usr/bin/* $fs/usr/share/font-manager/*.py
+	# remove help (need absent yelp to show)
+	rm -rf $fs/usr/share/font-manager/help
+}

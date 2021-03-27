@@ -1,0 +1,70 @@
+# SliTaz package receipt.
+
+PACKAGE="minetest"
+VERSION="5.1.1"
+CATEGORY="games"
+SHORT_DESC="An open source voxel game engine and game."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://www.minetest.net/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/$PACKAGE/$PACKAGE/archive/$VERSION.tar.gz"
+TARBALL2="${PACKAGE}_game-$VERSION.tar.gz"
+WGET_URL2="https://github.com/$PACKAGE/${PACKAGE}_game/archive/$VERSION.tar.gz"
+EXTRA_SOURCE_FILES="$WGET_URL2"
+
+DEPENDS="curl irrlicht jpeg libglu-mesa libpng libspatialindex libssl \
+	libvorbis luajit mesa minetest-common openal sqlite"
+BUILD_DEPENDS="cmake curl-dev freetype-dev gcc83 irrlicht-dev jpeg-dev \
+	libglu-mesa-dev libogg-dev libpng-dev libspatialindex-dev \
+	libvorbis-dev luajit-dev mesa-dev openal-dev sqlite-dev \
+	xorg-libXxf86vm-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# As gcc-4.6.3 is insufficient, the most recent version of gcc
+	# available in the cooking repository is used
+	export	CC=gcc-83
+	export	CXX=g++-83
+
+	[ -s "$SOURCES_REPOSITORY/$TARBALL2" ] || wget --no-check-certificate \
+		-O "$SOURCES_REPOSITORY/$TARBALL2" ${EXTRA_SOURCE_FILES}
+	{ 
+		cd games/
+		tar xf $SOURCES_REPOSITORY/$TARBALL2
+		cd ..
+	}
+	cd build &&
+	cmake					\
+		-DCMAKE_INSTALL_PREFIX=/usr	\
+		-DBUILD_CLIENT=TRUE		\
+		-DBUILD_SERVER=TRUE		\
+		-DENABLE_SPATIAL=TRUE		\
+		-DENABLE_GETTEXT=TRUE		\
+		-DVERSION_EXTRA="SliTaz"	\
+		.. &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p ${fs}/usr/bin
+	mkdir -p ${fs}/usr/share
+
+	cp -a ${install}/usr/bin/${PACKAGE}	${fs}/usr/bin
+	cp -a ${install}/usr/share/icons	$fs/usr/share
+}
+
+# Pre and post install commands for Tazpkg.
+post_install()
+{
+	case " $(. $1/etc/rcS.conf; echo $LOAD_MODULES) " in
+	*\ snd-pcm-oss\ *) ;;
+	*) sed -i 's|LOAD_MODULES="|&snd-pcm-oss |' $1/etc/rcS.conf
+	   modprobe snd-pcm-oss;;
+	esac
+}

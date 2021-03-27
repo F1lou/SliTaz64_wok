@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="gmpc"
+VERSION="11.8.16"
+CATEGORY="multimedia"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL2"
+SHORT_DESC="A GTK2 client for MPD"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://gmpclient.org"
+WGET_URL="http://download.sarine.nl/Programs/${PACKAGE}/${VERSION%.*}/$TARBALL"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="libglade libmpd curl xorg-libSM libsoup libsexy mpd sqlite libtasn1"
+BUILD_DEPENDS="gob2-dev libglade-dev libmpd libmpd-dev curl-dev sqlite-dev \
+xorg-libSM-dev libsoup-dev libsexy-dev xcb-util-dev util-linux-uuid-dev flex"
+
+case "$ARCH" in
+	i?86) BUILD_DEPENDS="$BUILD_DEPENDS vala"
+esac
+
+# Rules to configure and make the package.
+compile_rules() {
+  ./configure \
+		--enable-system-libsexy \
+		--disable-shave \
+		--disable-unique \
+		$CONFIGURE_ARGS &&
+  make || return 1
+  sed -i 's|GNOME;AudioVideo;|GTK;AudioVideo;Player;|' data/${PACKAGE}.desktop
+  make install
+}
+	
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/icons/hicolor
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/$PACKAGE $fs/usr/share
+	cp -a $install/usr/share/icons/hicolor/16x16 \
+		$fs/usr/share/icons/hicolor
+	
+}

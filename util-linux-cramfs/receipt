@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="util-linux-cramfs"
+VERSION="2.35.1"
+CATEGORY="system-tools"
+SHORT_DESC="The cramfs utilities from Util Linux."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://en.wikipedia.org/wiki/Util-linux"
+
+DEPENDS="glibc-base zlib"
+WANTED="util-linux"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cook_copy_files *.cramfs
+	rm -r $fs/usr
+}

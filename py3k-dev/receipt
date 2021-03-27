@@ -1,0 +1,25 @@
+# SliTaz package receipt.
+
+PACKAGE="py3k-dev"
+VERSION="3.7.0"
+CATEGORY="development"
+SHORT_DESC="The Python programming language devel files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL"
+WANTED="py3k"
+SOURCE="Python"
+WEB_SITE="https://www.python.org/"
+
+DEPENDS="py3k"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/bin/*-config $fs/usr/bin
+	chmod 755 $fs/usr/bin/*-config
+	# in py3k package now
+	python_version=${VERSION:0:3}
+	rm $fs/usr/include/python${python_version}m/pyconfig.h
+}

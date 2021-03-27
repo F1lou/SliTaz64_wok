@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="cgdb"
+VERSION="0.7.1"
+CATEGORY="development"
+TAGS="debugger"
+SHORT_DESC="Curses interface for GDB."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://cgdb.sourceforge.net/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://cgdb.me/files/$TARBALL"
+
+DEPENDS="gcc83-lib-base gdb ncurses readline"
+BUILD_DEPENDS="gcc83 ncurses-dev readline-dev texinfo"
+
+CROSS="error: cannot check for file existence when cross compiling"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		CC=gcc-83		\
+		CXX=g++-83		\
+		--build=$HOST_SYSTEM	\
+		--host=$HOST_SYSTEM &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin	$fs/usr
+}

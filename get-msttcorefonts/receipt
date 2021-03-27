@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+# http://corefonts.sourceforge.net/
+
+PACKAGE="get-msttcorefonts"
+VERSION="1.00"
+CATEGORY="non-free"
+SHORT_DESC="An easy way to install Microsoft's TrueType core fonts on linux."
+MAINTAINER="rocky@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="https://sourceforge.net/projects/corefonts"
+TAGS="utilities"
+
+DEPENDS="cabextract"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp stuff/$PACKAGE $fs/usr/bin
+}

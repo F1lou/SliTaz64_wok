@@ -1,0 +1,42 @@
+# SliTaz package receipt.
+
+PACKAGE="cdrkit"
+VERSION="1.1.11"
+CATEGORY="utilities"
+SHORT_DESC="Wodim for recording/blanking CDs/DVDs and genisoimage for ISO."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://www.cdrkit.org/"
+WGET_URL="http://cdrkit.org/releases/$TARBALL"
+EXTRA_SOURCE_FILES="cdrkit-1.1.9-efi-boot.patch"
+
+DEPENDS="libcap zlib bzlib attr"
+BUILD_DEPENDS="cmake libcap-dev zlib-dev bzip2-dev attr-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i -e '/USE_MAGIC/d' -e '/(MAGICLIBS magic)/d' \
+		genisoimage/CMakeLists.txt
+	[ -s $SOURCES_REPOSITORY/cdrkit-1.1.9-efi-boot.patch ] ||
+		wget -P $SOURCES_REPOSITORY https://github.com/NixOS/nixpkgs/raw/master/pkgs/tools/cd-dvd/cdrkit/cdrkit-1.1.9-efi-boot.patch
+	patch -p1 < $SOURCES_REPOSITORY/cdrkit-1.1.9-efi-boot.patch
+	patch -p1 < $stuff/cdrkit-1.1.9-sort-catalog.patch
+	make PREFIX=/usr && make install PREFIX=/usr
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin $install/usr/share/
+	cp $install/usr/bin/genisoimage $fs/usr/bin
+	cp $install/usr/bin/wodim $fs/usr/bin	
+	# Make symlinks for cdrtools compatibility
+	cd $fs/usr/bin
+	ln -s wodim cdrecord
+	ln -s genisoimage mkisofs
+	ln -s genisoimage mkhybrid
+	cp -a $src/doc $install/usr/share
+	cp $src/FORK $src/FAQ $src/ABOUT $install/usr/share/doc
+}

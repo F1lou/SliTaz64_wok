@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="libssh"
+VERSION="0.9.4"
+CATEGORY="network"
+TAGS="ssh"
+SHORT_DESC="Library for accessing ssh client services through C libraries."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="LGPL2.1"
+WEB_SITE="https://www.libssh.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="${WEB_SITE}files/${VERSION%.*}/$TARBALL"
+
+DEPENDS="libssl"
+BUILD_DEPENDS="cmake openssl-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir build
+	cd build
+	cmake ../				\
+		-DCMAKE_INSTALL_PREFIX=/usr	\
+		-DCMAKE_BUILD_TYPE=Release &&
+	make -j 1 &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+}

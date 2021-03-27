@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="enigma"
+VERSION="1.21"
+CATEGORY="games"
+SHORT_DESC="Puzzle game similar to Oxyd."
+MAINTAINER="devl547@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://www.nongnu.org/enigma/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/$PACKAGE-game/$TARBALL"
+
+DEPENDS="libsdl libsdl-image libsdl-mixer libsdl-ttf xerces-c"
+BUILD_DEPENDS="curl-dev gettext imagemagick libsdl-dev libsdl-image-dev 
+	libsdl-mixer-dev libsdl-ttf-dev  xerces-c-dev"
+#	imagemagick for /usr/bin/convert only
+
+# Rules to configure and make the package.
+compile_rules()
+{
+#	sed -i 's/stdexcept>/&\n#include <stddef.h>/' \
+#		lib-src/zipios++/src/directory.h
+#	sed -i 's/#ifndef.*/&\n#include <stddef.h>/' \
+#		lib-src/enigma-core/ecl_dict.hh
+
+	./configure			\
+		--build=$HOST_SYSTEM	\
+		--host=$HOST_SYSTEM	\
+		--enable-optimize 2>&1 | sed '/.*config.rpath.*No such file.*/d' &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/lib		$fs/usr
+	cp -a $install/usr/share/enigma	$fs/usr/share
+}

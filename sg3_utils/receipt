@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="sg3_utils"
+VERSION="1.45"
+CATEGORY="system-tools"
+SHORT_DESC="Low level utilities for devices that use a SCSI command set."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL BSD"
+WEB_SITE="http://sg.danny.cz/sg/"
+
+TARBALL="$PACKAGE-$VERSION.tgz"
+WGET_URL="${WEB_SITE}p/$TARBALL"
+
+DEPENDS="libsgutils2"
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure		\
+		$CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/bin	$fs/usr
+	[ -x "/usr/bin/cook" ] &&
+	cook libsgutils2
+}

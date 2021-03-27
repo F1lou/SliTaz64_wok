@@ -1,0 +1,38 @@
+# SliTaz package receipt.
+
+PACKAGE="pbzip2"
+VERSION="1.1.13"
+CATEGORY="base-system"
+SHORT_DESC="Parallel implementation of bzip2."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="BSD"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://web.archive.org/web/20180324210720/http://compression.ca/pbzip2/"
+WGET_URL="https://launchpad.net/pbzip2/${VERSION%.*}/$VERSION/+download/$TARBALL"
+
+DEPENDS="bzlib"
+BUILD_DEPENDS="bzip2-dev wget"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp $src/pbzip2 $fs/usr/bin
+}
+
+pre_remove()
+{
+	sed -i '/bzip2=pbzip2/d' $1/etc/profile
+}
+
+post_install()
+{
+	grep -qs 'bzip2=pbzip2' $1/etc/profile ||
+	echo 'alias bzip2=pbzip2' >> $1/etc/profile
+}

@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="atkmm-dev"
+VERSION="2.22.6"
+CATEGORY="development"
+SHORT_DESC="devel files for atkmm"
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="LGPL2.1"
+WEB_SITE="https://www.gnome.org/"
+WANTED="atkmm"
+
+DEPENDS="atkmm pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/lib/atkmm* $fs/usr/lib
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+}
+

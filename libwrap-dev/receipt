@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="libwrap-dev"
+VERSION="7.6"
+CATEGORY="development"
+SHORT_DESC="Wietse Venema's network logger devel files."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="BSD"
+WANTED="libwrap"
+WEB_SITE="ftp://ftp.porcupine.org/pub/security/index.html"
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/include $fs/usr/lib
+	cp -a $src/tcpd.h $fs/usr/include
+	cp -a $src/*.a $fs/usr/lib
+}

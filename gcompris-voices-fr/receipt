@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="gcompris-voices-fr"
+VERSION="17.05"
+CATEGORY="games"
+SHORT_DESC="Gcompris Education games - French voices."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPLv3+"
+WEB_SITE="https://www.gcompris.net/"
+
+WANTED="gcompris"
+DEPENDS="gcompris"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/gcompris/boards/voices
+	cp -a $install/usr/share/gcompris/boards/voices/fr \
+		$fs/usr/share/gcompris/boards/voices
+}

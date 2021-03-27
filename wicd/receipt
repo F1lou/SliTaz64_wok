@@ -1,0 +1,64 @@
+# SliTaz package receipt.
+
+PACKAGE="wicd"
+VERSION="1.7.2.4"
+CATEGORY="network"
+SHORT_DESC="Network connection manager"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://wicd.sourceforge.net/"
+WGET_URL="https://launchpad.net/wicd/${VERSION:0:3}/$VERSION/+download/$TARBALL"
+TAGS="wireless ethernet"
+
+DEPENDS="python dbus-python ethtool wpa_supplicant pygtk"
+BUILD_DEPENDS="python-distribute python-babel python-dev dbus-python-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# Fix problem with new urwid FS#33378 LP#1075399
+	patch -Np0 -i $stuff/831_830.patch
+	patch -Np0 -i $stuff/835_834.patch
+	patch -Np0 -i $stuff/dbus_string_fix.patch
+	python setup.py configure
+	#HACK for https://bugs.launchpad.net/wicd/+bug/928589
+	mkdir -p translations/ast/LC_MESSAGES
+	msgfmt po/ast.po -o translations/ast/LC_MESSAGES/wicd.mo
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr $fs/etc $fs/var
+	cp -a $install/usr/* $fs/usr
+	cp -a $install/etc/* $fs/etc
+	cp -a $install/var/* $fs/var
+	rm -f -r $fs/usr/share/doc
+	rm -f -r $fs/usr/share/man
+	rm -f -r $fs/usr/share/icons/hicolor/*
+	rm -f -r $fs/usr/share/locale
+	cp -a $install/usr/share/icons/hicolor/scalable \
+		  $install/usr/share/icons/hicolor/32x32 $fs/usr/share/icons/hicolor
+	mkdir -p $fs/etc/init.d
+	cp -a $stuff/wicd $fs/etc/init.d
+	# dhclient as fake udhcpc wrapper
+	cp -a $stuff/dhclient $fs/usr/bin 
+	# set permissions
+	chmod +x $fs/usr/bin/dhclient
+
+	# change bash to sh
+	sed -i 's/bash/sh/' $fs/usr/sbin/wicd \
+						$fs/usr/bin/wicd-client
+}
+
+# edit daemons.conf.
+post_install()
+{
+	if ! grep -q ^WICD_OPTIONS "$1/etc/daemons.conf"; then
+		echo '# wicd options.' >> "$1/etc/daemons.conf"
+		echo 'WICD_OPTIONS=""' >> "$1/etc/daemons.conf"
+		echo '' >> "$1/etc/daemons.conf"
+	fi
+}

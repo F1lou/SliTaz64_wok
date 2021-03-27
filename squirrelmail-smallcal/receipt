@@ -1,0 +1,42 @@
+# SliTaz package receipt.
+
+PACKAGE="squirrelmail-smallcal"
+VERSION="0.8-1.2.3"
+CATEGORY="network"
+SHORT_DESC="Left side calendar plugin for Web mail."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+SOURCE="smallcal"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="http://www.squirrelmail.org/"
+WGET_URL="${WEB_SITE}plugins/$TARBALL"
+HOST_ARCH="x86_64 any"
+
+DEPENDS="squirrelmail squirrelmail-compatibility-plugin"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir -p $DESTDIR
+	cp -a $src $DESTDIR/$SOURCE
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/squirrelmail/plugins
+	cp -a $install/$SOURCE $fs/usr/share/squirrelmail/plugins
+}
+
+post_install()
+{
+	echo "\$plugins[] = '$SOURCE';" >> "$1/etc/squirrelmail/config_local.php"
+	cat <<EOF
+You can enable calendar display in Option -> Display Preferences
+EOF
+}
+
+pre_remove()
+{
+	sed -i "/\$plugins.. = '$SOURCE';/d" /etc/squirrelmail/config_local.php
+}

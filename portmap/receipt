@@ -1,0 +1,45 @@
+# SliTaz package receipt.
+
+PACKAGE="portmap"
+VERSION="6.0"
+CATEGORY="network"
+SHORT_DESC="RPC portmapper"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="BSD"
+TARBALL="${PACKAGE}-${VERSION}.tgz"
+WEB_SITE="ftp://ftp.porcupine.org/pub/security/index.html"
+WGET_URL="http://neil.brown.name/portmap/$TARBALL"
+
+DEPENDS="libwrap"
+BUILD_DEPENDS="libwrap-dev"
+
+# rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	
+	# Build 
+	# Disabling TCP_WRAPPER with NO_TCP_WRAPPER variable
+	NO_TCP_WRAPPER=1  make
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/sbin
+	cp -a $src/pmap_dump $fs/usr/sbin
+	cp -a $src/pmap_set $fs/usr/sbin
+	cp -a $src/portmap $fs/usr/sbin
+
+	mkdir -p $fs/etc/init.d
+	install -g root -o root -m 0755 stuff/init.d/portmap $fs/etc/init.d
+}
+
+
+post_install()
+{
+	# Post message when installing.
+	echo -e "\nTo starts $PACKAGE server you can run :\n"
+        echo "/etc/init.d/$PACKAGE start"
+	echo -e "Or add $PACKAGE to RUN_DAEMONS in /etc/rcS.conf\n"	                        
+}

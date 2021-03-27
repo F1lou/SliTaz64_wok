@@ -1,0 +1,26 @@
+# SliTaz package receipt.
+
+PACKAGE="SkypeFreak"
+GITHASH="9347a651e724b41a8da3bc77568577f3c8ed3036"
+VERSION=${GITHASH:0:7}
+CATEGORY="network"
+SHORT_DESC="A cross platform forensic tool for Skype"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL3"
+WEB_SITE="http://osandamalith.github.io/SkypeFreak/"
+TARBALL="$PACKAGE-$VERSION.zip"
+WGET_URL="https://github.com/OsandaMalith/$PACKAGE/archive/$GITHASH.zip"
+
+DEPENDS="python"
+BUILD_DEPENDS="wget"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin $fs/usr/share/applications
+	cp -a $src/source/SkypeFreak.py $fs/usr/bin
+	cp -a $stuff/*.desktop $fs/usr/share/applications
+
+	# fix bug with unicode strings (I'm not a pythonist, sorry)
+	sed -i 's|str(|unicode(|g' $fs/usr/bin/SkypeFreak.py
+}

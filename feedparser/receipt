@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="feedparser"
+VERSION="5.2.1"
+CATEGORY="misc"
+SHORT_DESC="Parse RSS and Atom feeds in Python."
+MAINTAINER="jozee@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://github.com/kurtmckee/feedparser"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/kurtmckee/$PACKAGE/archive/$VERSION.tar.gz"
+
+DEPENDS="libxml2 python"
+BUILD_DEPENDS="libxml2-dev python-dev python-setuptools"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib 
+	cp -a $install/usr/lib/python* $fs/usr/lib
+}

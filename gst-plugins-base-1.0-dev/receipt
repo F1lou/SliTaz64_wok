@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="gst-plugins-base-1.0-dev"
+VERSION="1.16.2"
+SERIES="1.0"
+CATEGORY="development"
+SHORT_DESC="gst-plugins-base development files."
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://gstreamer.freedesktop.org/"
+
+DEPENDS="alsa-lib-dev gstreamer-1.0-dev libogg-dev libtheora-dev 
+	libtheora-enc libvorbis-dev orc-dev pango-dev pkg-config 
+	udev-dev xorg-dev xorg-libXv-dev xorg-libXvMC-dev"
+WANTED="gst-plugins-base-1.0"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/gstreamer-$SERIES
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/include			$fs/usr
+	cp -a $install/usr/lib/pkgconfig		$fs/usr/lib
+	cp -a $install/usr/lib/*.*a			$fs/usr/lib/
+	cp -a $install/usr/lib/gstreamer-$SERIES/*.*a	$fs/usr/lib/gstreamer-$SERIES
+}

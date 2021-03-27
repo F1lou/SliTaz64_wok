@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="python-formencode"
+VERSION="1.2.2"
+CATEGORY="development"
+SHORT_DESC="FormEncode is a validation and form generation package."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="PSL"
+SOURCE="FormEncode"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="http://formencode.org/"
+WGET_URL="http://pypi.python.org/packages/source/F/$SOURCE/$TARBALL"
+TAGS="python"
+
+DEPENDS="python"
+BUILD_DEPENDS="python python-dev python-setuptools"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr $fs
+}

@@ -1,0 +1,42 @@
+# SliTaz package receipt.
+
+PACKAGE="gegl"
+VERSION="0.3.12"
+CATEGORY="system-tools"
+SHORT_DESC="Generic Graphics Library"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL3"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://gegl.org/"
+WGET_URL="http://download.gimp.org/pub/$PACKAGE/${VERSION%.*}/$TARBALL"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="babl expat gtk+ jpeg xorg-libX11"
+BUILD_DEPENDS="babl-dev expat-dev gtk+-dev jasper-dev json-glib-dev \
+util-linux-mount-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# Keep gegl light so we can make smaller gimp LiveCD flavors
+	./configure \
+		--disable-docs \
+		--without-sdl \
+		--without-librsvg \
+		--without-graphviz \
+		--without-lua \
+		--without-libavformat \
+		--without-libv4l \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/gegl-* $fs/usr/lib
+	rm $fs/usr/lib/gegl-*/*.*a
+}

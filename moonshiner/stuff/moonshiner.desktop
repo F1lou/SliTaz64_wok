@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Moonshiner PS to PDF converter
+Name[fr]=Convertisseur PS vers PDF
+Name[pt]=Conversor PS para PDF Moonshiner
+Name[pt_BR]=Conversor PS para PDF Moonshiner
+Icon=moonshiner
+Exec=moonshiner
+Type=Application
+Categories=Office;

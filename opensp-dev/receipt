@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="opensp-dev"
+VERSION="1.5.2"
+CATEGORY="development"
+SHORT_DESC="OpenSP dev files."
+MAINTAINER="remy.carel@free.fr"
+LICENSE="MIT"
+SOURCE="OpenSP"
+WEB_SITE="http://openjade.sourceforge.net"
+WANTED="opensp"
+
+DEPENDS="opensp"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share
+	
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/include $fs/usr/
+}
+

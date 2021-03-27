@@ -1,0 +1,89 @@
+# SliTaz package receipt.
+
+PACKAGE="cndrvcups-common"
+VERSION="1.80"
+CATEGORY="system-tools"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="other"
+SHORT_DESC="Canon URF2 driver with support for LBP, iR and MF series printers"
+WEB_SITE="http://www.service.canon.com.au/drivers/files/"
+SOURCE="ufr2linuxv180"
+TARBALL="${SOURCE}.zip"
+WGET_URL="http://www.service.canon.com.au/drivers/files/$TARBALL"
+TAGS="printer driver"
+
+DEPENDS="cups cairo gtk+"
+BUILD_DEPENDS="autoconf automake cairo-dev gtk+-dev cups-dev libtool"
+
+# Rules to configure and make the package.
+
+compile_rules() {
+	
+    cd $src
+
+    [ -d cndrvcups-common-$VERSION ] || tar xzf Sources/cndrvcups-common-${VERSION}-1.tar.gz
+
+    cd $src/cndrvcups-common-$VERSION/buftool
+    ./autogen.sh --prefix=/usr $CONFIGURE_ARGS &&
+    make &&
+    make DESTDIR=$DESTDIR LIBDIR=/usr/lib install
+
+    cd $src/cndrvcups-common-$VERSION/cpca
+    ./autogen.sh --prefix=/usr $CONFIGURE_ARGS &&
+    make &&
+    make DESTDIR=$DESTDIR LIBDIR=$DESTDIR/usr/lib install
+
+    cd $src/cndrvcups-common-$VERSION/cngplp
+    ./autogen.sh --prefix=/usr $CONFIGURE_ARGS &&
+    make && \
+    make DESTDIR=$DESTDIR install
+
+    cd $src/cndrvcups-common-$VERSION/c3plmod_ipc
+    make && cp -a $src/cndrvcups-common-$VERSION $DESTDIR
+}
+	
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib \
+			 $fs/usr/bin/ \
+			 $fs/usr/share/caepcm \
+			 $fs/usr/share/licenses/$PACKAGE \
+			 $fs/etc
+
+	cp -a $install/cndrvcups-common-$VERSION/libs/*.so* $fs/usr/lib
+	cp -a $install/cndrvcups-common-$VERSION/libs/cnpkmodule $fs/usr/bin/
+	cp -a $install/cndrvcups-common-$VERSION/libs/c3pldrv $fs/usr/bin/
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/etc $fs
+	cp -a $install/usr $fs
+	cp -a $install/cndrvcups-common-$VERSION/c3plmod_ipc/libcanonc3pl.so.1.0.0 $fs/usr/lib
+	cp -a $install/cndrvcups-common-$VERSION/data/C*   $fs/usr/share/caepcm
+
+	# gzip all ppd files
+	#find $fs/usr/share/cups/model -name "*.ppd" | xargs gzip -n9
+
+	cd $fs/usr/lib
+    ln -sf libc3pl.so.0.0.1 libc3pl.so.0
+    ln -sf libc3pl.so.0.0.1 libc3pl.so
+
+    ln -sf libcnaccm.so.1.0 libcnaccm.so.1
+    ln -sf libcnaccm.so.1.0 libcnaccm.so
+
+    ln -sf libcaepcm.so.1.0 libcaepcm.so.1
+    ln -sf libcaepcm.so.1.0 libcaepcm.so
+
+    ln -sf libcnlbcm.so.1.0 libcnlbcm.so.1
+    ln -sf libcnlbcm.so.1.0 libcnlbcm.so
+
+    ln -sf libcaiowrap.so.1.0.0 libcaiowrap.so.1
+    ln -sf libcaiowrap.so.1.0.0 libcaiowrap.so
+
+    ln -sf libcaiousb.so.1.0.0 libcaiousb.so.1
+    ln -sf libcaiousb.so.1.0.0 libcaiousb.so
+
+    ln -sf libcanonc3pl.so.1.0.0 libcanonc3pl.so.1
+    ln -sf libcanonc3pl.so.1.0.0 libcanonc3pl.so
+}
+
+

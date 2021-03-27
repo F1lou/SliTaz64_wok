@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# @@ Kill Kleanny.
+kill -9 `ps auxc|grep kleanny | sed 's/^[^ ]\+ \+\([0-9]\+\) .\+$/\1/'`

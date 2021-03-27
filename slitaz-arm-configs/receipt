@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="slitaz-arm-configs"
+VERSION="212"
+CATEGORY="base-system"
+SHORT_DESC="SliTaz ARM config files and artwork."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="http://www.slitaz.org/"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="http://hg.slitaz.org/slitaz-arm/archive/$VERSION.tar.bz2"
+CONFIG_FILES="/etc/slitaz/applications.conf /etc/rcS.conf"
+HOST_ARCH="x86_64 arm"
+
+DEPENDS="slitaz-configs-base"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cd ${src}
+	cp -a rootfs/* ${fs}
+	chown -R root.root $fs
+}

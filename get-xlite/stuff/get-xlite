@@ -1,0 +1,96 @@
+#!/bin/sh -e
+
+ROOT="$1"
+
+if test $(id -u) != 0 ; then
+	echo -e "\nYou must be root to run `basename $0`."
+	echo -e "Please type 'su' and root password to become super-user.\n"
+	exit 0
+fi
+
+if [ -d $ROOT/var/lib/tazpkg/installed/xlite ]; then
+  [ -n "$ROOT" ] && exit 1
+  tazpkg remove xlite
+  [ -d /var/lib/tazpkg/installed/xlite ] && exit 1
+fi
+
+WEB_SITE="http://www.counterpath.net/"
+
+TMP_DIR=/tmp/get-xlite-$$-$RANDOM
+CUR_DIR=$(pwd)
+mkdir -p $TMP_DIR && cd $TMP_DIR
+
+# Download tarball
+while read URL; do
+	wget $URL || continue
+	TARBALL="$(basename $URL)"
+	[ -s $TARBALL ] && break
+done <<EOT
+http://counterpath.s3.amazonaws.com/downloads/X-Lite_Install.tar.gz
+ftp://ftp.uni-frankfurt.de/pub/Mirrors2/gentoo.org/distfiles/X-Lite_Install.tar.gz
+ftp://ftp.secyt.gov.ar/pub/software/X-Lite_Install.tar.gz
+ftp://ftp.prz.rzeszow.pl/pub/gentoo/source/distfiles/X-Lite_Install.tar.gz
+ftp://ftp.nz.debian.org/gentoo/distfiles/X-Lite_Install.tar.gz
+ftp://ftp.port80.se/gentoo/distfiles/X-Lite_Install.tar.gz
+ftp://ftp.wh2.tu-dresden.de/pub/mirrors/gentoo/distfiles/X-Lite_Install.tar.gz
+ftp://ftp.wh8.tu-dresden.de/pub/linux/distributions/gentoo/distfiles/X-Lite_Install.tar.gz
+ftp://ftp.swin.edu.au/gentoo/distfiles/X-Lite_Install.tar.gz
+ftp://ftp.mgts.by/pub/gentoo/distfiles/X-Lite_Install.tar.gz
+ftp://ftp.uni-kassel.de/Mirrors/ftp.fhh.opensource-mirror.de/gentoo/distfiles/X-Lite_Install.tar.gz
+ftp://ftp.cs.mun.ca/pub/mirror/gentoo/distfiles/X-Lite_Install.tar.gz
+ftp://ftp.free.fr/.mirrors1/ftp.gentoo.org/distfiles/X-Lite_Install.tar.gz
+ftp://ftp.fi.debian.org/pub/gentoo/distfiles/X-Lite_Install.tar.gz
+EOT
+if [ ! -f $TARBALL ]; then
+	cd $CUR_DIR
+	rm -rf $TMP_DIR
+	echo "Could not download $TARBALL. Exiting."
+	exit 1
+fi
+
+# Extract
+tar xzf $(basename $URL)
+
+VERSION="$(strings xten-xlite/xtensoftphone | grep ^Version | sed 's/.*="\(.*\)"/\1/')"
+
+# Install files
+dir=xlite-$VERSION/fs
+mkdir -p $dir/usr/bin $dir/usr/share/applications
+mv xten-xlite/xtensoftphone $dir/usr/bin
+ln -s xtensoftphone $dir/usr/bin/xlite
+cat > $dir/usr/share/applications/xlite.desktop <<EOT
+[Desktop Entry]
+Encoding=UTF-8
+Name=Softphone Xlite
+Comment=SIP softphone (VoIP)
+Exec=xtensoftphone
+Icon=firefox
+Type=Application
+Categories=Application;Network;
+EOT
+
+# Create pseudo package
+cat > xlite-$VERSION/receipt <<EOT
+PACKAGE="xlite"
+VERSION="$VERSION"
+CATEGORY="non-free"
+SHORT_DESC="SIP soft phone."
+WEB_SITE="$WEB_SITE"
+DEPENDS="atk cairo expat fontconfig freetype glib gtk+ libglade libpng libxml2 \
+pango pixman xorg-libX11 xorg-libXau xorg-libXcomposite xorg-libXcursor \
+xorg-libXdamage xorg-libXdmcp xorg-libXext xorg-libXfixes xorg-libXft \
+xorg-libXinerama xorg-libXrandr xorg-libXrender zlib libstdc++5"
+EOT
+
+# Pack
+tazpkg pack xlite-$VERSION
+
+# Clean to save RAM memory
+rm -rf xlite-$VERSION
+
+# Install pseudo package
+tazpkg install xlite-$VERSION.tazpkg --root=$ROOT
+
+# Clean
+cd $CUR_DIR
+rm -rf $TMP_DIR

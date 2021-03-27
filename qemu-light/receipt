@@ -1,0 +1,53 @@
+# SliTaz package receipt.
+
+PACKAGE="qemu-light"
+VERSION="1.2.0"
+CATEGORY="misc"
+SHORT_DESC="Light Qemu i386-softmmu target (without xen, vde, bluez, blobs, tls)."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+SOURCE="qemu"
+TARBALL="$SOURCE-$VERSION.tar.bz2"
+WEB_SITE="http://www.qemu.org/"
+WGET_URL="http://wiki.qemu.org/download/$TARBALL"
+TAGS="virtualization"
+CONFLICT="qemu"
+
+DEPENDS="alsa-lib libsdl util-linux-uuid"
+BUILD_DEPENDS="perl alsa-lib-dev libsdl-dev util-linux-uuid-dev python \
+libgio-dev glib-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	TARGET="i386-softmmu"
+	sed -i 's|uname -m|echo i486|' roms/openbios/utils/devbios/Makefile*
+	./configure \
+		--prefix=/usr \
+		--disable-xen \
+		--disable-vnc-sasl \
+		--disable-vnc-tls \
+		--disable-curl \
+		--disable-bluez \
+		--disable-curses \
+		--disable-vde \
+		--disable-attr \
+		--audio-drv-list=alsa \
+		--target-list="$TARGET" \
+		--cc=$BUILD_SYSTEM-gcc &&
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/qemu
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/qemu/keymaps $fs/usr/share/qemu
+	for bin in bios.bin vgabios-cirrus.bin pxe-e1000.rom linuxboot.bin
+	do
+		cp -a $install/usr/share/qemu/$bin $fs/usr/share/qemu
+	done
+	# Create qemu symlink
+	cd $fs/usr/bin && ln -s qemu-system-i386 qemu
+}

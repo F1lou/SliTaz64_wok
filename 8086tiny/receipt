@@ -1,0 +1,54 @@
+# SliTaz package receipt.
+
+PACKAGE="8086tiny"
+VERSION="1.25"
+CATEGORY="system-tools"
+SHORT_DESC="PC XT-compatible emulator/virtual machine."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="MIT"
+TARBALL="${PACKAGE}_${VERSION/./}.tar.bz2"
+WEB_SITE="https://web.archive.org/web/20151031061740/http://www.megalith.co.uk/8086tiny"
+WGET_URL="$WEB_SITE/downloads/$TARBALL"
+HOST_ARCH="x86_64 i486 arm"
+TAGS="emulator 8086"
+
+DEPENDS="libsdl"
+BUILD_DEPENDS="libsdl-dev nasm"
+
+# Handle cross compilation.
+case "$ARCH" in
+	arm*) BUILD_DEPENDS="libsdl-dev" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	patch -p0 < $stuff/8086tiny.u
+	case "$ARCH" in
+		x86_64|i?86)
+			make CC=gcc no_graphics &&
+			mv 8086tiny 8086tiny.nographics &&
+			make CC=gcc &&
+			nasm bios_source/bios.asm ;;
+		arm*)
+			make CC=${HOST_SYSTEM}-gcc 8086tiny_slowcpu
+			nasm bios_source/bios.asm &&
+			echo "Skipping: strip: Unable to recognise the format" ;;
+	esac
+}
+
+# SliTaz package testsuite
+testsuite() {
+	readelf -Ah ${src}/8086tiny
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin $fs/usr/share/8086tiny
+	cp -a $src/8086tiny $fs/usr/bin
+	[ -x "$src/8086tiny.nographics" ] && \
+		cp -a $src/8086tiny.nographics $fs/usr/bin
+	cp -a $src/bios_source/bios $fs/usr/share/8086tiny
+	cp $stuff/8086tiny.sh $fs/usr/bin
+}

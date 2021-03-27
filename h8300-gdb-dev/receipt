@@ -1,0 +1,35 @@
+# SliTaz package receipt."
+
+PACKAGE="h8300-gdb-dev"
+VERSION="7.1"
+CATEGORY="development"
+SHORT_DESC="The GNU Project Debugger dev files targeting the H8/300."
+MAINTAINER="rcx@zoominternet.net"
+LICENSE="GPL2"
+WANTED="h8300-gdb"
+SOURCE="gdb"
+WEB_SITE="http://www.gnu.org/software/gdb/"
+
+DEPENDS="h8300-gdb pkg-config"
+
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	
+	# Copying include dir if exists
+	if [ -d "$install/usr/include" ]; then
+		cp -a $install/usr/include $fs/usr
+	fi
+	
+	# Copying pkgconfig dir if exists
+	if [ -d "$install/usr/lib/pkgconfig" ]; then
+		test -d $fs/usr/lib/ || mkdir -p $fs/usr/lib/
+		cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	fi
+	
+	# Copying static h8300 libs only if exists
+	if ( find $install/usr/lib -name "*h8300-*.*a" > /dev/null ); then
+		test -d $fs/usr/lib || mkdir -p $fs/usr/lib
+		cp -a $install/usr/lib/*h8300-*.*a $fs/usr/lib
+	fi
+}

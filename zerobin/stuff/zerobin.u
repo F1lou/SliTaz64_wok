@@ -1,0 +1,92 @@
+--- index.php
++++ index.php
+@@ -17,6 +17,13 @@
+     $_COOKIE = array_map('stripslashes_deep', $_COOKIE);
+ }
+ 
++function remote_address()
++{
++	if (isset($_SERVER["HTTP_X_FORWARDED_FOR"]))
++		return $_SERVER["HTTP_X_FORWARDED_FOR"];
++	return $_SERVER["REMOTE_ADDR"];
++}
++
+ // trafic_limiter : Make sure the IP address makes at most 1 request every 10 seconds.
+ // Will return false if IP address made a call less than 10 seconds ago.
+ function trafic_limiter_canPass($ip)
+@@ -157,7 +164,7 @@
+     }
+ 
+     // Make sure last paste from the IP address was more than 10 seconds ago.
+-    if (!trafic_limiter_canPass($_SERVER['REMOTE_ADDR']))
++    if (!trafic_limiter_canPass(remote_address()))
+         { echo json_encode(array('status'=>1,'message'=>'Please wait 10 seconds between each post.')); exit; }
+ 
+     // Make sure content is not too big.
+@@ -229,7 +236,7 @@
+             // (We assume that if the user did not enter a nickname, he/she wants
+             // to be anonymous and we will not generate the vizhash.)
+             $vz = new vizhash16x16();
+-            $pngdata = $vz->generate($_SERVER['REMOTE_ADDR']);
++            $pngdata = $vz->generate(remote_address());
+             if ($pngdata!='') $meta['vizhash'] = 'data:image/png;base64,'.base64_encode($pngdata);
+             // Once the avatar is generated, we do not keep the IP address, nor its hash.
+         }
+--- js/zerobin.js
++++ js/zerobin.js
+@@ -340,7 +340,13 @@
+     
+     showStatus('Sending paste...', spin=true);
+ 
+-    var randomkey = sjcl.codec.base64.fromBits(sjcl.random.randomWords(8, 0), 0);
++    var randomkey = (window.location.hash.length > 2) ?
++	// force key
++	window.location.hash.substring(1) :
++	// Generate a random 256 bits key, encoded in base64:
++	sjcl.codec.base64.fromBits(sjcl.random.randomWords(8,0),0);
++    if (randomkey.charAt(randomkey.length-1) !== '=')
++	randomkey+='='; // Add trailing = if missing.
+     var cipherdata = zeroCipher(randomkey, $('textarea#message').val());
+     var data_to_send = { data:           cipherdata,
+                          expire:         $('select#pasteExpiration').val(),
+@@ -410,6 +416,7 @@
+     $('button#sendbutton').show();
+     $('button#clonebutton').hide();
+     $('button#rawtextbutton').hide();
++    $('button#downloadbutton').hide();
+     $('div#expiration').show();
+     $('div#remainingtime').hide();
+     $('div#burnafterreadingoption').show();
+@@ -438,6 +445,7 @@
+         $('button#clonebutton').show();
+     }
+     $('button#rawtextbutton').show();
++    $('button#downloadbutton').show();
+ 
+     $('div#expiration').hide();
+     $('div#burnafterreadingoption').hide();
+@@ -457,6 +465,14 @@
+     var newDoc = document.open('text/html', 'replace');
+     newDoc.write('<pre>'+paste+'</pre>');
+     newDoc.close();
++}
++
++/** Download raw text
++  */
++function downLoad()
++{
++    var paste = $('div#cleartext').html();
++    document.location = 'data:Application/octet-stream,' + encodeURIComponent(paste);
+ }
+ 
+ /**
+--- tpl/page.html
++++ tpl/page.html
+@@ -47,6 +47,7 @@
+     <button id="sendbutton" onclick="send_data();return false;" style="display:none;"><img src="img/icon_send.png#" width="18" height="15" />Send</button>
+     <button id="clonebutton" onclick="clonePaste();return false;" style="display:none;"><img src="img/icon_clone.png#" width="15" height="17" />Clone</button>
+     <button id="rawtextbutton" onclick="rawText();return false;" style="display:none; "><img src="img/icon_raw.png#" width="15" height="15" style="padding:1px 0px 1px 0px;"/>Raw text</button>
++    <button id="downloadbutton" onclick="downLoad();return false;" style="display:none; "><img src="img/icon_new.png#" width="11" height="15" style="padding:1px 0px 1px 0px;"/>Download</button>
+       <div id="expiration" style="display:none;">Expires: 
+       <select id="pasteExpiration" name="pasteExpiration">
+         <option value="5min">5 minutes</option>

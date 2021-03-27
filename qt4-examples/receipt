@@ -1,0 +1,40 @@
+# SliTaz package receipt.
+
+PACKAGE="qt4-examples"
+VERSION="4.8.7"
+CATEGORY="misc"
+SHORT_DESC="Screenshot, FindFiles, CharacterMap"
+MAINTAINER="psychomaniak@xakep.ru"
+LICENSE="GPL3 LGPL2.1"
+WEB_SITE="http://qt-project.org/"
+WANTED="qt4"
+TAGS="qt"
+
+DEPENDS="libQtCore libQtGui"
+BUILD_DEPENDS="Qt4-dev qmake"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir -p $DESTDIR/usr/bin $DESTDIR/usr/share/applications
+
+	for i in desktop/screenshot dialogs/findfiles widgets/charactermap;
+	do
+                ii=$(basename $i) && cd $src/examples/$i
+		rm -rf Makefile moc* *.o
+		qmake	$ii.pro
+		sed 's|-O2|'"$CFLAGS"'|' -i Makefile
+		make $MAKEFLAGS &&
+		install $ii $DESTDIR/usr/bin
+		install $ii.desktop $DESTDIR/usr/share/applications
+		find $DESTDIR -name $ii.desktop \
+		-exec echo 'Categories=Utility;'>>$DESTDIR/usr/share/applications/$ii.desktop \; \
+		-exec sed 's|/opt/|/|g' -i {} \;
+	done
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+}

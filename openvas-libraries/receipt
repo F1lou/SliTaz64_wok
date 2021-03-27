@@ -1,0 +1,44 @@
+# SliTaz package receipt.
+
+PACKAGE="openvas-libraries"
+VERSION="3.1.4"
+CATEGORY="network"
+SHORT_DESC="Network security scanner (libraries)."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2 LGPL2 BSD"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://www.openvas.org/"
+WGET_URL="http://wald.intevation.org/frs/download.php/784/$TARBALL"
+
+DEPENDS="glib gnutls libgcrypt zlib libgpg-error gpgme libtasn1"
+BUILD_DEPENDS="gpgme-dev libgcrypt-dev pkg-config glib-dev gnutls-dev libpcap-dev \
+bison flex cmake util-linux-uuid-dev libgnutls"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed 's/.*set_lowat.*/#if GNUTLS_VERSION_NUMBER < 0x020c00\n&\n#endif/' \
+	    -i misc/network.c
+
+	# gnutls_connection_end_t depredicated for gnutls >= 3.0.18
+	sed -i 's/gnutls_connection_end_t/unsigned int/' misc/openvas_server.?
+
+	# Update for bison 3
+	sed -e 's|_parser$|-parser\n%parse-param {naslctxt * parm}\n%lex-param {naslctxt * parm}|' \
+	    -e 's|naslerror(|&naslctxt *parm, |' -i nasl/nasl_grammar.y
+
+	./configure --prefix=/usr --localstatedir=/var \
+	--mandir=/usr/share/man \
+	$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share $fs/usr/bin
+	cp -a $install/usr/share/openvas $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

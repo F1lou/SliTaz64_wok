@@ -1,0 +1,23 @@
+# SliTaz package receipt."
+
+PACKAGE="thunar-dev"
+VERSION="1.6.6"
+CATEGORY="development"
+SHORT_DESC="Thunar File Manager dev files"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+WANTED="thunar"
+SOURCE="Thunar"
+WEB_SITE="https://www.xfce.org"
+
+DEPENDS="thunar pkg-config"
+
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/thunarx-2
+	
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/thunarx-2/*.*a $fs/usr/lib/thunarx-2
+}

@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="giws"
+VERSION="2.0.2"
+CATEGORY="development"
+SHORT_DESC="Generates a C++ wrapper on the Java object."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="CeCILL"
+WEB_SITE="https://github.com/opencollab/giws"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/opencollab/$PACKAGE/archive/$VERSION.tar.gz"
+
+DEPENDS="python"
+BUILD_DEPENDS="python libxml2-python"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py build
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+}

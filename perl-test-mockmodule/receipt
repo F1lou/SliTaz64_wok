@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-test-mockmodule"
+VERSION="0.172.0"
+CATEGORY="development"
+SHORT_DESC="Perl extension Test::MockModule."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL"
+WEB_SITE="https://metacpan.org/release/Test-MockModule"
+
+SOURCE="Test-MockModule"
+TARBALL="$SOURCE-v$VERSION.tar.gz"
+WGET_URL="https://www.cpan.org/modules/by-module/Test/$TARBALL"
+
+DEPENDS="perl-sub-identify perl-super perl-test-warnings"
+BUILD_DEPENDS="$DEPENDS"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	perl Build.PL &&
+	./Build &&
+	./Build test &&
+	./Build --destdir $DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib	$fs/usr
+}

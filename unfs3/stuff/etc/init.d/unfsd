@@ -1,0 +1,57 @@
+#!/bin/sh
+# /etc/init.d/unfsd : Start, stop and restart NFSv3 Server on SliTaz, at
+# boot time or with the command line.
+#
+# To start NFSv3 Server at boot time, just put dropbear in the $RUN_DAEMONS
+# variable of /etc/rcS.conf and configure options with /etc/daemons.conf
+#
+. /etc/init.d/rc.functions
+. /etc/daemons.conf
+
+NAME=unfsd
+DESC="$(_ '%s server' NFSv3)"
+DAEMON=/usr/bin/unfsd
+OPTIONS=
+PIDFILE=/var/run/$NAME.pid
+
+
+test -f $DAEMON || exit 0
+
+case "$1" in
+  start)
+    if active_pidfile $PIDFILE unfsd ; then
+      _ '%s is already running.' $NAME
+      exit 1
+    fi
+
+    action 'Starting %s: %s...' "$DESC" $NAME
+    $DAEMON $OPTIONS
+    status
+
+    # registering PID
+    if [ $? -eq 0 ]; then
+      pidof -s $NAME > $PIDFILE
+    fi
+    ;;
+  stop)
+    if ! active_pidfile $PIDFILE unfsd ; then
+      _ '%s is not running.' $NAME
+      exit 1
+    fi
+    action 'Stopping %s: %s...' "$DESC" $NAME
+    kill $(cat $PIDFILE)
+    rm -f $PIDFILE
+    status
+    ;;
+  restart)
+    $0 stop
+    $0 start
+    ;;
+  *)
+    emsg "<n><b>$(_ 'Usage:')</b> $0 [start|stop|restart]"
+    newline
+    exit 1
+    ;;
+esac
+
+exit 0

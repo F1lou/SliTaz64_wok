@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="zfs-fuse"
+VERSION="0.7.0"
+CATEGORY="system-tools"
+SHORT_DESC="ZFS file system from Sun."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="CDDL"
+WEB_SITE="http://zfs-fuse.net"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+ARCHIVE="https://web.archive.org/web/20120314224050if_/"
+WGET_URL="$ARCHIVE$WEB_SITE/releases/$VERSION/$TARBALL"
+
+DEPENDS="fuse libaio libcrypto perl"
+BUILD_DEPENDS="fuse-dev scons libaio-dev attr-dev zlib-dev acl-dev openssl-dev \
+file"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|(uname -m)|(echo i686)|' src/lib/libumem/config.guess \
+		src/lib/libumem/configure
+	sed -i 's|uname -m|echo i686|' src/SConstruct
+	sed -i 's|attr/xattr|sys/xattr|;s|ENOATTR|ENODATA|' \
+		src/zfs-fuse/zfs_operations.c
+
+	mkdir -p $DESTDIR/usr
+	cd $src/src
+	# glibc 2.14 update
+	sed -i 's/\*__malloc_initialize_hook/* __volatile __malloc_initialize_hook/' \
+		lib/libumem/malloc.c
+	scons PREFIX=/usr &&
+	scons install_dir=$DESTDIR/usr/sbin \
+	      cfg_dir=$DESTDIR/etc \
+	      man_dir=$DESTDIR/usr/share/man/man8 install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+	rm -rf $fs/usr/share/man
+}

@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="zip"
+VERSION="3.0"
+CATEGORY="utilities"
+SHORT_DESC="Compressor utilities compatible with the DOS PKZIP."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="other"
+TARBALL="$PACKAGE${VERSION//./}.tgz"
+WEB_SITE="http://infozip.sourceforge.net/"
+WGET_URL="ftp://ftp.info-zip.org/pub/infozip/src/$TARBALL"
+TAGS="archive compression"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make -f unix/Makefile generic_gcc
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $src/zip $fs/usr/bin
+	cp -a $src/zipcloak $fs/usr/bin
+	cp -a $src/zipnote $fs/usr/bin
+	cp -a $src/zipsplit $fs/usr/bin
+}

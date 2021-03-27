@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="slurm"
+VERSION="0.3.3"
+CATEGORY="network"
+SHORT_DESC="Realtime network interface monitor."
+MAINTAINER="paul@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://github.com/mattthias/slurm/wiki"
+WGET_URL="http://www.wormulon.net/slurm/$TARBALL"
+
+DEPENDS="ncurses"
+BUILD_DEPENDS="ncurses-dev automake autoconf"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|lncurses|& -ltinfo|' *
+	./configure \
+		--prefix=/usr \
+		--infodir=/usr/share/info \
+		--mandir=/usr/share/man \
+		$CONFIGURE_ARGS &&
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}

@@ -1,0 +1,38 @@
+# SliTaz package receipt.
+
+PACKAGE="truecrypt"
+VERSION="7.1a"
+CATEGORY="security"
+SHORT_DESC="Free open-source cross-platform disk encryption software"
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="other"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://www.truecrypt.org"
+WGET_URL="ftp://ftp.archlinux.org/other/tc/$TARBALL"
+
+DEPENDS="fuse wxWidgets28 xorg-libSM dmsetup linux-md"
+BUILD_DEPENDS="pkcs nasm fuse-dev wxWidgets28-dev xorg-libSM-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|uname -m|echo i486|' Makefile
+	sed -i 's/^export LFLAGS :=$/& -Wl,--copy-dt-needed-entries -ldl/' Makefile
+	export PKCS11_INC="/usr/include/pkcs"
+	cd $src
+	make
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin \
+		$fs/usr/share/applications \
+		$fs/usr/share/pixmaps \
+		$fs/usr/share/licenses/$PACKAGE
+	cp -a $src/Main/$PACKAGE $fs/usr/bin
+	cp -a $stuff/$PACKAGE.desktop $fs/usr/share/applications
+	cp -a $src/Resources/Icons/TrueCrypt-48x48.xpm $fs/usr/share/pixmaps/truecrypt.xpm
+
+	cp -a $src/License.txt $fs/usr/share/licenses/$PACKAGE/License.txt
+}

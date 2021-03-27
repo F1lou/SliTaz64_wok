@@ -1,0 +1,53 @@
+# SliTaz package receipt.
+
+PACKAGE="wine"
+VERSION="5.0"
+CATEGORY="misc"
+TAGS="windows emulator" # wine is not an emulator
+SHORT_DESC="Windows API for Linux."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="LGPL2.1"
+WEB_SITE="https://www.winehq.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="https://dl.winehq.org/$PACKAGE/source/${VERSION}/$TARBALL"
+
+DEPENDS="alsa-lib freetype lcms libglu-mesa libxml2 libxslt mesa"
+BUILD_DEPENDS="alsa-lib-dev bison cups-dev dbus-dev flex freetype-dev 
+	gnutls-dev jpeg-dev lcms-dev libglu-mesa-dev libgphoto2-dev 
+	libpng-dev libtool libv4l-dev libxml2-dev libxslt-dev 
+	mesa-dev prelink"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS &&
+	make $MAKEFLAGS &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/lib		$fs/usr
+	cp -a $install/usr/share/wine	$fs/usr/share
+}
+
+post_install()
+{
+	[ "$1" ] || modprobe snd-seq 2>/dev/null
+
+	# Enable unicode filenames and localized keyboard layouts input
+	. "$1/etc/locale.conf"
+	case $LANG in
+		(C|POSIX|*UTF-8)
+			echo $LANG - skip modifying /etc/locale.conf ;;
+		(*)
+			echo "$LANG changed to ${LANG}.UTF-8 in /etc/locale.conf"
+			echo "Restart/ReLogin required."
+			sed -i 's/$/&.UTF-8/' "$1/etc/locale.conf" ;;
+	esac
+}

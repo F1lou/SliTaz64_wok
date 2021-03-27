@@ -1,0 +1,47 @@
+# SliTaz package receipt.
+
+PACKAGE="epdfview"
+VERSION="0.1.8"
+CATEGORY="office"
+TAGS="pdf viewer"
+SHORT_DESC="Lightweight PDF document viewer using Poppler."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://github.com/jristz/epdfview"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="http://trac.emma-soft.com/epdfview/chrome/site/releases/$TARBALL"
+
+DEPENDS="gtk+ poppler glib libpng xorg-libXdamage gcc-lib-base"
+BUILD_DEPENDS="gtk+-dev poppler-dev poppler cairo-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's/FORMAT_RGB24/FORMAT_ARGB32/g' src/PDFDocument.cxx
+	sed -i 's/firefox/browser/g' src/Config.cxx
+	sed -i 's/<config.h>/&\n#include <stdio.h>\n#define g_fopen fopen/' \
+		src/epdfview.h
+	find . -name '*.[ch]*' | xargs sed -i 's|<glib/.*h|<glib.h|'
+	patch -Np1 -i $stuff/0001-When-using-Poppler-0.17.0-I-needed-to-swap-the-blue-.patch
+	patch -p1 -i $stuff/no-stock-icons.patch
+
+	./configure		\
+		--without-cups	\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make install
+
+	cp -f $stuff/*.desktop $install/usr/share/applications
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cook_copy_files epdfview *.desktop *.xml
+
+	mkdir -p $fs/usr/share/icons/hicolor/48x48/apps
+
+	cp $install/usr/share/epdfview/pixmaps/icon_epdfview-48.png \
+		$fs/usr/share/icons/hicolor/48x48/apps/epdfview.png
+}

@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="make"
+VERSION="4.3"
+CATEGORY="development"
+SHORT_DESC="GNU Make to generate executables and other files from source."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://www.gnu.org/software/make/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="glibc-base"
+BUILD_DEPENDS=""
+
+HOST_ARCH="x86_64 i486 arm x86_64"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS &&
+	make -j 1 &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin	$fs/usr
+}

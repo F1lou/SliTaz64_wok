@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="python-kid"
+VERSION="0.9.6"
+CATEGORY="development"
+SHORT_DESC="Pythonic, XML-based Templating."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+SOURCE="kid"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="https://pypi.python.org/pypi/kid/"
+WGET_URL="https://pypi.python.org/packages/source/k/kid/$TARBALL"
+TAGS="python"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="python"
+BUILD_DEPENDS="python python-dev python-setuptools"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr $fs
+}
+

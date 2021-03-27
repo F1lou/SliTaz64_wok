@@ -1,0 +1,42 @@
+# SliTaz package receipt.
+
+PACKAGE="gogglesmm"
+VERSION="0.12.6"
+CATEGORY="multimedia"
+SHORT_DESC="Goggles Music Manager is nice a music collection manager and player."
+MAINTAINER="chadi.elahmad@gmail.com"
+LICENSE="GPL3"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WEB_SITE="https://gogglesmm.github.io/"
+WGET_URL="http://gogglesmm.googlecode.com/files/$TARBALL"
+
+DEPENDS="fox xine-lib dbus curl sqlite taglib libpng jpeg expat tiff \
+mesa libglu-mesa"
+BUILD_DEPENDS="fox-dev sqlite taglib dbus-dev xine-lib-dev \
+sqlite-dev taglib-dev curl-dev expat-dev xorg-xproto \
+xorg-libX11-dev libgcrypt-dev mesa-dev pkg-config"
+
+# Rules to configure and make the package. 
+compile_rules()
+{
+	cd $src
+	# Fixed installing .mo files since busybox install commmand 
+	# doesn't have -T option
+	sed -i 's| -T||g' $src/Makefile
+	./configure \
+		--prefix=/usr \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr $fs/usr/share/pixmaps
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/applications $fs/usr/share
+	cp -a $src/extra/*.png $fs/usr/share/pixmaps
+}

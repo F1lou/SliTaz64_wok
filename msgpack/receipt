@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="msgpack"
+VERSION="3.2.1"
+CATEGORY="network"
+SHORT_DESC="MessagePack implementation for C and C++."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://tmate.io/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/$PACKAGE/$PACKAGE-c/archive/cpp-$VERSION.tar.gz"
+
+BUILD_DEPENDS="cmake zlib"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cmake -DCMAKE_INSTALL_PREFIX=/usr . &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+}

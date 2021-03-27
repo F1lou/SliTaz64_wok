@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-net-ldap"
+VERSION="0.66"
+CATEGORY="development"
+SHORT_DESC="Perl extension Net::LDAP."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL"
+WEB_SITE="https://metacpan.org/release/perl-ldap"
+
+SOURCE="perl-ldap"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://www.cpan.org/modules/by-module/Net/$TARBALL"
+
+#DEPENDS="perl perl-convert-asn1 perl-io-socket-ssl perl-uri-ldap perl-authen-sasl perl-xml-sax-writer"
+DEPENDS="perl perl-authen-sasl perl-convert-asn1 perl-uri"
+BUILD_DEPENDS="$DEPENDS"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	yes n | perl Makefile.PL &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib	$fs/usr
+}

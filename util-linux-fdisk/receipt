@@ -1,0 +1,26 @@
+# SliTaz package receipt.
+
+PACKAGE="util-linux-fdisk"
+VERSION="2.35.1"
+CATEGORY="system-tools"
+SHORT_DESC="The fdisk utility from Util Linux."
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://en.wikipedia.org/wiki/Util-linux"
+
+WANTED="util-linux"
+DEPENDS="glibc-base libtinfo readline util-linux-blkid util-linux-uuid"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cook_copy_files fdisk libfdisk.so*
+	rm -r $fs/usr/share
+}
+
+post_remove()
+{
+	ln -s /bin/busybox "$1/sbin/fdisk"
+}

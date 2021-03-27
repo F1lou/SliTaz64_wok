@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Clex File Manager
+Name[pt]=Gerenciador de arquivox Clex
+Name[pt_BR]=Gerenciador de arquivox Clex
+Name[ru]=Файловый менеджер Clex
+Exec=terminal -e clex
+Icon=clex
+Categories=ConsoleOnly;System;FileTools;FileManager;

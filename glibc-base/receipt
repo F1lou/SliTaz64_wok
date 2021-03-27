@@ -1,0 +1,136 @@
+# SliTaz package receipt.
+
+PACKAGE="glibc-base"
+VERSION="2.32"
+CATEGORY="base-system"
+SHORT_DESC="GNU libc minimal libraries and UTF-8 support for SliTaz."
+WEB_SITE="http://www.gnu.org/software/libc/"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WANTED="glibc"
+HOST_ARCH="x86_64 i486 arm x86_64"
+
+# Locales include by default, other locales are in: locale-** and glibc-locale
+DEFAULT_LOCALE="en_US en_GB"
+
+# Handle multiarch compilation.
+#~ case "$ARCH" in
+	#~ arm*|x86_64) VERSION="2.32" WANTED="" ;;
+#~ esac
+
+#~ # Handle multiarch installation.
+#~ case "$SLITAZ_ARCH" in
+	#~ arm*|x86_64) VERSION="2.32" WANTED="" ;;
+#~ esac
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+#
+# Full glibc is very long to compile (see package glibc for more
+# informations). You can use the precompiled package available on
+# SliTaz mirror to build a distro without recompiling glibc.
+#
+
+# i18n
+get_locales()
+{
+	local path=$1
+	for i in $DEFAULT_LOCALE
+	do
+		cp $install/$path/i18n/locales/$i $fs/usr/share/i18n/locales
+	done
+}
+
+genpkg_rules()
+{
+	# Mkdir's.
+	for dir in $(cat $stuff/mkdir.list)
+	do
+		mkdir -p ${fs}$dir
+	done
+
+	case "$ARCH" in
+		arm*)
+			# Eglibc is cross compiled by cross to have a toolchain so we can
+			# use these files instead of recooking it. ARM use Eglibc
+			echo "Using cross compiled Eglibc..."
+			install=/cross/$ARCH/sysroot
+
+			# /usr/{bin,share} /usr/lib/gconv
+			for file in $(cat $stuff/arm-files.list)
+			do
+				cp -a ${install}$file ${fs}$file
+			done
+
+			# libs
+			for lib in libcrypt libm libc libresolv librt libutil libpthread \
+				libnss_* libnsl libanl libdl
+			do
+				cp -a $install/lib/${lib}-*.so $fs/lib
+				cp -a $install/lib/${lib}.so* $fs/lib
+				cp -a $install/usr/lib/${lib}.so $fs/usr/lib
+			done
+			cp -a $install/lib/ld-*.so* $fs/lib
+			cp -a $install/usr/lib/libc_nonshared.a $fs/usr/lib
+			cp -a $install/usr/lib/libpthread_nonshared.a $fs/usr/lib
+			cp $install/etc/rpc $fs/etc
+			touch $fs/etc/ld.so.conf
+			touch $fs/etc/ld.so.cache
+			get_locales "usr/share" ;;
+		#~ x86_64)
+			#~ # EXPERIMENTAL: Glibc is cross compiled by cross to have a
+			#~ # toolchain so we can use these files instead of recooking it.
+			#~ echo "Using cross compiled Glibc..."
+			#~ install=/usr/cross/$ARCH
+
+			#~ # /usr/{bin,share} /usr/lib/gconv
+			#~ for file in $(cat $stuff/arm-files.list)
+			#~ do
+				#~ cp -a ${install}$file ${fs}/usr/$file
+			#~ done
+
+			#~ # /lib
+			#~ for lib in libcrypt libm libc libresolv librt libutil libpthread \
+				#~ libnss_* libnsl libanl libdl
+			#~ do
+				#~ cp -a $install/lib64/${lib}-*.so $fs/lib
+				#~ cp -a $install/lib64/${lib}.so* $fs/lib
+			#~ done
+			#~ cp -a $install/lib64/ld-*.so* $fs/lib
+			#~ cp -a $install/lib64/libc_nonshared.a $fs/lib
+			#~ cp -a $install/lib64/libpthread_nonshared.a $fs/lib
+			#~ cp $install/etc/rpc $fs/etc
+			#~ touch $fs/etc/ld.so.conf
+			#~ get_locales "share"
+			#~ # Fix libraries search path
+			#~ sed -i s"|/usr/cross/$ARCH||"g $fs/lib/libc.so
+			#~ sed -i s"|/usr/cross/$ARCH||"g $fs/lib/libpthread.so ;;
+		*)
+			# Copy all files specified in stuff/files.list. We get the files
+			# from glibc package.
+			for file in $(cat $stuff/wanted-files.list)
+			do
+				cp -a ${install}$file ${fs}$file
+			done
+			get_locales "usr/share"
+	esac
+}
+
+# Remove an eventual locale-archive since we use directories.
+pre_install()
+{
+	rm -f $root/usr/lib/locale/locale-archive
+}
+
+# Glibc-base is auto-updated in chroot but when cross-compiling we need
+# to have /usr/cross/$ARCH search path in libc.so
+post_install()
+{
+	# x86_64
+	if echo $root | grep -q /usr/cross/x86_64; then
+		echo "Fixing x86_64: $root/lib64/libc.so"
+		cat > $root/lib64/libc.so << EOT
+OUTPUT_FORMAT(elf64-x86-64)
+GROUP ( $root/lib64/libc.so.6 $root/lib64/libc_nonshared.a AS_NEEDED ( $root/lib64/ld-linux-x86-64.so.2 ) )
+EOT
+	fi
+}

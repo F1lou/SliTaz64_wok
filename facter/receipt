@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="facter"
+VERSION="1.6.11"
+CATEGORY="system-tools"
+SHORT_DESC="A library for collecting facts about your system."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="Apache"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://www.puppetlabs.com/"
+WGET_URL="http://downloads.puppetlabs.com/facter/$TARBALL"
+
+DEPENDS="ruby"
+BUILD_DEPENDS="ruby-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i "s|require 'tempfile'|&\\nrequire 'test/unit'|" install.rb
+	ruby ./install.rb \
+		--destdir=$DESTDIR \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib $fs/usr
+}

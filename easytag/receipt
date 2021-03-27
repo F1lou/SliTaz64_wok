@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="easytag"
+VERSION="2.4.3"
+CATEGORY="multimedia"
+TAGS="audio"
+SHORT_DESC="Utility for viewing and editing tags on sound files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://wiki.gnome.org/Apps/EasyTAG"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="https://download.gnome.org/sources/$PACKAGE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="flac gcc-lib-base gtk+3 id3lib libid3tag libvorbis xorg-libXdamage"
+BUILD_DEPENDS="expat-dev gtk+3-dev id3lib id3lib-dev itstool libid3tag-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure		\
+		--prefix=/usr	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/icons/hicolor
+
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/share/applications	$fs/usr/share
+	cp -a $install/usr/share/icons/hicolor/16x16 \
+						$fs/usr/share/icons/hicolor
+	cp -a $install/usr/share/icons/hicolor/48x48 \
+						$fs/usr/share/icons/hicolor
+}

@@ -1,0 +1,4 @@
+
+    SliTaz GNU/linux - Boot prompt
+    Press <ENTER> to boot or <F1> for help.
+  

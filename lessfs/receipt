@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="lessfs"
+VERSION="1.7.0"
+CATEGORY="system-tools"
+SHORT_DESC="A high performance inline data deduplicating filesystem."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://sourceforge.net/projects/lessfs/"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+TAGS="filesystem"
+CONFIG_FILES="/etc/lessfs.cfg"
+
+DEPENDS="fuse db mhash tokyocabinet"
+BUILD_DEPENDS="fuse-dev db-dev mhash-dev tokyocabinet-dev pkg-config"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|uname -m|echo i486|' Makefile*
+	export LDFLAGS="$LDFLAGS -lpthread"
+	./configure --prefix=/usr --infodir=/usr/share/info \
+		--mandir=/usr/share/man \
+		--with-berkeleydb \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/etc
+	cp -a $src/etc/lessfs.cfg-bdb $fs/etc/lessfs.cfg
+	cp -a $install/usr/*bin $fs
+}

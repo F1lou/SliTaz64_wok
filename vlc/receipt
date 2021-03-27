@@ -1,0 +1,71 @@
+# SliTaz package receipt.
+
+PACKAGE="vlc"
+VERSION="3.0.10"
+CATEGORY="multimedia"
+TAGS="audio video multimedia movie player"
+SHORT_DESC="MPEG, VCD/DVD, and DivX player."
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.videolan.org/vlc/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="https://download.videolan.org/pub/videolan/$PACKAGE/$VERSION/$TARBALL"
+
+DEPENDS="gcc83-lib-base libQtCore libQtGui libvlc"
+BUILD_DEPENDS="alsa-lib-dev cairo-dev dbus-dev expat-dev ffmpeg-dev flac-dev 
+	fluidsynth-dev fribidi-dev gcc83 gcc83-lib-base gettext gmp-dev gnutls-dev 
+	hicolor-icon-theme jack-audio-connection-kit-dev libarchive-dev 
+	libavc1394-dev libcaca-dev libcddb-dev libdvdread-dev libdvdnav-dev 
+	libegl-mesa libgnutls libmad-dev libmodplug-dev libmpeg2-dev libmtp-dev 
+	libraw1394-dev librsvg-dev libsamplerate-dev libsdl-image-dev libsecret-dev 
+	libtheora-dev libtheora-enc libupnp-dev libvorbis-dev libxml2-dev lua5.1-dev 
+	ncurses-dev opus-dev pango-dev protobuf-dev Qt4-dev speex-dev taglib-dev tar 
+	util-linux-uuid-dev x264-dev x265-dev xcb-util-dev xcb-util-keysyms-dev yasm 
+	zvbi-dev"
+
+COOKOPTS="!fixdesktops"
+
+# @maintainer: Please update also: libvlc and libvlc-dev
+
+compile_rules()
+{
+	[ -s /var/lib/dbus/machine-id ] || dbus-uuidgen > /var/lib/dbus/machine-id
+	[ -e /usr/bin/luac ] || ln -s luac5.1 /usr/bin/luac
+	# export ncurses paths 
+	export NCURSES_CFLAGS="-I/usr/include"
+	export NCURSES_LIBS="-L/lib -lncurses -ltinfo"
+	export CC=gcc-83 CXX=g++-83 BUILDCC=gcc-83
+
+	./configure			\
+		--prefix=/usr		\
+		--disable-pulse		\
+		--disable-a52		\
+		--disable-sout		\
+		--disable-libgcrypt	\
+		--enable-ncurses	\
+		--enable-run-as-root	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make install
+	[ -L /usr/bin/luac ] && rm -f /usr/bin/luac
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/pixmaps
+
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/share/$PACKAGE	$fs/usr/share
+
+	#Remove extra icons
+	rm					$fs/usr/share/$PACKAGE/*.ico
+
+	#copy vlc icon
+	cp -a $install/usr/share/icons/hicolor/16x16/apps/vlc.png \
+						$fs/usr/share/pixmaps
+
+	#Remove unnecessary fonts
+	rm $fs/usr/share/$PACKAGE/skins2/fonts/* 2> /dev/null || true
+}

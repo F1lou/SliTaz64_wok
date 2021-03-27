@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-www-robotrules"
+VERSION="6.02"
+CATEGORY="development"
+SHORT_DESC="Database of robots.txt-derived permissions"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL"
+SOURCE="WWW-RobotRules"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="https://metacpan.org/release/libwww-perl/"
+WGET_URL="http://www.cpan.org/authors/id/G/GA/GAAS/$TARBALL"
+
+DEPENDS="perl perl-uri"
+BUILD_DEPENDS="perl $DEPENDS"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	perl Makefile.PL &&	make &&	make DESTDIR=$DESTDIR install
+	
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib $fs/usr
+}
+

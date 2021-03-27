@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="opensp"
+VERSION="1.5.2"
+CATEGORY="misc"
+SHORT_DESC="An implementation of DSSSL, a style language to format SGML or XML documents"
+MAINTAINER="remy.carel@free.fr"
+LICENSE="MIT"
+SOURCE="OpenSP"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="http://openjade.sourceforge.net"
+WGET_URL="$SF_MIRROR/openjade/opensp/$VERSION/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS="make gcc perl"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure --prefix=/usr --disable-doc-build --disable-dtddecl \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin $fs/usr/lib $fs/usr/share
+	
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/share/OpenSP $fs/usr/share
+}
+

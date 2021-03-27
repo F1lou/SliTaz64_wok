@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-test-tester"
+VERSION="0.109"
+CATEGORY="development"
+SHORT_DESC="Ease testing test modules built with Test::Builder"
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL"
+SOURCE="Test-Tester"
+WEB_SITE="https://metacpan.org/release/FDALY/$SOURCE-$VERSION"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://cpan.metacpan.org/authors/id/F/FD/FDALY/$TARBALL"
+
+DEPENDS="perl"
+BUILD_DEPENDS="perl"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	perl Makefile.PL &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr $fs
+}

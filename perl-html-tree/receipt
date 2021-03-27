@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-html-tree"
+VERSION="5.07"
+CATEGORY="development"
+SHORT_DESC="Perl extension HTML::Tree."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL"
+WEB_SITE="https://metacpan.org/release/HTML-Tree"
+
+SOURCE="HTML-Tree"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://www.cpan.org/modules/by-module/HTML/$TARBALL"
+
+DEPENDS="perl perl-html-parser perl-html-tagset"
+BUILD_DEPENDS="perl perl-html-parser perl-html-tagset"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	perl Build.PL 2>&1 | sed '/WARNINGS/d' &&
+	./Build &&
+	./Build --destdir $DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib	$fs/usr
+}

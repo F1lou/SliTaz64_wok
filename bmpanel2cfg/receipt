@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="bmpanel2cfg"
+VERSION="2.1pre1"
+CATEGORY="misc"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="MIT"
+SHORT_DESC="bmpanel2 configurator"
+WEB_SITE="https://github.com/nsf/bmpanel2"
+WANTED="bmpanel2"
+TAGS="panel"
+
+DEPENDS="pygtk"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/bin
+	cp -a $install/usr/bin/$PACKAGE $fs/usr/bin
+	cp -a $install/usr/lib/python* $fs/usr/lib
+}

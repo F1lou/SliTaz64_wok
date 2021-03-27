@@ -1,0 +1,40 @@
+# SliTaz package receipt.
+
+PACKAGE="funionfs"
+VERSION="0.4.3"
+CATEGORY="system-tools"
+SHORT_DESC="Union filesystem implemented with FUSE."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://web.archive.org/web/20191120030918/http://funionfs.apiou.org/"
+WGET_URL="${WEB_SITE}file/$TARBALL"
+TAGS="filesystem"
+
+BUILD_DEPENDS="fuse-dev"
+DEPENDS="fuse"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	[ -f main.c.done ] || patch -p0 << EOT
+--- main.c
++++ main.c
+@@ -305 +305 @@
+-			if (res < 0)
++			// if (res < 0)
+EOT
+	touch main.c.done
+	./configure --prefix=/usr --bindir=/bin \
+	--libexecdir=/usr/bin --mandir=/usr/share/man \
+	$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/bin $fs
+}

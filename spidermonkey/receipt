@@ -1,0 +1,44 @@
+# SliTaz package receipt.
+
+PACKAGE="spidermonkey"
+VERSION="1.8.0-rc1"
+CATEGORY="multimedia"
+SHORT_DESC="Mozilla C implementation of Javascript"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="MPL GPL2 LGPL2.1"
+SOURCE="js"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey"
+WGET_URL="http://ftp.mozilla.org/pub/mozilla.org/js/$TARBALL"
+TAGS="javascript"
+
+DEPENDS="nspr"
+BUILD_DEPENDS="nspr-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src/src
+	sed -i 's|uname -m|echo i486|' fdlibm/Makefile.in config/*.mk config.mk
+
+	# Fix from Archlinux
+	# http://projects.archlinux.org/svntogit/community.git/tree/spidermonkey/trunk/PKGBUILD
+	#patch -p0 < $stuff/spidermonkey-Makefile.patch || return 1
+	sed -i 's|include|include/js|' rules.mk || return 1
+	# patch Makefile for threadsafe support with native nspr
+	patch -p2 -i $stuff/spidermonkey-1.7-threadsafe.patch || return 1
+	# FS#16673
+	export CFLAGS="${CFLAGS} -DJS_C_STRINGS_ARE_UTF8"
+	# build - threadsafe
+	make -j1 -f Makefile.ref BUILD_OPT=1 JS_THREADSAFE=1 \
+		DIST=$DESTDIR/usr all export 2>&1 | grep -v 'OBJ/nspr/Version'
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	
+	cp -a $install/usr/bin $fs/usr	
+	cp -a $install/usr/lib/*so* $fs/usr/lib
+}

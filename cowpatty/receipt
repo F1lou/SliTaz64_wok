@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="cowpatty"
+VERSION="4.8"
+CATEGORY="network"
+SHORT_DESC="Wireless WPA/WPA2 PSK handshake cracking utility."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://github.com/joswr1ght/cowpatty"
+
+TARBALL="$PACKAGE-$VERSION.tgz"
+#WGET_URL="http://www.willhackforsushi.com/code/$PACKAGE/$VERSION/$TARBALL"
+WGET_URL="https://github.com/joswr1ght/$PACKAGE/$VERSION/$TARBALL"
+
+DEPENDS="openssl libpcap"
+BUILD_DEPENDS="openssl-dev libpcap-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make CC=gcc -j 1 || return 1
+	make strip CC=gcc || return 1
+	make BINDIR="/usr/bin" DESTDIR="$DESTDIR" CC=gcc install
+	install -D -m644 dict $DESTDIR/usr/share/cowpatty/dict
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/cowpatty $fs/usr/share
+}

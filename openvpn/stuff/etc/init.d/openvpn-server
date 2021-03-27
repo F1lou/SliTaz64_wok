@@ -1,0 +1,78 @@
+#!/bin/sh
+# /etc/init.d/openvpn-server: Start, stop and restart openvpn daemon on SliTaz, at boot
+# time or with the command line.
+#
+# To start daemon at boot time, just put the right name in the $RUN_DAEMONS
+# variable of /etc/rcS.conf and configure options with /etc/daemons.conf.
+#
+. /etc/init.d/rc.functions
+. /etc/daemons.conf
+
+NAME=OpenVPN
+DESC="$(_ '%s daemon' VPN)"
+DAEMON=/usr/sbin/openvpn
+OPTIONS=$OPENVPN_OPTIONS
+PIDFILE=/var/run/openvpn-server.pid
+
+checktundevice() {
+	if [ ! -e /dev/net/tun ]; then
+		if ! modprobe tun ; then
+			_ 'TUN/TAP support is not available in this Kernel'
+			return 1
+		fi
+	fi
+	if [ -h /dev/net/tun -a -c /dev/misc/net/tun ]; then
+		_ 'Detected broken %s symlink, fixing...' '/dev/net/tun'
+		rm -f /dev/net/tun
+		ln -s /dev/misc/net/tun /dev/net/tun
+	fi
+}
+
+[ -d /var/run/openvpn ] || mkdir -p /var/run/openvpn
+
+case "$1" in
+  start)
+    checktundevice
+
+    if [ ! -e /etc/openvpn/server.conf ]; then
+      _ 'Missing OpenVPN server config.'
+      exit 1
+    fi
+    if active_pidfile $PIDFILE openvpn ; then
+      _ '%s is already running.' $NAME
+      exit 1
+    fi
+    action 'Starting %s: %s...' "$DESC" $NAME
+    $DAEMON $OPTIONS
+    status
+    ;;
+  stop)
+    if ! active_pidfile $PIDFILE openvpn ; then
+      _ '%s is not running.' $NAME
+      exit 1
+    fi
+    action 'Stopping %s: %s...' "$DESC" $NAME
+    kill $(cat $PIDFILE)
+    rm $PIDFILE
+    status
+    ;;
+  restart)
+    if ! active_pidfile $PIDFILE openvpn ; then
+      _ '%s is not running.' $NAME
+      exit 1
+    fi
+    action 'Restarting %s: %s...' "$DESC" $NAME
+    kill $(cat $PIDFILE)
+    rm $PIDFILE
+    sleep 2
+    $DAEMON $OPTIONS
+    status
+    ;;
+  *)
+    emsg "<n><b>$(_ 'Usage:')</b> $0 [start|stop|restart]"
+    newline
+    exit 1
+    ;;
+esac
+
+exit 0

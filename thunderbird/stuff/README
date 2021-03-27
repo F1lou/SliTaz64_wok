@@ -1,0 +1,6 @@
+
+Thunderbird is buit from the official Mozilla source code.
+The stuff/mozconfig file contains all configuration options,
+it is copied in the mozilla source code before the build process.
+
+So if you want to make some changes to tb, edit stuff/mozconfig.

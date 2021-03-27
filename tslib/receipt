@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="tslib"
+VERSION="1.21"
+CATEGORY="development"
+SHORT_DESC="Abstraction layer for touchscreen panel events."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="LGPL2"
+WEB_SITE="http://www.tslib.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/libts/$PACKAGE/archive/$VERSION.tar.gz"
+
+BUILD_DEPENDS="autoconf automake libtool"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Handle cross compilation
+case "$ARCH" in
+	arm*) export ac_cv_func_malloc_0_nonnull=yes ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{ 
+	./autogen.sh &&
+	./configure			\
+		--sysconfdir=/etc	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/ts
+
+	cp -a $install/usr/lib/ts/*.so*	$fs/usr/lib/ts
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/etc		$fs
+}

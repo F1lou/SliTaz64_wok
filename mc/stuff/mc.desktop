@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Midnight Commander
+Exec=terminal -e mc.sh
+Icon=utilities-terminal
+Categories=ConsoleOnly;Utility;FileTools;

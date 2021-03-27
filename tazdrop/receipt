@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="tazdrop"
+VERSION="1030"
+CATEGORY="office"
+SHORT_DESC="SliTaz desktop Drag N' Drop tool"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="http://www.slitaz.org/"
+SOURCE="slitaz-tools"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="http://hg.slitaz.org/$SOURCE/archive/$VERSION.tar.gz"
+
+DEPENDS="gtk+ yad"
+SIBLINGS="slitaz-tools slitaz-tools-boxes"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make msgfmt
+	cd $src/tazdrop
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs
+	cp -a $install/* $fs
+}

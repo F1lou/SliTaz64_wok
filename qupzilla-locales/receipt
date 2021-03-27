@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="qupzilla-locales"
+VERSION="1.8.5"
+CATEGORY="localization"
+SHORT_DESC="Translations for the QupZilla browser"
+MAINTAINER="claudinei@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="http://qupzilla.com"
+
+DEPENDS="qupzilla"
+WANTED="qupzilla"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	p=usr/share/qupzilla
+	mkdir -p $fs/$p
+	cp -a $install/$p/locale $fs/$p
+}

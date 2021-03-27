@@ -1,0 +1,62 @@
+# SliTaz package receipt.
+
+PACKAGE="fontconfig"
+VERSION="2.13.1"
+CATEGORY="x-window"
+SHORT_DESC="Font configuration utilities and library"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://www.freedesktop.org/wiki/Software/fontconfig/"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="http://www.freedesktop.org/software/fontconfig/release/$TARBALL"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="bzlib expat freetype libxml2"
+BUILD_DEPENDS="libxml2-dev freetype-dev liblzma-dev util-linux-uuid-dev gperf"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--with-arch=$ARCH \
+		--disable-static \
+		--enable-iconv \
+		--enable-libxml2 \
+		--disable-docs \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$install install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/etc $fs
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/share $fs/usr
+	cp -a $install/var $fs
+
+	cd $fs/usr/share/fontconfig/conf.avail
+	for h in hintslight hintmedium hintfull; do
+		cat > 10-hintstyle-$h.conf <<EOT
+<match target="font">
+	<edit mode="append" name="hintstyle">
+		<const>${h}</const>
+	</edit>
+</match>
+EOT
+	done
+
+	ln -s /usr/share/fontconfig/conf.avail/11-lcdfilter-default.conf \
+		$fs/etc/fonts/conf.d
+
+	# Fontconfig warning: "/etc/fonts/conf.d/50-user.conf", line 14: reading
+	# configurations from ~/.fonts.conf is deprecated.
+	sed '/~\/\.fonts\.conf</d' $fs/usr/share/fontconfig/conf.avail/50-user.conf
+
+	chown -R root.root $fs
+}

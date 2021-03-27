@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="get-LibreOffice"
+VERSION="1.31"
+CATEGORY="office"
+TAGS="office word excel ppt openoffice libreoffice"
+SHORT_DESC="Productivity suite."
+MAINTAINER="ben@seawolfsanctuary.com"
+LICENSE="GPL3"
+WEB_SITE="https://www.documentfoundation.org"
+PROVIDE="get-libreoffice get-libre-office get-Libre-Office"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	install -o root -g root -m755 \
+		stuff/get-LibreOffice	$fs/usr/bin
+	ln -s get-LibreOffice		$fs/usr/bin/get-libreoffice
+}

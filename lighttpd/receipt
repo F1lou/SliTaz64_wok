@@ -1,0 +1,114 @@
+# SliTaz package receipt.
+
+PACKAGE="lighttpd"
+VERSION="1.4.55"
+CATEGORY="network"
+SHORT_DESC="Fast and light HTTP Web server."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="https://www.lighttpd.net/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="https://download.lighttpd.net/$PACKAGE/releases-${VERSION%.*}.x/$TARBALL"
+
+SUGGESTED="lighttpd-modules perl php python"
+DEPENDS="pcre"
+BUILD_DEPENDS="bzip2-dev pcre-dev"
+
+CONFIG_FILES="/etc/lighttpd/vhosts.conf /etc/lighttpd/lighttpd.conf"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Modules to be included in this package. Other modules are split in
+# the lighttpd-modules package.
+BASE_MODULES="
+access
+accesslog
+alias
+cgi
+dirlisting
+indexfile
+staticfile
+rewrite
+status
+userdir"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i '/addrs_left/d' src/mod_extforward.c
+
+	./configure				\
+		--prefix=/usr			\
+		--libdir=/usr/lib/lighttpd	\
+		--mandir=/usr/share/man		\
+		--disable-ipv6			\
+		 --enable-shared		\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+# On SliTaz Lighttpd runs as user/group : www/www or 80/80.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	#cp -a $install/usr/bin	$fs/usr
+	cp -a $install/usr/sbin	$fs/usr
+
+	# Modules.
+	mkdir -p $fs/usr/lib/lighttpd
+	for module in $BASE_MODULES
+	  do
+		cp $install/usr/lib/lighttpd/mod_${module}.so \
+			$fs/usr/lib/lighttpd
+		echo -n "Copying : mod_${module}.so" && status
+	  done
+
+	# Configuration file.
+	cp -a $stuff/etc	$fs
+	chown -R 0.0		$fs/etc
+
+	# Logs directory.
+	mkdir -p $fs/var/log/lighttpd
+	chown 80.80 $fs/var/log/lighttpd
+}
+
+# Make sure it is cross compiled properly
+testsuite()
+{
+	readelf -h $install/usr/sbin/$PACKAGE
+}
+
+# Pre and post install commands for Tazpkg.
+# We stop the server by default in case of upgrade.
+pre_install()
+{
+	[ -z "$1" ] &&
+	for i in httpd ngnix apache cherokee $PACKAGE
+	  do
+		[ -f /etc/init.d/$i ] && /etc/init.d/$i stop
+	  done
+
+	# Backup configuration file.
+	if [ -d "$1/etc/lighttpd" ]
+	  then
+		cp -a "$1/etc/lighttpd" "$1/etc/lighttpd.bak"
+	fi
+}
+
+post_install()
+{
+	# Restore original configuration file.
+	if [ -d "$1/etc/lighttpd.bak" ]
+	  then
+		rm -rf "$1/etc/lighttpd"
+		mv "$1/etc/lighttpd.bak" "$1/etc/lighttpd"
+	fi
+
+	# Just in case.
+	chown www.www "$1/var/log/$PACKAGE"
+	[ "$1" ] || netstat -ltn 2> /dev/null | grep -q :80 ||
+	/etc/init.d/$PACKAGE start
+}

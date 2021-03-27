@@ -1,0 +1,17 @@
+# SliTaz package receipt.
+
+PACKAGE="bcrelay"
+VERSION="1.4.0"
+CATEGORY="network"
+SHORT_DESC="Broadcast relay daemon."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://poptop.sourceforge.net/"
+WANTED="poptop"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/sbin
+	cp -a $install/usr/sbin/bcrelay $fs/usr/sbin
+}

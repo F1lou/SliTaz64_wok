@@ -1,0 +1,25 @@
+# SliTaz package receipt.
+
+PACKAGE="cherokee-dev"
+VERSION="1.2.104"
+CATEGORY="development"
+SHORT_DESC="Development files for cherokee."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="http://www.cherokee.org/"
+
+DEPENDS="cherokee pkg-config"
+WANTED="cherokee"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/cherokee
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/lib/*.*a		$fs/usr/lib
+	cp -a $install/usr/lib/cherokee/*.*a	$fs/usr/lib/cherokee
+	cp -a $install/usr/lib/pkgconfig	$fs/usr/lib
+	cp -a $install/usr/share/aclocal	$fs/usr/share
+}
+

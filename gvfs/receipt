@@ -1,0 +1,46 @@
+# SliTaz package receipt.
+
+PACKAGE="gvfs"
+VERSION="1.22.1"
+CATEGORY="system-tools"
+SHORT_DESC="Userspace virtual filesystem designed to work with gio"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WEB_SITE="https://www.gnome.org/"
+WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION%.*}/$TARBALL"
+SUGGESTED="gvfs-afp gvfs-archive gvfs-cdda gvfs-fuse gvfs-gphoto2 gvfs-http \
+gvfs-libmtp gvfs-obexftp gvfs-smb gvfs-udisks2"
+
+DEPENDS="dbus glib glibc-base libffi libgio pcre udev zlib"
+BUILD_DEPENDS="dbus-dev glib-dev udev-dev libgudev-dev fuse-dev \
+udisks2-dev samba-dev smbclient expat-dev libarchive-dev libgcrypt-dev \
+libsoup-dev libxml2-dev libcdio-dev dbus-glib-dev bluez-dev expat-dev \
+libgphoto2-dev libmtp-dev gtk+3-dev glibc-dev sqlite-dev \
+libcdio-paranoia-dev libtool"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	patch -p0 -i $stuff/allow-dropbear-ssh.patch
+
+	./configure \
+		--prefix=/usr \
+		--libexecdir=/usr/lib/$PACKAGE \
+		--sysconfdir=/etc \
+		--disable-documentation \
+		--disable-bash-completion \
+		$CONFIGURE_ARGS && \
+		make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	. $stuff/split
+}
+
+post_remove()
+{
+	chroot "$1/" /usr/bin/glib-compile-schemas /usr/share/glib-2.0/schemas
+}

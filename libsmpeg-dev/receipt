@@ -1,0 +1,25 @@
+# SliTaz package receipt.
+
+PACKAGE="libsmpeg-dev"
+VERSION="0.4.5"
+CATEGORY="development"
+SHORT_DESC="Mpeg decoding library devel files"
+MAINTAINER="claudinei@slitaz.org"
+LICENSE="LGPL2"
+WEB_SITE="http://icculus.org/smpeg/"
+WANTED="libsmpeg"
+
+DEPENDS="libsmpeg"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin $fs/usr/lib $fs/usr/share $fs/usr/include
+	cp $install/usr/bin/smpeg-config $fs/usr/bin
+	chmod +x $fs/usr/bin/smpeg-config
+	cp -a $install/usr/include/smpeg $fs/usr/include
+	cp -a $install/usr/lib/*.a $fs/usr/lib
+	cp -a $install/usr/share/aclocal $fs/usr/share
+	#fix aclocal warnings
+	sed -i "s#(AM_PATH_SMPEG#([AM_PATH_SMPEG]#" $fs/usr/share/aclocal/smpeg.m4
+}

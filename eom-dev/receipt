@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="eom-dev"
+VERSION="1.9.0"
+CATEGORY="libdevel"
+LICENSE="GPL"
+SHORT_DESC="MATE's default image viewer, devel files."
+WEB_SITE="http://www.mate-desktop.org/"
+MAINTAINER="yuripourre@gmail.com"
+WANTED="eom"
+DEPENDS="eom pkg-config"
+
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/$WANTED/plugins/ $fs/usr/include
+	cp -a $install/usr/lib/$WANTED/plugins/*.la $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/include/* $fs/usr/include
+}

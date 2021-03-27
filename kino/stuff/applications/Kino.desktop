@@ -1,0 +1,18 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Kino Video Editor
+Name[de]=Kino Videoschnittprogramm
+Name[es]=Editor de vídeo Kino
+Name[fr]=Montage vidéo Kino
+Name[hu]=Kino Videoszerkesztő
+Name[it]=Editor Video Kino
+Name[pt]=Editor de vídeo Kino
+Name[pt_BR]=Editor de vídeo Kino
+Name[ru]=Kino Видеоредактор
+Exec=kino %F
+Icon=kino
+Terminal=false
+StartupNotify=true
+Type=Application
+Categories=Application;AudioVideo;AudioVideoEditing;
+MimeType=video/dv;application/smil

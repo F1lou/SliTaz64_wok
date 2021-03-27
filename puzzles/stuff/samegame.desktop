@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=samegame
+Exec=samegame
+Icon=samegame
+Terminal=false
+Categories=Application;Game;

@@ -1,0 +1,122 @@
+# SliTaz package receipt.
+
+PACKAGE="razorqt"
+VERSION="0.5.2"
+CATEGORY="x-window"
+SHORT_DESC="Light and fast QT based Desktop Environment."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2 LGPL2.1"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://github.com/Razor-qt/razor-qt"
+WGET_URL="https://github.com/Razor-qt/razor-qt/archive/$VERSION.tar.gz"
+SUGGESTED="razorqt-themes razorqt-appswitcher razorqt-power \
+razorqt-runner razorqt-autosuspend"
+
+BUILD_DEPENDS="cmake Qt4-dev qmake xorg-dev libmagic-dev upower-dev \
+grep libstatgrab-dev alsa-lib-dev polkit-dev polkit-qt-dev glib-dev \
+libgio-dev lightdm-qt-dev imagemagick"
+DEPENDS="libQtDBus libQtGui libmagic libstatgrab xorg-libXcomposite \
+xorg-libXcursor xorg-libXdamage lightdm-qt"
+
+GENERIC_MENUS="no"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|sg_init()|sg_init(1)|' \
+		razorqt-panel/plugin-networkmonitor/razornetworkmonitor.cpp \
+		razorqt-panel/plugin-cpuload/razorcpuload.cpp
+	sed -i 's|sg_get_cpu_percents()|sg_get_cpu_percents(NULL)|' \
+		razorqt-panel/plugin-cpuload/razorcpuload.cpp
+	sed -i 's|int \(.*num_network_stats\)|size_t \1|' \
+		razorqt-panel/plugin-networkmonitor/razornetworkmonitor.cpp
+	cmake -DCMAKE_INSTALL_PREFIX=/usr .
+	make && make install
+
+	# save space (png -> jpg)
+	cd $install/usr/share/razor/themes/light
+	convert ./simple_blue_widescreen.png ./simple_blue_widescreen.jpg
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	# copy all, then remove unneeded
+	cp -a $install/* $fs
+
+	# Dev-files --> razorqt-dev
+	rm -rf $fs/usr/include
+	rm -rf $fs/usr/lib/pkgconfig
+
+	# Language-files --> razorqt-locale-*
+	find $fs -name '*.qm' -delete
+
+	# Appswitcher --> razorqt-appswitcher
+	rm -f $fs/usr/bin/razor-appswitcher
+	rm -f $fs/etc/xdg/autostart/razor-appswitcher.desktop
+
+	# Autosuspend --> razorqt-autosuspend
+	rm -f $fs/usr/bin/razor-autosuspend
+	rm -f $fs/usr/bin/razor-config-autosuspend
+	rm -f $fs/etc/xdg/autostart/razor-autosuspend.desktop
+	rm -f $fs/usr/share/applications/razor-config-autosuspend.desktop
+
+	# Policykit-agent --> razorqt-policykit-agent
+	rm -f $fs/usr/bin/razor-policykit-agent
+	rm -f $fs/etc/xdg/autostart/razor-policykit-agent.desktop
+
+	# Power --> razorqt-power
+	rm -f $fs/usr/bin/razor-power
+	rm -f $fs/usr/share/applications/razor-power.desktop
+
+	# Runner --> razorqt-runner
+	rm -f $fs/usr/bin/razor-runner
+	rm -f $fs/etc/xdg/autostart/razor-runner.desktop
+
+	# Themes (all but light) --> razorqt-themes
+	find $fs/usr/share/razor/themes -maxdepth 1 -mindepth 1 -type d \
+		\( ! -name light \) -exec rm -rf \{\} \;
+	rm -f $fs/usr/share/razor/themes/light/simple_blue_widescreen.png
+	rm -f $fs/usr/share/razor/themes/light/96640-simple_blue_widescreen.svg
+	sed 's|png|jpg|' -i $fs/usr/share/razor/themes/light/wallpaper.cfg
+
+	# Remove confupdate (Port desktop.conf syntax from 0.4.x to 0.5.0 format)
+	rm -f $fs/usr/bin/razor-confupdate
+	rm -rf $fs/usr/lib/razor-confupdate_bin
+	rm -rf $fs/usr/share/razor/razor-confupdate
+
+	# Remove heavy graphics
+	rm -f $fs/usr/share/razor/graphics/rqt*
+
+	# Remove file - not use KDM
+	rm -rf $fs/usr/share/apps
+
+	# Remove empty folders
+	for dir in $(find $fs/usr/share -type d); do
+		rmdir --ignore-fail-on-non-empty $dir
+	done
+
+	# Custom SliTaz integration
+	cp -a $stuff/*.conf $fs/etc/xdg/razor
+}
+
+post_install()
+{
+	res=$(cat "$1/etc/slim.conf" | grep ^session | sed s/"sessions. *"//)
+	# Adding WM to SLIM available sessions.
+	if ! echo "$res" | grep -q $PACKAGE; then
+		echo
+		echo -n "Adding $PACKAGE to /etc/slim.conf..."
+		sed -i "s/^sessions.*/sessions            ${res},$PACKAGE/" "$1/etc/slim.conf"
+		status
+	fi
+	true
+}
+
+post_remove()
+{
+	# Remove WM from SLIM available sessions.
+	if grep -q $PACKAGE "$1/etc/slim.conf"; then
+		sed -i s/,$PACKAGE// "$1/etc/slim.conf"
+	fi
+}

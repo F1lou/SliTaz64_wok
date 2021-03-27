@@ -1,0 +1,45 @@
+# SliTaz package receipt.
+
+PACKAGE="python-pygame"
+SOURCE="pygame"
+VERSION="1.9.1release"
+CATEGORY="development"
+SHORT_DESC="Python game library."
+MAINTAINER="claudinei@slitaz.org"
+LICENSE="LGPL"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="http://www.pygame.org/"
+WGET_URL="$WEB_SITE/ftp/$TARBALL"
+
+DEPENDS="python libsdl libsdl-image libsdl-mixer libsdl-ttf python-numpy \
+libsmpeg gcc-lib-base"
+BUILD_DEPENDS="python-dev libsmpeg-dev libsdl-dev libsdl-image-dev \
+libsdl-mixer-dev libsdl-ttf-dev libv4l-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	patch -Np0 -i $stuff/config.patch
+	sed -i "s|linux/videodev.h|libv4l1-videodev.h|" src/camera.h
+	python config.py -auto &&
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	PYTHON_LIB=python$(grep ^VERSION= $WOK/python/receipt | sed 's/.*"\(...\).*/\1/')
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib $fs/usr
+	chmod 644 $fs/usr/lib/$PYTHON_LIB/site-packages/pygame/freesansbold.ttf
+	# examples and tests in python-pygame-dev
+	rm -rf $fs/usr/lib/$PYTHON_LIB/site-packages/pygame/examples
+	rm -rf $fs/usr/lib/$PYTHON_LIB/site-packages/pygame/tests
+}
+
+# Remove old package.
+post_install()
+{
+	[ ! -d "$1/var/lib/tazpkg/installed/pygame/examples" ] ||
+	rm -rf "$1/var/lib/tazpkg/installed/pygame/examples"
+}

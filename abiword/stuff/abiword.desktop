@@ -1,0 +1,25 @@
+[Desktop Entry]
+Type=Application
+Name=AbiWord
+GenericName=Word Processor
+GenericName[es]=Procesador de textos
+GenericName[fr]=Traitement de texte
+GenericName[pt]=Processador de Textos
+GenericName[pt_BR]=Processador de Textos
+GenericName[ru]=Текстовый процессор
+Comment=AbiWord Word Processor
+Comment[da]=AbiWord tekstbehandlingsprogram
+Comment[de]=AbiWord Textverarbeitung
+Comment[es]=Procesador de textos Abiword
+Comment[fr]=Traitement de texte AbiWord
+Comment[pt]=Processador de Texto Abiword
+Comment[pt_BR]=Processador de Texto Abiword
+Comment[ru]=Текстовый процессор AbiWord
+Comment[sv]=Ordbehandlaren Abiword
+Comment[zh_CN]=AbiWord Office文档编辑器
+Exec=abiword %F
+Icon=abiword
+Terminal=false
+Categories=Office;WordProcessor;
+StartupNotify=true
+MimeType=application/x-abiword;text/x-abiword;text/x-xml-abiword;text/plain;application/msword;application/rtf;application/vnd.plain;application/xhtml+xml;text/html;application/x-crossmark;application/docbook+xml;application/x-t602;application/vnd.oasis.opendocument.text;application/vnd.sun.xml.writer;application/vnd.stardivision.writer;text/vnd.wap.wml;application/wordperfect6;application/wordperfect5.1;

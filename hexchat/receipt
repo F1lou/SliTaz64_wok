@@ -1,0 +1,41 @@
+# SliTaz package receipt.
+
+PACKAGE="hexchat"
+VERSION="2.10.2"
+CATEGORY="network"
+SHORT_DESC="IRC client using GTK+"
+MAINTAINER="lenios@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://hexchat.github.io/"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="http://dl.hexchat.net/hexchat/$TARBALL"
+
+DEPENDS="gtk+ openssl gettext-base dbus-glib xorg-libXdamage \
+harfbuzz"
+BUILD_DEPENDS="gtk+-dev openssl-dev shared-mime-info"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--prefix=/usr \
+		--infodir=/usr/share/info \
+		--mandir=/usr/share/man \
+		--disable-plugin \
+		--disable-tcl \
+		--disable-dbus \
+		--disable-python \
+		--enable-spell=static \
+		--enable-ipv6 \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+	# cp -a $install/usr/share/dbus-1 $fs/usr/share
+}

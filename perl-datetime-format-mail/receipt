@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-datetime-format-mail"
+VERSION="0.403"
+CATEGORY="development"
+SHORT_DESC="DateTime::Format::Mail module is a Perl extension."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+SOURCE="DateTime-Format-Mail"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="http://cpan.org/"
+WGET_URL="https://cpan.metacpan.org/authors/id/B/BO/BOOK/$TARBALL"
+
+DEPENDS="perl"
+BUILD_DEPENDS="perl-datetime perl-params-validate"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	perl Makefile.PL &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib $fs/usr
+}

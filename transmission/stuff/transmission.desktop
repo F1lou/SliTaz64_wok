@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Transmission BitTorrent
+Name[pt]=Cliente de BitTorrent Transmission
+Name[pt_BR]=Cliente de BitTorrent Transmission
+Comment[fr]=Un client BitTorrent léger, libre, avec une interface simple et intuitive
+Exec=transmission %F
+TryExec=transmission
+Icon=transmission
+Type=Application
+MimeType=application/x-bittorrent;
+Categories=Network;FileTransfer;P2P;GTK;

@@ -1,0 +1,26 @@
+# SliTaz package receipt.
+
+PACKAGE="matchbox-themes-extra"
+VERSION="0.3"
+CATEGORY="customization"
+SHORT_DESC="Matchbox extra themes."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://matchbox-project.org/"
+WGET_URL="${WEB_SITE}sources/$PACKAGE/$VERSION/$TARBALL"
+HOST_ARCH="x86_64 any"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS &&
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/share $fs/usr
+}

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Urxvt
+GenericName=Unicode Terminal
+Comment=Terminal emulator with unicode support
+Comment[ru]=Эмулятор терминала с поддержкой юникода
+Exec=urxvt -bg black -fg white -cr orange -pr green
+Icon=utilities-terminal
+Categories=System;TerminalEmulator;

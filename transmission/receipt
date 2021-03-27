@@ -1,0 +1,57 @@
+# SliTaz package receipt.
+
+PACKAGE="transmission"
+VERSION="2.94"
+CATEGORY="network"
+TAGS="torrent"
+SHORT_DESC="Light and easy to use BitTorrent client."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://web.archive.org/web/20200122162854/https://transmissionbt.com/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="https://github.com/$PACKAGE/$PACKAGE/archive/$VERSION.tar.gz"
+
+SUGGESTED="transmission-cli transmission-daemon transmission-web"
+DEPENDS="dbus dbus-glib gtk+3 libcurl libevent libgio \
+	libnotify libssl xorg-libXdamage"
+BUILD_DEPENDS="libtool curl curl-dev dbus-dev dbus-glib-dev expat-dev 
+	gettext gtk+3-dev intltool libevent-dev openssl-dev tar"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	touch third-party/miniupnp/VERSION
+	CFLAGS="$CFLAGS -fdata-sections -ffunction-sections \
+	-Wl,--gc-sections"
+
+	./autogen.sh &&
+	./configure			\
+		--prefix=/usr		\
+		--enable-cli		\
+		--enable-lightweight	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make install &&
+
+	rm -rf $install/usr/share/applications $src/macosx
+
+	#For gcc v4.7+
+	#cd $src/qt && qmake qtr.pro
+	#make && make INSTALL_ROOT=$install install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	mkdir -p $fs/usr/share/applications
+	cp -a $install/usr/bin/${PACKAGE}-gtk $fs/usr/bin/${PACKAGE}
+}
+
+# Remove old packages name
+post_install()
+{
+	rm -f "$1/usr/bin/transmission-gtk"
+	rm -f "$1/usr/share/applications/${PACKAGE}-gtk.desktop"
+}

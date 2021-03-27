@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="aircrack-ng-oui"
+VERSION="20190127"
+CATEGORY="misc"
+SHORT_DESC="archive of oui.txt file for airdump-ng"
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://standards.ieee.org/products-services/regauth/oui/index.html"
+TARBALL="oui-$VERSION.txt"
+WGET_URL="http://standards-oui.ieee.org/oui.txt"
+HOST_ARCH="x86_64 any"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# get the logic from airodump-ng-oui-update + dos2unix & sort
+	mkdir -p $install/etc/aircrack-ng
+	grep '(hex)' $TARBALL \
+	| sed 's/^[ \t]*//g;s/[ \t]*$//g' \
+	| dos2unix \
+	| sort \
+	> $install/etc/aircrack-ng/airodump-ng-oui.txt
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/etc $fs
+}

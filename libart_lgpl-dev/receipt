@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="libart_lgpl-dev"
+VERSION="2.3.21"
+CATEGORY="development"
+SHORT_DESC="Free libart devel file."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WANTED="libart_lgpl"
+WEB_SITE="http://ftp.gnome.org/pub/gnome/sources/libart_lgpl/"
+
+DEPENDS="libart_lgpl pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/include $fs/usr
+}
+

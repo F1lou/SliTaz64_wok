@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="pciids"
+VERSION="20200329"
+CATEGORY="misc"
+SHORT_DESC="List of PCI ID's"
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="BSD GPL2"
+WEB_SITE="https://pci-ids.ucw.cz/"
+
+TARBALL="pci-$VERSION.ids.gz"
+WGET_URL="${WEB_SITE}v2.2/pci.ids.gz"
+
+HOST_ARCH="x86_64 i486 arm"
+
+BUILD_DEPENDS="advancecomp"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	advdef -z4 pci-$VERSION.ids.gz
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/misc
+	cp $src/pci-$VERSION.ids.gz	$fs/usr/share/misc/pci.ids.gz
+}

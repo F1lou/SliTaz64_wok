@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="gpxe-pxe"
+VERSION="0.9.3"
+CATEGORY="system-tools"
+SHORT_DESC="Ethernet bootloader for pxe server."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://www.etherboot.org/"
+WANTED="gpxe"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/boot
+	cp $src/src/bin/undionly.kpxe $fs/usr/share/boot/gpxe.pxe
+	# install 255 bytes of forced url at offset 5
+	echo -n "\
+http://mirror.slitaz.org/pxe/pxelinux.0,\
+http://mirror.switch.ch/ftp/mirror/pxe/pxelinux.0,\
+http://download.tuxfamily.org/slitaz/pxe/pxelinux.0" | cat - /dev/zero | \
+	   dd bs=1 seek=5 count=255 conv=notrunc of=$fs/usr/share/boot/gpxe.pxe
+}

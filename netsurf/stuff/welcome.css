@@ -1,0 +1,100 @@
+/* CSS style for SliTaz GNU/Linux generic xHTML files. */
+
+html { min-height: 102%; }
+
+body {
+	background: #ffffff;
+	color: black;
+	font: 13px sans-serif, vernada, arial;
+	margin: 0;
+	min-width: 640px;
+}
+
+a { text-decoration: underline; color: #215090; }
+a:hover { text-decoration: none; color: blue; }
+img { border: 0pt none; vertical-align: middle; }
+h1 { margin: 0; padding: 8px; color: #fff; font-size: 20px; }
+h2 { color: #444; }
+h3 { color: #666; font-size: 140%; }
+
+/* Header */
+
+#header {
+	background: #222;
+	height: 40px;
+	border-bottom: 4px solid #afafaf;
+}
+
+#header h1 {
+	margin: 0;
+	padding: 8px 0 0 5px;
+	width: 250px;
+}
+
+#header h1 a { 
+	color: white; 
+	text-decoration: none;
+	font-size: 20px;
+	font-style: italic;
+}
+
+#header h1 a:hover { 
+	color: #afafaf;
+}
+
+#header h1 a:hover, #network a:hover { 
+	color: #d66018;
+}
+
+/* Header links */
+
+#network { 
+	float: right; 
+	padding: 14px 5px 0; 
+	font-size: 12px;
+	margin-right: 5px;
+}
+
+#network a, #network span {
+	padding: 0 4px;
+	color: #fff; 
+	font-weight: bold;
+	text-decoration: none;
+}
+
+#network a:hover, #user a:hover, #network span { color: #cfcfcf; }
+
+#content {
+	padding: 30px 80px;
+	text-align: justify;
+}
+
+#search { text-align: center; margin: 40px 0px; }
+input[type=submit] {
+	border: 1px solid #000;
+	background-color: #afafaf;
+	color: white;
+	font-weight: bold;
+	cursor: pointer;
+	padding: 3px 10px;
+	font-size: 15px;
+	margin-left: -5px;
+}
+input[type=text] {
+	border: 1px solid #333333;
+	padding: 4px;
+	height: 15px;
+	width: 68%;
+}
+
+#social { text-align: center; color: #666; }
+#social a { color: #666; padding: 0 2px; }
+
+#footer {
+	text-align: center;
+	border-top: 1px solid #ddd;
+	padding: 40px;
+	color: #666;
+}
+
+#footer a { color: #666; padding: 0 2px; }

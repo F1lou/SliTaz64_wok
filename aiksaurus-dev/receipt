@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="aiksaurus-dev"
+VERSION="1.2.1"
+CATEGORY="system-tools"
+SHORT_DESC="A cross-platform, open-source thesaurus devel files."
+MAINTAINER="gokhlayeh@slitaz.org"
+LICENSE="GPL2"
+WANTED="aiksaurus"
+WEB_SITE="http://aiksaurus.sourceforge.net/"
+
+DEPENDS="pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+}
+

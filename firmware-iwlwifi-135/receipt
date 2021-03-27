@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="firmware-iwlwifi-135"
+VERSION="20200515"
+CATEGORY="non-free"
+SHORT_DESC="Firmware files for iwlwifi 135"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="other"
+WEB_SITE="https://wireless.wiki.kernel.org/en/users/Drivers/iwlwifi#Firmware"
+WANTED="firmware"
+PROVIDE="iwlwifi-135"
+
+DEPENDS="linux-wireless"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/lib/firmware $fs/usr/share/licenses
+	cp -a $install/lib/firmware/iwlwifi-135-*.ucode $fs/lib/firmware
+	cp -a $install/usr/share/licenses/LICENCE.iwlwifi_firmware $fs/usr/share/licenses
+}

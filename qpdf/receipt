@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="qpdf"
+VERSION="8.4.2"
+CATEGORY="system-tools"
+SHORT_DESC="A Content-Preserving PDF Transformation System."
+MAINTAINER="mojo@slitaz.org"
+LICENSE="Artistic-2.0"
+WEB_SITE="https://github.com/qpdf/qpdf"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}/archive/release-$TARBALL"
+
+DEPENDS="libjpeg pcre zlib"
+BUILD_DEPENDS="jpeg-dev pcre-dev zlib-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+        cp -a $install/usr/bin		$fs/usr
+        cp -a $install/usr/lib/*.so*	$fs/usr/lib
+}

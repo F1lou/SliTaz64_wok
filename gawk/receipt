@@ -1,0 +1,67 @@
+# SliTaz package receipt.
+
+PACKAGE="gawk"
+VERSION="5.0.1"
+CATEGORY="development"
+SHORT_DESC="GNU awk to handle simple data-reformatting."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://www.gnu.org/software/gawk/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS=""
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to compile & install the temporary toolchain.
+cook_tmp_toolchain()
+{
+	./configure &&
+	make -j 1 &&
+	make install
+}
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--libexecdir=/usr/lib	\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/locale
+
+	# Set list of wanted locales in LOCALE_PACK
+	. $WOK/slitaz-i18n/stuff/locale-pack.conf
+
+	# Copy message files in wanted languages, if available
+	for locale in $LOCALE_PACK
+	  do
+		[ -d $install/usr/share/locale/$locale ] || continue
+		cp -a $install/usr/share/locale/$locale $fs/usr/share/locale
+	  done
+
+	cp -a $install/usr/bin		$fs/usr
+	
+	cp -a $install/usr/share/awk	$fs/usr/share
+}
+
+# Pre and post install commands for Tazpkg.
+# We must remove all Busybox symlink before installing.
+pre_install()
+{
+	rm -f "$1/usr/bin/awk"
+}
+
+post_remove()
+{
+	ln -s /bin/busybox "$1/usr/bin/awk"
+}

@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="libQtSvg"
+VERSION="4.8.7"
+CATEGORY="development"
+SHORT_DESC="Qt Svg Library"
+MAINTAINER="allan316@gmail.com"
+LICENSE="GPL3 LGPL2.1"
+WEB_SITE="http://qt-project.org/"
+WANTED="qt4"
+
+DEPENDS="libQtCore libQtGui libQtXml libpng"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/qt/plugins/imageformats $fs/usr/lib/qt/plugins/iconengines
+	cp -a $install/usr/lib/libQtSvg.so*	$fs/usr/lib
+	cp -a $install/usr/lib/qt/plugins/imageformats/libqsvg.so	$fs/*/*/*/*/imageformats
+	cp -a $install/usr/lib/qt/plugins/iconengines/libqsvgicon.so	$fs/*/*/*/*/iconengines
+}
+

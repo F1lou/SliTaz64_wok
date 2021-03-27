@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="0install"
+VERSION="1.13"
+SOURCE="zeroinstall-injector"
+CATEGORY="misc"
+SHORT_DESC="A decentralised cross-distribution software installation system."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="LGPL2.1"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="http://0install.net/"
+WGET_URL="http://downloads.sf.net/project/zero-install/$PACKAGE/$VERSION/$TARBALL"
+
+DEPENDS="pygtk xdg-utils"
+BUILD_DEPENDS="python pygobject"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py install --root=$DESTDIR
+	# move man pages in a right place
+	mv $install/usr/man $install/usr/share
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+}

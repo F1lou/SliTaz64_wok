@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="gcolor2"
+VERSION="0.4"
+CATEGORY="graphics"
+SHORT_DESC="Light and simple color selector."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://gcolor2.sourceforge.net/"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+GENERIC_PIXMAPS="no"
+
+DEPENDS="gtk+"
+SUGGESTED="xorg-rgb"
+BUILD_DEPENDS="gtk+-dev file"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	patch -p1 -i $stuff/gcolor2.patch
+	cp $stuff/*.po* $src/po
+	sed -i 's|@CATALOGS@|ru.gmo|' $src/po/Makefile.in.in
+
+	./configure $CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}
+

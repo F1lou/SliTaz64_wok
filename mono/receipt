@@ -1,0 +1,54 @@
+# SliTaz package receipt.
+
+PACKAGE="mono"
+VERSION="2.10.8"
+CATEGORY="development"
+SHORT_DESC="Cross-platform, open source .NET development framework"
+MAINTAINER="rcx@zoominternet.net"
+LICENSE="LGPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://www.mono-project.com/"
+WGET_URL="http://download.mono-project.com/sources/$PACKAGE/$TARBALL"
+
+DEPENDS="glib glibc-base zlib libgdiplus"
+BUILD_DEPENDS="tar bzip2 m4 pkg-config bison gawk \
+gettext glib-dev perl libgdiplus-dev"
+
+# Build documentation at http://mono-project.com/Compiling_Mono
+# and http://mono-project.com/Release_Notes_Mono_2.4#Installing_Mono_2.4
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure \
+		--sysconfdir=/etc \
+		--with-libgdiplus=installed \
+		$CONFIGURE_ARGS 2>&1 | grep -v /libtool &&
+	make -j 1 2>&1 | grep -v 'dll.makefrag: No such file' && make install
+
+	for i in System.Web_standalone_test_net_2_0 \
+		 System.Web_standalone_test_net_4_0 \
+		 System.Web.Extensions_standalone_test_net_2_0 \
+		 System.Web.Extensions_standalone_test_net_4_0 \
+		 net_2_0_standalone-runner-support \
+		 net_4_0_standalone-runner-support ; do
+		touch -d 197001010000 mcs/build/deps/$i.dll.makefrag
+	done
+	cd $src/mcs/jay
+	make -j 1 && make DESTDIR=$DESTDIR prefix=/usr INSTALL=../../install-sh install
+
+	#fix .pc file to be able to request mono on what it depends, fixes #go-oo build
+	sed -i -e "s:#Requires:Requires:" $DESTDIR/usr/lib/pkgconfig/mono.pc
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/mono $fs/usr/lib
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/etc $fs
+	chmod +x $fs/usr/bin/*
+}

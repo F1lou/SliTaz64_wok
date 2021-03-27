@@ -1,0 +1,24 @@
+# SliTaz package receipt.
+
+PACKAGE="poppler-data"
+VERSION="0.4.6"
+CATEGORY="office"
+SHORT_DESC="Poppler encoding data."
+MAINTAINER="rocky@slitaz.org"
+LICENSE="MIT"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://poppler.freedesktop.org/"
+WGET_URL="https://poppler.freedesktop.org/$TARBALL"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make datadir=/usr/share DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs
+	cp -a $install/usr $fs/
+}

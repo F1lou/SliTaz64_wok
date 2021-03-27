@@ -1,0 +1,138 @@
+# SliTaz package receipt.
+
+PACKAGE="postfix"
+VERSION="3.4.5"
+CATEGORY="network"
+SHORT_DESC="Fast, easy to administer, and secure mailer."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="other"
+WEB_SITE="http://www.postfix.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="http://postfix.mirrors.ovh.net/$PACKAGE-release/official/$TARBALL"
+
+PROVIDE="sendmail"
+DEPENDS="libdb libldap pcre libssl slitaz-base-files libsasl libkrb5 \
+	libcomerr3 libmysqlclient"
+BUILD_DEPENDS="db-dev openldap-dev pcre-dev openssl-dev perl mysql-dev \
+	cyrus-sasl-dev libsasl"
+TAZPANEL_DAEMON="man|edit::/etc/postfix/main.cf|options|web::$WEB_SITE"
+CONFIG_FILES="/etc/postfix"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make makefiles \
+	CCARGS='-DHAS_DB -DHAS_LDAP \
+		-DUSE_SASL_AUTH -DUSE_CYRUS_SASL -I /usr/include/sasl \
+		-DHAS_MYSQL -I/usr/include/mysql \
+		-DDEF_DAEMON_DIR=\"/usr/lib/postfix\" \
+		-DUSE_TLS \
+		-DDEF_MANPAGE_DIR=\"/usr/share/man\"' \
+	AUXLIBS="-ldb -lldap -llber -lsasl2 -lssl -lcrypto -lpthread \
+		-L/usr/lib/mysql -lmysqlclient -lz -lm " &&
+	make
+	export install_root=$DESTDIR
+	sh postfix-install -non-interactive 2>&1 | grep -v warning:
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/licenses/
+	cp -a $install/usr/lib	$fs/usr
+	cp -a $install/usr/bin	$fs/usr
+	cp -a $install/usr/sbin	$fs/usr
+	cp -a $install/etc	$fs
+
+	awk 'BEGIN {n=0} /MUST/ {n++} /ALIASES/ {n++} { if (n==1) print }' \
+		< $install/etc/postfix/aliases > $fs/etc/postfix/aliases
+	while read keyword data; do
+		grep -q ^$keyword $fs/etc/postfix/main.cf && continue
+		mv $fs/etc/postfix/main.cf $fs/etc/postfix/main.cf.$$
+		awk "BEGIN { scan=1 } /^#$keyword / { if (scan) { print \"$keyword $data\" ; scan=0 } } { print }" \
+			< $fs/etc/postfix/main.cf.$$ > $fs/etc/postfix/main.cf
+		rm -f $fs/etc/postfix/main.cf.$$
+	done << EOF
+mydomain = localdomain
+myorigin = localhost
+mydestination = localhost, localhost.\$mydomain
+mynetworks = 127.0.0.0/8
+alias_maps = hash:/etc/postfix/aliases
+EOF
+	cat >> $fs/etc/postfix/main.cf <<EOF
+
+# Unsafe, see CVE-2014-3566 POODLE
+smtpd_tls_mandatory_protocols = !SSLv2, !SSLv3
+EOF
+	cp -a $stuff/etc $fs
+	cp -a $install/var $fs
+	mv $fs/etc/postfix/TLS_LICENSE $fs/usr/share/licenses/POSTFIX_TLS_LICENSE
+	mv $fs/etc/postfix/LICENSE $fs/usr/share/licenses/POSTFIX_LICENSE
+	cp -a $stuff/etc/init.d $fs/etc
+	rm -f $fs/usr/lib/postfix/post* $fs/usr/lib/postfix/*.cf
+	strip -s $fs/usr/lib/postfix/*
+}
+
+# Pre and post install commands for Tazpkg.
+post_install()
+{
+
+	local user
+	local group
+	
+	user=postfix
+	group=postdrop
+	
+	if ! grep -q $user "$1/etc/passwd"; then
+		echo
+		echo -n "Adding user/group $user..."
+		chroot "$1/" addgroup -S $user
+		chroot "$1/" adduser -S -D -H -G $user $user
+		chroot "$1/" addgroup -S $group
+		status
+	fi
+
+	# addgroup postdrop if needed
+	if ! grep -q postdrop "$1/etc/group"; then
+		echo
+		echo -n "Adding group ${group}..."
+		chroot "$1/" addgroup -S $group
+		status
+	fi
+
+	chroot "$1/" chown ${user} /var/spool/postfix/* /var/lib/postfix
+	chroot "$1/" chgrp ${group} /var/spool/postfix/maildrop \
+		/var/spool/postfix/public /usr/sbin/postdrop /usr/sbin/postqueue
+	chmod 2755 "$1/usr/sbin/postdrop" "$1/usr/sbin/postqueue"
+	chmod 2710 "$1/var/spool/postfix/public"
+	chmod 1730 "$1/var/spool/postfix/maildrop"
+	chroot "$1/" postalias /etc/postfix/aliases
+	cat <<EOF
+	
+----
+Warning: you still need to edit myorigin/mydestination/mynetworks
+parameter settings in /etc/postfix/main.cf.
+See also http://www.postfix.org/STANDARD_CONFIGURATION_README.html
+
+To start $PACKAGE server you can run :
+
+    /etc/init.d/$PACKAGE start
+
+Or add $PACKAGE to RUN_DAEMONS in /etc/rcS.conf
+----
+EOF
+}
+
+# Overlap busybox
+pre_install()
+{
+	rm -f "$1/usr/sbin/sendmail"
+}
+
+post_remove()
+{
+	deluser postfix
+	delgroup postdrop
+	ln -s /bin/busybox /usr/sbin/sendmail
+}

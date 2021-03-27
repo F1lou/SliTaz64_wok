@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-uri"
+VERSION="1.76"
+CATEGORY="development"
+SHORT_DESC="Perl extensions URI::Escape, URI::File, URI::ldap and URI::URL."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL"
+WEB_SITE="https://metacpan.org/release/URI"
+
+SOURCE="URI"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://www.cpan.org/modules/by-module/URI/$TARBALL"
+
+PROVIDE="perl-uri-escape perl-uri-file perl-uri-ldap perl-uri-url"
+DEPENDS="perl"
+BUILD_DEPENDS="perl"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	perl Makefile.PL &&
+	make &&
+	make install DESTDIR=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib	$fs/usr
+}

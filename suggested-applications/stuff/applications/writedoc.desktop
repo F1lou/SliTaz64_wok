@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Write documents
+Name[pt]=Edição de documentos
+Name[pt_BR]=Edição de documentos
+Name[ru]=Правка документов
+Comment=Install applications for image edit
+Comment[ru]=Установить приложения для правки документов
+Exec=default-app abiword --install "abiword abiword-plugins gnumeric"
+Icon=text-editor
+Categories=Office;

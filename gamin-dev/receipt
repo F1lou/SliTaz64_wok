@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="gamin-dev"
+VERSION="0.1.10"
+CATEGORY="development"
+SHORT_DESC="Devel files for gamin file and directory monitoring system."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2"
+WANTED="gamin"
+WEB_SITE="https://www.gnome.org/~veillard/gamin/"
+
+DEPENDS="pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+}
+

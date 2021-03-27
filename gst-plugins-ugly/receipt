@@ -1,0 +1,47 @@
+# SliTaz package receipt.
+
+PACKAGE="gst-plugins-ugly"
+VERSION="0.10.19"
+SERIES="0.10"
+CATEGORY="multimedia"
+SHORT_DESC="GStreamer Ugly Plugins"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="LGPL2.1"
+SUGGESTED="x264"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WEB_SITE="https://gstreamer.freedesktop.org/"
+WGET_URL="$WEB_SITE/src/$PACKAGE/$TARBALL"
+LOCALES="da de es fr id it pt_BR ru zh_CN"
+
+DEPENDS="gst-plugins-base lame libdvdread
+libcdio libmad libmpeg2 opencore-amr"
+BUILD_DEPENDS="gstreamer-dev gst-plugins-base-dev lame-dev libdvdread-dev
+libcdio-dev libmad-dev libmpeg2-dev x264-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	patch -p0 < $stuff/libcdio.u
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--disable-static \
+		--disable-debug \
+		--with-package-name="GStreamer Ugly Plugins ($SERIES)" \
+		--with-package-origin="http://www.slitaz.org/" \
+		$CONFIGURE_ARGS &&
+	make $MAKEFLAGS 2>&1 | grep -v /usr/local/include &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/gstreamer-$SERIES $fs/usr/share/locale
+	mv $install/usr/lib/gstreamer-$SERIES/*.so* $fs/usr/lib/gstreamer-$SERIES
+	mv $install/usr/share/gstreamer-$SERIES $fs/usr/share
+	for locale in $LOCALES; do
+		mv $install/usr/share/locale/$locale $fs/usr/share/locale
+	done
+}

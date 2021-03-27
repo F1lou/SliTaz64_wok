@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="tcplay"
+VERSION="3.3"
+CATEGORY="system-tools"
+SHORT_DESC="Free TrueCrypt implementation."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="https://github.com/bwalex/tc-play"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/bwalex/tc-play/archive/v$VERSION.tar.gz"
+
+DEPENDS="libdevmapper libcrypto libgcrypt util-linux-uuid zlib udev"
+BUILD_DEPENDS="cmake libdevmapper libdevmapper-dev libgcrypt-dev 
+	openssl-dev util-linux-uuid-dev zlib-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make -f Makefile.classic
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $src/tcplay	$fs/usr/bin
+}

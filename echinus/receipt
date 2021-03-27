@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="echinus"
+VERSION="0.4.9"
+CATEGORY="x-window"
+TAGS="window-manager"
+SHORT_DESC="A window manager for X in the spirit of dwm"
+MAINTAINER="devl547@gmail.com"
+LICENSE="MIT"
+WEB_SITE="https://plhk.ru/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}static/$PACKAGE/$TARBALL"
+
+BUILD_DEPENDS="xorg-libX11-dev xorg-libXft-dev xorg-libXrandr-dev"
+DEPENDS="xorg-libX11 xorg-libXft"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cp $stuff/config.mk config.mk
+	make -j 1 &&
+	make install \
+		DESTDIR=$DESTDIR \
+		BINPREFIX=/usr/bin \
+		CONFPREFIX=/usr/share/examples
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/examples $fs/usr/share
+}

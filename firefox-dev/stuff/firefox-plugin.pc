@@ -1,0 +1,10 @@
+prefix=/usr
+libdir=/usr/lib/firefox-devel/sdk/lib
+sdkdir=/usr/lib/firefox-devel/sdk
+includedir=/usr/include/firefox-VERSION
+
+Name: Mozilla Plug-In API
+Description: Mozilla Plug-In API
+Version: VERSION
+Libs: -L${libdir}
+Cflags: -I${includedir}

@@ -1,0 +1,52 @@
+# SliTaz package receipt.
+
+PACKAGE="upx"
+VERSION="3.96"
+CATEGORY="system-tools"
+SHORT_DESC="Ultimate Packer for eXecutables (free version using UCL compression)"
+MAINTAINER="devl547@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://upx.github.io/"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/upx/upx/archive/v$VERSION.tar.gz"
+PATCH="https://github.com/upx/upx-lzma-sdk/archive/v$VERSION.tar.gz"
+EXTRA_SOURCE_FILES="lzma-$TARBALL"
+
+DEPENDS="ucl zlib"
+BUILD_DEPENDS="ucl-dev zlib-dev perl"
+
+current_version()
+{
+	wget -O - ${WGET_URL%/arch*}/releases 2>/dev/null | \
+	sed '/archive.*tar/!d;s|.*archive/v\(.*\).tar.*|\1|;q'
+}
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	[ -s $SOURCES_REPOSITORY/lzma-$TARBALL ] ||
+		wget -O $SOURCES_REPOSITORY/lzma-$TARBALL $PATCH
+	tar -xf $SOURCES_REPOSITORY/lzma-$TARBALL
+	sed -i 's|c_len >= u_len)|c_len < u_len) return true; else|' \
+		$src/src/packer.cpp
+	rm -r $src/src/lzma-sdk
+	mv    $src/upx-lzma-sdk-$VERSION $src/src/lzma-sdk
+	make CHECK_WHITESPACE=/bin/true all
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin $install/usr/share/doc $install/usr/share/man
+	cp -a $src/src/upx.out $fs/usr/bin/upx
+	cp $src/doc/*.txt $install/usr/share/doc
+	cp $src/doc/*.doc $install/usr/share/doc
+	cp $src/doc/*.html $install/usr/share/doc
+	cp $src/LICENSE $install/usr/share/doc
+	cp $src/COPYING $install/usr/share/doc
+	cp $src/README* $install/usr/share/doc
+	cp $src/THANKS $install/usr/share/doc
+	cp $src/NEWS $install/usr/share/doc
+	cp $src/BUGS $install/usr/share/doc
+	cp $src/doc/*.1 $install/usr/share/man
+}

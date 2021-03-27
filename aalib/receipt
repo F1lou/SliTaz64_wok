@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="aalib"
+VERSION="1.4rc5"
+CATEGORY="multimedia"
+SHORT_DESC="A portable ASCII art graphic library"
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="LGPL2"
+WEB_SITE="http://aa-project.sourceforge.net/aalib/"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/aa-project/$TARBALL"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="ncurses xorg-libXt xorg-libX11"
+BUILD_DEPENDS="ncurses-dev xorg-libXt-dev xorg-libX11-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	patch -Np0 -i $stuff/aclocal-fixes.patch
+
+	./configure $CONFIGURE_ARGS &&
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

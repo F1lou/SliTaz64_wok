@@ -1,0 +1,83 @@
+#!/bin/sh
+# /etc/init.d/nfsd: Start, stop and restart NFS daemon on SliTaz, at boot
+# time or with the command line.
+#
+# To start daemon at boot time, just put the right name in the $RUN_DAEMONS
+# variable of /etc/rcS.conf.
+#
+. /etc/init.d/rc.functions
+
+NAME=NFSd
+DESC="$(_ '%s daemon' NFS)"
+DAEMON=/usr/sbin/rpc.nfsd
+PID_FILE=/var/run/nfsd.pid
+OPTION="8"
+[ -n "$NFSD_OPTION" ] || OPTION="$NFSD_OPTION"
+
+stop_warning()
+{
+  echo "Warning: filesystems are unexported but nfsd and lockd processes are still alive..."
+}
+
+case "$1" in
+  start)
+    if active_pidfile $PID_FILE nfsd ; then
+      _ '%s is already running.' $NAME
+      exit 1
+    fi
+    action 'Starting %s: %s...' "$DESC" $NAME
+    portmap="$(pidof portmap)"
+    if [ -n "$portmap" ]; then
+      kill $portmap
+      sleep 2
+    fi
+    [ -n "$(pidof rpcbind)" ] || rpcbind
+    modprobe nfsd
+    mount -t nfsd nfsd /proc/fs/nfsd 2>/dev/null
+    /usr/sbin/exportfs -r
+    $DAEMON $OPTION
+    pidof nfsd | awk '{print $1}' > $PID_FILE
+    /usr/sbin/rpc.mountd
+    status
+    ;;
+  stop)
+    if ! active_pidfile $PID_FILE nfsd ; then
+      _ '%s is not running.' $NAME
+      exit 1
+    fi
+    action 'Stopping %s: %s...' "$DESC" $NAME
+    killall rpc.mountd
+    killall nfsd
+    killall lockd
+    /usr/sbin/exportfs -au
+    /usr/sbin/exportfs -f
+    stop_warning	# FIXME
+    rm $PID_FILE
+    status
+    ;;
+  restart)
+    if ! active_pidfile $PID_FILE nfsd ; then
+      _ '%s is not running.' $NAME
+      exit 1
+    fi
+    action 'Restarting %s: %s...' "$DESC" $NAME
+    killall rpc.mountd
+    killall nfsd
+    killall lockd
+    /usr/sbin/exportfs -au
+    /usr/sbin/exportfs -f
+    sleep 2
+    /usr/sbin/exportfs -r
+    $DAEMON $OPTION
+    pidof nfsd | awk '{print $1}' > $PID_FILE
+    /usr/sbin/rpc.mountd
+    status
+    ;;
+  *)
+    emsg "<n><b>$(_ 'Usage:')</b> $0 [start|stop|restart]"
+    newline
+    exit 1
+    ;;
+esac
+
+exit 0

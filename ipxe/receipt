@@ -1,0 +1,78 @@
+# SliTaz package receipt.
+
+PACKAGE="ipxe"
+VERSION="1.20.1"
+CATEGORY="system-tools"
+SHORT_DESC="Open source network boot firmware."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://ipxe.org/"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/ipxe/ipxe/archive/v$VERSION.tar.gz"
+
+DEPENDS=""
+BUILD_DEPENDS="perl wget liblzma-dev syslinux"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src/src
+	patch -p1 < $stuff/cmd_isgt.u
+	sed -i 's|SIZEOF_LOW_4GB / SIZEOF_2MB_PAGE|1 << (SIZEOF_LOW_4GB_LOG2 - SIZEOF_2MB_PAGE_LOG2)|' arch/x86/transitions/librm.S
+	sed -i 's/-llzma/& -lpthread/' Makefile.*
+	sed -i 's|//\(#define.*CONSOLE_FRAMEBUFFER\)|\1|' config/console.h
+	sed -i 's|//\(#define.*CONSOLE_SERIAL\)|\1|' config/console.h
+	sed -e 's|//\(#define.*IMAGE_PNG\)|\1|' \
+	    -e 's|.*\(NET_PROTO_IPV6\)|#define \1|' \
+	    -e 's|undef	\(DOWNLOAD_PROTO_HTTPS\)|define	\1|' \
+	    -e 's|.*\(VLAN_CMD\)|#define \1|' \
+	    -e 's|.*\(CERT_CMD\)|#define \1|' \
+	    -e 's|//\(#define.*CONSOLE_CMD\)|\1|' \
+	    -e 's|//\(#define.*REBOOT_CMD\)|\1|' -i config/general.h
+	sed -i "s|\(TAG_LINE \"\)|\1${VERSION#*-} -- |" config/branding.h
+	sed -i 's|//\(#define.*CPUID_SETTINGS\)|\1|' config/settings.h
+	pxelinux="$(ls $WOK/syslinux/source/*/core/pxelinux.0)"
+	make bin-i386-efi/snponly.efi EMBED=$stuff/ipxelinux.ipxe,$pxelinux &&
+		mv bin-i386-efi/snponly.efi bin-i386-efi/ipxelinux.efi
+	make bin-i386-efi/ipxe.efi bin-i386-efi/snponly.efi EMBED=$stuff/ipxe.cmd
+
+	sed -i 's|//\(#define.*MEMMAP_SETTINGS\)|\1|' config/settings.h
+	make bin/undionly.kkkpxe EMBED=$stuff/ipxelinux.ipxe,$pxelinux &&
+		mv bin/undionly.kkkpxe bin/ipxelinux.0
+	make bin/undionly.pxe bin/undionly.kpxe bin/undionly.kkpxe \
+	     bin/undionly.kkkpxe bin/ipxe.pxe bin/ipxe.kpxe bin/ipxe.kkpxe \
+	     bin/ipxe.kkkpxe bin/ipxe.nbi bin/ipxe.lkrn \
+	     bin/ipxe.exe EMBED=$stuff/ipxe.cmd
+	cp $stuff/bootloader.S .
+	cc -o bootloader.o -Wa,-a=bootloader.lst -c bootloader.S
+	objcopy -O binary bootloader.o bootloader.bin
+	size=$(stat -c %s bin/ipxe.lkrn)
+	while read ofs val ; do
+		printf '\\\\x%02X\\\\x%02X' $(($val & 255)) $(($val / 256)) | \
+		xargs echo -en|dd bs=1 conv=notrunc of=bootloader.bin seek=$ofs
+	done 2> /dev/null <<EOT
+4	$((($size+511)/512))
+14	$((($size+15)/16))
+EOT
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/boot $install/usr/share
+	cp -a $src/src/doc $install/usr/share
+	cp -a $src/src/bin/ipxe.lkrn $fs/boot/ipxe.exe
+	dd if=$src/src/bootloader.bin of=$fs/boot/ipxe.exe conv=notrunc
+}
+
+# Pre and post install commands for Tazpkg.
+post_install()
+{
+	[ -s $1/boot/isolinux/isolinux.cfg ] &&
+	! grep -qs 'Web Boot' $1/boot/isolinux/isolinux.cfg &&
+	sed -i 's|i18n.cfg|&\n\
+LABEL web zeb\
+	MENU LABEL Web Boot\
+	KERNEL /boot/ipxe.exe|' $1/boot/isolinux/isolinux.cfg
+	true
+}

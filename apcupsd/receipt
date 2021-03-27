@@ -1,0 +1,44 @@
+# SliTaz package receipt.
+
+PACKAGE="apcupsd"
+VERSION="3.14.14"
+CATEGORY="system-tools"
+SHORT_DESC="APC UPS Power Management (daemon)."
+MAINTAINER="maintainer@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://www.apcupsd.com/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+BUILD_DEPENDS="libgd libgd-dev slitaz-dev-pkgs"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's/src platforms doc/src platforms/' Makefile
+	SHUTDOWN=/sbin/poweroff ac_cv_func_setpgrp_void=yes \
+	./configure				\
+		--enable-usb			\
+		--disable-snmp			\
+		--disable-net			\
+		--with-upstype=usb		\
+		--with-dev=			\
+		--enable-threads		\
+		--enable-cgi			\
+		--prefix=/usr			\
+		--infodir=/usr/share/info	\
+		--mandir=/usr/share/man		\
+		$CONFIGURE_ARGS &&
+	make &&
+	make install
+
+	cook_pick_manpages $src/doc/*.5 $src/doc/*.8
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+	rm -r $fs/usr/share/man
+}

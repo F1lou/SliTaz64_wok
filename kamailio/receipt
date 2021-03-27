@@ -1,0 +1,72 @@
+# SliTaz package receipt.
+
+PACKAGE="kamailio"
+VERSION="5.3.2"
+CATEGORY="network"
+SHORT_DESC="Open Source SIP Server."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.kamailio.org/"
+
+TARBALL="$PACKAGE-${VERSION}_src.tar.gz"
+WGET_URL="${WEB_SITE}pub/kamailio/$VERSION/src/$TARBALL"
+
+DEPENDS="curl expat libldap libssl libpostgresqlclient libxml2 
+	net-snmp pcre radiusclient-ng"
+BUILD_DEPENDS="bison curl-dev expat-dev flex libxml2-dev 
+	net-snmp-dev openldap-dev openssl-dev pcre-dev 
+	postgresql-dev python-dev radiusclient-ng-dev"
+
+CONFIG_FILES="/etc/kamailio"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|uname -m|echo i486|' \
+		src/Makefile.defs
+
+	make			\
+		PREFIX="/usr"	\
+		include_modules="acc_radius app_python auth_radius \
+db_postgres ldap presence_conference presence_dialoginfo presence_mwi \
+presence_profile presence_reginfo presence_xml snmpstats xmpp dialplan" \
+		cfg &&
+	make all &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/var/run/kamailio
+
+	cp -a $install/*	$fs
+	mv $fs/usr/etc		$fs
+	ln -s /etc $fs/usr/etc
+}
+
+# Pre and post install commands for Tazpkg.
+post_install()
+{
+	
+	local user
+	local group
+	
+	user=kamailio
+	group=kamailio
+	
+	if ! grep -q $user $1/etc/passwd
+	  then
+		echo -n "Adding user/group $user..."
+		chroot $1/ addgroup -S $group
+		chroot $1/ adduser -s /bin/false -S -D -H -G $group $user
+		status
+	fi
+	chroot "$1/" chown $user:$group /var/run/kamailio
+}
+
+post_remove()
+{
+	echo "Removing user/group kamailio"
+	chroot "$1/" deluser kamailio
+}

@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="moosefs"
+VERSION="3.0.111"
+CATEGORY="system-tools"
+SHORT_DESC="Fault tolerant, network distributed file system."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://www.moosefs.com/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/moosefs/moosefs/archive/v$VERSION.tar.gz"
+
+DEPENDS="fuse python zlib"
+BUILD_DEPENDS="fuse-dev pkg-config python zlib-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--prefix=/usr		\
+		--mandir=/usr/share/man	\
+		--sysconfdir=/etc	\
+		--localstatedir=/var	\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.   
+genpkg_rules()                                      
+{
+	mkdir -p $fs/usr/share
+
+	cp -a $install/etc		$fs
+	cp -a $install/var		$fs
+	cp -a $install/usr/share/mfscgi	$fs/usr/share
+	cp -a $install/usr/sbin		$fs/usr
+	cp -a $install/usr/bin		$fs/usr
+
+	sed -i 's|/usr/bin/env bash|/bin/sh|' \
+					$fs/usr/sbin/mfsmetarestore
+}

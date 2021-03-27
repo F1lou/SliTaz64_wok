@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="libupnp"
+VERSION="1.12.0"
+CATEGORY="network"
+SHORT_DESC="The portable Universal Plug and Play (UPnP)."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="https://pupnp.sourceforge.io/"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="$SF_MIRROR/pupnp/$TARBALL"
+
+DEPENDS="libxml2"
+BUILD_DEPENDS="libxml2-dev libpthread-stubs"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--prefix=/usr		\
+		--disable-largefile	\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+}

@@ -1,0 +1,38 @@
+# SliTaz package receipt.
+
+PACKAGE="iat"
+VERSION="0.1.7"
+CATEGORY="utilities"
+TAGS="ISO CD DVD convert"
+SHORT_DESC="iat (Iso9660 Analyzer Tool) converts many types of optical disk \
+image file formats into ISO-9660 format."
+MAINTAINER="chadi.elahmad@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://sourceforge.net/projects/iat.berlios/"
+HANDBOOK_URL='http://www.slitaz.org/doc/handbook/utilities.html#iat'
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="${WEB_SITE}files/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+# The src files are in a folder simply named iat.
+compile_rules()
+{
+	./configure				\
+		--prefix=/usr			\
+		--mandir=/usr/share/man		\
+		--infodir=/usr/share/info	\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $install/usr/bin $fs/usr
+}

@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="libofx"
+VERSION="0.9.8"
+CATEGORY="misc"
+SHORT_DESC="OFX parser library"
+MAINTAINER="remyhr@free.fr"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://libofx.sourceforge.net/"
+WGET_URL="https://sourceforge.net/projects/$PACKAGE/files/$PACKAGE/$VERSION/$TARBALL"
+
+DEPENDS="opensp"
+BUILD_DEPENDS="opensp-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure \
+		--prefix=/usr \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin $fs/usr/include /usr/lib
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib $fs/usr
+}

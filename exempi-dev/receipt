@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="exempi-dev"
+VERSION="2.5.1"
+CATEGORY="libdevel"
+SHORT_DESC="An implementation of XMP (Adobe's Extensible Metadata Platform) - development files."
+MAINTAINER="yuripourre@gmail.com"
+LICENSE="GPL3"
+WEB_SITE="https://wiki.freedesktop.org/libopenraw/Exempi/"
+
+DEPENDS="exempi pkg-config"
+WANTED="exempi"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/include
+
+	cp -a $install/usr/lib/*.la		$fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig	$fs/usr/lib
+	cp -a $install/usr/include/*		$fs/usr/include
+}

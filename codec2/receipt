@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="codec2"
+VERSION="0.9.2"
+CATEGORY="multimedia"
+SHORT_DESC="An open source low bit rate speech codec"
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="LGPL2.1"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://github.com/drowe67/codec2"
+WGET_URL="$WEB_SITE/archive/v$VERSION.tar.gz"
+
+BUILD_DEPENDS="cmake"
+
+current_version()
+{
+	wget -O - ${WGET_URL%/arch*}/releases 2>/dev/null | \
+	sed '/archive.*tar/!d;s|.*archive/v\(.*\).tar.*|\1|;q'
+}
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's| -no-pie||' unittest/CMakeLists.txt
+	mkdir -p $DESTDIR/usr/share/doc
+	cp README* COPYING $DESTDIR/usr/share/doc
+	mkdir build_linux
+	cd build_linux
+	cmake -DCMAKE_INSTALL_PREFIX=/usr .. &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

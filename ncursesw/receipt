@@ -1,0 +1,88 @@
+# SliTaz package receipt.
+
+PACKAGE="ncursesw"
+VERSION="6.2"
+CATEGORY="base-system"
+SHORT_DESC="Library of functions to manage display on terminals."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://www.gnu.org/software/ncurses/ncurses.html"
+
+SOURCE="ncurses"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="$GNU_MIRROR/$SOURCE/$TARBALL"
+
+DEPENDS="ncurses-common"
+BUILD_DEPENDS=""
+
+HOST_ARCH="x86_64 i486 arm"
+
+case "$ARCH" in
+	arm) BUILD_DEPENDS="" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# Ncurses need an installed /usr/bin/tic which is in ncursesw-extra. And
+	# when cross compiling we can't use the freshly cooked binary. See cook log:
+	#
+	#** Building terminfo database, please wait...
+	#Running /usr/bin/tic to install /home/slitaz/wok/ncurses/install/usr/share/terminfo
+	#
+	if [ ! -d "/var/lib/tazpkg/installed/ncursesw-extra" ]
+	  then
+		echo "Installing: ncursesw-extra"
+		tazpkg get-install ncursesw-extra 2>/dev/null 1>/dev/null
+	fi
+
+	mkdir -p $DESTDIR/usr/lib/terminfo
+
+# search string not in file (6.1)
+#	sed -i 's|\tsh $(srcdir)/MKhashsize.sh|\tash $(srcdir)/MKhashsize.sh|' \
+#		include/Makefile.in
+
+	./configure					\
+		--libdir=/lib				\
+		--sysconfdir=/etc			\
+		--with-shared				\
+		--without-debug				\
+		--without-ada				\
+		--enable-widec				\
+		--with-build-cc="gcc -D_GNU_SOURCE"	\
+		--enable-pc-files			\
+		$CONFIGURE_ARGS &&
+	# 6.2
+	sed -i '186s|TICDIR "!= |TICDIR " != |'		\
+		misc/run_tic.sh &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/lib
+	mkdir -p $fs/usr/bin
+
+	# Libraries
+	cp -a $install/lib/libncursesw.so*	$fs/lib
+
+	# Base programs
+	cp $install/usr/bin/clear	$fs/usr/bin
+	cp $install/usr/bin/tset	$fs/usr/bin
+	cp $install/usr/bin/reset	$fs/usr/bin
+}
+
+# Overlap busybox
+pre_install()
+{
+	rm -f $root/usr/bin/clear
+	rm -f $root/usr/bin/reset
+}
+
+post_remove()
+{
+	ln -s /bin/busybox $root/usr/bin/clear
+	ln -s /bin/busybox $root/usr/bin/reset
+}

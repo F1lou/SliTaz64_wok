@@ -1,0 +1,46 @@
+# SliTaz package receipt.
+
+PACKAGE="network-manager"
+VERSION="0.9.8.10"
+CATEGORY="system-tools"
+SHORT_DESC="Gnome network manager."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+SOURCE="NetworkManager"
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WEB_SITE="http://projects.gnome.org/NetworkManager/"
+WGET_URL="$GNOME_MIRROR/$SOURCE/${VERSION%.*.*}/$TARBALL"
+
+DEPENDS="dbus dbus-glib gtk+ wireless_tools libgudev libnl nss ppp iptables dhcp-client"
+BUILD_DEPENDS="dbus-dev dbus-glib-dev gtk+-dev wireless_tools-dev libgudev-dev \
+libnl-dev nss-dev ppp-dev iptables-dev util-linux-uuid-dev dhcp-client"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--prefix=/usr \
+		--libexecdir=/usr/lib/$PACKAGE \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
+		--with-distro=arch \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/pppd/2.4.5 $fs/usr/share $fs $fs/lib
+	cp -a $install/etc                      $fs
+	cp -a $install/var                      $fs
+	cp -a $install/usr/*bin                 $fs/usr
+	cp -a $install/usr/lib/pppd/2.4.5/*so   $fs/usr/lib/pppd/2.4.5
+	cp -a $install/usr/lib/libnm*.so*       $fs/usr/lib
+	cp -a $install/usr/lib/network-manager  $fs/usr/lib
+	cp -a $install/usr/lib/NetworkManager   $fs/usr/lib
+	cp -a $install/usr/share/dbus-1         $fs/usr/share
+	cp -a $install/usr/share/locale         $fs/usr/share
+	cp -a $install/usr/share/polkit-1       $fs/usr/share
+	cp -a $install/lib/udev                 $fs/lib
+}

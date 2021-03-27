@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="python-gazpacho"
+SOURCE="gazpacho"
+VERSION="0.7.2"
+CATEGORY="development"
+SHORT_DESC="A GUI builder for the GTK+ toolkit"
+MAINTAINER="claudinei@slitaz.org"
+LICENSE="LGPL2.1"
+SUGGESTED="twisted"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="https://web.archive.org/web/20090425115052/http://gazpacho.sicem.biz/"
+WGET_URL="http://ftp.gnome.org/pub/gnome/sources/$SOURCE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="python pygtk python-kiwi"
+BUILD_DEPENDS="python python-dev pygtk python-kiwi"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py install --root=$DESTDIR || return 1
+	mkdir -p $DESTDIR/usr/share/locale/pt
+	cp -a locale/fr $DESTDIR/usr/share/locale
+	cp -a locale/pt_BR/LC_MESSAGES $DESTDIR/usr/share/locale/pt
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib $fs/usr
+	cp -a $install/usr/share $fs/usr
+}
+

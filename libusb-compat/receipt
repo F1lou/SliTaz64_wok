@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="libusb-compat"
+VERSION="0.1.7"
+CATEGORY="system-tools"
+SHORT_DESC="Compatibility layer to convert libusb 0.1 calls into 1.0 equivalents."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2.1"
+WEB_SITE="https://github.com/libusb/libusb-compat-0.1"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="https://github.com/libusb/$PACKAGE-0.1/releases/download/v$VERSION/$TARBALL"
+
+DEPENDS="libusb"
+BUILD_DEPENDS="libusb-dev udev-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure		\
+		--prefix=/usr	\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

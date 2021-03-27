@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="wammu"
+VERSION="0.44"
+CATEGORY="system-tools"
+TAGS="bluetooth"
+SHORT_DESC="Mobile phone manager."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://wammu.eu/wammu/"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="$SF_MIRROR/gammu/$PACKAGE/$VERSION/$TARBALL"
+
+DEPENDS="python-six python-gammu python-pybluez wxpython"
+BUILD_DEPENDS="gammu-dev python-dev python-setuptools wxpython-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py build &&
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/lib		$fs/usr
+	cp -a $install/usr/share/Wammu	$fs/usr/share
+	cp -a $install/usr/share/locale	$fs/usr/share
+}

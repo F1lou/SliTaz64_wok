@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=Chemtool
+Comment=Molecules 2D drawing
+Comment[cs]=Editor molekul
+Comment[de]=Moleküleditor
+Comment[fr]=Editeur de molécules
+Comment[ru]=Редактор молекул
+Exec=chemtool %f
+Icon=chemtool
+Terminal=false
+Categories=Education;Chemistry;
+MimeType=application/x-chemtool;

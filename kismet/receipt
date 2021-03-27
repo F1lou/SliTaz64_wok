@@ -1,0 +1,110 @@
+# SliTaz package receipt.
+
+PACKAGE="kismet"
+VERSION="2011-03-R2"
+CATEGORY="network"
+SHORT_DESC="Wireless network monitoring tool"
+MAINTAINER="domcox@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://www.kismetwireless.net"
+WGET_URL="https://www.kismetwireless.net/code/$TARBALL"
+TAGS="wireless network monitor"
+
+DEPENDS="dbus libnl libpcap ncurses pcre libcap attr"
+BUILD_DEPENDS="pkg-config libpcap-dev ncurses-dev libnl-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export LDFLAGS="$LDFLAGS -ltinfo"
+	touch -d 197001010000 .depend
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc/kismet \
+	$CONFIGURE_ARGS && \
+	make && \
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+	cp -a $src/kismet_capture $fs/usr/bin
+	mkdir -p $fs/etc
+	cp -a $install/etc/kismet $fs/etc
+	# do not overwrite existing configuration
+	mv $fs/etc/kismet/kismet.conf $fs/etc/kismet/kismet.conf.new
+	mv $fs/etc/kismet/kismet_drone.conf $fs/etc/kismet/kismet_drone.conf.new
+}
+
+post_install()
+{
+    # addgroup kismet if needed                                                                                                                
+    if ! grep -q kismet "$1/etc/group"; then
+        echo -n "Adding group kismet..."
+        chroot "$1/" addgroup -g 315 kismet
+        status
+	fi
+	# Add tux to kismet group
+	chroot "$1/" addgroup tux kismet
+	# set Kismet as suid-root
+	echo -n "Set Kismet as suid-root.."
+	chroot "$1/" chown root:kismet /usr/bin/kismet_capture && \
+	chroot "$1/" chmod 4550 /usr/bin/kismet_capture
+	status
+	# configuration files update
+	create=1
+	overwrite=2
+	keep=3
+	cd "$1/etc/kismet"
+	# kismet_ui.conf doesn't exists anymore
+	if [ -e kismet_ui.conf ]; then
+		mv kismet_ui.conf kismet_ui.oldpkg
+	fi
+	for file in "kismet" "kismet_drone"
+	do
+		# check current files version
+		if [ ! -e $file.conf ]; then
+			action=$create
+			else
+ 			current=`grep version= $file.conf`
+			new=`grep version= $file.conf.new`
+			if [ "$current" = "$new" ]; then
+				action=$keep
+			else
+				action=$overwrite
+			fi
+		fi
+		# update if needed
+		case $action in
+		$create)
+			mv $file.conf.new $file.conf
+		;;
+		$keep)
+			rm $file.conf.new
+			warning="keep"
+		;;
+		$overwrite)
+			mv $file.conf $file.conf.oldpkg
+			mv $file.conf.new $file.conf
+			warning=$overwrite
+			echo "Warning: /etc/kismet/$file.conf new version from upstream"
+		;;
+		esac
+	done
+	if [ "$warning" != "keep" ]; then
+		echo "-----"
+		echo "You MUST edit etc/kismet/kismet.conf and configure Kismet"
+		echo "for your system, or it will NOT run properly!"
+	fi
+	true
+}
+
+post_remove()
+{
+    delgroup kismet
+	rm -rf /etc/kismet
+}

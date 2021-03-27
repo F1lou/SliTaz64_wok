@@ -1,0 +1,52 @@
+# SliTaz package receipt.
+
+PACKAGE="gutenprint"
+VERSION="5.3.3"
+CATEGORY="system-tools"
+SHORT_DESC="Top quality printer drivers for Canon, Epson."
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://sourceforge.net/projects/gimp-print/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="$SF_MIRROR/gimp-print/$TARBALL"
+
+DEPENDS="cups gmp gnutls gtk+ libtasn1 readline"
+BUILD_DEPENDS="cups-dev expat-dev foomatic-db-engine gmp-dev 
+	gnutls-dev libgcrypt-dev libtasn1-dev liblzma-dev zlib-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--prefix=/usr		\
+		--sysconfdir=/etc	\
+		--localstatedir=/var	\
+		--mandir=/usr/share/man	\
+		--disable-samples	\
+		--with-cups		\
+		--disable-test		\
+		$CONFIGURE_ARGS &&
+	make &&
+	make install 2>&1 | grep -v "rmdir: '/home/slitaz/wok/gutenprint/"
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/etc
+	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/sbin			$fs/usr
+	cp -a $install/usr/lib/*.so*		$fs/usr/lib
+	cp -a $install/usr/lib/cups		$fs/usr/lib
+	cp -a $install/usr/lib/gutenprint	$fs/usr/lib
+	cp -a $install/usr/share/cups		$fs/usr/share
+	cp -a $install/usr/share/$PACKAGE	$fs/usr/share	
+	cp -a $install/etc			$fs
+
+	# Remove documentation
+	rm -rf					$fs/usr/share/$PACKAGE/doc
+}

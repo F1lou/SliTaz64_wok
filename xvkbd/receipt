@@ -1,0 +1,72 @@
+# SliTaz package receipt.
+
+PACKAGE="xvkbd"
+VERSION="4.1"
+CATEGORY="x-window"
+SHORT_DESC="Virtual (graphical) keyboard program for X Window System."
+MAINTAINER="paul@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://t-sato.in.coocan.jp"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://sources.voidlinux.org/$PACKAGE-$VERSION/$TARBALL"
+
+DEPENDS="xorg-libXaw xorg-libXaw3d xorg-libXp xorg-libXtst"
+BUILD_DEPENDS="xorg-imake xorg-libXaw-dev xorg-libXaw3d-dev xorg-libXp-dev 
+	xorg-libXtst-dev xorg-xproto"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# delete Xaw3d
+	sed -i '/#define XAW3D/d' Imakefile
+	xmkmf &&
+	sed -i 's/\$(DESTDIR) \$(SHAREDIR)/$(DESTDIR)$(SHAREDIR)/' Makefile
+	make
+	mkdir -p $install/usr/share/X11
+	make install
+
+	# Add .desktop file
+	mkdir -p $install/usr/share/applications
+	cp $stuff/usr/share/applications/xvkbd.desktop \
+		$install/usr/share/applications
+
+	# Add icon
+	mkdir -p $install/usr/share/icons/hicolor/32x32/apps
+	cp $stuff/usr/share/pixmaps/xvkbd.png \
+		$install/usr/share/icons/hicolor/32x32/apps
+        
+	mkdir -p $install/etc/X11/app-defaults  
+	cp $stuff/etc/X11/app-defaults/XVkbd-russian \
+		$install/etc/X11/app-defaults
+
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/*	$fs
+	rm -fr $fs/usr/lib
+}
+
+post_install()
+{
+	# .Xdefaults file
+	lang=$(echo $LANG | awk '{FS="_"} {print $1}')
+	find "$1/home" -maxdepth 2 -name ".Xdefaults" > /tmp/listeXdefaults
+	while read line
+	  do
+		if ! grep -q "Xvkbd settings" $line
+		  then
+			cat >> $line << EOT
+
+! Xvkbd settings
+!
+xvkbd*Font: -misc-fixed-medium-r-semicondensed--0-0-75-75-c-0-iso8859-1
+EOT
+			echo "xvkbd.Layout : $lang" >> $line
+		fi
+	  done </tmp/listeXdefaults
+
+	rm -f /tmp/listeXdefaults
+}

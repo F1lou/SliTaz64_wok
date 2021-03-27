@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="scratch-help"
+VERSION="1.4.0.7"
+CATEGORY="development"
+SHORT_DESC="Scratch Help"
+LICENSE="GPL2"
+MAINTAINER="pankso@slitaz.org"
+WEB_SITE="https://scratch.mit.edu/"
+
+WANTED="scratch"
+DEPENDS="scratch"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/scratch
+	cp -rp ${src}/Help $fs/usr/share/scratch
+}

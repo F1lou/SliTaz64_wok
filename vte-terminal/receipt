@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="vte-terminal"
+VERSION="0.28.2"
+CATEGORY="development"
+SHORT_DESC="X Terminal from the vte package."
+WANTED="vte"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.gnome.org/"
+TAGS="terminal"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="expat vte"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}

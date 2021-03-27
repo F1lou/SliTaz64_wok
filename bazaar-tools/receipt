@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="bazaar-tools"
+VERSION="2.6.0"
+CATEGORY="development"
+SHORT_DESC="Useful collection of utilities (all plugins, right now) for bazaar."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL2"
+SOURCE="bzrtools"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="http://bazaar-vcs.org/BzrTools"
+WGET_URL="https://launchpad.net/$SOURCE/stable/$VERSION/+download/$TARBALL"
+
+DEPENDS="bazaar python"
+BUILD_DEPENDS="wget"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib $fs/usr
+}
+
+## -----------------------------------------------------------------------
+## Revision: 03/Aug/2017 - SliTaz DevTeam.
+## URL: "http://bazaar-vcs.org/BzrTools" is OFF.
+## This looks good? => http://wiki.bazaar.canonical.com/BzrTools
+## !! Please, remove this after you update. Thank you.

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Bastard Tetris
+Name[ru]=Подлый тетрис
+GenericName=Tetris clone
+GenericName[ru]=Клон тетриса
+Comment=Play to bastard tetris
+Comment[ru]=Сыграйте в подлый тетрис
+Terminal=true
+Exec=bastet
+Icon=bastet
+Categories=Game;BlocksGame;ConsoleOnly;

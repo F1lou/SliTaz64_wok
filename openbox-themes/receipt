@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="openbox-themes"
+VERSION="3.6.1"
+CATEGORY="x-window"
+SHORT_DESC="Openbox official themes set."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WANTED="openbox"
+WEB_SITE="http://openbox.org/"
+HOST_ARCH="x86_64 any"
+
+DEPENDS="openbox"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/share/themes $fs/usr/share
+	rm -rf $fs/usr/share/themes/Onyx*
+}

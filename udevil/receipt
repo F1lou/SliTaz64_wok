@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="udevil"
+VERSION="0.4.4"
+CATEGORY="system-tools"
+SHORT_DESC="Fast and light devices manager."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://ignorantguru.github.io/udevil/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/IgnorantGuru/$PACKAGE/archive/$VERSION.tar.gz"
+
+DEPENDS="udev glib"
+BUILD_DEPENDS="udev-dev glib-dev file"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure --prefix=/usr &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+
+	cp -a $install/etc	$fs
+	cp -a $install/usr/bin	$fs/usr
+
+	# Must be suid root
+	chmod +s $fs/usr/bin/udevil
+}

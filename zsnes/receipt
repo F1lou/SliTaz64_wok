@@ -1,0 +1,40 @@
+# SliTaz package receipt.
+
+PACKAGE="zsnes"
+VERSION="1.51"
+CATEGORY="games"
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL2"
+SHORT_DESC="Super Nintendo emulator"
+WEB_SITE="https://www.zsnes.com/"
+TARBALL="$PACKAGE${VERSION//./}src.tar.bz2"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+TAGS="emulator nintendo snes"
+
+DEPENDS="gcc-lib-base libsdl libpng ncurses mesa zlib"
+BUILD_DEPENDS="$DEPENDS nasm libsdl-dev libpng-dev ncurses-dev mesa-dev \
+automake autoconf zlib-dev patch"
+
+# Rules to configure and make the package.
+
+compile_rules() {
+  export LDFLAGS="$LDFLAGS -ltinfo"
+  cd $src
+  patch -p1 -i $stuff/zsnes.patch 
+  cd $src/src
+  sed -i 's|/usr/man/|/usr/share/man/|' Makefile*
+  ./configure --prefix=/usr \
+    --x-libraries=/usr/lib \
+    --enable-release \
+    force_arch=$ARCH \
+    $CONFIGURE_ARGS &&
+   make &&
+   make -j 1 install
+}
+	
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $src/src/zsnes $fs/usr/bin
+}

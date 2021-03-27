@@ -1,0 +1,54 @@
+# SliTaz package receipt.
+
+PACKAGE="mpg123"
+VERSION="1.25.13"
+CATEGORY="multimedia"
+SHORT_DESC="Command line audio player and streamer."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2.1"
+WEB_SITE="https://www.mpg123.de/"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="${WEB_SITE}download/$TARBALL"
+
+DEPENDS="alsa-lib audiofile libltdl"
+BUILD_DEPENDS="alsa-lib-dev audiofile-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Arch optimisation
+case "$ARCH" in
+	i486) ARCH_ARGS="--with-cpu=i486" ;;
+	arm*) ARCH_ARGS="--with-cpu=arm_nofpu" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure				\
+		--with-default-audio=alsa	\
+		$CONFIGURE_ARGS			\
+		${ARCH_ARGS} &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+	cp -a $install/usr/bin		$fs/usr
+
+	# ARM
+	if [ -d "$install/usr/lib/mpg123" ]
+	  then
+		cp -a $install/usr/lib/mpg123 $fs/usr/lib
+		#mpg123 need *.la file to work
+		#find $fs/usr/lib -name "*.la" -exec rm -f {} \;
+	fi
+
+	# Needed to work!!! Dont remove
+	cp $install/usr/lib/libmpg123.la	$fs/usr/lib
+}

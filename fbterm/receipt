@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="fbterm"
+VERSION="1.8"
+CATEGORY="utilities"
+SHORT_DESC="A fast FrameBuffer based TERMinal emulator for linux."
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://github.com/sfzhi/fbterm"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/sfzhi/$PACKAGE/archive/$VERSION/$TARBALL"
+
+DEPENDS="bzlib expat fontconfig freetype gcc-lib-base glibc-base zlib"
+#configure: WARNING: libx86.h doesn't exist! VESA support will be disabled!
+BUILD_DEPENDS="freetype-dev fontconfig-dev gpm-dev ncursesw-dev ncursesw-extra"
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS &&
+	make -j 1 &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}

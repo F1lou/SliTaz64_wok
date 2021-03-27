@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="proj"
+VERSION="7.0.0"
+CATEGORY="misc"
+SHORT_DESC="Cartographic Projections Library."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://proj.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="http://download.osgeo.org/proj/$TARBALL"
+
+DEPENDS="gcc-lib-base sqlite"
+BUILD_DEPENDS="gcc libtool sqlite-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir -p $DESTDIR/usr/bin
+
+	./configure		\
+		--disable-tiff	\
+		--without-curl	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/share
+	
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+	cp -a $install/usr/share/proj	$fs/usr/share
+}

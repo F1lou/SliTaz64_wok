@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=EDuke32
+Comment=Duke Nukem 3D for Linux
+Comment[ru]=Duke Nukem 3D для Linux
+Exec=eduke32
+Icon=eduke32
+Categories=Game;

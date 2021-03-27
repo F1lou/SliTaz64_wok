@@ -1,0 +1,61 @@
+#!/bin/sh
+# /etc/init.d/martian: Start, stop and restart martian daemon on SliTaz, at boot
+# time or with the command line.
+#
+# To start daemon at boot time, just put the right name in the $RUN_DAEMONS
+# variable of /etc/rcS.conf and configure options with /etc/daemons.conf.
+#
+. /etc/init.d/rc.functions
+. /etc/daemons.conf
+
+NAME="Martian modem"
+DESC="$(_ 'Agere Systems PCI Modem daemon')"
+DAEMON=/usr/sbin/martian_modem
+OPTIONS="--daemon $MARTIAN_OPTIONS"
+PIDFILE=/var/run/martian.pid
+MODULE="martian_dev"
+
+if [ $(/sbin/lsmod | grep -c ${MODULE}) -lt 1 ]; then
+	_ 'kernel module is not loaded!'
+	exit 1
+fi
+
+case "$1" in
+  start)
+    if active_pidfile $PIDFILE martian_modem ; then
+      _ '%s is already running.' "$NAME"
+      exit 1
+    fi
+    action 'Starting %s: %s...' "$DESC" "$NAME"
+    $DAEMON $OPTIONS && echo $(/bin/pidof $DAEMON) > $PIDFILE
+    status
+    ;;
+  stop)
+    if ! active_pidfile $PIDFILE martian_modem ; then
+      _ '%s is not running.' "$NAME"
+      exit 1
+    fi
+    action 'Stopping %s: %s...' "$DESC" "$NAME"
+    killall martian_modem
+    rm $PIDFILE
+    status
+    ;;
+  restart)
+    if ! active_pidfile $PIDFILE martian_modem ; then
+      _ '%s is not running.' "$NAME"
+      exit 1
+    fi
+    action 'Restarting %s: %s...' "$DESC" "$NAME"
+    killall martian_modem
+    sleep 2
+    $DAEMON $OPTIONS && echo $(/bin/pidof $DAEMON) > $PIDFILE
+    status
+    ;;
+  *)
+    emsg "<n><b>$(_ 'Usage:')</b> $0 [start|stop|restart]"
+    newline
+    exit 1
+    ;;
+esac
+
+exit 0

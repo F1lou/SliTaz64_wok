@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="pidgin-musictracker"
+VERSION="0.4.22"
+CATEGORY="network"
+SHORT_DESC="A Pidgin 'now playing' plugin to publicise the songs you are listening to."
+MAINTAINER="ben@seawolfsanctuary.com"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://launchpad.net/pidgin-musictracker"
+WGET_URL="$WEB_SITE/files/$TARBALL"
+
+DEPENDS="pidgin pcre"
+BUILD_DEPENDS="pidgin-dev gettext libpurple-dev pcre-dev dbus-glib-dev \
+gtk+-dev glib-dev pkg-config libffi"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i  -e 's/g_value_array_free/g_array_unref/' -e 's/GValueArray/GArray/' \
+		-e '/g_value_array_get_nth/{N;s/GValue.*/status = g_array_index(sigstruct, gint, 0);/}' \
+			src/mpris.c
+	./configure $CONFIGURE_ARGS &&
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs
+	cp -a $install/usr $fs/
+}

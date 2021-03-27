@@ -1,0 +1,42 @@
+# SliTaz package receipt.
+
+PACKAGE="bygfoot"
+VERSION="2.3.2"
+CATEGORY="games"
+SHORT_DESC="Manage your own football (soccer) team in a league season."
+MAINTAINER="ben@seawolfsanctuary.com"
+LICENSE="GPL2"
+WEB_SITE="http://www.bygfoot.com/"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="acl atk freetype glib gtk+ pango"
+BUILD_DEPENDS="atk-dev freetype-dev glib-dev gtk+-dev pango-dev"
+
+compile_rules()
+{
+	# Binutils 2.22 break many packages build without LDFLAGS set correctly.
+	export LDFLAGS="$LDFLAGS -Wl,--copy-dt-needed-entries"
+
+	chmod +x configure
+	sed -i 's/^top_srcdir/top_builddir = @top_builddir@\n&/' po/Makefile.in.in
+
+	./configure			\
+		--prefix=/usr		\
+		--bindir=/usr/games	\
+		--mandir=/usr/share/man	\
+		$CONFIGURE_ARGS &&
+	make $MAKEFLAGS &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/
+	cp -a $install/usr	$fs/
+
+	# Copy .desktop file:
+	cp -a $stuff/*		$fs/usr
+}

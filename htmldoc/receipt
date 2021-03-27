@@ -1,0 +1,52 @@
+# SliTaz package receipt.
+
+PACKAGE="htmldoc"
+VERSION="1.9.8"
+CATEGORY="utilities"
+SHORT_DESC="Convert HTML pages into a PDF document."
+MAINTAINER="gokhlayeh@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.htmldoc.org"
+
+TARBALL="$PACKAGE-$VERSION-source.tar.gz"
+WGET_URL="https://github.com/michaelrsweet/$PACKAGE/releases/download/v$VERSION/$TARBALL"
+
+DEPENDS="fltk jpeg libpng"
+BUILD_DEPENDS="fltk-dev jpeg-dev libpng-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i	-e 's|\(jpeg_read_header.*\)1|\1boolean(1)|' \
+		-e 's|\(quantize.*\)0|\1boolean(0)|' \
+		htmldoc/image.cxx
+
+	# make sure not to use the libraries htmldoc ships with
+	mkdir	foo
+	mv jpeg	foo/
+	mv png	foo/
+	mv zlib	foo/
+
+	./configure		\
+		--prefix=/usr	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make prefix=$DESTDIR/usr install
+
+	# fix freedesktop stuff
+	install -Dm 644 desktop/htmldoc-128.png \
+		$DESTDIR/usr/share/pixmaps/htmldoc.png
+	echo "MimeType=application/vnd.htmldoc-book;" >> desktop/htmldoc.desktop
+	sed -i 's|X-Red-Hat.*$||' desktop/htmldoc.desktop
+	install -Dm 644 desktop/htmldoc.desktop \
+		$DESTDIR/usr/share/applications/htmldoc.desktop
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/share/htmldoc	$fs/usr/share
+}

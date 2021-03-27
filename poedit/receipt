@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="poedit"
+VERSION="1.8.6"
+CATEGORY="localization"
+SHORT_DESC="A cross-platform gettext catalogs editing tool"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://poedit.net/"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/vslavik/$PACKAGE/archive/v$VERSION-oss.tar.gz"
+
+DEPENDS="wxWidgets lucene++ gtkspell gcc83-lib-base gettext-tools"
+BUILD_DEPENDS="automake gettext asciidoc libxslt xmlto util-linux-getopt \
+docbook-xsl gcc83 wxWidgets-dev icu-dev gtkspell-dev \
+lucene++-dev db-dev libdb libdb-cxx expat-dev"
+SUGGESTED="aspell"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's/Env(0)/Env(0u)/;s/env2(0)/env2(0u)/' src/tm/dump_legacy_tm.cpp
+	export CXX=/usr/bin/i486-slitaz-linux-g++-83
+	#export CXXFLAGS="$CFLAGS -std=gnu++11"
+	./bootstrap &&
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+	rm -r $fs/usr/share/locale $fs/usr/share/man
+}

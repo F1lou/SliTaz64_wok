@@ -1,0 +1,50 @@
+# SliTaz package receipt.
+
+PACKAGE="lua"
+VERSION="5.2.4"
+CATEGORY="development"
+SHORT_DESC="Powerful, fast, light-weight, embeddable scripting language."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://www.lua.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://www.lua.org/ftp/$TARBALL"
+
+DEPENDS="libtic ncurses readline"
+BUILD_DEPENDS="libtic ncurses-dev readline-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i "s#/usr/local/#/usr/#" src/luaconf.h
+
+	case "$ARCH" in
+		arm)
+			make CC=${HOST_SYSTEM}-gcc posix ;;
+		i486)
+			sed -i s"/-O2/-Os -march=$ARCH/" src/Makefile
+			make linux MYLIBS=/lib/libtic.so ;;
+	esac &&
+
+	# lua.pc
+	make pc > lua.pc &&
+	sed -i "s#/local##g" lua.pc &&
+	make	install				\
+		INSTALL_TOP=$DESTDIR/usr	\
+		INSTALL_MAN=$DESTDIR/usr/share/man/man1
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $install/usr/bin	$fs/usr
+}
+
+testsuite()
+{
+	readelf -h $install/usr/bin/lua
+}

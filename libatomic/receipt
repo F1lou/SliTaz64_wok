@@ -1,0 +1,18 @@
+# Slitaz package receipt.
+
+PACKAGE="libatomic"
+VERSION="10.2.0"
+CATEGORY="development"
+SHORT_DESC="GCC libatomic (required for firefox)."
+WEB_SITE="https://gcc.gnu.org/"
+MAINTAINER="mojo@slitaz.org"
+LICENSE="GPL2"
+
+WANTED=""
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/libgcc/libatomic.so* $fs/usr/lib
+}

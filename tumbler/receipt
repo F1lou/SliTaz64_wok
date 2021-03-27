@@ -1,0 +1,53 @@
+# SliTaz package receipt.
+
+PACKAGE="tumbler"
+VERSION="0.2.8"
+CATEGORY="system-tools"
+SHORT_DESC="A D-Bus thumbnailing service based on the thumbnail management D-Bus specification."
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL2 LGPL2.1"
+WEB_SITE="https://docs.xfce.org/xfce/thunar/tumbler"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="http://archive.xfce.org/src/xfce/$PACKAGE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="dbus-glib ffmpegthumbnailer libcurl libgsf poppler"
+BUILD_DEPENDS="curl-dev dbus-glib-dev ffmpegthumbnailer-dev freetype-dev 
+	gdk-pixbuf-dev glib-dev gst-plugins-base-dev jpeg-dev lcms-dev 
+	libgio-dev libgsf-dev libpng-dev poppler-dev tiff-dev" # gstreamer-dev (v.1.0)
+
+CONFIG_FILES="/etc/xdg/tumbler/tumbler.rc"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--sysconfdir=/etc	\
+		--enable-debug=no	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/share/locale
+
+	cp -a $install/etc			$fs
+	cp -a $install/usr/lib/*.so*		$fs/usr/lib
+	cp -a $install/usr/lib/tumbler*		$fs/usr/lib
+	cp -a $install/usr/share/dbus*		$fs/usr/share
+
+	find $fs/usr/lib -name '*.la' -delete
+
+	# SliTaz locale settings
+	. $WOK/slitaz-i18n/stuff/locale-pack.conf
+	for lang in $LOCALE_PACK
+	  do
+		langd=$install/usr/share/locale/$lang
+		[ -d $langd ] && cp -a $langd $fs/usr/share/locale
+	  done
+	true
+}

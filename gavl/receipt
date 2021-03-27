@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="gavl"
+VERSION="1.4.0"
+CATEGORY="multimedia"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL3"
+SHORT_DESC="A low level library, upon which multimedia APIs can be built."
+WEB_SITE="http://gmerlin.sourceforge.net/"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/gmerlin/$TARBALL"
+
+DEPENDS="glibc-base"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure --without-doxygen \
+		--with-cpuflags=none $CONFIGURE_ARGS &&
+	make && make install
+}
+	
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib 
+	cp -a $install/usr/lib/*so* $fs/usr/lib/
+}

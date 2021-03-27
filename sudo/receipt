@@ -1,0 +1,68 @@
+# SliTaz package receipt.
+
+PACKAGE="sudo"
+VERSION="1.9.5p2"
+CATEGORY="security"
+SHORT_DESC="Allows command execution as root for specified users."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="ISC"
+WEB_SITE="https://www.sudo.ws/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}sudo/dist/$TARBALL"
+
+CONFIG_FILES="/etc/sudoers"
+
+current_version()
+{
+	wget -O - $WEB_SITE 2>/dev/null | \
+	grep -A 1 'The current' | sed '/>sudo/!d;s|.*>sudo *||;s|<.*||;q'
+}
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--sysconfdir=/etc	\
+		--without-pam		\
+		--with-editor=/bin/vi	\
+		--libexecdir=/usr/lib	\
+		$CONFIGURE_ARGS &&
+
+	# Build everything
+	make &&
+
+	# Install everything
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/bin	$fs/usr
+	cp -a $install/usr/sbin	$fs/usr
+	cp -a $install/usr/lib/	$fs/usr
+	cp -a $install/etc	$fs/
+}
+
+pre_install()
+{
+	if [ -f "$1/etc/sudoers" ]
+	  then
+		cp "$1/etc/sudoers" "$1/etc/sudoers.bak"
+	fi
+}
+
+post_install()
+{
+	if [ -f "$1/etc/sudoers.bak" ]
+	  then
+		mv "$1/etc/sudoers"	"$1/etc/sudoers-dist"
+		mv "$1/etc/sudoers.bak"	"$1/etc/sudoers"
+	  else
+		chown root.root	"$1/etc/sudoers"
+		chmod 0440	"$1/etc/sudoers"
+	fi
+}

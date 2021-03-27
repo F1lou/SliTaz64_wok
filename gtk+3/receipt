@@ -1,0 +1,102 @@
+# SliTaz package receipt.
+
+PACKAGE="gtk+3"
+VERSION="3.14.8"
+CATEGORY="x-window"
+SHORT_DESC="The GIMP Toolkit 3.x"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2"
+WEB_SITE="https://www.gtk.org/"
+
+SOURCE="gtk+"
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WGET_URL="$GNOME_MIRROR/$SOURCE/${VERSION%.*}/$TARBALL"
+
+SUGGESTED="cups"
+DEPENDS="at-spi2-atk atk gdk-pixbuf pango slitaz-icon util-linux-uuid 
+	xorg-libXcomposite xorg-libXcursor xorg-libXi xorg-libXinerama 
+	xorg-libXrandr"
+BUILD_DEPENDS="at-spi2-atk atk-dev autoconf automake bash cairo-dev 
+	cups-dev dbus-dev gdk-pixbuf-dev gobject-introspection-dev 
+	indent libffi-dev libxml2-dev pango-dev perl pkg-config 
+	util-linux-uuid-dev xorg-dev"
+
+CONFIG_FILES="/etc/gtk-3.0/settings.ini"
+
+#HOST_ARCH="x86_64 i486 arm"
+CROSS_BUGS="bug: /bin/bash: no: command not found"
+
+# Handle cross compilation.
+case "$ARCH" in
+	arm*) 
+		BUILD_DEPENDS="atk-dev dbus-dev dbus-glib-dev gdk-pixbuf-dev \
+pango-dev xorg-inputproto"
+		ARCH_ARGS="--enable-introspection=no --disable-glibtest --disable-cups \
+--disable-papi --with-xinput gio_can_sniff=yes"
+		export LDFLAGS="$LDFLAGS -L/cross/$ARCH/sysroot/usr/lib" 
+		export CPPFLAGS="$CPPFLAGS -I/cross/$ARCH/sysroot/usr/include" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# With cups-2.3.1 installed, configure says CUPS >= 1.2 not found
+	# Try to cheat configure by:
+	sed -i '25179a CUPS_API_MAJOR=1'	configure
+	# Results in error: dereferencing pointer to incomplete type
+	# Can we waive cups support?
+
+	# unrecognised:
+	#	--enable-packagekit=no
+
+	./configure				\
+		--prefix=/usr			\
+		--sysconfdir=/etc		\
+		--localstatedir=/var		\
+		--enable-colord=no		\
+		--enable-debug=no		\
+		--enable-introspection=yes	\
+		--enable-x11-backend		\
+		--enable-xcomposite		\
+		--enable-xdamage		\
+		--enable-xfixes			\
+		--enable-xinerama		\
+		--enable-xkb			\
+		--enable-xrandr			\
+		--disable-broadway-backend	\
+		--disable-cups			\
+		--disable-wayland-backend	\
+		--with-x			\
+		$CONFIGURE_ARGS			\
+		${ARCH_ARGS} &&
+	make $MAKEFLAGS &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/etc/gtk-3.0
+	mkdir -p $fs/usr/bin
+	mkdir -p $fs/usr/lib/gtk-3.0
+	mkdir -p $fs/usr/share
+
+	# Configuration file.
+	cp -a $install/etc		$fs
+	cp -f $stuff/settings.ini	$fs/etc/gtk-3.0
+
+	# Applications.
+	cp $install/usr/bin/gtk-query-immodules-3.0	$fs/usr/bin
+	cp $install/usr/bin/gtk-update-icon-cache	$fs/usr/bin
+	# gtk3-demo & gtk3-demo-application -> gtk+3-demo
+	# gtk3-widget-factory -> gtk+3-widget-factory
+
+	# Libraries.
+	cp -a $install/usr/lib/*.so*		$fs/usr/lib
+	cp -a $install/usr/lib/gtk-3.0/3.0.0	$fs/usr/lib/gtk-3.0
+	rm -rf					$fs/usr/lib/gtk-3.0/3.0.0/*/*.la
+
+	# Themes.
+	cp -a $install/usr/share/themes		$fs/usr/share
+	cp -a $install/usr/share/glib-2.0	$fs/usr/share
+}

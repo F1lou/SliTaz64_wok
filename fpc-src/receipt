@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="fpc-src"
+VERSION="2.6.4"
+CATEGORY="development"
+SHORT_DESC="Sources for the FreePascal compiler (requierd by the Lazarus IDE)."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL2 LGPL2.1"
+SOURCE="fpcbuild"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="https://www.freepascal.org/"
+WGET_URL="ftp://ftp.freepascal.org/pub/fpc/dist/$VERSION/source/$TARBALL"
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/fpc
+	cp -a $src/fpcsrc $fs/usr/lib/fpc/src
+}
+

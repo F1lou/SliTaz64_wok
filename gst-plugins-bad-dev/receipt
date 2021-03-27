@@ -1,0 +1,28 @@
+
+# SliTaz package receipt.
+
+PACKAGE="gst-plugins-bad-dev"
+VERSION="0.10.23"
+SERIES="0.10"
+CATEGORY="development"
+SHORT_DESC="gst-plugins-bad devel files"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL2"
+WANTED="gst-plugins-bad"
+WEB_SITE="https://gstreamer.freedesktop.org/"
+
+DEPENDS="gstreamer-dev gst-plugins-base-dev
+faac-dev libpng-dev libvpx-dev openssl-dev xvidcore-dev jpeg-dev
+faad2-dev jasper-dev libmms-dev libmodplug-dev libsndfile-dev libsdl-dev
+mjpegtools-dev neon-dev schroedinger-dev expat-dev pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/lib/gstreamer-$SERIES
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/lib/*.*a $fs/usr/lib/
+	cp -a $install/usr/lib/gstreamer-$SERIES/*.*a $fs/usr/lib/gstreamer-$SERIES
+
+}

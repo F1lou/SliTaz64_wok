@@ -1,0 +1,36 @@
+# SliTaz package receipt
+
+PACKAGE="homebank"
+VERSION="4.4"
+CATEGORY="office"
+SHORT_DESC="Personal accounts manager."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://homebank.free.fr/"
+WGET_URL="http://homebank.free.fr/public/$TARBALL"
+TAGS="office finance"
+
+DEPENDS="gtk+ xorg-libXdamage"
+BUILD_DEPENDS="intltool gtk+-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# GTK+ dont support svg
+	sed -i s/svg/png/ src/*.c
+	chmod +x install-sh
+	./configure --without-ofx &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/homebank $fs/usr/share/icons/hicolor
+
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/homebank/images $fs/usr/share/homebank
+	cp -a $install/usr/share/icons/hicolor/48x48 $fs/usr/share/icons/hicolor
+}

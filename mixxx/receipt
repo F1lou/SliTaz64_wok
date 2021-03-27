@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="mixxx"
+VERSION="1.10.1"
+CATEGORY="multimedia"
+SHORT_DESC="Digital DJ mixing software"
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION-src.tar.gz"
+WEB_SITE="https://www.mixxx.org/"
+WGET_URL="http://downloads.mixxx.org/$PACKAGE-$VERSION/$TARBALL"
+
+DEPENDS="libsndfile libogg libid3tag libmad libvorbis taglib libshout \
+portaudio portmidi libQtOpenGL libQtWebkit libQt3Support libQtScript \
+libQtSvg libQtDBus libQtPlugins phonon-backend-gstreamer"
+BUILD_DEPENDS="libsndfile-dev libogg-dev libid3tag-dev libmad-dev \
+libvorbis-dev taglib-dev libshout-dev portaudio-dev phonon-dev \
+Qt4-dev alsa-lib-dev jack-audio-connection-kit-dev mesa-dev scons \
+pkg-config flac-dev portmidi"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	scons machine=i686 qtdir=/usr/lib/qt prefix=/usr install_root=$DESTDIR/usr | sed s/ERROR/error/
+	scons machine=i686 qtdir=/usr/lib/qt prefix=/usr install_root=$DESTDIR/usr install | sed s/ERROR/error/
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr $fs
+}

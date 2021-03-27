@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="urbackup-client"
+VERSION="2.4.10"
+CATEGORY="network"
+TAGS="backup"
+SHORT_DESC="An easy to setup Open Source client-server backup system."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://www.urbackup.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://hndl.urbackup.org/Client/$VERSION/$TARBALL"
+
+DEPENDS="cryptopp wxWidgets"
+BUILD_DEPENDS="cryptopp wxWidgets-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--prefix=/usr		\
+		--sysconfdir=/etc	\
+		--localstatedir=/var	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $install/usr/share/man
+
+	cp -a $install/*	$fs
+	cp $src/docs/*		$install/usr/share/man
+}

@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="elementary-dev"
+VERSION="1.7.10"
+CATEGORY="development"
+SHORT_DESC="EFL full regular widget set - Devel files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2.1"
+WANTED="elementary"
+WEB_SITE="https://www.enlightenment.org/"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="efreet-dev emotion-dev ethumb-dev elementary pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	case "$ARCH" in
+		i?86) edje_mods="/usr/lib/edje/modules/elm/linux-gnu-i486-1.0.0" ;;
+		arm) edje_mods="/usr/lib/edje/modules/elm/linux-gnueabi-arm-1.0.0" ;;
+	esac
+	mkdir -p ${fs}${edje_mods}
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a ${install}${edje_mods}/module.la ${fs}${edje_mods}
+	cp -a $install/usr/lib/elementary $fs/usr/lib
+	rm -f $fs/usr/lib/elementary/modules/*/*/*.so
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	# menus
+	mkdir -p $fs/usr/bin
+	cp -a $install/usr/bin/* $fs/usr/bin
+	mkdir -p $fs/usr/share/pixmaps
+	cp -a $install/usr/share/applications $fs/usr/share
+	cp -a $install/usr/share/icons/* $fs/usr/share/pixmaps
+}

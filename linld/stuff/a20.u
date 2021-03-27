@@ -1,0 +1,10 @@
+--- LINLD097/A20.ASM
++++ LINLD097/A20.ASM
+@@ -99,6 +99,7 @@
+                 mov     ah,05h          ;local enable a20
+                 call    [drv]           ;
+                 pop     bx ax
++                pop     bp
+                 ret
+         endp    _enable_a20_xmm
+ 

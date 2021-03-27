@@ -1,0 +1,71 @@
+# SliTaz package receipt.
+
+PACKAGE="wine-rt"
+VERSION="5.0"
+CATEGORY="misc"
+TAGS="windows"
+SHORT_DESC="Windows API for Linux."
+MAINTAINER="xj@wp.pl"
+LICENSE="LGPL2.1"
+WEB_SITE="https://www.winehq.org/"
+
+TARBALL="${PACKAGE%-rt}-$VERSION.tar.xz"
+WGET_URL="https://dl.winehq.org/${PACKAGE%-rt}/source/${VERSION}/$TARBALL"
+
+PROVIDE="wine"
+DEPENDS="alsa-lib freetype jpeg lcms libglu-mesa libpng libxslt libxml2 mesa 
+	tiff xorg-dev"
+BUILD_DEPENDS="alsa-lib-dev bison flex freetype-dev jpeg-dev lcms-dev libglu-mesa-dev 
+	libpng-dev libtool libxml2-dev libxslt-dev mesa-dev prelink tiff-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# since 1.7.3.2
+	patch -s -Np1 -i $stuff/wine-rt-101107.patch
+	
+CONFIGURE_ARGS='
+  --prefix=/usr 
+  --disable-tests
+  --without-capi
+  --without-cms
+  --without-coreaudio
+  --without-cups
+  --without-gphoto
+  --without-gnutls
+  --without-gsm
+  --without-ldap
+  --without-mpg123
+  --without-openal
+  --without-opencl
+  --without-oss
+  --without-sane
+  --without-v4l
+  --disable-win16
+  --with-x
+'
+	CFLAGS="$CFLAGS -O2 -funroll-loops -frounding-math -mfpmath=sse -msse2 \
+		-fsignaling-nans -pipe"
+
+	./configure $CONFIGURE_ARGS &&
+	make $MAKEFLAGS &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/wine
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/share/wine		$fs/usr/share
+	cp -a $install/usr/share/applications	$fs/usr/share
+	cp -a $install/usr/lib/lib*		$fs/usr/lib
+	cp -a $install/usr/lib/wine/*.so	$fs/usr/lib/wine
+}
+
+post_install()
+{
+	[ "$1" ] || modprobe snd-seq 2>/dev/null
+}

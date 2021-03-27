@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="winetricks"
+VERSION="20200412"
+CATEGORY="misc"
+SHORT_DESC="Script to install various redistributable runtime libraries in Wine."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://wiki.winehq.org/Winetricks"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/Winetricks/$PACKAGE/archive/$VERSION.tar.gz"
+
+SUGGESTED="zenity"
+DEPENDS="cabextract unzip wget wine xorg-xmessage"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin	$fs/usr
+}

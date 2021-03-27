@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="libassuan"
+VERSION="2.5.3"
+CATEGORY="security"
+SHORT_DESC="IPC library used by some of the other GnuPG related packages."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://www.gnupg.org/related_software/libassuan/"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="https://www.gnupg.org/ftp/gcrypt/libassuan/$TARBALL"
+
+DEPENDS="libgpg-error"
+BUILD_DEPENDS="libgpg-error-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# Integrity check: https://www.gnupg.org/download/integrity_check.html
+	echo "6d81bf42fa91ed2894df8b65764ce899e39776f8  $SRC/$TARBALL" | sha1sum -c || exit 1
+
+	./configure $CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+}

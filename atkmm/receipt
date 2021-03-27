@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="atkmm"
+VERSION="2.22.6"
+CATEGORY="x-window"
+SHORT_DESC="C++ interface for the popular Accessibility toolkit."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="LGPL2.1"
+BUILD_DEPENDS="atk-dev glib-dev glibmm-dev libgiomm-dev pkg-config"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://www.gnome.org/"
+WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="atk libsigc++"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure $CONFIGURE_ARGS && 
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}
+

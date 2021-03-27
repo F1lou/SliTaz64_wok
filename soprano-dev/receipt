@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="soprano-dev"
+VERSION="2.8.0"
+CATEGORY="development"
+SHORT_DESC="Soprano pkgconfig and include files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WANTED="soprano"
+WEB_SITE="http://soprano.sourceforge.net/"
+
+DEPENDS="pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+}

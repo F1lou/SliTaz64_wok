@@ -1,0 +1,71 @@
+#!/bin/sh
+# /etc/init.d/portmap : Start, stop and restart RPC portmapper on SliTaz, at
+# boot time or with the command line.
+#
+# To start RPC portmapper at boot time, just put dropbear in the $RUN_DAEMONS
+# variable of /etc/rcS.conf and configure options with /etc/daemons.conf
+#
+. /etc/init.d/rc.functions
+. /etc/daemons.conf
+
+NAME=portmap
+DESC="$(_ 'RPC portmapper')"
+DAEMON=/usr/sbin/portmap
+OPTIONS=
+PIDFILE=/var/run/$NAME.pid
+
+
+test -f $DAEMON || exit 0
+
+case "$1" in
+  start)
+    if active_pidfile $PIDFILE portmap ; then
+      _ '%s is already running.' $NAME
+      exit 1
+    fi
+
+    action 'Starting %s: %s...' "$DESC" $NAME
+    $DAEMON $OPTIONS
+
+    # registering PID
+    if [ $? -eq 0 ]; then
+      pidof -s $NAME > $PIDFILE
+    fi
+    status
+
+    if [ -f /var/run/portmap.upgrade-state ]; then
+      action 'Restoring old RPC service information...'
+      sleep 1 # needs a short pause or pmap_set won't work. :(
+      pmap_set </var/run/portmap.upgrade-state
+      rm -f /var/run/portmap.upgrade-state
+      status
+    fi
+    ;;
+  stop)
+    if ! active_pidfile $PIDFILE portmap ; then
+      _ '%s is not running.' $NAME
+      exit 1
+    fi
+    action 'Stopping %s: %s...' "$DESC" $NAME
+    kill $(cat $PIDFILE)
+    rm -f $PIDFILE
+    status
+    ;;
+  restart)
+    pmap_dump >/var/run/portmap.state
+    $0 stop
+    $0 start
+    if [ ! -f /var/run/portmap.upgrade-state ]; then
+      sleep 1
+      pmap_set </var/run/portmap.state
+    fi
+    rm -f /var/run/portmap.state
+    ;;
+  *)
+    emsg "<n><b>$(_ 'Usage:')</b> $0 [start|stop|restart]"
+    newline
+    exit 1
+    ;;
+esac
+
+exit 0

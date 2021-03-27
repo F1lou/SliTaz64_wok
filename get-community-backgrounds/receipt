@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="get-community-backgrounds"
+VERSION="1.00"
+CATEGORY="x-window"
+TAGS="artwork background wallpaper"
+SHORT_DESC="Beautiful wallpapers created by the Slitaz Community."
+MAINTAINER="hackdorte@sapo.pt"
+LICENSE="GPLv3"
+WEB_SITE="https://github.com/Slitaz-official/hackdorte-artwork"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+  mkdir -p	$fs/usr/bin
+  cp stuff/*	$fs/usr/bin
+}
+
+post_install()
+{
+  [ "$1" ] || get-community-backgrounds
+}

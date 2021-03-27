@@ -1,0 +1,44 @@
+# SliTaz package receipt.
+
+PACKAGE="cairo-dock"
+VERSION="3.4.1"
+CATEGORY="x-window"
+SHORT_DESC="A light and eye-candy dock to launch."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="http://www.glx-dock.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://launchpad.net/cairo-dock-core/${VERSION%.*}/$VERSION/+download/$TARBALL"
+
+SUGGESTED="cairo-dock-plugins"
+DEPENDS="cairo dbus gtk+ gtkglext libcurl librsvg mesa xorg-xcompmgr"
+BUILD_DEPENDS="cairo-dev cmake curl-dev dbus-dev dbus-glib-dev gtk+3-dev 
+	gtkglext-dev libcroco librsvg-dev libxml2-dev mesa-dev wayland-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|<glib/g.*h>|<glib.h>|' \
+		src/gldit/cairo-dock-keybinder.h
+
+	mkdir -p build &&
+	cd build &&
+	cmake .. -DCMAKE_INSTALL_PREFIX=/usr &&
+	make &&
+	make DESTDIR=$DESTDIR install &&
+
+	sed -i s/'.svg'/''/ $DESTDIR/usr/share/applications/*
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/share/$PACKAGE
+
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/lib/*.so*		$fs/usr/lib
+	cp -a $install/usr/share/$PACKAGE	$fs/usr/share
+	chmod a+x $fs/usr/lib/libgldi.so.$VERSION
+}

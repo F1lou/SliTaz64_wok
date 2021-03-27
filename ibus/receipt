@@ -1,0 +1,38 @@
+# SliTaz package receipt.
+
+PACKAGE="ibus"
+VERSION="1.4.2"
+CATEGORY="utilities"
+SHORT_DESC="Intelligent Input Bus for Linux / Unix OS"
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="LGPL2.1"
+WEB_SITE="https://github.com/ibus/ibus/wiki"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="http://ibus.googlecode.com/files/$TARBALL"
+
+DEPENDS="gtk+"
+BUILD_DEPENDS="gtk+-dev GConf-dev python-dev dbus-python-dev dbus-glib-dev \
+intltool gettext perl iso-codes"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir -p $DESTDIR$(ls -d /usr/lib/gtk-2*/2*/immodules/)
+	./configure --prefix=/usr \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
+		--disable-gtk3 \
+		$CONFIGURE_ARGS &&
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $src/client/gtk2/im-ibus.la $install/usr/lib/gtk-2*/2*/immodules/
+	cp -a $install/* $fs
+	rm -rf $fs/usr/include
+	rm -rf $fs/usr/lib/pkgconfig
+	rm -rf $fs/usr/share/gtk-doc
+	find $fs/usr/lib | grep 'a$' | xargs rm -f
+}

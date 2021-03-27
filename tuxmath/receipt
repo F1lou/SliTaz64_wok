@@ -1,0 +1,53 @@
+# SliTaz package receipt.
+
+PACKAGE="tuxmath"
+VERSION="2.0.3"
+CATEGORY="games"
+TAGS="education"
+SHORT_DESC="Arcade game that helps kids practice their math facts."
+MAINTAINER="claudinei@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://alioth-archive.debian.org/releases/tux4kids/TuxMath-Source/"
+
+SOURCE="tuxmath_w_fonts"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://alioth.debian.org/frs/download.php/3571/$TARBALL"
+
+DEPENDS="libffi librsvg libsdl libsdl-image libsdl-mixer libsdl-net 
+	libsdl-pango libsdl-ttf libt4k_common"
+BUILD_DEPENDS="libffi-dev librsvg-dev libsdl-dev libsdl-image-dev 
+	libsdl-mixer-dev libsdl-net-dev libsdl-pango-dev 
+	libsdl-ttf-dev libt4k_common-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	#patch -p1 -i $stuff/SDL_extras.c.patch	
+
+	./configure			\
+		LIBS="-lt4k_common"	\
+		--prefix=/usr		\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	mkdir -p $fs/usr/share/locale
+
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/share/tuxmath	$fs/usr/share
+
+	# Set list of wanted locales in LOCALE_PACK
+	. $WOK/slitaz-i18n/stuff/locale-pack.conf
+
+	# Copy message files in wanted languages, if available
+	for lang in $LOCALE_PACK
+	  do
+		[ -d $install/usr/share/locale/$lang ] || continue
+		cp -a $install/usr/share/locale/$lang $fs/usr/share/locale
+	  done
+}

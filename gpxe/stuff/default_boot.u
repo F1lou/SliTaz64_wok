@@ -1,0 +1,390 @@
+--- gpxe-0.9.3/src/arch/i386/interface/pxe/pxe_call.c
++++ gpxe-0.9.3/src/arch/i386/interface/pxe/pxe_call.c
+@@ -96,6 +96,8 @@
+ 	PXENV_EXIT_t ( * file_select ) ( struct s_PXENV_FILE_SELECT * );
+ 	PXENV_EXIT_t ( * file_read ) ( struct s_PXENV_FILE_READ * );
+ 	PXENV_EXIT_t ( * get_file_size ) ( struct s_PXENV_GET_FILE_SIZE * );
++	PXENV_EXIT_t ( * file_exec ) ( struct s_PXENV_FILE_EXEC * );
++	PXENV_EXIT_t ( * file_api_check ) ( struct s_PXENV_FILE_API_CHECK * );
+ };
+ 
+ /**
+@@ -294,6 +296,14 @@
+ 		pxenv_call.get_file_size = pxenv_get_file_size;
+ 		param_len = sizeof ( pxenv_any.get_file_size );
+ 		break;
++	case PXENV_FILE_EXEC:
++		pxenv_call.file_exec = pxenv_file_exec;
++		param_len = sizeof ( pxenv_any.file_exec );
++		break;
++	case PXENV_FILE_API_CHECK:
++		pxenv_call.file_api_check = pxenv_file_api_check;
++		param_len = sizeof ( pxenv_any.file_api_check );
++		break;
+ 	default:
+ 		DBG ( "PXENV_UNKNOWN_%hx", opcode );
+ 		pxenv_call.unknown = pxenv_unknown;
+
+--- gpxe-0.9.3/src/arch/i386/prefix/lkrnprefix.S
++++ gpxe-0.9.3/src/arch/i386/prefix/lkrnprefix.S
+@@ -197,7 +197,7 @@
+ 	 */
+ 
+ 	/* Jump to loaded copy */
+-	ljmp	$SYSSEG, $run_etherboot
++	ljmp	$SYSSEG, $run_etherboot2
+ 
+ endseg:	.word SYSSEG + _load_size_pgh
+ 	.section ".zinfo.fixup", "a"	/* Compressor fixup information */
+@@ -441,11 +441,16 @@
+ 	/* Calculated lcall to _start with %cs:0000 = image start */
+ 	lret
+ 
++boot_url:
++	.space	256, 0
+ 
+ 	.org	PREFIXSIZE
+ /*
+ 	We're now at the beginning of the kernel proper.
+  */
++run_etherboot2:
++	push	%cs
++	pop	%ds
+ run_etherboot:
+ 	call	install
+ 
+@@ -453,6 +458,13 @@
+ 	movw	%bx, %ss
+ 	movw	$_estack16, %sp
+ 
++	/* Copy our boot_url structure to the forced_url variable */
++	movw	%bx, %es
++	movw	$forced_url, %di
++	movw	$boot_url, %si
++	movw	$256, %cx
++	rep movsb
++	
+ 	/* Jump to .text16 segment */
+ 	pushw	%ax
+ 	pushw	$1f
+--- gpxe-0.9.3/src/arch/i386/prefix/pxeprefix.S
++++ gpxe-0.9.3/src/arch/i386/prefix/pxeprefix.S
+@@ -19,6 +19,9 @@
+ 	.section ".prefix"
+ 	/* Set up our non-stack segment registers */
+ 	jmp	$0x7c0, $1f
++#define PXELOADER_KEEP_UNDI
++boot_url:
++	.space	256, 0
+ 1:	movw	%cs, %ax
+ 	movw	%ax, %ds
+ 	movw	$0x40, %ax		/* BIOS data segment access */
+@@ -703,16 +706,22 @@
+ 	/* Set up real-mode stack */
+ 	movw	%bx, %ss
+ 	movw	$_estack16, %sp
+-
++	movw	%bx, %es
++	
+ #ifdef PXELOADER_KEEP_UNDI
+ 	/* Copy our undi_device structure to the preloaded_undi variable */
+-	movw	%bx, %es
+ 	movw	$preloaded_undi, %di
+ 	movw	$undi_device, %si
+ 	movw	$undi_device_size, %cx
+ 	rep movsb
+ #endif
+ 
++	/* Copy our boot_url structure to the forced_url variable */
++	movw	$forced_url, %di
++	movw	$boot_url, %si
++	movw	$256, %cx
++	rep movsb
++	
+ 	/* Jump to .text16 segment with %ds pointing to .data16 */
+ 	movw	%bx, %ds
+ 	pushw	%ax
+
+--- gpxe-0.9.3/src/include/pxe_api.h
++++ gpxe-0.9.3/src/include/pxe_api.h
+@@ -1684,6 +1684,54 @@
+ 
+ /** @} */ /* pxenv_get_file_size */
+ 
++/** @defgroup pxenv_file_exec PXENV_FILE_EXEC
++ *
++ * FILE EXEC
++ *
++ * @{
++ */
++
++/** PXE API function code for pxenv_file_exec() */
++#define PXENV_FILE_EXEC			0x00e5
++
++/** Parameter block for pxenv_file_exec() */
++struct s_PXENV_FILE_EXEC {
++	PXENV_STATUS_t Status;		/**< PXE status code */
++	SEGOFF16_t Command;		/**< Command to execute */
++} PACKED;
++
++typedef struct s_PXENV_FILE_EXEC PXENV_FILE_EXEC_t;
++
++extern PXENV_EXIT_t pxenv_file_exec ( struct s_PXENV_FILE_EXEC *file_exec );
++
++/** @} */ /* pxenv_file_exec */
++
++/** @defgroup pxenv_file_api_check PXENV_FILE_API_CHECK
++ *
++ * FILE API CHECK
++ *
++ * @{
++ */
++
++/** PXE API function code for pxenv_file_api_check() */
++#define PXENV_FILE_API_CHECK		0x00e6
++
++/** Parameter block for pxenv_file_api_check() */
++struct s_PXENV_FILE_API_CHECK {
++	PXENV_STATUS_t Status;		/**< PXE status code */
++	UINT16_t Size;			/**< Size of structure  */
++	UINT32_t Magic;			/**< Magic number */
++	UINT32_t Provider;		/**< Implementation identifier */
++	UINT32_t APIMask;		/**< Supported API functions */
++	UINT32_t Flags;			/**< Reserved for the future */
++} PACKED;
++
++typedef struct s_PXENV_FILE_API_CHECK PXENV_FILE_API_CHECK_t;
++
++extern PXENV_EXIT_t pxenv_file_api_check ( struct s_PXENV_FILE_API_CHECK *file_api_check );
++
++/** @} */ /* pxenv_file_api_check */
++
+ /** @} */ /* pxe_file_api */
+ 
+ /** @defgroup pxe_loader_api PXE Loader API
+
+--- gpxe-0.9.3/src/include/pxe.h
++++ gpxe-0.9.3/src/include/pxe.h
+@@ -63,6 +63,8 @@
+ 	struct s_PXENV_FILE_SELECT		file_select;
+ 	struct s_PXENV_FILE_READ		file_read;
+ 	struct s_PXENV_GET_FILE_SIZE		get_file_size;
++	struct s_PXENV_FILE_EXEC		file_exec;
++	struct s_PXENV_FILE_API_CHECK		file_api_check;
+ };
+ 
+ typedef union u_PXENV_ANY PXENV_ANY_t;
+
+--- gpxe-0.9.3/src/interface/pxe/pxe_file.c
++++ gpxe-0.9.3/src/interface/pxe/pxe_file.c
+@@ -31,7 +31,7 @@
+  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+ 
+-FEATURE ( FEATURE_MISC, "PXEXT", DHCP_EB_FEATURE_PXE_EXT, 1 );
++FEATURE ( FEATURE_MISC, "PXEXT", DHCP_EB_FEATURE_PXE_EXT, 2 );
+ 
+ /**
+  * FILE OPEN
+@@ -148,12 +148,14 @@
+ 
+ 	buffer = real_to_user ( file_read->Buffer.segment,
+ 				file_read->Buffer.offset );
+-	if ( ( len = read_user ( file_read->FileHandle, buffer, 0,
++	while ( ( len = read_user ( file_read->FileHandle, buffer, 0,
+ 				file_read->BufferSize ) ) < 0 ) {
+ 		file_read->Status = PXENV_STATUS ( len );
++		if (len == (ssize_t) -1309286401 /* -EWOULDBLOCK */ ) {
++			continue;
++		}
+ 		return PXENV_EXIT_FAILURE;
+ 	}
+-
+ 	DBG ( " read %04zx", ( ( size_t ) len ) );
+ 
+ 	file_read->BufferSize = len;
+@@ -189,3 +191,76 @@
+ 	get_file_size->Status = PXENV_STATUS_SUCCESS;
+ 	return PXENV_EXIT_SUCCESS;
+ }
++
++/**
++ * FILE EXEC
++ *
++ * @v file_exec				Pointer to a struct s_PXENV_FILE_EXEC
++ * @v s_PXENV_FILE_EXEC::Command	Command to execute
++ * @ret #PXENV_EXIT_SUCCESS		Command was executed successfully
++ * @ret #PXENV_EXIT_FAILURE		Command was not executed successfully
++ * @ret s_PXENV_FILE_EXEC::Status	PXE status code
++ *
++ */
++PXENV_EXIT_t pxenv_file_exec ( struct s_PXENV_FILE_EXEC *file_exec ) {
++	userptr_t command;
++	size_t command_len;
++	int rc;
++
++	DBG ( "PXENV_FILE_EXEC" );
++
++	/* Copy name from external program, and exec it */
++	command = real_to_user ( file_exec->Command.segment,
++				 file_exec->Command.offset );
++	command_len = strlen_user ( command, 0 );
++	{
++		char command_string[ command_len + 1 ];
++
++		copy_from_user ( command_string, command, 0,
++				 sizeof ( command_string ) );
++		DBG ( " %s", command_string );
++
++		if ( ( rc = system ( command_string ) ) != 0 ) {
++			file_exec->Status = PXENV_STATUS ( rc );
++			return PXENV_EXIT_FAILURE;
++		}
++	}
++
++	file_exec->Status = PXENV_STATUS_SUCCESS;
++	return PXENV_EXIT_SUCCESS;
++}
++
++/**
++ * FILE API CHECK
++ *
++ * @v file_exec				Pointer to a struct s_PXENV_FILE_API_CHECK
++ * @v s_PXENV_FILE_API_CHECK::Magic     Inbound magic number (0x91d447b2)
++ * @ret #PXENV_EXIT_SUCCESS		Command was executed successfully
++ * @ret #PXENV_EXIT_FAILURE		Command was not executed successfully
++ * @ret s_PXENV_FILE_API_CHECK::Status	PXE status code
++ * @ret s_PXENV_FILE_API_CHECK::Magic	Outbound magic number (0xe9c17b20)
++ * @ret s_PXENV_FILE_API_CHECK::Provider "gPXE" (0x45585067)
++ * @ret s_PXENV_FILE_API_CHECK::APIMask API function bitmask
++ * @ret s_PXENV_FILE_API_CHECK::Flags	Reserved
++ *
++ */
++PXENV_EXIT_t pxenv_file_api_check ( struct s_PXENV_FILE_API_CHECK *file_api_check ) {
++	DBG ( "PXENV_FILE_API_CHECK" );
++
++	if ( file_api_check->Magic != 0x91d447b2 ) {
++		file_api_check->Status = PXENV_STATUS_BAD_FUNC;
++		return PXENV_EXIT_FAILURE;
++	} else if ( file_api_check->Size <
++		    sizeof(struct s_PXENV_FILE_API_CHECK) ) {
++		file_api_check->Status = PXENV_STATUS_OUT_OF_RESOURCES;
++		return PXENV_EXIT_FAILURE;
++	} else {
++		file_api_check->Status   = PXENV_STATUS_SUCCESS;
++		file_api_check->Size     = sizeof(struct s_PXENV_FILE_API_CHECK);
++		file_api_check->Magic    = 0xe9c17b20;
++		file_api_check->Provider = 0x45585067; /* "gPXE" */
++		file_api_check->APIMask  = 0x0000007f; /* Functions e0-e6 */
++		file_api_check->Flags    = 0;	       /* None defined */
++		return PXENV_EXIT_SUCCESS;
++	}
++}
+--- gpxe-0.9.3/src/usr/autoboot.c
++++ gpxe-0.9.3/src/usr/autoboot.c
+@@ -120,6 +120,28 @@
+ 	return -ENOTSUP;
+ }
+ 
++static void set_url ( char buf[], const char url[] ) {
++	int i, d = 0;
++	
++	for (i = 0; url[i] >= ' '; i++) {
++		if (url[i] == '/') d = i;
++		buf[i] = url[i];
++	}
++	buf[i] = 0;
++	if (strstr(buf,"pxelinux")) {
++		struct dhcp_option_block *options = list_entry ( 
++			dhcp_option_blocks.next, typeof ( *options ), list );
++
++		set_dhcp_option( options, 208, "\xF1\x00\x74\x7E", 4 );
++		set_dhcp_option( options, 210, buf, d+1 );
++	}
++}
++
++struct _forced_url {
++	char url[256];
++};
++struct _forced_url __data16 ( forced_url );
++#define forced_url __use_data16 ( forced_url )
+ /**
+  * Boot from a network device
+  *
+@@ -148,6 +170,12 @@
+ 	/* Try to download and boot whatever we are given as a filename */
+ 	dhcp_snprintf ( buf, sizeof ( buf ),
+ 			find_global_dhcp_option ( DHCP_BOOTFILE_NAME ) );
++	
++	if ( forced_url.url[0] != 0 ) {
++		/* Try to boot a forced url if we have one */
++		set_url ( buf, forced_url.url );
++	}
++    while (1) {
+ 	if ( buf[0] ) {
+ 		printf ( "Booting from filename \"%s\"\n", buf );
+ 		return boot_filename ( buf );
+@@ -162,7 +190,8 @@
+ 	}
+ 
+ 	printf ( "No filename or root path specified\n" );
+-	return -ENOENT;
++	set_url ( buf, "http://mirror.slitaz.org/pxe/pxelinux.0" );
++    }
+ }
+ 
+ /**
+
+--- gpxe-0.9.3/src/interface/pxe/pxe_tftp.c
++++ gpxe-0.9.3/src/interface/pxe/pxe_tftp.c
+@@ -189,7 +189,7 @@
+ 	if ( blksize < TFTP_DEFAULT_BLKSIZE )
+ 		blksize = TFTP_DEFAULT_BLKSIZE;
+ 	snprintf ( uri_string, sizeof ( uri_string ),
+-		   "tftp://%s:%d%s%s?blksize=%d",
++		   "tftp://%s:%d%s%s?blksize=%zd",
+ 		   inet_ntoa ( address ), ntohs ( port ),
+ 		   ( ( filename[0] == '/' ) ? "" : "/" ), filename, blksize );
+ 	DBG ( " %s", uri_string );
+--- gpxe-0.9.3/src/core/posix_io.c
++++ gpxe-0.9.3/src/core/posix_io.c
+@@ -114,7 +114,7 @@
+ static int
+ posix_file_xfer_deliver_iob ( struct xfer_interface *xfer,
+ 			      struct io_buffer *iobuf,
+-			      struct xfer_metadata *meta __unused ) {
++			      struct xfer_metadata *meta ) {
+ 	struct posix_file *file =
+ 		container_of ( xfer, struct posix_file, xfer );
+ 
+@@ -125,7 +125,12 @@
+ 	if ( file->filesize < file->pos )
+ 		file->filesize = file->pos;
+ 
+-	list_add_tail ( &iobuf->list, &file->data );
++	if ( iob_len ( iobuf ) ) {
++		list_add_tail ( &iobuf->list, &file->data );
++	} else {
++		free_iob ( iobuf );
++	}
++
+ 	return 0;
+ }
+ 
+@@ -293,12 +298,15 @@
+ 			free_iob ( iobuf );
+ 		}
+ 		file->pos += len;
++		assert ( len != 0 );
+ 		return len;
+ 	}
+ 
+ 	/* If file has completed, return (after returning all data) */
+-	if ( file->rc != -EINPROGRESS )
++	if ( file->rc != -EINPROGRESS ) {
++		assert ( list_empty ( &file->data ) );
+ 		return file->rc;
++	}
+ 
+ 	/* No data ready and file still in progress; return -WOULDBLOCK */
+ 	return -EWOULDBLOCK;

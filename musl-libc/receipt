@@ -1,0 +1,42 @@
+# SliTaz package receipt.
+
+PACKAGE="musl-libc"
+VERSION="1.2.0"
+CATEGORY="development"
+SHORT_DESC="A lightweight, fast, simple, free libc."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://www.musl-libc.org/"
+
+SOURCE="musl"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}releases/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS=""
+
+TARGET="i386"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure				\
+		--prefix=/usr/share/musl	\
+		--exec-prefix=/usr/share/musl	\
+		--target=$TARGET		\
+		$CONFIGURE_ARGS
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.   
+genpkg_rules()                                      
+{
+	mkdir -p $fs/usr/share/musl/lib
+	mkdir -p $fs/etc $fs/bin
+
+	cp -a $install/lib			$fs
+	ln -s /usr/share/musl/lib/libc.so	$fs/bin/ldd-musl
+	cp -a $install/usr/share/musl/lib/*.so  $fs/usr/share/musl/lib
+	echo "/usr/share/musl/lib" >		$fs/etc/ld-musl-$TARGET.path
+}

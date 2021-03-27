@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="libgnomeprint-dev"
+VERSION="2.18.8"
+CATEGORY="development"
+SHORT_DESC="GNOME print library"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WANTED="libgnomeprint"
+WEB_SITE="https://www.gnome.org/"
+
+DEPENDS="gtk+-dev popt-dev libxml2-dev pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	
+	# Copy static libs
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/lib/$WANTED $fs/usr/lib
+	
+	cp -a $install/usr/include $fs/usr
+	
+	# Remove shared libs
+	rm $fs/usr/lib/$WANTED/$VERSION/modules/*.so*
+	rm $fs/usr/lib/$WANTED/$VERSION/modules/*/*.so*
+}
+

@@ -1,0 +1,14 @@
+/usr/bin/smbclient
+/usr/bin/smbspool
+/usr/bin/smbget
+/usr/bin/smbtree
+/usr/bin/smbcacls
+/usr/bin/smbcquotas
+/usr/bin/smbtar
+/usr/bin/rpcclient
+/usr/bin/net
+/usr/bin/nmblookup
+/usr/lib/libnetapi.so
+/usr/lib/libnetapi.so.0
+/usr/lib/libsmbclient.so
+/usr/lib/libsmbclient.so.0

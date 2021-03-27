@@ -1,0 +1,66 @@
+# SliTaz package receipt.
+
+PACKAGE="awesome"
+VERSION="4.3"
+CATEGORY="x-window"
+TAGS="window-manager"
+SHORT_DESC="Highly configurable framework window manager."
+MAINTAINER="mallory@sweetpeople.org"
+LICENSE="GPL2"
+WEB_SITE="https://awesomewm.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="https://github.com/awesomeWM/$PACKAGE/releases/download/v$VERSION/$TARBALL"
+
+DEPENDS="cairo dbus gdk-pixbuf lgi libxdg-basedir libxkbcommon lua 
+	pango-typelib startup-notification xcb-util-cursor xcb-util-image 
+	xcb-util-keysyms xcb-util-renderutil xcb-util-wm xcb-util-xrm"
+BUILD_DEPENDS="cairo cairo-dev cmake dbus-dev fontconfig-dev freetype-dev 
+	gdk-pixbuf-dev gperf imagemagick imlib2-dev lgi libev-dev libpng-dev 
+	libltdl libxdg-basedir-dev libxkbcommon-dev lua-dev openexr pango-dev 
+	pkg-config startup-notification-dev xcb-util-cursor-dev xcb-util-dev 
+	xcb-util-image-dev xcb-util-keysyms-dev xcb-util-renderutil-dev 
+	xcb-util-wm-dev xcb-util-xrm-dev xorg-libX11-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export LDFLAGS="$LDFLAGS -Wl,--copy-dt-needed-entries -ldl"
+	export AWESOME_IGNORE_LGI=1
+	make							\
+		CMAKE_ARGS=" -DCMAKE_INSTALL_PREFIX:PATH=/usr	\
+		-DXDG_CONFIG_DIR=/etc/xdg			\
+		-DCMAKE_BUILD_TYPE=RELEASE" &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/lua
+
+	cp -a $install/*		$fs
+
+	# move lua scripts to lua directory
+	mv $fs/usr/share/awesome/lib	$fs/usr/share/lua/5.2
+}
+
+post_install()
+{
+	res=$(cat "$1/etc/slim.conf" | grep ^session | sed s/"sessions. *"//)
+	# Adding WM to SLIM available sessions.
+	if ! echo "$res" | grep -q $PACKAGE
+	  then
+		sed -i "s/^sessions.*/sessions            ${res},$PACKAGE/" \
+			"$1/etc/slim.conf"
+	fi
+}
+
+post_remove()
+{
+	# Remove WM from SLIM available sessions.
+	if grep -q $PACKAGE "$1/etc/slim.conf"
+	  then
+		sed -i s/,$PACKAGE// "$1/etc/slim.conf"
+	fi
+}

@@ -1,0 +1,26 @@
+# SliTaz package receipt.
+
+PACKAGE="ecofont"
+VERSION="2.0"
+CATEGORY="fonts"
+SHORT_DESC="20% ink saving font from SPRANQ."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="other"
+TARBALL="spranq_eco_sans_regular.zip"
+WEB_SITE="http://www.ecofont.eu/ecofont_en.html"
+WGET_URL="http://www.ecofont.eu/assets/files/$TARBALL"
+
+BUILD_DEPENDS="unzip"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	unzip $SOURCES_REPOSITORY/$TARBALL
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/fonts/truetype/ecofont
+	cp -a $src/* $fs/usr/share/fonts/truetype/ecofont
+}

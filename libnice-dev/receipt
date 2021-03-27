@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="libnice-dev"
+VERSION="0.0.13"
+CATEGORY="development"
+SHORT_DESC="Libnice devel files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2.1 MPL"
+WANTED="libnice"
+WEB_SITE="https://nice.freedesktop.org/"
+
+DEPENDS="pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+    mkdir -p $fs/usr/lib
+    cp -a $install/usr/lib/*.*a $fs/usr/lib
+    cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+    cp -a $install/usr/lib/gstreamer-* $fs/usr/lib
+    rm $fs//usr/lib/gstreamer-*/*.so*
+    cp -a $install/usr/include $fs/usr
+}

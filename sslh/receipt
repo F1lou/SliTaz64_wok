@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="sslh"
+VERSION="1.20"
+CATEGORY="network"
+SHORT_DESC="Accept HTTPS SSH OpenVPN Tinc & XMPP connections on the same port"
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-v$VERSION.tar.gz"
+WEB_SITE="http://www.rutschle.net/tech/sslh/README.html"
+WGET_URL="https://github.com/yrutschle/sslh/archive/v$VERSION.tar.gz"
+CONFIG_FILES="/etc/sslh.cfg"
+TAGS="ssh vpn tunnel"
+
+DEPENDS="libwrap libconfig libcap"
+BUILD_DEPENDS="libwrap-dev libwrap libconfig-dev libcap-dev"
+SUGGESTED="iptables"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|"ssl"|"tls"|' *.cfg
+	make USELIBCAP=1
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/sbin $fs/etc $fs/var/empty
+	mkdir -p $install/usr/share/man $install/usr/share/doc
+	cp -a $src/sslh-fork $fs/usr/sbin
+	cp -a $src/sslh-select $fs/usr/sbin
+	cp $src/basic.cfg $fs/etc/sslh.cfg
+	cp $src/sslh.8.gz $install/usr/share/man
+	cp $src/*.cfg $install/usr/share/doc
+	cp $src/README.md $install/usr/share/doc
+}

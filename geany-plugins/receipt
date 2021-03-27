@@ -1,0 +1,74 @@
+# SliTaz package receipt.
+
+PACKAGE="geany-plugins"
+VERSION="1.23"
+CATEGORY="development"
+SHORT_DESC="Additionnal plugins for Geany."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://plugins.geany.org/"
+WGET_URL="$WEB_SITE/$PACKAGE/$TARBALL"
+#HOST_ARCH="x86_64 i486 arm"
+COOKOPTS="!pngquant !optipng"
+
+DEPENDS="enchant gtkspell geany lua"
+BUILD_DEPENDS="gtkspell-dev geany-dev lua-dev libxml2-dev bash"
+
+# Handle cross compilation.
+case "$ARCH" in
+	i?86) 
+		BUILD_DEPENDS="gtkspell-dev geany-dev lua-dev libxml2-dev vte-dev"
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	ln -fs bash /bin/sh	# needs var+="string" support
+	./configure \
+		--libexecdir=/usr/lib \
+		--enable-addons \
+		--enable-codenav \
+		--enable-commander \
+		--enable-debugger \
+		--disable-devhelp \
+		--enable-geanydoc \
+		--enable-treebrowser \
+		--enable-geanyvc \
+		--disable-geanyextrasel \
+		--disable-geanygendoc \
+		--disable-geanyinsertnum \
+		--disable-geanylatex \
+		--disable-geanylipsum \
+		--disable-geanylua \
+		--disable-geanymacro \
+		--disable-geanyminiscript \
+		--disable-geanynumberedbookmarks \
+		--disable-geanyprj \
+		--disable-geanysendmail \
+		--disable-geanypg \
+		--disable-largefile \
+		--disable-geniuspaste \
+		--disable-gproject \
+		--disable-markdown \
+		--disable-peg-markdown \
+		--disable-multiterm \
+		--disable-pretty_printer \
+		--disable-scope \
+		--disable-shiftcolumn \
+		--disable-spellcheck \
+		--disable-tableconvert \
+		--disable-updatechecker \
+		--disable-webhelper \
+		--disable-xmlsnippets  \
+		$CONFIGURE_ARGS ${ARCH_ARGS} &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/geany 
+	
+	cp -a $install/usr/lib/geany/*.so $fs/usr/lib/geany
+}

@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="xorg-base-fonts"
+VERSION="1.2"
+CATEGORY="x-window"
+SHORT_DESC="X window base/minimal fonts from the Xorg project."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://www.x.org/"
+WGET_URL="http://download.tuxfamily.org/slitaz/sources/fonts/$TARBALL"
+HOST_ARCH="x86_64 i486 arm"
+
+BUILD_DEPENDS="advancecomp"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	find $src/fonts -name '*.gz' -exec advdef -z4 {} \;
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	fontpath="$fs/usr/share/fonts/X11/misc"
+	mkdir -p $fontpath $fs/usr/share/fonts/X11/util
+	install -m644 -oroot -groot $src/fonts/misc/* $fontpath
+	install -m644 -oroot -groot $src/fonts/util/* $fs/usr/share/fonts/X11/util
+	rm -rf $fontpath/6x13-ISO8859-1.pcf.gz $fontpath/cursor.pcf.gz # libXfont buitins
+	sed -i 6i\ '7x13B-ISO8859-1.pcf.gz -misc-fixed-bold-r-normal--13-120-75-75-c-70-iso8859-1' \
+		$fontpath/fonts.dir
+}
+
+# Execute fc-cache when the package finish to install.
+post_install()
+{
+	# It may be segfault without -f or -r
+	chroot "$1/" /usr/bin/fc-cache -r
+}

@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="python-mygpoclient"
+VERSION="1.8"
+CATEGORY="development"
+SHORT_DESC="Python interface to the gpodder.net web services."
+MAINTAINER="claudinei@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://pypi.org/project/mygpoclient/"
+
+SOURCE="mygpoclient"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://files.pythonhosted.org/packages/source/m/$SOURCE/$TARBALL"
+
+DEPENDS="python python-simplejson"
+BUILD_DEPENDS="python python-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+
+	cp -a $install/usr/lib	$fs/usr
+	cp -a $install/usr/bin	$fs/usr
+}

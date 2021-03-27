@@ -1,0 +1,48 @@
+# SliTaz package receipt.
+
+PACKAGE="TiMidity++"
+VERSION="2.15.0"
+CATEGORY="multimedia"
+SHORT_DESC="An open source MIDI to WAVE converter and player."
+MAINTAINER="paul@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://sourceforge.net/projects/timidity/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="$SF_MIRROR/timidity/$TARBALL"
+
+DEPENDS="alsa-lib flac gtk+ jack-audio-connection-kit libao libdb libogg \
+	libvorbis portaudio xorg-libXaw3d"
+BUILD_DEPENDS="alsa-lib-dev flac-dev gtk+-dev jack-audio-connection-kit-dev \
+	libao-dev libogg-dev libvorbis-dev portaudio-dev xorg-libXaw3d-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure							\
+		--prefix=/usr						\
+		--enable-audio=alsa,portaudio,jack,ao,vorbis,flac	\
+		--enable-interface=gtk,xaw				\
+		--enable-alsaseq
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin	$fs/usr
+}
+
+post_install()
+{
+	# create configuration file
+	mkdir "$1/usr/share/timidity"
+	touch "$1/usr/share/timidity/timidity.cfg"
+}
+
+post_remove()
+{
+	rm -rf "$1/usr/share/timidity"
+}

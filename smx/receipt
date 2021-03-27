@@ -1,0 +1,38 @@
+# SliTaz package receipt.
+
+PACKAGE="smx"
+VERSION="1.1.4-454"
+CATEGORY="development"
+SHORT_DESC="text-embedded macro processing language."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://web.archive.org/web/20180323014153/http://www.smxlang.org/"
+WGET_URL="http://$PACKAGE.googlecode.com/files/$TARBALL"
+
+DEPENDS="unixODBC sqlite libgd libcrypto gcc-lib-base zlib"
+BUILD_DEPENDS="apache-dev apr-dev apr-util-dev unixODBC-dev \
+sqlite libgd-dev openssl-dev perl libtool"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	sed -i	-e 's/ap_get_server_version/ap_get_server_banner/' \
+		-e 's/remote_ip/client_ip/' modsmx/modsmx.h
+	sed -i 's/modsmx.h"/&\n#ifdef APLOG_USE_MODULE\nAPLOG_USE_MODULE(smx);\n#undef APLOG_MARK\n#define APLOG_MARK __FILE__, __LINE__, APLOG_MODULE_INDEX\n#endif/' modsmx/modsmx.cpp
+	./configure \
+		--prefix=/usr \
+		--mandir=/usr/share/man \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="ssfs-server"
+VERSION="108"
+CATEGORY="network"
+SHORT_DESC="SSFS server side tools."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="http://ssfs.slitaz.org/"
+
+WANTED="ssfs"
+DEPENDS="ssfs ssfs-busybox openssh"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/etc $fs
+	cp -a $install/bin $fs
+	cp -a $install/usr/sbin $fs/usr
+	cp -a $install/usr/share/ssfs $fs/usr/share
+	cp -a $install/var $fs
+}

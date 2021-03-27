@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="libgpod"
+VERSION="0.8.3"
+CATEGORY="multimedia"
+SHORT_DESC="A shared library to access the contents of an iPod."
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://www.gtkpod.org/libgpod.html"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="$SF_MIRROR/gtkpod/$TARBALL"
+
+DEPENDS="gtk+ libplist libxml2 mutagen sqlite zlib"
+BUILD_DEPENDS="$DEPENDS glib-dev intltool libffi libplist-dev \
+	libxml2-dev pkg-config pygobject sqlite-dev zlib-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure --prefix=/usr $CONFIGURE_ARGS &&
+	make PREFIX=/usr -j 1 &&
+	make PREFIX=/usr DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib 
+	cp -a $install/usr/lib/*.so* $fs/usr/lib/
+}

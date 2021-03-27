@@ -1,0 +1,27 @@
+# SliTaz package receipt.
+
+PACKAGE="picard"
+VERSION="2.3.1"
+CATEGORY="utilities"
+SHORT_DESC="A cross-platform music tagger written in Python."
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://picard.musicbrainz.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/metabrainz/$PACKAGE/archive/release-$VERSION.tar.gz"
+
+DEPENDS="mutagen py3k PyQt-x11-gpl"
+BUILD_DEPENDS="gettext mutagen py3k-dev PyQt-x11-gpl "
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python3 setup.py install --root="$install"
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/*	$fs
+}

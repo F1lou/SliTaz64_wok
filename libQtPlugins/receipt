@@ -1,0 +1,24 @@
+# SliTaz package receipt.
+
+PACKAGE="libQtPlugins"
+VERSION="4.8.7"
+CATEGORY="development"
+SHORT_DESC="qt x11 toolkit plugins"
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL3 LGPL2.1"
+WEB_SITE="http://qt-project.org/"
+WANTED="qt4"
+
+DEPENDS="libQtSql libQt3Support libQtGui libQtCore libQtXml libQtNetwork \
+libQtDBus libQtWebkit libQtScript libQtDesigner libQtOpenGL libQtScriptTools libQtSvg \
+libQtTest libQtHelp"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/qt
+	cp -a $install/usr/lib/qt/plugins $fs/usr/lib/qt
+	find $fs -regex \
+	'.*\(gstreamer\|libqsqlite\|qjpeg\|bqgif\|libqsvg\).*' -delete
+}
+

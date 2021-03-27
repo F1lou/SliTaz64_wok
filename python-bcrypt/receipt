@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="python-bcrypt"
+VERSION="3.1.7"
+CATEGORY="development"
+SHORT_DESC="Modern password hashing for software and servers."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="Apache"
+WEB_SITE="https://pypi.org/project/bcrypt/"
+
+SOURCE="bcrypt"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://files.pythonhosted.org/packages/source/b/$SOURCE/$TARBALL"
+
+DEPENDS="python-cffi"
+BUILD_DEPENDS="libffi-dev python-cffi python-cparser python-dev python-setuptools"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py build &&
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs
+	cp -a $install/usr	$fs
+}

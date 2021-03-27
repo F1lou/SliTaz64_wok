@@ -1,0 +1,27 @@
+# SliTaz package receipt.
+
+PACKAGE="get-wifi-firmware"
+VERSION="2.0"
+CATEGORY="non-free"
+SHORT_DESC="Get misc wifi firmwares."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="http://hg.slitaz.org/wok/file/tip/$PACKAGE/stuff/$PACKAGE"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp stuff/$PACKAGE $fs/usr/bin
+	$fs/usr/bin/$PACKAGE --install
+}
+
+post_install()
+{
+	install_resolver=false
+	[ -s /etc/resolv.conf -a ! -s "$1/etc/resolv.conf" ] && install_resolver=true
+	$install_resolver && cp /etc/resolv.conf "$1/etc/resolv.conf"
+	# directly support some freely distributable firmware drivers 
+	chroot "$1/" /usr/bin/get-wifi-firmware --get-free-firmware
+	$install_resolver && rm -f "$1/etc/resolv.conf"
+}

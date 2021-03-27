@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="xalan-xerces-j"
+SOURCE="xalan-j"
+VERSION="2.7.2"
+CATEGORY="development"
+SHORT_DESC="A validating XML parser and an XSLT processor written in Java."
+MAINTAINER="rcx@zoominternet.net"
+LICENSE="Apache"
+WEB_SITE="http://xalan.apache.org/"
+
+TARBALL="${SOURCE}_${VERSION//./_}-bin-2jars.tar.gz"
+WGET_URL="http://archive.apache.org/dist/xalan/xalan-j/binaries/$TARBALL"
+
+SUGGESTED="java-jre"
+BUILD_DEPENDS="tar"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	[ -d ${SOURCE}_${VERSION//./_} ] &&
+	mv ${SOURCE}_${VERSION//./_}  $src
+	cd $src
+
+	mkdir -p $DESTDIR/usr/share/java &&
+	cp -f $src/*.jar $DESTDIR/usr/share/java
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs
+	cp -a $install/usr $fs
+}

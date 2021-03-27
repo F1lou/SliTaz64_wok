@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="swig"
+VERSION="4.0.1"
+CATEGORY="development"
+TAGS="compiler"
+MAINTAINER="devel@slitaz.org"
+LICENSE="GPL3"
+SHORT_DESC="A compiler that makes it easy to integrate C and C++ code with scripting languages."
+WEB_SITE="http://www.swig.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="gcc-lib-base pcre zlib"
+BUILD_DEPENDS="pcre-dev pkg-config zlib-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure --prefix=/usr $CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+	
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/share/$PACKAGE	$fs/usr/share
+}

@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="gcc3"
+VERSION="3.4.6"
+CATEGORY="development"
+SHORT_DESC="The GNU Compiler Collection."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+SOURCE="gcc"
+TARBALL="$SOURCE-$VERSION.tar.bz2"
+WEB_SITE="http://gcc.gnu.org/"
+WGET_URL="$GNU_MIRROR/$SOURCE/$SOURCE-$VERSION/$TARBALL"
+TAGS="compiler C C++"
+
+BUILD_DEPENDS="gawk"
+DEPENDS="gcc"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir gcc-build 
+	cd gcc-build
+	{
+	$src/configure --prefix=/usr --libexecdir=/usr/lib \
+		--host=i686-pc-linux-gnu --build=i686-pc-linux-gnu \
+		--target=i686-pc-linux-gnu \
+		--infodir=/usr/share/info --mandir=/usr/share/man --enable-nls \
+		--enable-languages=c,c++ --enable-shared --with-system-zlib \
+		--enable-clocale=gnu --enable-objc-gc --enable-__cxa_atexit \
+		--enable-threads=posix --with-tune=$ARCH \
+		--program-suffix=-3
+	make -j 1 $MAKEFLAGS bootstrap &&
+	make -j 1 $MAKEFLAGS install
+	} 2>&1 | sed 's/: No such file/: no such file/'
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $install/usr/lib $install/usr/include $fs/usr
+	rm $fs/usr/lib/lib*
+}

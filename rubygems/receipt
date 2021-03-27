@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="rubygems"
+VERSION="3.1.2"
+CATEGORY="development"
+TAGS="ruby"
+SHORT_DESC="Ruby packages Manager."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://www.rubygems.org/"
+
+TARBALL="$PACKAGE-$VERSION.tgz"
+WGET_URL="${WEB_SITE}$PACKAGE/$TARBALL"
+
+DEPENDS="libruby-extras ruby"
+BUILD_DEPENDS="libruby-extras ruby-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+# ARM: ruby-dev libruby-extras build host must be installed
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	ruby setup.rb --destdir=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+
+	cp -a $install/usr/lib	$fs/usr
+	cp -a $install/usr/bin	$fs/usr
+}

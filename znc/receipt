@@ -1,0 +1,44 @@
+# SliTaz package receipt.
+
+PACKAGE="znc"
+VERSION="1.8.1"
+CATEGORY="network"
+SHORT_DESC="An IRC bouncer with modules and scripts support."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://wiki.znc.in/ZNC"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="http://znc.in/releases/archive/$TARBALL"
+
+SUGGESTED="tcl"
+DEPENDS="gcc83-lib-base libssl zlib"
+BUILD_DEPENDS="gcc83 openssl-dev tcl-dev zlib-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	 ./configure			\
+		CC=gcc-83		\
+		CXX=g++-83		\
+		--enable-tcl		\
+		--disable-python	\
+		--disable-perl		\
+		--disable-cyrus		\
+		$CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/lib/znc	$fs/usr/lib
+	cp -a $install/usr/share/znc	$fs/usr/share
+}

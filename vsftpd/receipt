@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="vsftpd"
+VERSION="3.0.3"
+CATEGORY="network"
+SHORT_DESC="Secure FTP server."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://security.appspot.com/vsftpd.html"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://security.appspot.com/downloads/$TARBALL"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make 
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	mkdir -p $fs/etc
+
+	cp -a $src/vsftpd	$fs/usr/bin
+	cp -a $src/vsftpd.conf	$fs/etc
+}

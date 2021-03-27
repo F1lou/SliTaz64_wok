@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="libdb-cxx"
+VERSION="6.2.23"
+CATEGORY="misc"
+SHORT_DESC="Berkeley database libraries (C++ support)."
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="BSD"
+WEB_SITE="https://www.oracle.com/database/berkeley-db/db.html"
+WANTED="db"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="glibc-base"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/libdb_cxx-*so $fs/usr/lib
+}

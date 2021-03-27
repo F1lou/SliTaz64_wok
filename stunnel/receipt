@@ -1,0 +1,42 @@
+# SliTaz package receipt.
+
+PACKAGE="stunnel"
+VERSION="5.56"
+CATEGORY="network"
+SHORT_DESC="A proxy designed to add TLS encryption functionality to existing clients and servers."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.stunnel.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}downloads/$TARBALL"
+
+DEPENDS="libssl"
+BUILD_DEPENDS="libwrap-dev openssl-dev"
+
+CONFIG_FILES="/etc/stunnel/stunnel.conf"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--prefix=/usr		\
+		--sysconfdir=/etc	\
+		--localstatedir=/var	\
+		--mandir=/usr/share/man	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	mkdir -p $fs/etc/stunnel
+
+	cp -a $install/usr/bin				$fs/usr
+	cp -a $install/usr/lib				$fs/usr
+	cp -a $install/var				$fs
+	cp -a $install/etc/stunnel/stunnel.conf-sample	$fs/etc/stunnel/stunnel.conf
+}

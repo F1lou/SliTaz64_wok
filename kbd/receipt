@@ -1,0 +1,94 @@
+# SliTaz package receipt.
+
+PACKAGE="kbd"
+VERSION="2.2.0"
+CATEGORY="system-tools"
+TAGS="keyboard"
+SHORT_DESC="Keyboard mapping definitions and tools."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://kbd-project.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="https://www.kernel.org/pub/linux/utils/kbd/$TARBALL"
+
+DEPENDS="kbd-base"
+BUILD_DEPENDS="advancecomp check-dev flex pam-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Handle cross compilation.
+case "$ARCH" in
+	arm) BUILD_DEPENDS="check-dev flex" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# standard locale placement
+	sed -i 's|localedir = .*|localedir = @localedir@|' \
+		po/Makefile.in.in
+
+	# Handle cross compilation.
+	case "$ARCH" in
+		arm)
+			# No PAM support for ARM
+			./configure				\
+				--datadir=/usr/share/kbd	\
+				--localedir=/usr/share/locale	\
+				--disable-vlock			\
+				$CONFIGURE_ARGS ;;
+		i486|x86_64)
+			./configure				\
+				--datadir=/usr/share/kbd	\
+				--localedir=/usr/share/locale	\
+				$CONFIGURE_ARGS ;;
+	esac &&
+	make -j 1 &&
+	make install &&
+
+	find $DESTDIR/usr/share/kbd -name '*gz' -exec advdef -z4 {} \;
+}
+
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+
+	# Copy all kbd files (should we split fonts?)
+	cp -a $install/usr/share/kbd	$fs/usr/share
+
+	# Tools
+	cp -a $install/usr/bin		$fs/usr
+
+	# Remove files provided by kbd-base and kbd-vlock.
+	for keymap in $(cat $WOK/kbd-base/stuff/keymaps-path.list)
+	  do
+		rm -f $fs/usr/share/kbd/keymaps/i386/$keymap
+	  done
+	rm -rf				$fs/usr/share/kbd/keymaps/include
+	rm -rf				$fs/usr/share/kbd/keymaps/i386/include
+	rm -f				$fs/usr/bin/loadkeys
+	rm -f				$fs/usr/bin/setfont
+	rm -f				$fs/usr/bin/vlock
+}
+
+# Overlap busybox
+pre_install()
+{
+	rm -f $root/usr/bin/deallocvt
+	rm -f $root/usr/bin/chvt
+	rm -f $root/usr/bin/setkeycodes
+	rm -f $root/usr/bin/openvt
+	rm -f $root/usr/bin/kbd_mode
+}
+
+post_remove()
+{
+	ln -s /bin/busybox $root/usr/bin/deallocvt
+	ln -s /bin/busybox $root/usr/bin/chvt
+	ln -s /bin/busybox $root/usr/bin/setkeycodes
+	ln -s /bin/busybox $root/usr/bin/openvt
+	ln -s /bin/busybox $root/usr/bin/kbd_mode
+}

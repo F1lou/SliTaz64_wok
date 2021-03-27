@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="razorqt-policykit-agent"
+VERSION="0.5.2"
+CATEGORY="x-window"
+SHORT_DESC="Razor-qt lightweight PolicyKit agent/user interface."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2 LGPL2.1"
+WANTED="razorqt"
+WEB_SITE="https://github.com/Razor-qt/razor-qt"
+
+DEPENDS="razorqt polkit polkit-qt"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin $fs/etc/xdg/autostart
+	cp -a $install/usr/bin/razor-policykit-agent $fs/usr/bin
+	cp -a $install/etc/xdg/autostart/razor-policykit-agent.desktop \
+		$fs/etc/xdg/autostart
+}

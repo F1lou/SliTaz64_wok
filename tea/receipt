@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="tea"
+VERSION="50.0.4"
+CATEGORY="development"
+TAGS="text-editor"
+SHORT_DESC="A QT-based text editor."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="http://semiletov.org/tea/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/psemiletov/tea-qt/archive/$VERSION.tar.gz"
+
+DEPENDS="libQtCore libQtGui libQtXml xorg-libX11"
+BUILD_DEPENDS="qmake Qt4-dev xorg-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	qmake PREFIX=/usr &&
+	make
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	mkdir -p $fs/usr/share/pixmaps
+
+	cp -a $src/bin/tea			$fs/usr/bin
+	cp -a $src/icons/tea_icon_v2.png	$fs/usr/share/pixmaps/tea.png
+}

@@ -1,0 +1,56 @@
+# SliTaz package receipt.
+
+PACKAGE="gettext"
+VERSION="0.19.8.1"
+CATEGORY="development"
+SHORT_DESC="Utilities for the GNU Translation Project."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://www.gnu.org/software/gettext/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="acl-dev attr-dev gettext-base gettext-tools glib-dev libcroco 
+	libcroco-dev liblzma libxml2 libxml2-dev m4 ncurses pcre-dev"
+BUILD_DEPENDS="acl-dev glib-dev libcroco-dev libxml2-dev"
+SPLIT="gettext-base gettext-tools"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Handle cross compilation. Glibc-locale are installed in cross chroot.
+case "$ARCH" in
+	arm) BUILD_DEPENDS="attr-dev ncurses-dev libxml2-tools libxml2-dev"
+	     ARCH_ARGS="--disable-acl" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure		\
+		$CONFIGURE_ARGS	\
+		$ARCH_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/lib			$fs/usr
+	cp -a $install/usr/include		$fs/usr
+	cp -a $install/usr/share/aclocal	$fs/usr/share
+	cp -a $install/usr/share/gettext	$fs/usr/share
+	cp -a $install/usr/share/gettext-0.19.8	$fs/usr/share
+
+	# Remove "gettext-base" and "gettext-tools" files.
+	for bin in gettext gettext.sh envsubst ngettext msgcat msgfmt msgmerge xgettext
+	  do
+		rm $fs/usr/bin/$bin
+	  done
+	rm					$fs/usr/lib/libgettextlib*.so*
+	rm					$fs/usr/lib/libgettextsrc*.so*
+}

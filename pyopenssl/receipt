@@ -1,0 +1,27 @@
+# SliTaz package receipt.
+
+PACKAGE="pyopenssl"
+VERSION="19.1.0"
+CATEGORY="development"
+SHORT_DESC="OpenSSL library subset wrapper for python."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="Apache"
+WEB_SITE="https://launchpad.net/pyopenssl/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/pyca/$PACKAGE/archive/$VERSION.tar.gz"
+
+DEPENDS="openssl python"
+BUILD_DEPENDS="openssl-dev python python-dev python-setuptools"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py build && python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr	$fs
+}

@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="gtk-engine-nodoka"
+VERSION="0.7.5"
+SOURCE="gtk-nodoka-engine"
+CATEGORY="customization"
+SHORT_DESC="Light and modern GTK theme engine."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="https://fedorahosted.org/nodoka/"
+WGET_URL="https://fedorahosted.org/released/nodoka/$TARBALL"
+
+DEPENDS="gtk+"
+BUILD_DEPENDS="gtk+-dev wget"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure $CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/gtk-2.0/2.10.0/engines
+	cp $install/usr/lib/gtk-2.0/2.10.0/engines/*.so \
+		$fs/usr/lib/gtk-2.0/2.10.0/engines
+	cp -a $install/usr/share $fs/usr
+}

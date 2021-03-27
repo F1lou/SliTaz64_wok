@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="webkit-r-dev"
+VERSION="99690"
+CATEGORY="network"
+SHORT_DESC="xHTML render library."
+WANTED="webkit-r"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="BSD LGPL"
+WEB_SITE="https://webkit.org/"
+
+DEPENDS="pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+}

@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="libcclc-dev"
+VERSION="0.7.0"
+CATEGORY="development"
+SHORT_DESC="client library for internet cafe programs"
+MAINTAINER="allan316@gmail.com"
+LICENSE="BSD"
+DEPENDS="libcclc"
+WEB_SITE="http://ccl.sourceforge.net"
+WANTED="libcclc"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib/*.a* $fs/usr/lib
+	cp -a $install/usr/lib/*.la* $fs/usr/lib
+}
+

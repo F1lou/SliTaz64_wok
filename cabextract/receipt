@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="cabextract"
+VERSION="1.9.1"
+CATEGORY="utilities"
+TAGS="extract cab exe"
+SHORT_DESC="Extracting Microsoft cabinet files."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://www.cabextract.org.uk/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://www.cabextract.org.uk/$TARBALL"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}

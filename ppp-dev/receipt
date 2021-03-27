@@ -1,0 +1,18 @@
+# SliTaz package receipt.
+
+PACKAGE="ppp-dev"
+VERSION="2.4.7"
+CATEGORY="development"
+SHORT_DESC="Point-to-Point Protocol (PPP) development files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="BSD GPL"
+WEB_SITE="https://ppp.samba.org/"
+WANTED="ppp"
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/include $fs/usr
+}

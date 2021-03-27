@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="perdition-dev"
+VERSION="2.2"
+CATEGORY="development"
+SHORT_DESC="Fully featured POP3 and IMAP4 proxy server - development files."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://www.vergenet.net/linux/perdition"
+
+DEPENDS="perdition"
+WANTED="perdition"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.a $fs/usr/lib
+}

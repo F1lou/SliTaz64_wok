@@ -1,0 +1,45 @@
+# SliTaz package receipt.
+
+PACKAGE="newt"
+VERSION="0.52.21"
+CATEGORY="development"
+SHORT_DESC="Not Erik's Windowing Toolkit."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://pagure.io/newt/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://releases.pagure.org/$PACKAGE/$TARBALL"
+
+DEPENDS="popt slang tcl"
+BUILD_DEPENDS="popt-dev python-dev slang-dev tcl"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python=$(ls -d /usr/lib/python*/ | sed 's|/usr/lib/\(.*\)/|\1|' | head -1)
+	tcl=$(ls /usr/lib/libtcl*.so | sed 's|/usr/lib/lib\(.*\).so|\1|')
+
+	echo "Patching for $python and $tcl..."
+	sed -i	-e "s/python2.4/$python/" \
+		-e "s/tcl8.4/$tcl/" \
+		Makefile.in
+
+	./configure				\
+		--prefix=/usr			\
+		--infodir=/usr/share/info	\
+		--mandir=/usr/share/man		\
+		$CONFIGURE_ARGS &&
+	make &&
+	make instroot=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+	cp -a $install/usr/lib/python*	$fs/usr/lib
+}

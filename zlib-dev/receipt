@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="zlib-dev"
+VERSION="1.2.11"
+CATEGORY="development"
+SHORT_DESC="Zlib compression library devel files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="zlib/libpng"
+WANTED="zlib"
+WEB_SITE="http://zlib.net/"
+HOST_ARCH="x86_64 i486 arm x86_64"
+
+DEPENDS="zlib pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+    mkdir -p $fs/usr/lib
+    cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+}

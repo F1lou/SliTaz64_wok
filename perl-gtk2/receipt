@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-gtk2"
+VERSION="1.24993"
+CATEGORY="development"
+SHORT_DESC="Perl interface to the 2.x series of the Gimp Toolkit Library."
+MAINTAINER="claudinei@slitaz.org"
+LICENSE="LGPL2.1"
+WEB_SITE="https://metacpan.org/release/Gtk2"
+
+SOURCE="Gtk2"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://cpan.metacpan.org/authors/id/X/XA/XAOC/$TARBALL"
+
+DEPENDS="gtk+ perl perl-cairo perl-glib perl-pango"
+BUILD_DEPENDS="gtk+-dev perl perl-cairo perl-extutils-depends 
+	perl-extutils-pkgconfig perl-glib perl-pango xorg-dev 
+	xorg-kbproto xorg-renderproto xorg-xproto"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	perl Makefile.PL &&
+	make &&
+	make install DESTDIR=$DESTDIR
+
+	rm -rf $pkgdir/installnone
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib	$fs/usr
+}

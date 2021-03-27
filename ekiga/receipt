@@ -1,0 +1,47 @@
+# SliTaz package receipt.
+
+PACKAGE="ekiga"
+VERSION="3.2.6"
+CATEGORY="network"
+SHORT_DESC="SIP and H.323 compatible VoIP telephony and video conferencing."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://www.ekiga.org/"
+WGET_URL="http://ftp.gnome.org/pub/gnome/sources/$PACKAGE/${VERSION%.*}/$TARBALL"
+
+BUILD_DEPENDS="opal-dev opal ptlib-dev ptlib gtk+-dev intltool libsigc++ \
+libsigc++-dev openssl-dev libsdl-dev libunixODBC dbus-dev dbus-glib-dev \
+libxml2-dev file"
+DEPENDS="opal ptlib cyrus-sasl openssl libsdl libunixODBC dbus \
+dbus-glib expat gtk+ libsigc++ libxml2 xorg-libXdamage"
+TAGS="telephony"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	export LDFLAGS="$LDFLAGS -Wl,--copy-dt-needed-entries -lX11 -lXext -lpt"
+	sed -i 's/CXXFLAGS="-g -O2"/CXXFLAGS="-g -fexceptions -O2"/' configure
+	./configure --prefix=/usr --sysconfdir=/etc \
+	--libexecdir=/usr/bin --mandir=/usr/share/man \
+	--disable-gnome --disable-gconf --disable-eds --disable-notify \
+	--disable-xv --disable-avahi --disable-scrollkeeper --disable-gdu \
+	--disable-ldap \
+	$CONFIGURE_ARGS &&
+	make $MAKEFLAGS &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/etc $fs
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/sounds $fs/usr/share
+	cp -a $install/usr/share/icons $fs/usr/share
+	cp -a $install/usr/share/pixmaps $fs/usr/share
+	cp -a $install/usr/share/dbus-1 $fs/usr/share
+	cp -a $install/usr/share/applications $fs/usr/share
+}

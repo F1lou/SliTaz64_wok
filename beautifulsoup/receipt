@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="beautifulsoup"
+VERSION="4.8.2"
+CATEGORY="development"
+TAGS="parser XML HTML"
+SHORT_DESC="Python HTML-XML parser."
+MAINTAINER="paul@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://www.crummy.com/software/BeautifulSoup/"
+
+SOURCE="beautifulsoup4"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}bs4/download/${VERSION%.*}/$TARBALL"
+PROVIDE="python-beautifulsoup"
+
+DEPENDS="python"
+BUILD_DEPENDS="python-dev python-setuptools"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py build
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr $fs
+}

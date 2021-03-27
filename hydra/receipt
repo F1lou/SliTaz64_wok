@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="hydra"
+VERSION="7.3"
+CATEGORY="system-tools"
+SHORT_DESC="THC password cracker for FTP, HTTP, HTTPS, SMB, etc."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+TARBALL="$PACKAGE-$VERSION-src.tar.gz"
+WEB_SITE="https://github.com/vanhauser-thc/thc-hydra"
+WGET_URL="http://freeworld.thc.org/releases/$TARBALL"
+
+DEPENDS="gtk+ openssl xorg-libXdamage apr libssh libmysqlclient \
+libidn libpostgresqlclient libsvn"
+BUILD_DEPENDS="openssl-dev apr-dev gtk+-dev libssh-dev libmysqlclient \
+postgresql-dev subversion-dev libidn-dev mysql-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure \
+		--prefix=/usr \
+		$CONFIGURE_ARGS
+	sed -i s/'cp -v'/'cp'/ hydra-gtk/make_xhydra.sh
+	sed -i -e "s|gcc|gcc $( /usr/bin/apr-1-config --cppflags --cflags)|" \
+		-e 's|^XLIBPATHS=|&-L/usr/lib/postgresql |' \
+		-e 's|^XIPATHS= |&-I/usr/include/apr-1 |' Makefile
+	make
+	[ -f hydra ]
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $src/hydra $fs/usr/bin
+	cp -a $src/xhydra $fs/usr/bin
+}

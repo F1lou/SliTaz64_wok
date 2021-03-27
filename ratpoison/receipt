@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="ratpoison"
+VERSION="1.4.9"
+CATEGORY="x-window"
+TAGS="window-manager"
+SHORT_DESC="An extremely light-weight window manager, using only keyboard."
+MAINTAINER="gokhlayeh@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.nongnu.org/ratpoison/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="http://download.savannah.gnu.org/releases/$PACKAGE/$TARBALL"
+
+DEPENDS="microperl xorg-libXinerama xorg-libXtst"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure &&
+	make CFLAGS="$CFLAGS -DHAVE_GETLINE" &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/share/ratpoison	$fs/usr/share
+}

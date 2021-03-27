@@ -1,0 +1,457 @@
+# SliTaz package receipt.
+
+PACKAGE="linux"
+VERSION="5.10.3"
+CATEGORY="base-system"
+SHORT_DESC="The Linux kernel and modules."
+MAINTAINER="devel@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WEB_SITE="https://www.kernel.org/"
+WGET_URL="https://cdn.kernel.org/pub/linux/kernel/v${VERSION%%.*}.x/$TARBALL"
+HOST_ARCH="x86_64 i486 arm x86_64"
+
+DEPENDS="kmod"
+BUILD_DEPENDS="perl git xz lzma patch kmod uclibc-cross-compiler-x86_64 bc \
+sysfsutils-dev libtool glib-dev libwrap libwrap-dev udev-dev"
+
+#
+# The Linux receipt handle cross compilation. For x86_64 we actually use
+# the uclibc-cross-compiler-x86_64 and for ARM we use a real cross env.
+# Please discuss any change and keep it simple, dont play with VERSION
+# string or Kernel SUBLEVEL because depmod and Pankso dont like that!
+#
+# The receipt also handle some cook options for faster build: 
+# --nox64    : Skip the x86_64 cross compilation
+# --nonomods : Skip bzImage without modules build
+#
+
+# Aufs enable chroot
+AUFS_NOT_RAMFS="uclibc-cross-compiler-x86_64 is not compatible with aufs+tmpfs 8("
+
+# Handle multiarch compilation. Less bdeps when cross-compiling for ARM
+case "$ARCH" in
+	arm) BUILD_DEPENDS="xz" ;;
+	x86_64) BUILD_DEPENDS="xz" ;;
+esac
+
+# Handle multiarch installation. ARM use Busybox modutils, so avoid any
+# deps on kmod. SLITAZ_ARCH can have also custom post_install commands
+if [ -f $root/etc/slitaz/slitaz.conf ]; then
+	. $root/etc/slitaz/slitaz.conf
+	case "$SLITAZ_ARCH" in
+		arm) DEPENDS="" ;;
+	esac
+fi
+
+install_module_headers()
+{
+	local path
+	path=usr/src/linux-$KVERSION
+	mkdir -p $1/lib/modules/$KVERSION
+	ln -sf /$path $1/lib/modules/$KVERSION/build
+	install -D -m644 $src/Makefile \
+		$1/$path/Makefile
+	install -D -m644 $src/kernel/Makefile \
+		$1/$path/kernel/Makefile
+	install -D -m644 $src/.config \
+		$1/$path/.config
+	mkdir -p $1/$path/include
+
+	cp -a $src/include/* $1/$path/include/
+	rm -f $1/$path/include/Kbuild
+
+	# copy arch includes for external modules
+	mkdir -p $1/$path/arch/x86
+	cp -a $src/arch/x86/include $1/$path/arch/x86/
+
+	# copy files necessary for later builds, like nvidia and vmware
+  	cp -a $src/Module.symvers $1/$path/Module.symvers
+  	cp -a $src/scripts $1/$path
+  	# fix permissions on scripts dir
+  	chmod og-w -R $1/$path/scripts
+  	mkdir -p $1/$path/.tmp_versions
+
+	mkdir -p $1/$path/arch/x86/kernel
+	cp -a $src/arch/x86/Makefile $1/$path/arch/x86/
+	cp -a $src/arch/x86/Makefile_32.cpu $1/$path/arch/x86/
+	cp -a $src/arch/x86/kernel/asm-offsets.s $1/$path/arch/x86/kernel/
+
+	# add headers for lirc package
+	mkdir -p $1/$path/drivers/media
+	( cd $src/drivers/media ; find i2c -name '*.h' | cpio -o -H newc ) | \
+	( cd $1/$path/drivers/media ; cpio -idmu )
+
+	# add docbook makefile
+	install -D -m644 $src/Documentation/DocBook/Makefile \
+    		$1/$path/Documentation/DocBook/Makefile
+
+	# add dm headers
+	mkdir -p $1/$path/drivers/md
+	cp -a $src/drivers/md/*.h  $1/$path/drivers/md
+
+	# add inotify.h
+	mkdir -p $1/$path/include/linux
+	cp -a $src/include/linux/inotify.h $1/$path/include/linux/
+
+	# add wireless headers
+	mkdir -p $1/$path/net/mac80211/
+	cp -a $src/net/mac80211/*.h $1/$path/net/mac80211/
+
+	# add dvb headers for external modules
+	# in reference to:
+	# http://bugs.archlinux.org/task/9912
+	mkdir -p $1/$path/drivers/media/dvb-core
+	cp -a $src/drivers/media/dvb-core/*.h $1/$path/drivers/media/dvb-core/
+
+	# add dvb headers for external modules
+	# in reference to:
+	# http://bugs.archlinux.org/task/11194
+	if [ -d $src/include/config/dvb/ ]; then
+		mkdir -p $1/$path/include/config/dvb/
+		cp $src/include/config/dvb/*.h $1/$path/include/config/dvb/
+	fi
+
+	# add dvb headers for http://mcentral.de/hg/~mrec/em28xx-new
+	# in reference to:
+	# http://bugs.archlinux.org/task/13146
+	mkdir -p $1/$path/drivers/media/dvb-frontends/
+	cp -a $src/drivers/media/dvb-frontends/lgdt330x.h $1/$path/drivers/media/dvb-frontends/
+	cp -a $src/drivers/media/i2c/msp3400-driver.h $1/$path/drivers/media/dvb-frontends/
+
+	# add dvb headers  
+	# in reference to:
+	# http://bugs.archlinux.org/task/20402
+	mkdir -p $1/$path/drivers/media/usb/dvb-usb
+	cp -a $src/drivers/media/usb/dvb-usb/*.h $1/$path/drivers/media/usb/dvb-usb/
+	mkdir -p $1/$path/drivers/media/dvb-frontends
+	cp -a $src/drivers/media/dvb-frontends/*.h $1/$path/drivers/media/dvb-frontends/
+	mkdir -p $1/$path/drivers/media/tuners
+	cp -a $src/drivers/media/tuners/*.h $1/$path/drivers/media/tuners/
+
+	# add xfs and shmem for aufs building
+	mkdir -p $1/$path/fs/xfs
+	mkdir -p $1/$path/mm
+	cp -a $src/fs/xfs/xfs_sb.h $1/$path/fs/xfs/xfs_sb.h
+	cp -a $src/fs/*.h $1/$path/fs/
+	
+	# copy in Kconfig files
+	for i in $(find . -name "Kconfig*"); do 
+		mkdir -p $1/$path/$(echo $i | sed 's|/Kconfig.*||')
+		cp -a $src/$i $1/$path/$i
+	done
+
+	chown -R root.root $1/$path
+	find $1/$path -type d -exec chmod 755 {} \;
+	# remove unneeded architectures
+	rm -rf $1/$path/arch/{alpha,arm,arm26,avr32,blackfin,cris,frv,h8300,ia64,m32r,m68k,m68knommu,mips,microblaze,mn10300,parisc,powerpc,ppc,s390,sh,sh64,sparc,sparc64,um,v850,xtensa}
+}	
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	if [ -f "/usr/share/boot/initrd" ]; then
+		cp /usr/share/boot/initrd initrd.cpio
+	fi
+
+	# Handle cross compilation
+	case "$ARCH" in
+		arm)
+			echo "Compiling: $ARCH Kernel"
+			make mrproper
+			patch -Np1 < $stuff/$ARCH/linux-arm.patch || exit 1
+			cp -f $stuff/$ARCH/linux-arm.config .config
+			yes '' | make ARCH=$ARCH oldconfig
+			make ARCH=$ARCH CROSS_COMPILE=${HOST_SYSTEM}- bzImage &&
+			make ARCH=$ARCH CROSS_COMPILE=${HOST_SYSTEM}- modules &&
+			make ARCH=$ARCH CROSS_COMPILE=${HOST_SYSTEM}- \
+				INSTALL_MOD_PATH=$DESTDIR modules_install &&
+			mkdir -p $DESTDIR/boot &&
+			cp -a arch/arm/boot/zImage \
+				$DESTDIR/boot/linux-$VERSION-slitaz-$ARCH
+			#$stuff/gztazmod.sh $DESTDIR/lib/modules/$VERSION-slitaz
+			return 0 ;;
+		x86_64)
+			echo "TODO: Maybe use default ? But cross compile in x86_64 chroot"
+			echo "so we can remove the 64 build by uclibc-cross-compiler-x86_64"
+			return 0 ;;
+	esac
+
+	# Check for Aufs and get source/patches if needed
+	echo "Checking for Aufs packages..."
+	AUFSVER=$(grep ^VERSION= $WOK/linux-aufs/receipt | cut -d "=" -f2 | sed -e 's/"//g')
+	AUFSSRCDIR="$WOK/linux-aufs/source"
+	AUFSDIR="$AUFSSRCDIR/linux-aufs-${AUFSVER}"
+	if [ ! -d "$AUFSDIR" ]; then
+		[ ! -f "$SRC/aufs-${AUFSVER}.tar.bz2" ] && cook aufs --getsrc
+		mkdir -p $AUFSSRCDIR
+		echo "Extracting: aufs-${AUFSVER}.tar.bz2"
+		tar xjf $SRC/aufs-${AUFSVER}.tar.bz2 -C $AUFSSRCDIR/
+		( cd $AUFSDIR ; [ -d fs ] || git checkout origin/aufs${VERSION%.*} )
+	fi
+	
+	echo "cook:linux" > $command
+
+	echo "Copying Aufs files and patches..."
+	cp -a $AUFSDIR/Documentation $AUFSDIR/fs $AUFSDIR/include $src
+
+	# Use fixed patchs from stuff
+	cp -a $AUFSDIR/aufs3-*.patch $stuff
+
+	# SliTaz db stuff
+	[ -d $WOK/$PACKAGE/source/slitaz ] && rm -rf $WOK/$PACKAGE/source/slitaz
+	mkdir -p $WOK/$PACKAGE/source/slitaz
+	echo "$WGET_URL" > $WOK/$PACKAGE/source/slitaz/url
+	cp $stuff/gztazmod.sh $stuff/list_modules.sh $WOK/$PACKAGE/source/slitaz
+	cp $stuff/bootloader.sh $WOK/$PACKAGE/source/slitaz
+
+	# Apply patches
+	echo "Applying patches..."
+	while read patch_file; do
+		echo "$patch_file" >> $WOK/$PACKAGE/source/slitaz/patches
+		cp $stuff/$patch_file $WOK/$PACKAGE/source/slitaz
+		if [ -f done.$patch_file ]; then
+			echo "Skipping $patch_file" && continue
+		fi
+		echo "Apply $patch_file"
+		patch -p1 < $WOK/$PACKAGE/source/slitaz/$patch_file || return 1
+		touch done.$patch_file
+	done <<EOT
+$PACKAGE-diff.u
+$PACKAGE-freeinitrd.u
+$PACKAGE-subroot.u
+$PACKAGE-romfs.u
+$PACKAGE-tcp_stealth.u
+$PACKAGE-efi.u
+aufs3-base.patch
+aufs3-standalone.patch
+aufs3-loopback.patch
+aufs3-mmap.patch
+EOT
+	
+	# Mrproper and lguest
+	echo "Make kernel proper and then build lguest..."
+	make mrproper
+	cd tools/lguest
+	make lguest || return 1
+
+	echo "Build usbip..."
+	cd $src/drivers/staging/usbip/userspace
+	./autogen.sh
+	./configure CFLAGS="$CFLAGS -Wno-error=uninitialized" \
+		--with-usbids-dir=/usr/share/misc \
+		--mandir=/usr/share/man $CONFIGURE_ARGS &&
+	make && make DESTDIR=$DESTDIR/usbip install || return 1
+
+	cd $src
+	
+	#
+	# Arch x86_64: TODO have a real cross environment
+	#
+	if [ ! "$nox64" ]; then
+		echo "Compiling: x86_64 Kernel"
+		
+		# Build bzImage64 without modules first
+		if [ ! "$nonomods" ]; then
+			[ -d $DESTDIR/linux64 ] || mkdir -p $DESTDIR/linux64 ||
+				return 1
+			cp -f $stuff/$PACKAGE-slitaz.config64 .config
+			sed -i 's/CONFIG_MODULES=y/# CONFIG_MODULES is not set/' .config
+			echo -e "\n* Configure bzImage64 without modules...\n"
+			yes '' | make ARCH=x86_64 oldconfig
+			echo -e "\n* Building bzImage64 without modules...\n"
+			make -j 4 ARCH=x86_64 CROSS_COMPILE=uclibc-x86_64- bzImage || exit 1
+			mv arch/x86/boot/bzImage $DESTDIR/linux64
+			mv System.map System.map-without-modules64
+			mv vmlinux vmlinux-without-modules64
+			mv .config config-without-modules64
+		fi
+		
+		# Build bzImage64 with modules
+		cp -f $stuff/$PACKAGE-slitaz.config64 .config
+		echo -e "\n* Configure bzImage64 with modules...\n"
+		yes '' | make ARCH=x86_64 oldconfig
+		echo -e "\n* Building bzImage64 with modules...\n"
+		make -j 4 ARCH=x86_64 CROSS_COMPILE=uclibc-x86_64- bzImage &&
+		make -j 4 ARCH=x86_64 CROSS_COMPILE=uclibc-x86_64- modules &&
+		make ARCH=x86_64 INSTALL_MOD_PATH=$DESTDIR/linux64 modules_install &&
+		make ARCH=x86_64 INSTALL_HDR_PATH=$DESTDIR/linux64/usr headers_install &&
+		ln .config $WOK/$PACKAGE/source/slitaz/config64
+		[ -s arch/x86/boot/bzImage ] || return 1
+		mkdir -p $DESTDIR/linux64/boot 2> /dev/null
+		mv arch/x86/boot/bzImage $DESTDIR/linux64/boot/vmlinuz-$VERSION-slitaz64
+		KVERSION=$VERSION-slitaz64
+		install_module_headers $DESTDIR/linux64
+		ln System.map System.map-modules64
+		ln vmlinux vmlinux-modules64
+		ln Module.symvers Module.symvers-modules64
+		cp .config config-modules64
+	else
+		echo "* Skipping: x86_64 Kernel..."
+	fi
+	
+	#
+	# Linux Arch i386 - GCC arch i486
+	#
+	echo "Compiling: i386 Kernel..."
+
+	# Build bzImage without modules first
+	if [ ! "$nonomods" ]; then
+		cp -f $stuff/$PACKAGE-slitaz.config .config
+		sed -i 's/CONFIG_MODULES=y/# CONFIG_MODULES is not set/' .config
+		echo -e "\n* Configure bzImage without modules...\n"
+		yes '' | make ARCH=i386 oldconfig
+		echo -e "\n* Building bzImage without modules...\n"
+		make ARCH=i386 -j 4 bzImage || exit 1
+		[ -d $DESTDIR ] || mkdir -p $DESTDIR
+		mv arch/x86/boot/bzImage $DESTDIR
+		mv System.map System.map-without-modules
+		mv vmlinux vmlinux-without-modules
+		mv .config config-without-modules
+	fi
+	
+	# Build bzImage with modules
+	cp -f $stuff/$PACKAGE-slitaz.config .config
+	echo -e "\n* Configure bzImage with modules...\n"
+	yes '' | make ARCH=i386 oldconfig
+	ln .config $WOK/$PACKAGE/source/slitaz/config
+	echo -e "\n* Building bzImage with modules...\n"
+	make ARCH=i386 -j 4 bzImage &&
+	make ARCH=i386 -j 4 modules &&
+	make ARCH=i386 INSTALL_MOD_PATH=$DESTDIR modules_install &&
+	make ARCH=i386 INSTALL_HDR_PATH=$DESTDIR/usr headers_install &&
+	[ -s arch/x86/boot/bzImage ] || return 1
+	mkdir -p $DESTDIR/boot 2> /dev/null
+	mv arch/x86/boot/bzImage $DESTDIR/boot/vmlinuz-$VERSION-slitaz
+	KVERSION=$VERSION-slitaz
+	install_module_headers $DESTDIR
+	
+	# Compress all modules.
+	if [ -d "$DESTDIR/lib/modules/$VERSION-slitaz" ]; then
+		$stuff/gztazmod.sh $DESTDIR/lib/modules/$VERSION-slitaz
+	else
+		return 1
+	fi
+	if [ -d "$DESTDIR/linux64/lib/modules/$VERSION-slitaz64" ]; then
+		$stuff/gztazmod.sh $DESTDIR/linux64/lib/modules/$VERSION-slitaz64
+	fi
+	ln System.map System.map-modules
+	ln vmlinux vmlinux-modules
+	ln Module.symvers Module.symvers-modules
+	cp .config config-modules
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	case "$ARCH" in
+		arm)
+			echo "Packing: ARM Kernel"
+			cp -a $install/* $fs
+			rm -f $fs/lib/modules/*/build $fs/lib/modules/*/source
+			return 0 ;;
+		x86_64)
+			echo "TODO: use default or custom x86_64 packing"
+			return 0 ;;
+	esac
+
+	export PACKAGE VERSION
+	local path
+	cp -a $install/boot $fs
+
+	# Compress all modules.
+	path=$fs/lib/modules/$VERSION-slitaz/kernel
+	mkdir -p $path
+
+	# Get the base modules
+	export src install
+	mkdir -p $WOK/$PACKAGE/source/tmp
+	# Warning stuff/list_modules.sh must find the generated modules.list
+	$stuff/list_modules.sh \
+		$(cat $stuff/modules.list) > $WOK/$PACKAGE/source/tmp/modules.list
+	while read module; do
+		dir=$(dirname $module)
+		[ -d $path/$dir ] || mkdir -p $path/$dir
+		cp -a $install/lib/modules/$VERSION-slitaz/kernel/$module $path/$dir
+	done < $WOK/$PACKAGE/source/tmp/modules.list
+
+	# Remove unresolved links
+	rm -f $fs/lib/modules/$VERSION-slitaz/build
+	rm -f $fs/lib/modules/$VERSION-slitaz/source
+
+	# We only need module.{order,builtin} because other map files are
+	# generated by depmod in post_install
+	cp -a $install/lib/modules/$VERSION-slitaz/modules.order \
+		$install/lib/modules/$VERSION-slitaz/modules.builtin \
+		$fs/lib/modules/$VERSION-slitaz
+
+	# Pack all packages with a kernel module
+	sed -i "/^$PACKAGE\$/d" $CACHE/broken 2>/dev/null || true
+	for i in $(cd $WOK; grep -l '^WANTED="linux"' */receipt); do
+		[ ! -d "$install/lib/modules/$VERSION-slitaz" ] && return 1
+		cook ${i%/receipt}
+	done
+
+	# Check any module in kernel .config that's not added to a linux-* pkgs
+	# and remove aufs patches: we dont need them in HG wok.
+	$stuff/check_modules.sh
+
+	# Keep fixed patches !
+	#rm -f $stuff/aufs3-*
+}
+
+# Pre and post install commands for Tazpkg.
+post_install()
+{
+	chroot "$root/" depmod -a $VERSION-slitaz
+
+	# Handle multiarch installation
+	case "$SLITAZ_ARCH" in
+		arm)
+			echo "Kernel : /boot/linux-$VERSION-slitaz-$ARCH"
+			echo "Modules: /lib/modules/$VERSION-slitaz"
+			return 0 ;;
+	esac
+
+	# GRUB stuff.
+	if [ -f "$1/boot/grub/menu.lst" ]; then
+		# Current root device
+		root_dev="/dev/$(lsblk | grep '/$'| grep -o '[a-z]d[a-z][0-9]*')"
+		grub_part="$(( $(echo $root_dev | grep -o '[0-9]*$')-1 ))"
+		# Use device.map to find grub device number
+		grub_dev="$(grep $(echo $root_dev | grep -o  '^/dev/.d.' ) \
+			"$1/boot/grub/device.map" | cut -f1 | sed "s/)$/.$grub_part)/g")" 
+
+		# Add and clean kernel entries in case of upgrade for installed system.
+		if ! grep -q vmlinuz-$VERSION-slitaz "$1/boot/grub/menu.lst"; then
+
+			# Clean the old entry
+			# TODO: old vmlinuz file is removed but the entry is still there.
+			# So grub error:15 when selected: http://bugs.slitaz.org/?id=74
+
+			# Add the new entry
+			cat >> "$1/boot/grub/menu.lst" << EOT
+
+title SliTaz GNU/Linux (Kernel $VERSION-slitaz)
+$grub_dev 
+kernel /boot/vmlinuz-$VERSION-slitaz root=$root_dev quiet
+EOT
+			# Make it the default entry
+			last_entry=$(( $(grep -c '^title' "$1/boot/grub/menu.lst")-1 ))
+			sed -e "s/^default.*/default $last_entry/g" -i "$1/boot/grub/menu.lst"
+		fi
+
+		# Display information message.
+		cat <<EOT
+
+----
+GRUB is installed, these tree lines must be in your /boot/grub/menu.lst:
+
+title  SliTaz GNU/Linux (Kernel $VERSION-slitaz)
+$grub_dev
+kernel /boot/vmlinuz-$VERSION-slitaz root=$root_dev
+----
+EOT
+	fi
+	true
+}

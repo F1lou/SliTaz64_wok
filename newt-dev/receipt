@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="newt-dev"
+VERSION="0.52.21"
+CATEGORY="development"
+SHORT_DESC="Not Erik's Windowing Toolkit - development files."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://pagure.io/newt/"
+
+DEPENDS="newt"
+WANTED="newt"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/include	$fs/usr
+	cp -a $install/usr/lib/*.*a	$fs/usr/lib
+}

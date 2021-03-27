@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="ORBit2-dev"
+VERSION="2.14.19"
+CATEGORY="development"
+SHORT_DESC="ORBit2 devel files."
+MAINTAINER="rcx@zoominternet.net"
+LICENSE="GPL2"
+WEB_SITE="https://www.gnome.org/"
+WANTED="ORBit2"
+
+DEPENDS="ORBit2 libIDL glib-dev pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p  $fs/usr/lib/orbit-2.0
+	cp -a $install/usr/lib/orbit-2.0/*.*a $fs/usr/lib/orbit-2.0
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	
+	mkdir -p $fs/usr/bin
+	cp -f $install/usr/bin/orbit2-config $fs/usr/bin
+	
+	cp -a $install/usr/include $fs/usr
+	
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/share/aclocal $fs/usr/share
+	cp -a $install/usr/share/idl $fs/usr/share
+}

@@ -1,0 +1,69 @@
+#!/bin/sh
+# /etc/init.d/openssh : Start, stop and restart OpenSSH server on SliTaz, at
+# boot time or with the command line.
+#
+# To start OpenSSH server at boot time, just put openssh in the $RUN_DAEMONS
+# variable of /etc/rcS.conf and configure options with /etc/daemons.conf
+#
+. /etc/init.d/rc.functions
+. /etc/daemons.conf
+
+NAME=OpenSSH
+DESC="$(_ '%s server' OpenSSH)"
+DAEMON=/usr/sbin/sshd
+OPTIONS=$OPENSSH_OPTIONS
+PIDFILE=/var/run/sshd.pid
+
+[ -d /var/run/sshd ] || mkdir -p /var/run/sshd
+
+case "$1" in
+	start)
+		# We need rsa and dsa host key file to start dropbear.
+		for type in rsa dsa ecdsa ed25519 ; do
+			[ -s /etc/ssh/ssh_host_${type}_key ] && continue
+			_ 'Generating OpenSSH %s key... ' $type
+			ssh-keygen -t $type -f /etc/ssh/ssh_host_${type}_key -C '' -N ''
+		done
+		if active_pidfile $PIDFILE sshd ; then
+			_ '%s is already running.' $NAME
+			exit 1
+		fi
+		if [ -n "$(which iptables)" ] && ! iptables -L | grep 'tcp dpt:ssh ' ; then
+		    	tcp22new='iptables -A INPUT -p tcp -m tcp --dport 22 -m state --state NEW -m recent'
+			$tcp22new --set --name DEFAULT --rsource
+			limit='--seconds 300 --hitcount 5 --name DEFAULT --rsource'
+			$tcp22new --update $limit -j LOG --log-prefix "SSH-Bruteforce : "
+			$tcp22new --update $limit -j DROP
+		fi
+		action 'Starting %s: %s...' "$DESC" $NAME
+		$DAEMON $OPTIONS
+		status
+		;;
+	stop)
+		if ! active_pidfile $PIDFILE sshd ; then
+			_ '%s is not running.' $NAME
+			exit 1
+		fi
+		action 'Stopping %s: %s...' "$DESC" $NAME
+		kill $(cat $PIDFILE)
+		status
+		;;
+	restart)
+		if ! active_pidfile $PIDFILE sshd ; then
+			_ '%s is not running.' $NAME
+			exit 1
+		fi
+		action 'Restarting %s: %s...' "$DESC" $NAME
+		kill $(cat $PIDFILE)
+		sleep 2
+		$DAEMON $OPTIONS
+		status
+		;;
+	*)
+		emsg "<n><b>$(_ 'Usage:')</b> $0 [start|stop|restart]"
+		newline
+		exit 1
+		;;
+esac
+
+exit 0

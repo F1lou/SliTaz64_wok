@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="pyroom"
+VERSION="0.4.1"
+CATEGORY="office"
+SHORT_DESC="Full screen editor."
+MAINTAINER="paul@slitaz.org"
+LICENSE="GPL3"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://pyroom.org/"
+WGET_URL="https://launchpad.net/pyroom/${VERSION%.*}/$VERSION/+download/$TARBALL"
+
+DEPENDS="python pygtk python-xdg libffi"
+BUILD_DEPENDS="python python-dev gettext"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py build &&
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs
+	cp -a $install/usr $fs
+}
+

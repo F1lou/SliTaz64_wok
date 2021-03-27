@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-locale-maketext-lexicon"
+VERSION="1.00"
+CATEGORY="development"
+SHORT_DESC="Perl extension Locale::Maketext::Lexicon."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL"
+WEB_SITE="https://metacpan.org/release/Locale-Maketext-Lexicon"
+
+SOURCE="Locale-Maketext-Lexicon"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://www.cpan.org/modules/by-module/Locale/$TARBALL"
+
+DEPENDS="perl"
+BUILD_DEPENDS="perl"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	perl Makefile.PL &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib	$fs/usr
+}

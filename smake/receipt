@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="smake"
+VERSION="1.2.5"
+CATEGORY="development"
+SHORT_DESC="Generate executables and other files from source."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2 LGPL2.1 CDDL"
+WEB_SITE="https://sourceforge.net/projects/s-make/"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="hhtps://downloads.sourceforge.net/s-make/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make INS_BASE=/usr MANDIR=share/man DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}

@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="pth-dev"
+VERSION="2.0.7"
+CATEGORY="system-tools"
+SHORT_DESC="PTH devel files."
+MAINTAINER="fraazz@altern.org"
+LICENSE="LGPL2.1"
+WANTED="pth"
+WEB_SITE="http://www.gnu.org/software/pth/"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/share/aclocal $fs/usr/share
+}

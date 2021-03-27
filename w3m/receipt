@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="w3m"
+VERSION="0.5.3"
+CATEGORY="network"
+SHORT_DESC="Text Mode Web Browser"
+MAINTAINER="mojo@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="http://w3m.sourceforge.net"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/$PACKAGE/$PACKAGE/$TARBALL"
+TAGS="web-browser"
+
+DEPENDS="gc libcrypto libssl ncurses imlib2"
+BUILD_DEPENDS="gc gc-dev libcrypto-dev openssl-dev imlib2-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export LDFLAGS="$LDFLAGS -Wl,--copy-dt-needed-entries"
+	for i in  $stuff/*.patch
+	do
+	        if [ -f done.$(basename $i) ]; then
+		       continue
+	        else
+		       patch -p0 < $i && touch done.$(basename $i) || return 1
+	        fi
+	done
+       ./configure --enable-image=x11,fb --with-imagelib=imlib2 $CONFIGURE_ARGS
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+}

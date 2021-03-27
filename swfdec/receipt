@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="swfdec"
+VERSION="0.9.2"
+CATEGORY="multimedia"
+SHORT_DESC="Macromedia Flash decoding library"
+MAINTAINER="devl547@gmail.com"
+LICENSE="LGPL2.1"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://github.com/mltframework/swfdec"
+WGET_URL="http://swfdec.freedesktop.org/download/swfdec/${VERSION%.*}/$TARBALL"
+
+DEPENDS="glib liboil pango gtk+ libsoup cairo alsa-lib gstreamer gst-plugins-base"
+BUILD_DEPENDS="glib-dev liboil-dev pango-dev gtk+-dev libsoup-dev \
+cairo-dev alsa-lib-dev gstreamer-dev gst-plugins-base-dev sqlite-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure --prefix=/usr --infodir=/usr/share/info \
+	--mandir=/usr/share/man $CONFIGURE_ARGS \
+	--enable-gtk --with-audio="alsa" &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-config-inifiles"
+VERSION="3.000003"
+CATEGORY="development"
+SHORT_DESC="Perl extension Config::IniFiles."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL"
+WEB_SITE="https://metacpan.org/release/Config-IniFiles"
+
+SOURCE="Config-IniFiles"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://cpan.org/authors/id/S/SH/SHLOMIF/$TARBALL"
+
+DEPENDS="perl"
+BUILD_DEPENDS="perl"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	perl Makefile.PL &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib	$fs/usr
+}

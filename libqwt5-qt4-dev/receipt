@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="libqwt5-qt4-dev"
+VERSION="5.2.3"
+CATEGORY="development"
+SHORT_DESC="Lib Qt Widgets for Technical applications - development files."
+MAINTAINER="slitaz@objectif-securite.ch"
+LICENSE="LGPL2.1"
+WEB_SITE="https://qwt.sourceforge.io"
+
+DEPENDS="libqwt5-qt4 qt-x11-opensource-src"
+WANTED="libqwt5-qt4"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/include
+	cp -a $install/usr/local/qwt-$VERSION/include/*.h \
+		$fs/usr/include
+}

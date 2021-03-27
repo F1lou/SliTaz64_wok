@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="busybox-static"
+VERSION="1.31.1"
+CATEGORY="base-system"
+SHORT_DESC="Busybox combines tiny versions of many common UNIX utilities."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://www.busybox.net/"
+CONFIG_FILES=""
+
+WANTED="busybox"
+DEPENDS=""
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/boot
+	CHOICE=static
+	for i in uclibc musl ; do # diet's busybox umount crash
+		[ -x $src/busybox-$i ] || continue
+		[ -x $src/busybox-$CHOICE ] &&
+			[ $(stat -c %s $src/busybox-$i) -ge \
+			  $(stat -c %s $src/busybox-$CHOICE) ] &&
+			continue
+		CHOICE=$i
+	done
+	cp -a $src/busybox-$CHOICE $fs/usr/share/boot/busybox-static
+}
+
+post_install()
+{
+	chmod 4755 "$1/usr/share/boot/busybox-static"
+}

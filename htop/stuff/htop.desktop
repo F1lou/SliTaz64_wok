@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=0.7
+Name=Htop Processes Viewer
+Name[pt]=Visualizador de processos Htop
+Name[pt_BR]=Visualizador de processos Htop
+Type=Application
+Comment=Show System Processes
+Exec=xterm -e htop
+Icon=htop
+Categories=ConsoleOnly;System;Application;
+GenericName=Process Viewer

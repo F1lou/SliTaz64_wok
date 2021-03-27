@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="tcpdump"
+VERSION="4.9.3"
+CATEGORY="security"
+TAGS="network security"
+SHORT_DESC="A network traffic monitoring tool."
+MAINTAINER="sdaigl@lacitec.on.ca"
+LICENSE="BSD"
+WEB_SITE="https://www.tcpdump.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}release/$TARBALL"
+
+DEPENDS="libcrypto libpcap openssl"
+BUILD_DEPENDS="libpcap libpcap-dev openssl-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure				\
+		--prefix=/usr			\
+		--infodir=/usr/share/info	\
+		--mandir=/usr/share/man		\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/sbin $fs/usr
+}

@@ -1,0 +1,58 @@
+# SliTaz package receipt.
+
+PACKAGE="icewm"
+VERSION="1.6.4"
+CATEGORY="x-window"
+TAGS="window-manager"
+SHORT_DESC="Ice Window Manager with Themes."
+MAINTAINER="devl547@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://ice-wm.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/ice-wm/$PACKAGE/archive/$VERSION.tar.gz"
+
+DEPENDS="freetype gcc83-lib-base gdk-pixbuf gettext-base imlib xorg-libICE 
+	xorg-libSM xorg-libX11 xorg-libXext xorg-libXft xorg-libXinerama 
+	xorg-libXpm xorg-libXrandr xorg-libXrender"
+BUILD_DEPENDS="asciidoc autoconf automake fontconfig-dev freetype-dev gcc83 
+	gdk-pixbuf-dev gettext giflib-dev imlib-dev libtool pkg-config 
+	util-linux-uuid-dev xorg-libICE-dev xorg-libSM-dev xorg-libX11-dev 
+	xorg-libXext-dev xorg-libXft-dev xorg-libXinerama-dev xorg-libXpm-dev 
+	xorg-libXrandr-dev xorg-libXrender-dev xorg-randrproto xorg-xextproto 
+	xorg-xproto xz"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+#	sed -i '/deprecated/d' src/base.h
+#	sed -i 's/^CORE_LIBS =/& -lfontconfig/' src/Makefile.in
+
+	export	LDFLAGS="$LDFLAGS -lrt"
+
+	./autogen.sh &&
+	./configure				\
+		ASCIIDOC=asciidoc		\
+		CC=gcc-83			\
+		CXX=g++-83			\
+		--prefix=/usr			\
+		--sysconfdir=/etc		\
+		--libexecdir=/usr/lib/icewm	\
+		--localstatedir=/var		\
+		--mandir=/usr/share/man		\
+		$CONFIGURE_ARGS &&
+	# remove unsupported options for pod2man and pod2html (perl 5.14.1)
+	sed -i '/--errors="none"/d; /--nourls/d; /--poderrors/d' \
+		man/Makefile &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/share	$fs/usr
+}

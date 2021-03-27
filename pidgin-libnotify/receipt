@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="pidgin-libnotify"
+VERSION="0.14"
+CATEGORY="network"
+SHORT_DESC="Notification interface for Pidgin."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL3"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://gaim-libnotify.sourceforge.net/"
+WGET_URL="http://downloads.sourceforge.net/project/gaim-libnotify/$PACKAGE/$PACKAGE-$VERSION/$TARBALL"
+
+DEPENDS="pidgin libnotify"
+BUILD_DEPENDS="intltool libpurple-dev libnotify-dev pidgin-dev libffi gtk+-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i '/notify_notification_new/s/, NULL,/,/' src/pidgin-libnotify.c
+	./configure $CONFIGURE_ARGS && make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/purple-2
+	cp -a $install/usr/lib/purple-2/*.so $fs/usr/lib/purple-2
+}
+

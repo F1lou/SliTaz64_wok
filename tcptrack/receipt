@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="tcptrack"
+VERSION="1.4.3"
+CATEGORY="network"
+SHORT_DESC="TCP connection tracker."
+MAINTAINER="paul@slitaz.org"
+LICENSE="GPL2.1"
+WEB_SITE="https://github.com/bchretien/tcptrack/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}archive/v$VERSION.tar.gz"
+
+DEPENDS="libpcap ncurses"
+BUILD_DEPENDS="libpcap-dev ncurses-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export LDFLAGS="$LDFLAGS -ltinfo"
+
+	./configure			\
+		--prefix=/usr		\
+		--mandir=/usr/share/man	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}

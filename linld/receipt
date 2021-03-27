@@ -1,0 +1,61 @@
+# SliTaz package receipt.
+
+PACKAGE="linld"
+VERSION="0.97"
+CATEGORY="system-tools"
+SHORT_DESC="Boot loader for DOS/Win9x."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL"
+SUFFIX="${VERSION/./}"
+TARBALL="${PACKAGE}${SUFFIX}devel.tar.bz2"
+BASE_SITE="https://busybox.net/~vda/$PACKAGE"
+WEB_SITE="$BASE_SITE/README.txt"
+WGET_URL="$BASE_SITE/$TARBALL"
+EXTRA_TOOL_URL="ftp://ftp.ibiblio.org/pub/micro/pc-stuff/freedos/gnuish/mawk122x.zip"
+EXTRA_TOOL="$(basename $EXTRA_TOOL_URL)"
+EXTRA_SOURCE_FILES="$EXTRA_TOOL"
+
+BUILD_DEPENDS="dosbox upx"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	[ -s $SRC/$EXTRA_TOOL ] ||
+	busybox wget -O $SRC/$EXTRA_TOOL $EXTRA_TOOL_URL
+	mv DIST $src 2> /dev/null
+	cd $src
+	unzip $SRC/$EXTRA_TOOL > /dev/null
+	rm LINLD$SUFFIX/CRTL.CPP LINLD$SUFFIX/INT15_88.ASM
+	cp $stuff/src/* LINLD$SUFFIX/
+	sed -i 's/-3/-DNO386/' LINLD$SUFFIX/BCCOPT.OPT
+	cp -a LINLD$SUFFIX TAZBOOT
+	unix2dos > MAKE.BAT <<EOT
+d:
+cd linld$SUFFIX
+$(cat LINLD$SUFFIX/!COMPILE.BAT)
+EOT
+	SDL_VIDEODRIVER=dummy dosbox MAKE.BAT -exit -c "mount D $src" \
+		2>&1 | grep -v 'ALSA lib'
+	grep '^Fatal[ :]' */LNK.LOG */CPP.LOG && return 1
+	grep '*Fatal*' */*.LST && return 1
+	grep '^Error[ :]' */LNK.LOG */CPP.LOG && return 1
+	grep '*Error*' */*.LST && return 1
+	grep '^Warning[ :]' */LNK.LOG */CPP.LOG
+	grep '*Warning*' */*.LST
+	cp LINLD$SUFFIX/LINLD.COM linld.com
+	objdump -D -b binary -mi386 -Maddr16,data16 --adjust-vma=0x100 \
+		linld.com > linld.lst
+	cc -o tobzimage.o -Wa,-algms=tobzimage.lst -c $stuff/tobzimage.S
+	objcopy -O binary tobzimage.o tobzimage.bin
+	cp $stuff/tobzimage .
+	./tobzimage --build
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/boot $fs/usr/bin $install/usr/share/doc
+	cp $src/linld.com $stuff/linld.txt $fs/usr/share/boot/
+	cp $stuff/linld.txt $install/usr/share/doc
+	#cp $src/tobzimage $fs/usr/bin
+}

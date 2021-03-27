@@ -1,0 +1,51 @@
+# SliTaz package receipt.
+
+PACKAGE="smplayer"
+VERSION="20.6.0"
+CATEGORY="multimedia"
+TAGS="player audio video movie"
+SHORT_DESC="QT-based front-end for MPlayer or mpv."
+MAINTAINER="psychomaniak@xakep.ru"
+LICENSE="GPL2"
+WEB_SITE="https://www.smplayer.info/"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+SUGGESTED="mpv smplayer-themes"
+DEPENDS="libQtCore libQtDBus libQtGui libQtScript libQtXml mplayer-cli"
+BUILD_DEPENDS="Qt4-dev qmake"
+
+GENERIC_MENUS="no"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# Some default setting incompatible with minimal mplayer
+	sed -i '/use_ass_subtitles/s/true/false/' \
+		src/preferences.cpp
+	make PREFIX=/usr &&
+	make PREFIX=/usr DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/applications
+
+	cp -a $install/usr/bin				$fs/usr
+	cp -fa $install/usr/share/applications/*	$fs/usr/share/applications
+	cp -a $install/usr/share/$PACKAGE		$fs/usr/share
+	cp -a $install/usr/share/icons			$fs/usr/share
+	rm						$fs/usr/share/$PACKAGE/translations/*
+
+	for i in de en_US es fr it pt_BR ru_RU
+	  do
+		cp -a $install/usr/share/$PACKAGE/translations/smplayer_$i.qm \
+			$fs/usr/share/$PACKAGE/translations/
+	  done
+	for size in 64 128 192 256 512 scalable
+	  do
+		rm -rf $fs/usr/share/icons/hicolor/${size}*
+	  done
+}

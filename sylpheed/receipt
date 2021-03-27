@@ -1,0 +1,38 @@
+# SliTaz package receipt.
+
+PACKAGE="sylpheed"
+VERSION="3.7.0"
+CATEGORY="network"
+TAGS="mail internet"
+SHORT_DESC="Simple, lightweight but featureful, and easy-to-use e-mail client"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://sylpheed.sraoss.jp/en/"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="https://dotsrc.dl.osdn.net/osdn/sylpheed/68999/$TARBALL"
+
+DEPENDS="gtk+ libffi libssl"
+BUILD_DEPENDS="gtk+-dev openssl-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--disable-gtkspell	\
+		--disable-updatecheck	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/share/applications
+
+	cp -a $stuff/applications/sylpheed*.desktop	$fs/usr/share/applications
+	cp -a $install/usr/bin				$fs/usr
+	cp -a $install/usr/lib/*.so*			$fs/usr/lib
+}

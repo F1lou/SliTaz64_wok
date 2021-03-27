@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="libplayer-dev"
+VERSION="2.0.1"
+CATEGORY="multimedia"
+SHORT_DESC="A tiny media scanner API."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2.1"
+WANTED="libplayer"
+WEB_SITE="https://libplayer.geexbox.org/"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="libplayer pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+}

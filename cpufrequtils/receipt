@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="cpufrequtils"
+VERSION="008"
+CATEGORY="system-tools"
+SHORT_DESC="Userspace tools for the kernel cpufreq subsystem."
+MAINTAINER="gokhlayeh@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://mirrors.edge.kernel.org/pub/linux/utils/kernel/cpufreq/"
+WGET_URL="https://www.kernel.org/pub/linux/utils/kernel/cpufreq/$TARBALL"
+
+DEPENDS="sysfsutils linux-cpufreq"
+BUILD_DEPENDS="libtool gettext sed"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make LIBTOOL_OPT="--silent --tag=CC" &&
+	make DESTDIR=$DESTDIR mandir=/usr/share/man install	
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib $fs/usr
+	cp -a $install/usr/share/locale $fs/usr/share
+}

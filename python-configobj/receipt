@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="python-configobj"
+VERSION="5.0.6"
+CATEGORY="development"
+SHORT_DESC="Config file reading, writing and validation"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="other"
+WEB_SITE="https://github.com/DiffSK/configobj"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/DiffSK/configobj/archive/v$VERSION.tar.gz"
+
+DEPENDS="python python-six"
+BUILD_DEPENDS="wget cacerts python"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py build
+	python setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+}
+

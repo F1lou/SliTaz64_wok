@@ -1,0 +1,49 @@
+# SliTaz package receipt.
+
+PACKAGE="broadcom-wl"
+VERSION="5_100_82_112"
+CATEGORY="network"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="other"
+SHORT_DESC="Broadcom 802.11abg Linux STA Networking Drivers"
+WEB_SITE="http://www.broadcom.com/support/802.11/linux_sta.php"
+TARBALL="hybrid-portsrc_x86_32-v${VERSION}.tar.gz"
+WGET_URL="http://www.broadcom.com/docs/linux_sta/$TARBALL"
+TAGS="wireless wifi driver"
+
+DEPENDS="linux"
+BUILD_DEPENDS="linux-module-headers xz"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	sed -i 's|ndo_set_multicast_list|ndo_set_rx_mode|' src/wl/sys/wl_linux.c
+	sed -i 's|linux/autoconf.h|generated/autoconf.h|' src/include/linuxver.h
+	for i in semaphore 3.4.0 3.6.0 3.8.0 3.9.0 3.14.0 ; do
+		echo "patch $i ..."
+		patch -Np2 -i $stuff/$i.patch
+	done
+	KBUILD_NOPEDANTIC=1 make -C /usr/src/linux M=`pwd`
+	xz wl.ko
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	EXTRAVERSION=_${kvers}
+	mkdir -p $fs/lib/modules/${kvers}-slitaz/kernel/drivers/net/wireless
+	# Compress and install module
+	install -o root -m 0644 $src/wl.ko.xz \
+		$fs/lib/modules/${kvers}-slitaz/kernel/drivers/net/wireless/wl.ko.xz
+}
+
+# Post install/remove commands for Tazpkg.
+post_install()
+{
+	chroot "$1/" depmod -a ${EXTRAVERSION#_}-slitaz
+}
+
+post_remove()
+{
+	chroot "$1/" depmod -a ${EXTRAVERSION#_}-slitaz
+}

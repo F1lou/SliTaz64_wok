@@ -1,0 +1,42 @@
+# SliTaz package receipt.
+
+PACKAGE="cssc"
+VERSION="1.4.1"
+CATEGORY="development"
+TAGS="rcs sccs version-control versioning"
+SHORT_DESC="GNU compatibly stupid source control : SCCS."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://www.gnu.org/software/cssc/"
+
+SOURCE="CSSC"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="gcc83-lib-base"
+BUILD_DEPENDS="gcc83"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure				\
+		CC=gcc-83			\
+		CXX=g++-83			\
+		--prefix=/usr			\
+		--infodir=/usr/share/info	\
+		--libexecdir=/usr/lib/$PACKAGE	\
+		--mandir=/usr/share/man		\
+		--enable-binary			\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+
+	cp -a $install/usr/bin	$fs/usr
+	cp -a $install/usr/lib	$fs/usr
+}

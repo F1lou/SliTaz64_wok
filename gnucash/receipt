@@ -1,0 +1,66 @@
+# SliTaz package receipt.
+
+PACKAGE="gnucash"
+VERSION="2.6.3"
+CATEGORY="office"
+SHORT_DESC="Financial-accounting software"
+MAINTAINER="domcox@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://www.gnucash.org"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+LOCALES="cs da de el es fr hu it pl pt pt_BR ru sv zh_CN zh_TW"
+
+DEPENDS="glib gtk+ goffice-gtk2 guile libgnomecanvas libofx libwebkit libxml2 \
+libxslt perl slib zlib util-linux-uuid"
+BUILD_DEPENDS="glib-dev gtk+-dev goffice-gtk2-dev guile-dev libgnomecanvas-dev \
+libofx-dev libwebkit-dev libxml2-dev libxslt-dev perl slib zlib-dev intltool \
+util-linux-uuid-dev libtool"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# busybox compliance
+	sed -i 's/cat -s/cat/g' $src/doc/Makefile.in
+	# build
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--libexecdir=/usr/lib \
+		--disable-dbi \
+		--enable-ofx \
+		--disable-aqbanking \
+		--enable-locale-specific-tax \
+		$CONFIGURE_ARGS &&
+	make &&
+	make -j1 install DESTDIR=$install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/locale
+	# /etc
+	cp -a $install/etc $fs
+	# /usr/bin
+	cp -a $install/usr/bin $fs/usr
+	# /usr/lib
+	cp -a $install/usr/lib $fs/usr
+	rm -f $fs/usr/lib/*.*a
+	rm -f $fs/usr/lib/gnucash/*.*a
+	# /usr/share
+	local sharedirs="appdata applications glib-2.0 gnucash"
+	for dir in $sharedirs; do
+		cp -a $install/usr/share/$dir $fs/usr/share
+	done
+	# desktop file and icon
+	mkdir -p $fs/usr/share/pixmaps
+	cp -a $install/usr/share/icons/hicolor/32x32/apps/gnucash-icon.png \
+		$fs/usr/share/pixmaps/gnucash.png
+	sed -i 's/Icon=.*/Icon=gnucash/' \
+		$install/usr/share/applications/gnucash.desktop
+	# locales
+	for locale in $LOCALES; do
+		cp -a $install/usr/share/locale/$locale $fs/usr/share/locale
+	done
+}

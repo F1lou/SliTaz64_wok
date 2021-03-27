@@ -1,0 +1,24 @@
+# SliTaz package receipt.
+
+PACKAGE="libQtSql"
+VERSION="4.8.7"
+CATEGORY="development"
+SHORT_DESC="Qt sql Library"
+MAINTAINER="allan316@gmail.com"
+LICENSE="GPL3 LGPL2.1"
+WEB_SITE="http://qt-project.org/"
+WANTED="qt4"
+
+DEPENDS="libQtCore sqlite"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/libQtSql.so* $fs/usr/lib
+	
+	#file from libQtPlugins usable with sqlite preinstalled in core slitaz
+	mkdir -p $fs/usr/lib/qt/plugins/sqldrivers
+	cp -a $install/usr/lib/qt/plugins/sqldrivers/libqsqlite.so $fs/usr/lib/qt/plugins/sqldrivers/libqsqlite.so
+}
+

@@ -1,0 +1,57 @@
+# SliTaz package receipt.
+
+PACKAGE="cacerts"
+VERSION="20200522"
+CATEGORY="security"
+SHORT_DESC="Certificate Authority Certificates."
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="MPL2"
+WEB_SITE="http://www.linuxfromscratch.org/blfs/view/svn/postlfs/make-ca.html"
+
+TARBALL="$PACKAGE-$VERSION.txt"
+WGET_URL="http://anduin.linuxfromscratch.org/BLFS/other/certdata.txt"
+
+DEPENDS="openssl"
+BUILD_DEPENDS="locale-en openssl perl"
+
+HOST_ARCH="x86_64 any"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mv -f *.txt	certdata.txt
+	cp -a $stuff/*	$src
+	./make-ca.sh &&
+	./remove-expired-certs.sh $src/certs
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/etc/ssl/certs
+
+	cp -a $src/certs/*.pem		$fs/etc/ssl/certs
+	cp -a $src/ca-bundle.crt	$fs/etc/ssl
+
+	ln -s ../ca-bundle.crt		$fs/etc/ssl/certs/ca-certificates.crt
+}
+
+post_install()
+{
+	# Rehash certificates.
+	# Use simplified plain shell equivalent to the Perl `c_rehash`
+	# (see openssl package). Normal no output here.
+	cd "$1/etc/ssl/certs"
+	find . -type l -delete
+	for i in $(ls *.pem)
+	  do
+		j="$(openssl x509 -hash -noout -in $i)"
+		[ -n "$j" ] && ln -s $i $j.0
+	  done
+}
+
+post_remove()
+{
+	# Remove broken symlinks
+	find "$1/etc/ssl/certs" -type l ! -exec test -e \{\} \; -delete
+}

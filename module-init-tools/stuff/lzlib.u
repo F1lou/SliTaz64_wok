@@ -1,0 +1,73 @@
+--- module-init-tools-3.10/zlibsupport.c
++++ module-init-tools-3.10/zlibsupport.c
+@@ -18,43 +18,23 @@
+ #include "testing.h"
+ 
+ #ifdef CONFIG_USE_ZLIB
+-#include <zlib.h>
+-
+-void *grab_contents(gzFile *gzfd, unsigned long *size)
+-{
+-	unsigned int max = 16384;
+-	void *buffer = NOFAIL(malloc(max));
+-	int ret;
+-
+-	*size = 0;
+-	while ((ret = gzread(gzfd, buffer + *size, max - *size)) > 0) {
+-		*size += ret;
+-		if (*size == max)
+-			buffer = NOFAIL(realloc(buffer, max *= 2));
+-	}
+-	if (ret < 0) {
+-		free(buffer);
+-		buffer = NULL;
+-	}
+-
+-	return buffer;
+-}
++#include <lzlib.h>
+ 
+ /* gzopen handles uncompressed files transparently. */
+ void *grab_file(const char *filename, unsigned long *size)
+ {
+-	gzFile gzfd;
++	lzFile lzfd;
+ 	void *buffer;
+ 
+ 	errno = 0;
+-	gzfd = gzopen(filename, "rb");
+-	if (!gzfd) {
++	lzfd = lzopen(filename, "rb");
++	if (!lzfd) {
+ 		if (errno == ENOMEM)
+ 			fatal("Memory allocation failure in gzopen\n");
+ 		return NULL;
+ 	}
+-	buffer = grab_contents(gzfd, size);
+-	gzclose(gzfd);
++	buffer = lzgrab(lzfd, size);
++	lzclose(lzfd);
+ 	return buffer;
+ }
+ 
+
+--- module-init-tools-3.9/configure
++++ module-init-tools-3.9/configure
+@@ -2590,7 +2590,7 @@
+ #define CONFIG_USE_ZLIB 1
+ _ACEOF
+ 
+-  zlib_flags="-Wl,-Bstatic -lz -Wl,-Bdynamic"
++  zlib_flags="-Wl,-Bdynamic -lz -llz"
+ fi
+ fi
+ 
+@@ -2602,7 +2602,7 @@
+ #define CONFIG_USE_ZLIB 1
+ _ACEOF
+ 
+-  zlib_flags="-lz"
++  zlib_flags="-lz -llz"
+ fi
+ fi
+ 

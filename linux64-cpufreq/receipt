@@ -1,0 +1,42 @@
+# SliTaz package receipt.
+
+PACKAGE="linux64-cpufreq"
+VERSION="3.16.55"
+CATEGORY="base-system"
+SHORT_DESC="The Linux kernel cpufreq modules."
+MAINTAINER="devel@slitaz.org"
+LICENSE="GPL2"
+DEPENDS="linux64"
+WANTED="linux"
+PROVIDE="linux-cpufreq:linux64"
+WEB_SITE="https://www.kernel.org/"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+    local path
+    src=$WOK/linux64/source/tmp
+    install=$install/linux64
+    path=lib/modules/$VERSION-slitaz64/kernel
+    mkdir -p $fs/$path
+    export src
+    export install
+    $wanted_stuff/list_modules.sh drivers/cpufreq | \
+    while read module; do
+    	dir=$path/$(dirname $module)
+    	[ -d $fs/$dir ] || mkdir -p $fs/$dir
+        cp -a $install/$path/$module $fs/$dir
+    done
+}
+
+# Post install/remove commands for Tazpkg.
+post_install()
+{
+	chroot "$root/" depmod -a $VERSION-slitaz64
+}
+
+post_remove()
+{
+	chroot "$root/" depmod -a $VERSION-slitaz64
+}
+

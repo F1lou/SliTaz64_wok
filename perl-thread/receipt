@@ -1,0 +1,46 @@
+# SliTaz package receipt.
+
+PACKAGE="perl-thread"
+SOURCE="perl"
+VERSION="5.14.1"
+CATEGORY="development"
+SHORT_DESC="Full Perl interpreter and modules."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL"
+TARBALL="$SOURCE-$VERSION.tar.bz2"
+DEPENDS="libdb gdbm zlib"
+BUILD_DEPENDS="db gdbm zlib less"
+WEB_SITE="https://www.perl.org/"
+WGET_URL="http://ftp.funet.fi/pub/CPAN/src/$TARBALL"
+
+# Rules to configure and make the package.
+#
+compile_rules()
+{
+	./configure.gnu --prefix=/usr -Dusethreads \
+		-Darchname="$ARCH-linux-thread-multi" \
+		-Dmyarchname="$ARCH-linux-thread-multi" \
+		-Dsitearch="/usr/lib/perl5/site_perl/$VERSION/$ARCH-linux-thread-multi" \
+		-Dsitearchexp="/usr/lib/perl5/site_perl/$VERSION/$ARCH-linux-thread-multi" \
+		-Darchlib="/usr/lib/perl5/$VERSION/$ARCH-linux-thread-multi" \
+		-Darchlibexp="/usr/lib/perl5/$VERSION/$ARCH-linux-thread-multi" \
+		-Dinstallarchlib="/usr/lib/perl5/$VERSION/$ARCH-linux-thread-multi" &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib $fs/usr
+}
+
+# Pre install commands for Tazpkg.
+# Remove perl link to microperl if any.
+#
+pre_install()
+{
+	rm -f "$1/usr/bin/perl"
+}

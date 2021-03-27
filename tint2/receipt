@@ -1,0 +1,42 @@
+# SliTaz package receipt.
+
+PACKAGE="tint2"
+VERSION="0.12.2"
+CATEGORY="misc"
+SHORT_DESC="Lightweight panel/taskbar for Linux"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://gitlab.com/o9000/tint2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/repository/archive.tar.gz?ref=$VERSION"
+BRANCH="$VERSION"
+CONFIG_FILES="/etc/xdg/tint2/tint2rc"
+TAGS="desktop panel taskbar"
+#HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="gtk+ imlib2 librsvg startup-notification"
+BUILD_DEPENDS="cmake pango-dev imlib2-dev gtk+-dev startup-notification-dev \
+librsvg-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cp -af $stuff/get_version.sh $src
+	export VERSION
+
+	mkdir build && cd build &&
+	cmake \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		$ARCH_ARGS .. &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+	# Use custom configured theme instead
+	cp -f $stuff/tint2rc $fs/etc/xdg/tint2/tint2rc
+
+	rm -r $fs/usr/share/doc $fs/usr/share/locale $fs/usr/share/man
+}

@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="get-skype"
+VERSION="1.1"
+CATEGORY="non-free"
+SHORT_DESC="Get Skype Internet Telephony."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="http://www.skype.com/"
+TAGS="chat telephony"
+
+DEPENDS="bzip2"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp stuff/get-skype $fs/usr/bin
+}
+

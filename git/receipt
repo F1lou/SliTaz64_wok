@@ -1,0 +1,54 @@
+# SliTaz package receipt.
+
+PACKAGE="git"
+VERSION="2.26.2"
+CATEGORY="development"
+SHORT_DESC="Fast version control system."
+MAINTAINER="b1+slitaz@nagel.org"
+LICENSE="GPL2"
+WEB_SITE="https://git-scm.com/"
+
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="https://www.kernel.org/pub/software/scm/git/$TARBALL"
+
+DEPENDS="cacerts curl expat openssl zlib"
+BUILD_DEPENDS="curl-dev expat-dev openssl-dev perl python-dev zlib-dev"
+
+# NO_NSEC=1
+CROSS_BUGS="bug: can't run test and make package."
+#HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--prefix=/usr		\
+		--libexecdir=/usr/lib	\
+		--without-tcltk		\
+		$CONFIGURE_ARGS &&
+	make -j 1 THREADED_DELTA_SEARCH=1 &&
+	make THREADED_DELTA_SEARCH=1 DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/etc/init.d
+
+	cp -a $stuff/git-daemon	$fs/etc/init.d
+	cp -a $install/usr	$fs/
+
+	strip -s $fs/usr/lib/git-core/* 2>/dev/null || true
+}
+
+# edit daemons.conf.
+post_install()
+{
+	if ! grep -q 'GIT_OPTIONS' "$1/etc/daemons.conf"; then
+		mkdir -p "$1/var/www/git"
+		echo '# Git daemon options.' >> "$1/etc/daemons.conf"
+		echo 'GIT_REPO="/var/www/git/"' >> "$1/etc/daemons.conf"
+		echo 'GIT_OPTIONS="--detach --syslog --verbose --base-path=$GIT_REPO $GIT_REPO"' >> "$1/etc/daemons.conf"
+		echo '' >> "$1/etc/daemons.conf"
+	fi
+}

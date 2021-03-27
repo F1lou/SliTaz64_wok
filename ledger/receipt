@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="ledger"
+VERSION="2.6.3"
+CATEGORY="utilities"
+SHORT_DESC="A double-entry accounting system that is accessed from the UNIX command-line."
+MAINTAINER="paul@slitaz.org"
+LICENSE="BSD"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://ledger-cli.org/" 
+WGET_URL="http://ftp.newartisans.com/pub/ledger/$TARBALL"
+
+DEPENDS="pcre gmp"
+BUILD_DEPENDS="pcre-dev gmp-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure --prefix=/usr \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share/ledger
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	
+	# copy sample file
+	cp -a $src/sample.dat $fs/usr/share/ledger
+}
+

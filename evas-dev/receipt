@@ -1,0 +1,27 @@
+# SliTaz package receipt.
+
+PACKAGE="evas-dev"
+VERSION="1.7.10"
+CATEGORY="development"
+SHORT_DESC="EFL Canvas and scenegraph rendering library - Devel files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="BSD"
+WANTED="evas"
+WEB_SITE="https://www.enlightenment.org/"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="eet-dev expat-dev fontconfig-dev freetype-dev fribidi-dev
+giflib-dev libpng-dev tiff-dev libxml2-dev util-linux-uuid-dev
+xorg-dev xorg-libXss-dev xorg-libXp-dev pkg-config"
+OPTIONAL_DEPENDS="mesa-dev libglu-mesa-dev"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/lib/evas $fs/usr/lib
+	rm -rf $fs/usr/lib/evas/modules/*/*/*/*.so
+}

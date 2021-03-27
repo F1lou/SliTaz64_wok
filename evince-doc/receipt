@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="evince-doc"
+VERSION="2.32.0"
+CATEGORY="development"
+SHORT_DESC="Evince documention."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://projects.gnome.org/evince/"
+WANTED="evince"
+
+DEPENDS="evince"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	[ -d $install/usr/share/gnome   -a \
+	  -d $install/usr/share/gtk-doc -a \
+	  -d $install/usr/share/omf ]
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	# Note: Evince build disables local help in favor of online help.
+	# Consider removing this package from wok. 
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/share/gtk-doc $fs/usr/share
+}

@@ -1,0 +1,47 @@
+# SliTaz package receipt.
+
+PACKAGE="screenlets"
+VERSION="0.1.7"
+CATEGORY="system-tools"
+SHORT_DESC="Desktop widgets framework."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://launchpad.net/screenlets/"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="https://launchpad.net/screenlets/trunk/$VERSION/+download/$TARBALL"
+
+DEPENDS="beautifulsoup dbus-python gnome-icon-theme gnome-python-desktop \
+	pygtk python python-xdg"
+BUILD_DEPENDS="python-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python setup.py install --root=$install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/icons
+	mkdir -p $fs/etc/screenlets
+
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/lib			$fs/usr
+	cp -a $install/usr/share/screenlets*	$fs/usr/share
+	cp -a $install/usr/share/icons/hicolor	$fs/usr/share/icons
+	echo '/usr' > $fs/etc/screenlets/prefix
+}
+
+# Post install/remove commands for Tazpkg.
+post_install()
+{
+	chroot "$1/" /usr/bin/gdk-pixbuf-query-loaders --update-cache
+}
+
+post_remove()
+{
+	[ -x "$1/usr/bin/gdk-pixbuf-query-loaders" ] &&
+	chroot "$1/" /usr/bin/gdk-pixbuf-query-loaders --update-cache
+}

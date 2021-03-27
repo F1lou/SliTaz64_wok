@@ -1,0 +1,86 @@
+# SliTaz package receipt.
+
+PACKAGE="perl"
+VERSION="5.32.0"
+MAINVERSION="5.32"
+CATEGORY="development"
+SHORT_DESC="Full Perl interpreter and modules."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+DEPENDS="libdb gdbm zlib"
+BUILD_DEPENDS="db gdbm zlib less"
+WEB_SITE="https://www.perl.org/"
+WGET_URL="http://ftp.funet.fi/pub/CPAN/src/$TARBALL"
+PROVIDE="microperl"
+
+# Rules to compile & install the temporary toolchain.
+cook_tmp_toolchain()
+{
+	cd $src
+	{ sh Configure -des -Dprefix=/tools \
+		-Darchname="$ARCH-linux" \
+		-Dmyarchname="$ARCH-linux" \
+		-Dsitearch="/usr/lib/perl5/site_perl/$MAINVERSION/site_perl" \
+		-Dsitearchexp="/usr/lib/perl5/site_perl/$MAINVERSION/$ARCH-linux" \
+		-Darchlib="/usr/lib/perl5/$MAINVERSION/$ARCH-linux" \
+		-Darchlibexp="/usr/lib/perl5/$MAINVERSION/$ARCH-linux" \
+		-Dinstallarchlib="/usr/lib/perl5/$MAINVERSION/$ARCH-linux" \
+		-Dvendorlib="/usr/lib/perl5/5.32/vendor_perl"	\
+		-Dvendorarch="/usr/lib/perl5/5.32/vendor_perl"
+		-Dstatic_ext='Data/Dumper Fcntl IO'
+	
+	# Only few tools are needed in the tmp toolchain.
+	make perl utilities ext/Errno/pm_to_blib
+	} || return 1
+	cp perl pod/pod2man /tools/bin
+	mkdir -p /tools/lib/perl5/$VERSION
+	cp -R lib/* /tools/lib/perl5/$VERSION
+}
+
+
+# Rules to configure and make the package.
+#
+compile_rules()
+{
+	./configure.gnu --prefix=/usr \
+		-Darchname="$ARCH-linux" \
+		-Dmyarchname="$ARCH-linux" \
+		-Dsitearch="/usr/lib/perl5/site_perl/$VERSION/$ARCH-linux" \
+		-Dsitearchexp="/usr/lib/perl5/site_perl/$VERSION/$ARCH-linux" \
+		-Darchlib="/usr/lib/perl5/$VERSION/$ARCH-linux" \
+		-Darchlibexp="/usr/lib/perl5/$VERSION/$ARCH-linux" \
+		-Dinstallarchlib="/usr/lib/perl5/$VERSION/$ARCH-linux" &&
+	make &&
+	make install
+
+	# make microperl here
+	# patch to fix compiling microperl
+	patch -p0 -i $stuff/miniperlmain.patch
+	# Install in /usr (default is /usr/local).
+	sed -i s/'usr\/local'/'usr'/ uconfig.sh
+	# Sed to search mods in /usr/lib/perl5.
+	sed -i s/'perl5\/'${VERSION%.*}/'perl5'/ uconfig.sh
+	# Optimisation.
+	sed -i s/'unknown'/'$HOST_SYSTEM'/ uconfig.sh
+	# Make it!
+	make -f Makefile.micro regen_uconfig &&
+	make -f Makefile.micro &&
+	strip microperl
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib $fs/usr
+}
+
+# Pre install commands for Tazpkg.
+# Remove perl link to microperl if any.
+#
+pre_install()
+{
+	rm -f "$1/usr/bin/perl"
+}

@@ -1,0 +1,54 @@
+# SliTaz package receipt.
+
+PACKAGE="slitaz-icon"
+VERSION="1.2.1"
+CATEGORY="misc"
+SHORT_DESC="SliTaz icons in size 22x22 and 32x32 (minimum)."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+TARBALL="$PACKAGE-1.2.tar.gz"
+WEB_SITE="http://www.slitaz.org/"
+WGET_URL="http://mirror.slitaz.org/sources/artwok/$TARBALL"
+HOST_ARCH="x86_64 any"
+
+BUILD_DEPENDS="faenza-icon-theme"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/icons
+	cp -a $src/SliTaz $fs/usr/share/icons
+
+	# We use a new one provided by TazPanel
+	rm $fs/usr/share/icons/SliTaz/apps/22/tazpanel.png
+
+	# fix icons for Yad
+	ln -s go-next.png $fs/usr/share/icons/SliTaz/actions/22/gtk-go-forward.png
+	ln -s go-previous.png $fs/usr/share/icons/SliTaz/actions/22/gtk-go-back.png
+
+	# remove non-existent entities => faster icon search
+	rm -f $fs/usr/share/icons/SliTaz/index.theme
+	cp $stuff/index.theme $fs/usr/share/icons/SliTaz
+
+	# return back gpicview icon
+	cp $WOK/faenza-icon-theme/taz/*/fs/usr/share/icons/Faenza/apps/22/eog.png \
+		$fs/usr/share/icons/SliTaz/apps/22
+
+	# remove broken symlinks
+	for i in $(find $fs -type l); do
+		[ ! -e $i ] && rm -f $i
+	done
+
+	chown -R root.root $fs
+}
+
+post_install()
+{
+	# Default icon theme to SliTaz.
+	if [ -f "$1/etc/skel/.gtkrc-2.0" ]; then
+		sed -i s/Tango/SliTaz/ "$1/etc/skel/.gtkrc-2.0"
+	fi
+	if readlink "$1/usr/share/icons/Tango"; then
+		rm "$1/usr/share/icons/Tango"
+	fi
+}

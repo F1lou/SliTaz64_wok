@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="nathive"
+VERSION="0.924"
+CATEGORY="graphics"
+SHORT_DESC="lightweight image editor"
+MAINTAINER="jozee@slitaz.org"
+LICENSE="GPL3"
+TARBALL="$PACKAGE-$VERSION.tgz"
+WEB_SITE="http://www.nathive.org/" 
+WGET_URL="${WEB_SITE}dl/$TARBALL"
+TAGS="image photo editor"
+
+DEPENDS="gtk+ python"
+BUILD_DEPENDS="pkg-config gtk+-dev python-dev coreutils-operations"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	sed -i "s|^BASE.*|BASE = $DESTDIR/usr/|;s|nathive.sh|nathive.py|" makefile
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr $fs
+}

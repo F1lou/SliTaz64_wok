@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=Celestia
+GenericName=Space Simulator
+GenericName[ru]=Симулятор космоса
+Comment=Explore the Universe in this detailed space simulation
+Comment[ru]=Исследуйте вселенную в детальном симуляторе космоса
+Exec=celestia %f
+Icon=celestia
+Terminal=false
+StartupNotify=true
+Categories=Astronomy;Education;
+MimeType=application/x-celestia-script;

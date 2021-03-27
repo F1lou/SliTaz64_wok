@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="lsdvd"
+VERSION="0.17"
+CATEGORY="system-tools"
+SHORT_DESC="A console application that displays the content of a DVD."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://sourceforge.net/projects/lsdvd/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="libdvdread"
+BUILD_DEPENDS="automake libdvdread-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+#	cd $src
+	# 0.17 no longer needed
+#	[ -f done.lsdvd-0.16-configure.patch ] ||
+#		patch -p1 -i $stuff/lsdvd-0.16-configure.patch
+#	touch done.lsdvd-0.16-configure.patch
+
+	./configure $CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin	$fs/usr
+}
+

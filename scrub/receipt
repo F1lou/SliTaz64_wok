@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="scrub"
+VERSION="2.6.1"
+CATEGORY="security"
+SHORT_DESC="Iteratively writes patterns on files or disk devices to make retreiving the data more difficult."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://github.com/chaos/scrub"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/releases/download/$VERSION/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS="perl"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure				\
+		--prefix=/usr			\
+		--infodir=/usr/share/info	\
+		--mandir=/usr/share/man		\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}

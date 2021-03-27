@@ -1,0 +1,27 @@
+# SliTaz package receipt.
+
+PACKAGE="libestr"
+VERSION="0.1.11"
+CATEGORY="system-tools"
+SHORT_DESC="Some essentials for string handling."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="LGPL2"
+WEB_SITE="https://libestr.adiscon.com/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="http://libestr.adiscon.com/files/download/$TARBALL"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS &&
+	make -j 1 &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

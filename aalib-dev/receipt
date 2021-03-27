@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="aalib-dev"
+VERSION="1.4rc5"
+CATEGORY="development"
+SHORT_DESC="devel files for aalib"
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="LGPL2"
+WEB_SITE="http://aa-project.sourceforge.net/aalib/"
+WANTED="aalib"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="aalib"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/share/aclocal $fs/usr/share
+}

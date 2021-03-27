@@ -1,0 +1,68 @@
+#!/bin/sh -e
+
+ROOT="$1"
+WEB_SITE="http://upx.sourceforge.net/"
+SUF="i386_linux.tar.bz2"
+VERSION=$(wget -O - $WEB_SITE | grep "$SUF\"" | sed "s|.*upx-\(.*\)-$SUF.*|\1|")
+TARBALL="upx-$VERSION-$SUF"
+WGET_URL="${WEB_SITE}download/$TARBALL"
+
+if test $(id -u) != 0 ; then
+	echo -e "\nYou must be root to run `basename $0`."
+	echo -e "Please type 'su' and root password to become super-user.\n"
+	exit 0
+fi
+
+if [ -d $ROOT/var/lib/tazpkg/installed/upx ]; then
+  [ -n "$ROOT" ] && exit 1
+  tazpkg remove upx
+  [ -d /var/lib/tazpkg/installed/upx ] && exit 1
+fi
+
+BASE=$PWD
+DIR=/tmp/$0-$$
+mkdir -p $DIR
+cd $DIR
+
+# Download tarball
+wget $WGET_URL
+if [ ! -f $TARBALL ]; then
+	cd $BASE
+	rm -rf $DIR
+	echo "Could not download $TARBALL. Exiting."
+	exit 1
+fi
+
+# Extract
+tar xjf $TARBALL
+
+# extracted pkg can be removed: Save RAM before packing
+rm -rf $TARBALL
+
+# Install files
+dir=upx-$VERSION/fs/usr/bin
+mkdir -p $dir
+mv upx-$VERSION-i386_linux/upx $dir
+
+# Create pseudo package
+cat > upx-$VERSION/receipt <<EOT
+PACKAGE="upx"
+VERSION="$VERSION"
+CATEGORY="non-free"
+SHORT_DESC="Executable packer for several different executable formats."
+WEB_SITE="$WEB_SITE"
+EOT
+
+# Pack
+tazpkg pack upx-$VERSION
+
+# Clean to save RAM memory
+rm -rf upx-$VERSION
+
+# Install pseudo package
+tazpkg install upx-$VERSION.tazpkg --root=$ROOT
+cd $BASE
+
+# Clean
+rm -rf $DIR $TARBALL
+

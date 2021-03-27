@@ -1,0 +1,38 @@
+# SliTaz package receipt.
+
+PACKAGE="net-tools"
+VERSION="1.60"
+CATEGORY="network"
+SHORT_DESC="Network toolbox."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://web.archive.org/web/20130512153334if_/http://www.tazenda.demon.co.uk/phil/net-tools"
+WGET_URL="$WEB_SITE/$TARBALL"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir $DESTDIR
+	enabled="HAVE_AFUNIX HAVE_AFINET HAVE_HWETHER HAVE_HWPPP \
+		 HAVE_HWTUNNEL HAVE_FW_MASQUERADE HAVE_IP_TOOLS HAVE_MII"
+	sed '/HAVE_/!d;s/.*\(HAVE.*\)../\1/' < config.in | while read name; do
+		val=0
+		case " $enabled " in
+		*\ $name\ *) val=1 ;;
+		esac
+		echo "#define $name $val"
+		echo "$name=$val" 1>&2
+	done > config.h 2> config.make
+	sed -i 's/default:/&;/' hostname.c lib/inet_sr.c
+	sed -i '/"usage/,/10baseT/s/.*/&\\n\\/' mii-tool.c
+	make -j 1 &&
+	make BASEDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/bin $fs
+	cp -a $install/sbin $fs
+}

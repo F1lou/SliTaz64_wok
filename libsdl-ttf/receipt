@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="libsdl-ttf"
+SOURCE="SDL_ttf"
+VERSION="2.0.10"
+CATEGORY="x-window"
+SHORT_DESC="SDL ttf support."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2.1"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="http://www.libsdl.org/projects/SDL_ttf/"
+WGET_URL="http://www.libsdl.org/projects/SDL_ttf/release/$TARBALL"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="libsdl freetype zlib"
+BUILD_DEPENDS="libsdl-dev freetype-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

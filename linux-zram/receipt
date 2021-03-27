@@ -1,0 +1,46 @@
+# SliTaz package receipt.
+
+PACKAGE="linux-zram"
+VERSION="3.16.55"
+CATEGORY="base-system"
+SHORT_DESC="Compressed caching"
+MAINTAINER="devel@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.kernel.org/"
+CONFIG_FILES="/etc/compcache.conf"
+WANTED="linux"
+PROVIDE="compcache"
+
+DEPENDS="linux slitaz-boot-scripts"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	local path
+	path=lib/modules/$VERSION-slitaz/kernel
+	mkdir -p $fs/$path $fs/etc/init.d
+	export src install
+	$wanted_stuff/list_modules.sh drivers/block/zram | \
+	while read module; do
+		dir=$path/$(dirname $module)
+		[ -d $fs/$dir ] || mkdir -p $fs/$dir
+		cp -a $install/$path/$module $fs/$dir
+	done
+	install -o root -m 755 $stuff/compcache $fs/etc/init.d/
+	install -o root -m 644 $stuff/compcache.conf $fs/etc/
+}
+
+# Post install/remove commands for Tazpkg.
+post_install()
+{
+	chroot "$root/" depmod -a $VERSION-slitaz
+	grep ^RUN_DAEMONS "$1/etc/rcS.conf" | grep -q "compcache" || sed -i \
+	  's/RUN_DAEMONS="/RUN_DAEMONS="compcache /' "$1/etc/rcS.conf"
+	[ -z "$1" ] && /etc/init.d/compcache start
+}
+
+post_remove()
+{
+	chroot "$root/" depmod -a $VERSION-slitaz
+}
+

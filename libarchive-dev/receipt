@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="libarchive-dev"
+VERSION="3.4.2"
+CATEGORY="development"
+SHORT_DESC="C library and command line tool archive - development files."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="https://www.libarchive.org/"
+
+DEPENDS="libarchive pkg-config"
+WANTED="libarchive"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib 
+
+	cp -a $install/usr/lib/*.*a		$fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig	$fs/usr/lib
+	cp -a $install/usr/include		$fs/usr
+}

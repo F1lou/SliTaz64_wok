@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="poppler-qt4"
+VERSION="0.49.0"
+CATEGORY="office"
+SHORT_DESC="Poppler compiled with Qt4 library."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WANTED="poppler"
+WEB_SITE="https://poppler.freedesktop.org/"
+
+DEPENDS="poppler libQtCore libQtXml libQtGui"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*qt4.so* $fs/usr/lib
+}

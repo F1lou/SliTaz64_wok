@@ -1,0 +1,103 @@
+# SliTaz package receipt.
+
+PACKAGE="openssh"
+VERSION="8.4p1"
+CATEGORY="security"
+SHORT_DESC="Openbsd Secure Shell."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="BSD"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://www.openssh.org/"
+WGET_URL="http://ftp.fr.openbsd.org/pub/OpenBSD/OpenSSH/portable/$TARBALL"
+CONFIG_FILES="/etc/ssh/*config /etc/ssh/moduli"
+SECRET_FILES="/etc/ssh/*key*"
+TAGS="ssh security"
+HOST_ARCH="x86_64 i486 arm"
+
+PROVIDE="ssh"
+DEPENDS="sftp-server libcrypto zlib"
+BUILD_DEPENDS="libcrypto-dev zlib-dev openssl-dev gtk+-dev"
+SUGGESTED="gtk+"
+TAZPANEL_DAEMON="man::sshd|edit::/etc/ssh/sshd_config|options|web::$WEB_SITE"
+
+current_version()
+{
+	wget -O - ${WGET_URL%/*}/ 2>/dev/null | \
+	sed '/tar..z"/!d;s|.*ssh-\(.*\).tar..z".*|\1|' | tail -n1
+}
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	unset LD # for cross compiling with --disable-strip
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc/ssh \
+		--libexecdir=/usr/sbin \
+		--with-privsep-user=nobody \
+		--with-xauth=/usr/bin/xauth \
+		--with-privsep-path=/var/run/sshd \
+		--without-pam \
+		--disable-strip \
+		$CONFIGURE_ARGS &&
+	make STRIP_OPT="" &&
+	make -j 1 DESTDIR=$DESTDIR install
+	install -d -m 755 $DESTDIR/usr/share/doc &&
+	install -m 644 $src/[A-Z][A-Z]* $DESTDIR/usr/share/doc
+	cd contrib &&
+	cc -Wall $(pkg-config --cflags gtk+-2.0) gnome-ssh-askpass2.c \
+		-o gnome-ssh-askpass $(pkg-config --libs gtk+-2.0) -lX11 &&
+	cp gnome-ssh-askpass $DESTDIR/usr/bin/ssh-askpass
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr $fs/etc/init.d $fs/etc/ssh
+	cp -a $install/usr/sbin $install/usr/bin $fs/usr
+	rm -f $fs/usr/sbin/sftp-server
+	install -m 755 -oroot -groot $src/contrib/ssh-copy-id $fs/usr/bin
+	cp $src/contrib/ssh-copy-id.1 $install/usr/share/man/cat1
+	cp -a $install/etc $fs
+	cp $stuff/openssh $fs/etc/init.d
+	sed -i 's|/usr/libexec/sftp-server|/usr/sbin/sftp-server|' \
+		$fs/etc/ssh/sshd_config
+
+	cat >> $fs/etc/ssh/ssh_config <<EOT
+
+# client bug CVE-2016-0777 and CVE-2016-0778
+Host *
+  UseRoaming no
+
+# From https://wiki.gentoo.org/wiki/SSH_jump_host  
+Host *+*
+  ProxyCommand ssh \$(echo %h | sed 's/+[^+]*$//;s/\\([^+%%]*\\)%%\\([^+]*\\)\$/\\2 -l \\1/;s/:/ -p /') exec nc -w1 \$(echo %h | sed 's/^.*+//;/:/!s/\$/ %p/;s/:/ /')
+
+EOT
+}
+
+post_install()
+{
+	grep -q ssh "$1/etc/inetd.conf" || cat >> "$1/etc/inetd.conf" <<EOT
+#ssh	stream	tcp	nowait	root	sshd	sshd	-i
+EOT
+	while read dropbear openssh ; do
+		[ -s "$1$dropbear" ] || continue
+		[ -s "$1$openssh" ] && continue
+		chroot "$1/" dropbearconvert dropbear openssh $dropbear $openssh
+		chroot "$1/" dropbearkey -y -f $dropbear | grep ssh > "$1$openssh.pub"
+		chroot "$1/" dropbearkey -y -f $dropbear | grep Fingerprint
+	done <<EOT
+/etc/dropbear/dropbear_rsa_host_key	/etc/ssh/ssh_host_rsa_key
+/etc/dropbear/dropbear_dss_host_key	/etc/ssh/ssh_host_dsa_key
+/etc/dropbear/dropbear_ecdsa_host_key	/etc/ssh/ssh_host_ecdsa_key
+/etc/dropbear/dropbear_ed25519_host_key	/etc/ssh/ssh_host_ed25519_key
+EOT
+
+	chroot "$1/" ssh-keygen -A
+}
+
+post_remove()
+{
+	grep -q sshd "$1/etc/inetd.conf" && sed -i '/sshd/d' "$1/etc/inetd.conf"
+}

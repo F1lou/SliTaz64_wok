@@ -1,0 +1,41 @@
+# SliTaz package receipt.
+
+PACKAGE="cifs-utils"
+VERSION="6.10"
+CATEGORY="system-tools"
+SHORT_DESC="CIFS userland tools."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://wiki.samba.org/index.php/LinuxCIFS_utils"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="https://download.samba.org/pub/linux-cifs/$PACKAGE/$TARBALL"
+
+PROVIDE="smbfs"
+DEPENDS="attr gcc83-lib-base libcap linux-cifs"
+BUILD_DEPENDS="autoconf automake gcc83 krb5-dev libcap-dev samba-dev talloc-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	autoreconf -i &&
+	./configure			\
+		CC=gcc-83		\
+		CXX=g++-83		\
+		--prefix=/usr		\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	mkdir -p $fs/usr/sbin
+
+	cp -a $install/sbin		$fs
+	cp -a $install/usr/bin/smbinfo	$fs/usr
+	ln -s ../../sbin/mount.cifs	$fs/usr/sbin/mount.cifs
+	ln $fs/usr/sbin/mount.cifs	$fs/usr/sbin/umount.cifs
+}

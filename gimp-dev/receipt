@@ -1,0 +1,26 @@
+# SliTaz package receipt.
+
+PACKAGE="gimp-dev"
+VERSION="2.8.20"
+CATEGORY="development"
+SHORT_DESC="Gnu Image Manipulation Program or GIMP devel files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WANTED="gimp"
+WEB_SITE="https://www.gimp.org/"
+
+DEPENDS="gimp pkg-config gdk-pixbuf-dev cairo-dev gtk+-dev"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib $fs/usr
+	# Remove libraries files
+	rm -rf $fs/usr/lib/*.so*
+	rm -rf $fs/usr/lib/gimp/2.0/modules/*.so*
+	rm -rf $fs/usr/lib/gimp/2.0/environ
+	rm -rf $fs/usr/lib/gimp/2.0/interpreters
+	rm -rf $fs/usr/lib/gimp/2.0/plug-ins
+}

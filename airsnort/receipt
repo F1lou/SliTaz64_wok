@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="airsnort"
+VERSION="0.2.7e"
+CATEGORY="network"
+SHORT_DESC="A wireless LAN (WLAN) tool which recovers encryption keys."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="http://airsnort.shmoo.com/"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+
+DEPENDS="gtk+ libpcap"
+BUILD_DEPENDS="gtk+-dev libpcap-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--prefix=/usr \
+		--infodir=/usr/share/info \
+		--mandir=/usr/share/man \
+		$CONFIGURE_ARGS &&
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+}

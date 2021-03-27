@@ -1,0 +1,37 @@
+#Slitaz package receipt
+
+PACKAGE="joe"
+VERSION="4.6"
+CATEGORY="utilities"
+TAGS="text-editor"
+SHORT_DESC="Joe's Own Editor is an easy to use text editor, supporting syntax highlighting and UTF-8."
+MAINTAINER="threarth@yahoo.it"
+LICENSE="GPL"
+WEB_SITE="https://joe-editor.sourceforge.io/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$SF_MIRROR/joe-editor/$TARBALL"
+
+DEPENDS="ncursesw"
+BUILD_DEPENDS="ncursesw-dev desktop-file-utils"
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure			\
+		--sysconfdir=/etc	\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+
+	cp -a $install/etc		$fs
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/share/joe	$fs/usr/share 
+}

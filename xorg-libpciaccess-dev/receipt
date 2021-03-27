@@ -1,0 +1,25 @@
+# SliTaz package receipt.
+
+PACKAGE="xorg-libpciaccess-dev"
+VERSION="0.16"
+CATEGORY="development"
+SHORT_DESC="Xorg module - development files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://www.x.org/wiki/"
+
+SOURCE="libpciaccess"
+DEPENDS="pkg-config xorg-libpciaccess"
+WANTED="xorg-libpciaccess"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/lib/*.*a*		$fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig	$fs/usr/lib
+	cp -a $install/usr/include		$fs/usr
+}

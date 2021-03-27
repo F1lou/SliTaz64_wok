@@ -1,0 +1,42 @@
+# SliTaz package receipt.
+
+PACKAGE="strigi"
+VERSION="0.7.8"
+CATEGORY="system-tools"
+SHORT_DESC="A fast and light desktop search engine."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2"
+WEB_SITE="https://www.vandenoever.info/software/strigi/"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="${WEB_SITE}$TARBALL"
+
+SUGGESTED="strigi-client"
+DEPENDS="dbus expat libQtCore libQtDBus libQtXml libxml2 sqlite"
+BUILD_DEPENDS="$DEPENDS bzip2-dev bzlib cmake dbus-dev expat-dev \
+	libQtCore libQtDBus libxml2-dev qmake Qt4-dev sqlite-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir build &&
+	cd build &&
+	cmake	..				\
+		-DCMAKE_INSTALL_PREFIX=/usr &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/$PACKAGE
+
+	cp -a $install/usr/lib/*.so*		$fs/usr/lib
+	cp -a $install/usr/lib/$PACKAGE/*.so*	$fs/usr/lib/$PACKAGE
+	cp -a $install/usr/share		$fs/usr
+	cp -a $install/usr/bin			$fs/usr
+
+	# QT GUI split into strigi-client
+	rm -f					$fs/usr/bin/strigiclient	
+}

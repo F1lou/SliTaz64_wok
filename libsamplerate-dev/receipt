@@ -1,0 +1,24 @@
+# SliTaz package receipt.
+
+PACKAGE="libsamplerate-dev"
+VERSION="0.1.9"
+CATEGORY="development"
+SHORT_DESC="Development files from the Sample Rate Converter for audio."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="http://www.mega-nerd.com/SRC/"
+
+WANTED="libsamplerate"
+DEPENDS="libsamplerate pkg-config"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/include	$fs/usr
+	cp -a $install/usr/lib/*.*a	$fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib 
+}
