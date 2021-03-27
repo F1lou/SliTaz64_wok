@@ -12,16 +12,14 @@ WEB_SITE="https://wiki.gnome.org/Projects/Zenity"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="http://ftp.gnome.org/pub/GNOME/sources/$PACKAGE/${VERSION%.*}/$TARBALL"
 
-DEPENDS="gcc83-lib-base gtk+3 libglade libnotify"
-BUILD_DEPENDS="docbook-xsl gcc83 gnome-doc-utils-dev gtk+3-dev
+DEPENDS="gcc-lib-base gtk+3 libglade libnotify"
+BUILD_DEPENDS="docbook-xsl gcc gnome-doc-utils-dev gtk+3-dev
 	intltool itstool libglade-dev pkg-config"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	./configure				\
-		CC=gcc-83			\
-		CXX=g++-83			\
 		--prefix=/usr			\
 		--localstatedir=/var/lib	\
 		--disable-scrollkeeper		\

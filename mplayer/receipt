@@ -16,11 +16,11 @@ HOST_ARCH="x86_64 i486 arm"
 RELATED="mplayer-codecs mencoder" 
 DEPENDS="gtk+ cdparanoia-III libmad xorg-libXv libtheora alsa-lib ncurses \
 lame xorg-libXdamage giflib enca lirc xorg-libXxf86vm esound libmng audiofile \
-libvorbis libogg zlib xvidcore x264 xorg-libXss gcc83-lib-base libdvdnav libdvdread"
+libvorbis libogg zlib xvidcore x264 xorg-libXss gcc-lib-base libdvdnav libdvdread"
 BUILD_DEPENDS="gtk+-dev libmad-dev xorg-libXv-dev libtheora-dev \
 alsa-lib-dev ncurses-dev lame-dev xorg-libXdamage-dev giflib-dev \
 xorg-libXxf86vm-dev esound-dev audiofile-dev libogg-dev libvorbis-dev \
-xvidcore-dev zlib-dev xorg-xextproto pkg-config yasm gcc83 libdvdnav-dev libdvdread-dev"
+xvidcore-dev zlib-dev xorg-xextproto pkg-config yasm gcc libdvdnav-dev libdvdread-dev"
 
 # Handle arch package install. Less deps and no GTK gui for ARM
 case "$SLITAZ_ARCH" in
@@ -31,6 +31,10 @@ esac
 
 # Handle cross compilation. Host coreutils-file-* are used
 case "$ARCH" in
+	x86_64) 
+		ARCH_ARGS="--target=x86_64-linux --disable-sdl --enable-runtime-cpudetection" 
+		BUILD_DEPENDS="$BUILD_DEPENDS cdparanoia-III-dev x264-dev enca-dev \
+		libmng-dev lirc-dev" ;;
 	i?86) 
 		ARCH_ARGS="--target=i386-linux --disable-sdl --enable-runtime-cpudetection" 
 		BUILD_DEPENDS="$BUILD_DEPENDS cdparanoia-III-dev x264-dev enca-dev \
@@ -44,8 +48,6 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	export	CC=gcc-83
-	export	CXX=g++-83
 	./configure \
 		--prefix=/usr \
 		--confdir=/etc/mplayer \

@@ -11,8 +11,8 @@ WEB_SITE="https://www.lyx.org"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="ftp://ftp.lyx.org/pub/lyx/stable/${VERSION%.*.*}.x/$TARBALL"
 
-DEPENDS="aiksaurus aspell bzlib gcc83-lib-base libQtGui libQtSvg python"
-BUILD_DEPENDS="aiksaurus-dev aspell-dev bison gcc83 python Qt4-dev 
+DEPENDS="aiksaurus aspell bzlib gcc-lib-base libQtGui libQtSvg python"
+BUILD_DEPENDS="aiksaurus-dev aspell-dev bison gcc python Qt4-dev 
 	xorg-libX11-dev"
 
 # Rules to configure and make the package.
@@ -21,8 +21,6 @@ compile_rules()
 	# 2.3.4.4 unrecognised:
 	# --with-frontend=qt4
 	./configure		\
-		CC=gcc-83	\
-		CXX=g++-83	\
 		$CONFIGURE_ARGS &&
 	make &&
 	make -j1 install

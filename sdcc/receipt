@@ -12,15 +12,13 @@ WEB_SITE="http://sdcc.sourceforge.net/"
 TARBALL="$PACKAGE-src-$VERSION.tar.bz2"
 WGET_URL="$SF_MIRROR/$PACKAGE/$PACKAGE/$VERSION/$TARBALL"
 
-DEPENDS="gcc83-lib-base"
-BUILD_DEPENDS="automake flex gcc83 gcc83-lib-base gputils libboost-graph-dev texinfo"
+DEPENDS="gcc-lib-base"
+BUILD_DEPENDS="automake flex gcc gcc-lib-base gputils libboost-graph-dev texinfo"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	./configure				\
-		CC=gcc-83			\
-		CXX=g++-83			\
 		--prefix=/usr			\
 		--infodir=/usr/share/info	\
 		--mandir=/usr/share/man		\

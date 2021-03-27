@@ -11,9 +11,9 @@ WEB_SITE="http://snapper.io/"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="ftp://ftp.suse.com/pub/projects/snapper/$TARBALL"
 
-DEPENDS="acl attr dbus gcc83-lib-base libboost-system libboost-thread libxml2 \
+DEPENDS="acl attr dbus gcc-lib-base libboost-system libboost-thread libxml2 \
 	util-linux-blkid util-linux-mount util-linux-uuid zlib"
-BUILD_DEPENDS="btrfs-dev dbus-dev docbook-xsl e2fsprogs-dev gcc83 
+BUILD_DEPENDS="btrfs-dev dbus-dev docbook-xsl e2fsprogs-dev gcc 
 	libboost-dev libboost-thread-dev libjson-c-dev lvm2 pkg-config 
 	util-linux-mount-dev util-linux-uuid"
 
@@ -25,8 +25,6 @@ compile_rules()
 	export LDFLAGS="$LDFLAGS -luuid"
 
 	./configure				\
-		CC=gcc-83			\
-		CXX=g++-83			\
 		--prefix=/usr			\
 		--infodir=/usr/share/info	\
 		--mandir=/usr/share/man		\

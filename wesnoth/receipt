@@ -17,7 +17,7 @@ DEPENDS="cairo fontconfig fribidi gcc-lib-base libboost-filesystem \
 	libboost-system libboost-thread libpng libsdl2 libsdl2-image \
 	libsdl2-mixer libsdl2-net libsdl2-ttf pango xcb-util zlib"
 BUILD_DEPENDS="autoconf automake cairo-dev cmake dbus-dev findutils \
-	fontconfig-dev freetype-dev fribidi-dev gcc83 libboost-filesystem-dev \
+	fontconfig-dev freetype-dev fribidi-dev gcc libboost-filesystem-dev \
 	libboost-iostreams-dev libboost-math-dev libboost-program-options-dev \
 	libboost-regex-dev libboost-serialization-dev libboost-system-dev \
 	libboost-thread-dev libpng-dev libsdl2-dev libsdl2-image-dev \
@@ -27,9 +27,6 @@ BUILD_DEPENDS="autoconf automake cairo-dev cmake dbus-dev findutils \
 # Rules to configure and make the package.
 compile_rules()
 {
-	export	CC=gcc-83
-	export	CXX=g++-83
-
 	cmake -DCMAKE_INSTALL_PREFIX=/usr . &&
 	make $MAKEFLAGS &&
 	make DESTDIR=$DESTDIR install

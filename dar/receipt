@@ -12,8 +12,8 @@ WEB_SITE="http://dar.linux.free.fr/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
-DEPENDS="attr bzip2 gcc83-lib-base libgcrypt lzo"
-BUILD_DEPENDS="attr-dev bzip2-dev e2fsprogs-dev gcc83 
+DEPENDS="attr bzip2 gcc-lib-base libgcrypt lzo"
+BUILD_DEPENDS="attr-dev bzip2-dev e2fsprogs-dev gcc 
 	libgcrypt-dev lzo-dev"
 
 TODO="split package into dar and dar-dev ?"
@@ -22,8 +22,6 @@ TODO="split package into dar and dar-dev ?"
 compile_rules()
 {
 	./configure				\
-		CC=gcc-83			\
-		CXX=g++-83			\
 		--prefix=/usr			\
 		--infodir=/usr/share/info	\
 		--libdir=/lib			\

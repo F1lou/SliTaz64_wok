@@ -14,8 +14,8 @@ TARBALL="$SOURCE-$VERSION.tar.gz"
 WGET_URL="https://github.com/AbiWord/$SOURCE/releases/download/v$VERSION/$TARBALL"
 
 SUGGESTED="aspell"
-DEPENDS="dbus dbus-glib gcc83-lib-base glib"
-BUILD_DEPENDS="aspell-dev gcc83 glib-dev pkg-config"
+DEPENDS="dbus dbus-glib gcc-lib-base glib"
+BUILD_DEPENDS="aspell-dev gcc glib-dev pkg-config"
 
 HOST_ARCH="x86_64 i486 arm"
 
@@ -23,8 +23,6 @@ HOST_ARCH="x86_64 i486 arm"
 compile_rules()
 {
 	./configure		\
-		CC=gcc-83	\
-		CXX=g++-83	\
 		$CONFIGURE_ARGS &&
 	make &&
 	make install

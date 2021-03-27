@@ -12,8 +12,8 @@ WEB_SITE="https://www.isc.org/bind/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://ftp.isc.org/isc/bind9/$VERSION/$TARBALL"
 
-DEPENDS="attr gcc83-lib-base libbind libcrypto openssl perl"
-BUILD_DEPENDS="gcc83 krb5-dev libatomic libcap-dev libtool openssl-dev 
+DEPENDS="attr gcc-lib-base libbind libcrypto openssl perl"
+BUILD_DEPENDS="gcc krb5-dev libatomic libcap-dev libtool openssl-dev 
 	perl python python-ply readline-dev"
 
 CONFIG_FILES="/etc/bind"
@@ -25,8 +25,6 @@ compile_rules()
 	mkdir -p $DESTDIR/etc/bind
 
 	./configure				\
-		CC=gcc-83			\
-		CXX=g++-83			\
 		--prefix=/usr			\
 		--infodir=/usr/share/info	\
 		--sysconfdir=/etc/bind		\

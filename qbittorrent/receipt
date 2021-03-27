@@ -13,16 +13,13 @@ WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
 DEPENDS="libQtCore libQtDBus libQtGui libQtNetwork libQtXml libboost-system \
 	libcrypto libssl libtorrent-rasterbar zlib"
-BUILD_DEPENDS="gcc83 Qt4-dev qmake libboost-dev libtorrent-rasterbar-dev \
+BUILD_DEPENDS="gcc Qt4-dev qmake libboost-dev libtorrent-rasterbar-dev \
 	geoip openssl-dev"
 GENERIC_PIXMAPS="no"; GENERIC_MENUS="no"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export	CC=gcc-83
-	export	CXX=g++-83
-
 	./configure \
 		--prefix=/usr &&
 	make &&

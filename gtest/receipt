@@ -11,15 +11,12 @@ WEB_SITE="https://github.com/google/googletest/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}archive/release-$VERSION.tar.gz"
 
-DEPENDS="gcc83-lib-base"
-BUILD_DEPENDS="cmake gcc83"
+DEPENDS="gcc-lib-base"
+BUILD_DEPENDS="cmake gcc"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export	CC=gcc-83
-	export	CXX=g++-83
-
 	mkdir build &&
 	cd build &&
 	cmake	-DCMAKE_INSTALL_PREFIX=/usr ..

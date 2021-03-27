@@ -13,17 +13,14 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}files/$TARBALL"
 
 PROVIDE="lighttpd"
-DEPENDS="gcc83-lib-base libxml2 libxslt openssl zlib"
-BUILD_DEPENDS="cmake gcc83 libxml2-dev libxslt-dev openssl-dev zlib-dev"
+DEPENDS="gcc-lib-base libxml2 libxslt openssl zlib"
+BUILD_DEPENDS="cmake gcc libxml2-dev libxslt-dev openssl-dev zlib-dev"
 
 CONFIG_FILES="/etc/hiawatha"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export CC=gcc-83
-	export CXX=g++-83
-
 	cmake	.				\
 		-DCMAKE_INSTALL_PREFIX=/usr	\
 		-DCMAKE_INSTALL_SYSCONFDIR=/etc \

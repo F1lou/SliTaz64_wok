@@ -11,15 +11,12 @@ WEB_SITE="https://github.com/dirkvdb/ffmpegthumbnailer"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$WEB_SITE/archive/$VERSION.tar.gz"
 
-DEPENDS="ffmpeg gcc83-lib-base libjpeg libpng"
-BUILD_DEPENDS="cmake ffmpeg-dev gcc83 jpeg-dev libgnutls libpng-dev"
+DEPENDS="ffmpeg gcc-lib-base libjpeg libpng"
+BUILD_DEPENDS="cmake ffmpeg-dev gcc jpeg-dev libgnutls libpng-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export CC=gcc-83
-	export CXX=g++-83
-
 	cmake -DCMAKE_INSTALL_PREFIX=/usr . &&
 	make &&
 	make install

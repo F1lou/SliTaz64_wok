@@ -8,7 +8,7 @@ MAINTAINER="maintainer@slitaz.org"
 LICENSE="GPL3 LGPL3"
 WEB_SITE="https://www.qt.io/"
 
-DEPENDS="gcc83-lib-base glib zlib"
+DEPENDS="gcc-lib-base glib zlib"
 WANTED="qt5"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

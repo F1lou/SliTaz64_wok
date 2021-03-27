@@ -11,16 +11,14 @@ WEB_SITE="https://www.linbit.com/en/drbd-community/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://www.linbit.com/downloads/drbd/utils/$TARBALL"
 
-DEPENDS="gcc83-lib-base"
-BUILD_DEPENDS="autoconf automake flex gcc83 libxslt udev-dev"
+DEPENDS="gcc-lib-base"
+BUILD_DEPENDS="autoconf automake flex gcc libxslt udev-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	./autogen.sh &&
 	./configure				\
-		CC=gcc-83			\
-		CXX=g++-83			\
 		--prefix=/usr			\
 		--sysconfdir=/etc		\
 		--localstatedir=/var		\

@@ -12,17 +12,14 @@ WEB_SITE="https://vgough.github.io/encfs/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/vgough/$PACKAGE/releases/download/v$VERSION/$TARBALL"
 
-DEPENDS="fuse gcc83-lib-base libboost-filesystem libboost-serialization 
+DEPENDS="fuse gcc-lib-base libboost-filesystem libboost-serialization 
 	libboost-system openssl rlog"
-BUILD_DEPENDS="cmake fuse-dev gcc83 glibc-dev libboost-filesystem-dev 
+BUILD_DEPENDS="cmake fuse-dev gcc glibc-dev libboost-filesystem-dev 
 	libboost-serialization-dev libboost-system-dev openssl-dev rlog-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export	CC=gcc-83
-	export	CXX=g++-83
-
 	mkdir	build
 	cd	build
 	cmake	.. -DCMAKE_INSTALL_PREFIX=/usr &&

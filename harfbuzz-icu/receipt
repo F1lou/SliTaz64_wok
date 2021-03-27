@@ -13,15 +13,13 @@ TARBALL="$SOURCE-$VERSION.tar.xz"
 WGET_URL="https://www.freedesktop.org/software/$SOURCE/release/$TARBALL"
 
 PROVIDE="harfbuzz"
-DEPENDS="freetype gcc83-lib-base glib icu"
-BUILD_DEPENDS="freetype-dev gcc83 glib-dev icu-dev"
+DEPENDS="freetype gcc-lib-base glib icu"
+BUILD_DEPENDS="freetype-dev gcc glib-dev icu-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	./configure		\
-		CC=gcc-83	\
-		CXX=g++-83	\
 		--with-freetype	\
 		--with-glib	\
 		--with-gobject	\

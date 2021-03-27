@@ -11,15 +11,12 @@ WEB_SITE="https://drobilla.net/software/serd/"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="http://download.drobilla.net/$TARBALL"
 
-DEPENDS="gcc83-lib-base"
-BUILD_DEPENDS="gcc83"
+DEPENDS="gcc-lib-base"
+BUILD_DEPENDS="gcc"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export	CC=gcc-83
-	export	CXX=g++-83
-
 	./waf configure --prefix=/usr &&
 	./waf build &&
 	./waf install --destdir=$DESTDIR

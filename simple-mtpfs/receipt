@@ -11,17 +11,14 @@ WEB_SITE="https://github.com/phatina/simple-mtpfs"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/phatina/$PACKAGE/archive/$TARBALL"
 
-DEPENDS="fuse libmtp gcc83-lib-base"
-BUILD_DEPENDS="automake fuse-dev gcc83 libmtp-dev"
+DEPENDS="fuse libmtp gcc-lib-base"
+BUILD_DEPENDS="automake fuse-dev gcc libmtp-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export	CC=gcc-83
-	export	CXX=g++-83
-
 	./autogen.sh &&
 	mkdir	build &&
 	cd	build &&

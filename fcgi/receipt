@@ -12,8 +12,8 @@ WEB_SITE="https://fastcgi-archives.github.io/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/FastCGI-Archives/${PACKAGE}2/archive/$VERSION.tar.gz"
 
-DEPENDS="gcc83-lib-base"
-BUILD_DEPENDS="autoconf automake gcc83 libtool"
+DEPENDS="gcc-lib-base"
+BUILD_DEPENDS="autoconf automake gcc libtool"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -23,8 +23,6 @@ compile_rules()
 	
 	./autogen.sh &&
 	./configure				\
-		CC=gcc-83			\
-		CXX=g++-83			\
 		--prefix=/usr			\
 		--infodir=/usr/share/info	\
 		--mandir=/usr/share/man		\

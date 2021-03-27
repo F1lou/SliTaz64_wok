@@ -11,17 +11,14 @@ WEB_SITE="https://gegl.org/babl/"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="http://download.gimp.org/pub/$PACKAGE/${VERSION%.*}/$TARBALL"
 
-DEPENDS="gcc83-lib-base gobject-introspection lcms2"
-BUILD_DEPENDS="gcc83 gobject-introspection-dev lcms2-dev meson ninja"
+DEPENDS="gcc-lib-base gobject-introspection lcms2"
+BUILD_DEPENDS="gcc gobject-introspection-dev lcms2-dev meson ninja"
 
 HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export	CC=gcc-83
-	export	CXX=g++-83
-
 	meson build --prefix=/usr
 	cd	build
 	ninja &&

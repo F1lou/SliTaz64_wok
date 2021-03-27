@@ -11,8 +11,8 @@ WEB_SITE="https://www.gnupg.org/related_software/gpgme/"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="https://www.gnupg.org/ftp/gcrypt/gpgme/$TARBALL"
 
-DEPENDS="gcc83-lib-base gnupg libassuan"
-BUILD_DEPENDS="gcc83 gnupg libassuan-dev libgpg-error-dev"
+DEPENDS="gcc-lib-base gnupg libassuan"
+BUILD_DEPENDS="gcc gnupg libassuan-dev libgpg-error-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -21,8 +21,6 @@ compile_rules()
 	echo "f87f34e695e8d74ccc7c8f42864d50630afebb0e  $SRC/$TARBALL" | sha1sum -c || exit 1
 
 	./configure		\
-		CC=gcc-83	\
-		CXX=g++-83	\
 		$CONFIGURE_ARGS &&
 	make &&
 	make install

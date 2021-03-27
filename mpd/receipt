@@ -15,7 +15,7 @@ DEPENDS="alsa-lib audiofile faad2 flac glib lame libboost \
 	libcrypto libcurl libid3tag libmad libogg libsamplerate \
 	libvorbis libwrap sqlite"
 BUILD_DEPENDS="alsa-lib-dev audiofile-dev curl-dev faad2-dev flac-dev \
-	gcc83 glib-dev lame-dev libboost-dev libid3tag-dev \
+	gcc glib-dev lame-dev libboost-dev libid3tag-dev \
 	libmad-dev libogg-dev libsamplerate-dev libvorbis-dev \
 	libwrap-dev meson zlib-dev"
 
@@ -39,8 +39,6 @@ esac
 compile_rules()
 {
 #	sed -i 's/<stdbool.h>/&\n#include <stdio.h>/' src/decoder_api.h
-	export	CC=gcc-83
-	export	CXX=g++-83
 	meson . output			\
 		-Djack=disabled		\
 		-Dao=disabled		\

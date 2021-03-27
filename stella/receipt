@@ -12,15 +12,12 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/stella-emu/$PACKAGE/archive/$VERSION.tar.gz"
 TAGS="emulator atari"
 
-DEPENDS="gcc83-lib-base libpng libsdl2"
-BUILD_DEPENDS="gcc83 libpng-dev libsdl2-dev zlib-dev"
+DEPENDS="gcc-lib-base libpng libsdl2"
+BUILD_DEPENDS="gcc libpng-dev libsdl2-dev zlib-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export	CC=gcc-83
-	export	CXX=g++-83
-
 	./configure		\
 		--prefix=/usr &&
 	make &&

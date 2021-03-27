@@ -12,8 +12,8 @@ WEB_SITE="http://cgdb.sourceforge.net/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://cgdb.me/files/$TARBALL"
 
-DEPENDS="gcc83-lib-base gdb ncurses readline"
-BUILD_DEPENDS="gcc83 ncurses-dev readline-dev texinfo"
+DEPENDS="gcc-lib-base gdb ncurses readline"
+BUILD_DEPENDS="gcc ncurses-dev readline-dev texinfo"
 
 CROSS="error: cannot check for file existence when cross compiling"
 
@@ -21,8 +21,6 @@ CROSS="error: cannot check for file existence when cross compiling"
 compile_rules()
 {
 	./configure			\
-		CC=gcc-83		\
-		CXX=g++-83		\
 		--build=$HOST_SYSTEM	\
 		--host=$HOST_SYSTEM &&
 	make &&

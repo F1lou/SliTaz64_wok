@@ -11,15 +11,13 @@ WEB_SITE="https://opencv.org/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/$PACKAGE/$PACKAGE/archive/$VERSION/$TARBALL"
 
-DEPENDS="ffmpeg gcc83-lib-base gtk+ jpeg libpng tiff"
-BUILD_DEPENDS="cmake ffmpeg-dev gcc83 gtk+-dev jpeg-dev libgnutls \
+DEPENDS="ffmpeg gcc-lib-base gtk+ jpeg libpng tiff"
+BUILD_DEPENDS="cmake ffmpeg-dev gcc gtk+-dev jpeg-dev libgnutls \
 	libpng-dev tiff-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export	CC=gcc-83
-	export	CXX=g++-83
 	export	LDFLAGS="$LDFLAGS -latomic"
 
 	mkdir	build &&

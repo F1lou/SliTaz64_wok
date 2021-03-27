@@ -12,13 +12,13 @@ WEB_SITE="https://github.com/google/zopfli"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$WEB_SITE/archive/$TARBALL"
 
-DEPENDS="gcc83-lib-base"
-BUILD_DEPENDS="gcc83"
+DEPENDS="gcc-lib-base"
+BUILD_DEPENDS="gcc"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	make CC=gcc-83 CXX=g++-83 zopflipng zopfli libzopfli
+	make zopflipng zopfli libzopfli
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

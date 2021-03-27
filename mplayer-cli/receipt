@@ -14,10 +14,10 @@ WGET_URL="http://www1.mplayerhq.hu/MPlayer/releases/$TARBALL"
 
 
 PROVIDE="mplayer"
-DEPENDS="alsa-lib fontconfig gcc83-lib-base giflib libgnutls libpng libmad 
+DEPENDS="alsa-lib fontconfig gcc-lib-base giflib libgnutls libpng libmad 
 	libsdl libxml2 ncurses pcre xorg-libXdamage xorg-libXss xorg-libXv 
 	xorg-libXxf86vm zlib"
-BUILD_DEPENDS="alsa-lib-dev fontconfig-dev freetype-dev gcc83 giflib-dev 
+BUILD_DEPENDS="alsa-lib-dev fontconfig-dev freetype-dev gcc giflib-dev 
 	gnutls-dev libmad-dev libsdl-dev ncurses-dev pkg-config 
 	xorg-libXdamage-dev xorg-libXv-dev xorg-libXxf86vm-dev 
 	xorg-xextproto yasm zlib-dev "
@@ -35,9 +35,6 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	export	CC=gcc-83
-	export	CXX=g++-83
-
 	./configure					\
 		--prefix=/usr				\
 		--confdir=/etc/mplayer			\

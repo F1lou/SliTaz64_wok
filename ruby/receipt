@@ -12,8 +12,8 @@ WEB_SITE="https://www.ruby-lang.org/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://cache.ruby-lang.org/pub/$PACKAGE/${VERSION%.*}/$TARBALL"
 
-DEPENDS="gcc83-lib-base gdbm libdb libruby ncurses openssl readline zlib"
-BUILD_DEPENDS="db-dev gcc83 openssl-dev readline-dev tcl-dev zlib-dev"
+DEPENDS="gcc-lib-base gdbm libdb libruby ncurses openssl readline zlib"
+BUILD_DEPENDS="db-dev gcc openssl-dev readline-dev tcl-dev zlib-dev"
 
 SUGGESTED="tk"
 RELATED="libruby libruby-extras ruby-dev"
@@ -22,7 +22,7 @@ HOST_ARCH="x86_64 i486 arm"
 
 # Handle cross compilation.
 case "$ARCH" in
-	i?86) 
+	i?86|x86_64) 
 		BUILD_DEPENDS="$BUILD_DEPENDS coreutils-file-output-full tk-dev " ;;
 	arm*)
 		# executable host ruby is required. use --with-baseruby option.
@@ -36,10 +36,6 @@ esac
 compile_rules()
 {
 	#patch -Np1 < $stuff/openssl-1.0.patch
-
-	export	CC=gcc-83
-	export	CXX=g++-83
-
 	./configure			\
 		--prefix=/usr		\
 		--enable-shared		\

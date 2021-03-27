@@ -12,9 +12,9 @@ WEB_SITE="https://feh.finalrewind.org/"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="${WEB_SITE}$TARBALL"
 
-DEPENDS="freetype gcc83-lib-base giblib imlib2 jpeg libcurl libpng xorg-libX11 
+DEPENDS="freetype gcc-lib-base giblib imlib2 jpeg libcurl libpng xorg-libX11 
 	xorg-libXau xorg-libXdmcp xorg-libXext xorg-libXinerama"
-BUILD_DEPENDS="curl-dev gcc83 giblib-dev imlib2-dev jpeg-dev libpng-dev 
+BUILD_DEPENDS="curl-dev gcc giblib-dev imlib2-dev jpeg-dev libpng-dev 
 	xorg-libX11-dev xorg-xineramaproto xorg-xproto"
 
 HOST_ARCH="x86_64 i486 arm"
@@ -22,9 +22,7 @@ HOST_ARCH="x86_64 i486 arm"
 # Rules to configure and make the package.
 compile_rules()
 {
-	make			\
-		CC=gcc-83	\
-		PREFIX=/usr &&
+	make &&
 	make	install		\
 		PREFIX=/usr	\
 		DESTDIR=$DESTDIR  &&

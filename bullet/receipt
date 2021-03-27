@@ -11,15 +11,12 @@ WEB_SITE="https://www.bulletphysics.com/Bullet/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/bulletphysics/${PACKAGE}3/archive/$VERSION/${PACKAGE}3-$VERSION.tar.gz"
 
-DEPENDS="freeglut gcc83-lib-base mesa"
-BUILD_DEPENDS="cmake freeglut-dev gcc83 mesa-dev"
+DEPENDS="freeglut gcc-lib-base mesa"
+BUILD_DEPENDS="cmake freeglut-dev gcc mesa-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export	CC=gcc-83
-	export	CXX=g++-83
-
 	cd build3 &&
 	cmake	..			\
 		-DBUILD_CPU_DEMOS=OFF	\

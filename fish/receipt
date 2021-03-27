@@ -11,16 +11,14 @@ WEB_SITE="https://fishshell.com"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/fish-shell/fish-shell/releases/download/$VERSION/$TARBALL"
 
-DEPENDS="gcc83-lib-base ncurses"
-BUILD_DEPENDS="gcc83 ncurses-dev ncursesw-extra"
+DEPENDS="gcc-lib-base ncurses"
+BUILD_DEPENDS="gcc ncurses-dev ncursesw-extra"
 
 compile_rules()
 {
 	export LDFLAGS="$LDFLAGS -ltinfo"
 
 	./configure		\
-		CC=gcc-83	\
-		CXX=g++-83	\
 		$CONFIGURE_ARGS &&
 	make &&
 	make DESTDIR=$DESTDIR install

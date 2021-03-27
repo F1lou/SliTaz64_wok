@@ -9,7 +9,7 @@ MAINTAINER="maintainer@slitaz.org"
 LICENSE="GPL3 LGPL3"
 WEB_SITE="https://www.qt.io/"
 
-DEPENDS="expat fontconfig freetype gcc83-lib-base glib libpng libQt5Core 
+DEPENDS="expat fontconfig freetype gcc-lib-base glib libpng libQt5Core 
 	libQt5Designer libQt5Gui libQt5Network libQt5Script libQt5Svg 
 	libQt5Xml xorg-libICE xorg-libSM xorg-libX11 xorg-libXau 
 	xorg-libXdmcp xorg-libXext xorg-libXi xorg-libXrandr 

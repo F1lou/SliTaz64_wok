@@ -12,10 +12,10 @@ WEB_SITE="https://ice-wm.org/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/ice-wm/$PACKAGE/archive/$VERSION.tar.gz"
 
-DEPENDS="freetype gcc83-lib-base gdk-pixbuf gettext-base imlib xorg-libICE 
+DEPENDS="freetype gcc-lib-base gdk-pixbuf gettext-base imlib xorg-libICE 
 	xorg-libSM xorg-libX11 xorg-libXext xorg-libXft xorg-libXinerama 
 	xorg-libXpm xorg-libXrandr xorg-libXrender"
-BUILD_DEPENDS="asciidoc autoconf automake fontconfig-dev freetype-dev gcc83 
+BUILD_DEPENDS="asciidoc autoconf automake fontconfig-dev freetype-dev gcc 
 	gdk-pixbuf-dev gettext giflib-dev imlib-dev libtool pkg-config 
 	util-linux-uuid-dev xorg-libICE-dev xorg-libSM-dev xorg-libX11-dev 
 	xorg-libXext-dev xorg-libXft-dev xorg-libXinerama-dev xorg-libXpm-dev 
@@ -33,8 +33,6 @@ compile_rules()
 	./autogen.sh &&
 	./configure				\
 		ASCIIDOC=asciidoc		\
-		CC=gcc-83			\
-		CXX=g++-83			\
 		--prefix=/usr			\
 		--sysconfdir=/etc		\
 		--libexecdir=/usr/lib/icewm	\

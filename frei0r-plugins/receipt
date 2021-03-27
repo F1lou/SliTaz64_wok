@@ -12,8 +12,8 @@ WEB_SITE="https://frei0r.dyne.org/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://files.dyne.org/frei0r/releases/$TARBALL"
 
-DEPENDS="gavl gcc83-lib-base"
-BUILD_DEPENDS="gavl-dev gcc83"
+DEPENDS="gavl gcc-lib-base"
+BUILD_DEPENDS="gavl-dev gcc"
 
 # Rules to configure and make the package.
 
@@ -27,8 +27,6 @@ compile_rules()
 		Makefile.in
 
 	./configure		\
-		CC=gcc-83	\
-		CXX=g++-83	\
 		$CONFIGURE_ARGS && 
 	make -j 1 &&
 	make install

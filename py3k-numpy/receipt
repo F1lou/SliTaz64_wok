@@ -12,15 +12,12 @@ SOURCE="numpy"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/$SOURCE/$SOURCE/archive/v$VERSION.tar.gz"
 
-DEPENDS="gcc83-lib-base py3k"
-BUILD_DEPENDS="gcc83 py3k-dev py3k-cython"
+DEPENDS="gcc-lib-base py3k"
+BUILD_DEPENDS="gcc py3k-dev py3k-cython"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export	CC=gcc-83
-	export	CXX=g++-83
-
 	{
 	python3 setup.py build &&
 	python3 setup.py install --root=$DESTDIR

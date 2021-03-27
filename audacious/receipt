@@ -12,9 +12,9 @@ WEB_SITE="https://audacious-media-player.org/"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="http://distfiles.audacious-media-player.org/$TARBALL"
 
-DEPENDS="dbus-glib gcc83-lib-base gtk+ libmcs libmowgli libsamplerate libxml2 
+DEPENDS="dbus-glib gcc-lib-base gtk+ libmcs libmowgli libsamplerate libxml2 
 	xorg-libXdamage"
-BUILD_DEPENDS="dbus-dev dbus-glib-dev gcc83 gtk+-dev libmcs libmcs-dev 
+BUILD_DEPENDS="dbus-dev dbus-glib-dev gcc gtk+-dev libmcs libmcs-dev 
 	libmowgli libmowgli-dev libsamplerate-dev libxml2-dev"
 
 # Rules to configure and make the package.
@@ -23,8 +23,6 @@ compile_rules()
 #	sed -i "s/touch -t 0001010000 /touch /g" configure
 
 	./configure				\
-		CC=gcc-83			\
-		CXX=g++-83			\
 		--prefix=/usr			\
 		--infodir=/usr/share/info	\
 		--mandir=/usr/share/man		\

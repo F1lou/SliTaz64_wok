@@ -11,8 +11,8 @@ WEB_SITE="https://lftp.yar.ru/"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://lftp.tech/ftp/$TARBALL"
 
-DEPENDS="expat gcc83-lib-base gmp gnutls readline"
-BUILD_DEPENDS="expat-dev gcc83 gcc83-lib-base gmp-dev gnutls-dev gperf \
+DEPENDS="expat gcc-lib-base gmp gnutls readline"
+BUILD_DEPENDS="expat-dev gcc gcc-lib-base gmp-dev gnutls-dev gperf \
 	libgnutls ncurses-dev readline-dev"
 
 CROSS="bug: failed at test"
@@ -21,8 +21,6 @@ CROSS="bug: failed at test"
 compile_rules()
 {
 	./configure			\
-		CC=gcc-83		\
-		CXX=g++-83		\
 		--with-gnutls		\
 		--without-openssl	\
 		--build=$HOST_SYSTEM	\

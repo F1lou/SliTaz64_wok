@@ -11,14 +11,12 @@ WEB_SITE="https://www.cmake.org/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://www.cmake.org/files/v${VERSION%.*}/$TARBALL"
 
-DEPENDS="gcc83-lib-base libidn openssl"
-BUILD_DEPENDS="gcc83 gcc83-lib-base ncurses-dev"
+DEPENDS="gcc-lib-base libidn openssl"
+BUILD_DEPENDS="gcc gcc-lib-base ncurses-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export	CXX=g++-83
-
 	./bootstrap				\
 		--prefix=/usr			\
 		--docdir=/share/doc/$PACKAGE	\

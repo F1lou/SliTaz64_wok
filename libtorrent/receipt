@@ -11,8 +11,8 @@ WEB_SITE="https://rakshasa.github.io/rtorrent/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/rakshasa/$PACKAGE/archive/v$VERSION.tar.gz"
 
-DEPENDS="curl gcc83-lib-base libsigc++ openssl"
-BUILD_DEPENDS="automake curl-dev gcc83 libsigc++-dev libtool openssl-dev"
+DEPENDS="curl gcc-lib-base libsigc++ openssl"
+BUILD_DEPENDS="automake curl-dev gcc libsigc++-dev libtool openssl-dev"
 
 CROSS_BUGS="bug: can not run test program"
 #HOST_ARCH="x86_64 i486 arm"
@@ -22,8 +22,6 @@ compile_rules()
 {
 	./autogen.sh &&
 	./configure		\
-		CC=gcc-83	\
-		CXX=g++-83	\
 		$CONFIGURE_ARGS &&
 	make -j 1 &&
 	make install

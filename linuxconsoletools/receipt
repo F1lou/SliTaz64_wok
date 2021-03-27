@@ -11,17 +11,15 @@ WEB_SITE="https://sourceforge.net/projects/linuxconsole/"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="$SF_MIRROR/linuxconsole/$TARBALL"
 
-DEPENDS="gcc83-lib-base libsdl2"
-BUILD_DEPENDS="gcc83 libsdl2-dev"
+DEPENDS="gcc-lib-base libsdl2"
+BUILD_DEPENDS="gcc libsdl2-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	export PREFIX=/usr
 
-	make			\
-		CC=gcc-83	\
-		CXX=g++-83 &&
+	make &&
 	make DESTDIR=$DESTDIR install
 }
 

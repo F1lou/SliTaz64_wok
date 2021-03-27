@@ -11,15 +11,12 @@ WEB_SITE="https://drobilla.net/software/sratom/"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="http://download.drobilla.net/$TARBALL"
 
-DEPENDS="gcc83-lib-base serd sord"
-BUILD_DEPENDS="gcc83 lv2 pkg-config serd-dev sord-dev"
+DEPENDS="gcc-lib-base serd sord"
+BUILD_DEPENDS="gcc lv2 pkg-config serd-dev sord-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export	CC=gcc-83
-	export	CXX=g++-83
-
 	./waf configure --prefix=/usr &&
 	./waf build &&
 	./waf install --destdir=$DESTDIR

@@ -16,7 +16,7 @@ EXTRA_SOURCE_FILES="$WGET_URL2"
 
 DEPENDS="curl irrlicht jpeg libglu-mesa libpng libspatialindex libssl \
 	libvorbis luajit mesa minetest-common openal sqlite"
-BUILD_DEPENDS="cmake curl-dev freetype-dev gcc83 irrlicht-dev jpeg-dev \
+BUILD_DEPENDS="cmake curl-dev freetype-dev gcc irrlicht-dev jpeg-dev \
 	libglu-mesa-dev libogg-dev libpng-dev libspatialindex-dev \
 	libvorbis-dev luajit-dev mesa-dev openal-dev sqlite-dev \
 	xorg-libXxf86vm-dev"
@@ -26,9 +26,6 @@ compile_rules()
 {
 	# As gcc-4.6.3 is insufficient, the most recent version of gcc
 	# available in the cooking repository is used
-	export	CC=gcc-83
-	export	CXX=g++-83
-
 	[ -s "$SOURCES_REPOSITORY/$TARBALL2" ] || wget --no-check-certificate \
 		-O "$SOURCES_REPOSITORY/$TARBALL2" ${EXTRA_SOURCE_FILES}
 	{ 

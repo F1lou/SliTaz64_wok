@@ -12,15 +12,12 @@ WEB_SITE="https://www.scintilla.org/"
 TARBALL="${PACKAGE}${VERSION//./}.tgz"
 WGET_URL="$SF_MIRROR/scintilla/$TARBALL"
 
-DEPENDS="gcc83-lib-base gtk+ xorg-libXdamage"
-BUILD_DEPENDS="gcc83 gtk+-dev"
+DEPENDS="gcc-lib-base gtk+ xorg-libXdamage"
+BUILD_DEPENDS="gcc gtk+-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export	CC=gcc-83
-	export	CXX=g++-83
-
 	# Build scintilla
 	cd $src/scintilla/gtk
 	make GTK2=1 prefix=/usr

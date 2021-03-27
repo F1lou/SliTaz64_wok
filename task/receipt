@@ -12,9 +12,9 @@ WEB_SITE="https://taskwarrior.org/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}download/$TARBALL"
 
-DEPENDS="gcc83-lib-base libgnutls libunistring ncurses 
+DEPENDS="gcc-lib-base libgnutls libunistring ncurses 
 	util-linux-uuid"
-BUILD_DEPENDS="cmake gcc83 gnutls-dev libgnutls libunistring-dev 
+BUILD_DEPENDS="cmake gcc gnutls-dev libgnutls libunistring-dev 
 	ncurses-dev util-linux-uuid-dev"
 
 # Rules to configure and make the package.
@@ -25,9 +25,6 @@ compile_rules()
 		#--infodir=/usr/share/info \
 		#--mandir=/usr/share/man \
 		#$CONFIGURE_ARGS &&
-
-	export	CC=gcc-83
-	export	CXX=g++-83
 
 	cmake . -DCMAKE_INSTALL_PREFIX=/usr &&
 	make &&

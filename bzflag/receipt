@@ -11,8 +11,8 @@ WEB_SITE="https://bzflag.org"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
-DEPENDS="c-ares curl gcc83-lib-base glew libsdl mesa"
-BUILD_DEPENDS="c-ares-dev curl-dev gcc83 glew-dev libsdl-dev 
+DEPENDS="c-ares curl gcc-lib-base glew libsdl mesa"
+BUILD_DEPENDS="c-ares-dev curl-dev gcc glew-dev libsdl-dev 
 	mesa-dev util-linux-uuid-dev"
 
 # Rules to configure and make the package.
@@ -25,8 +25,6 @@ compile_rules()
 	export LDFLAGS="$LDFLAGS -Wl,--copy-dt-needed-entries -ltinfo"
 
 	./configure		\
-		CC=gcc-83	\
-		CXX=g++-83	\
 		$CONFIGURE_ARGS &&
 	make &&
 	make DESTDIR=$DESTDIR install

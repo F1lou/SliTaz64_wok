@@ -12,8 +12,8 @@ WEB_SITE="https://redis.io/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="http://download.redis.io/releases/$TARBALL"
 
-DEPENDS="gcc83-lib-base"
-BUILD_DEPENDS="gcc83 libxslt"
+DEPENDS="gcc-lib-base"
+BUILD_DEPENDS="gcc libxslt"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -21,8 +21,6 @@ compile_rules()
 	export	LDFLAGS="$LDFLAGS -latomic"
 
 	make			\
-		CC=gcc-83	\
-		CXX=g++-83	\
 		PREFIX=/usr
 }
 

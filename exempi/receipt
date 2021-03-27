@@ -11,8 +11,8 @@ WEB_SITE="https://wiki.freedesktop.org/libopenraw/Exempi/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://libopenraw.freedesktop.org/download/$TARBALL"
 
-DEPENDS="expat gcc83-lib-base"
-BUILD_DEPENDS="expat-dev gcc83 libboost-dev libboost-test-dev"
+DEPENDS="expat gcc-lib-base"
+BUILD_DEPENDS="expat-dev gcc libboost-dev libboost-test-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -21,8 +21,6 @@ compile_rules()
 	#	--enable-static-no
 
 	./configure		\
-		CC=gcc-83	\
-		CXX=g++-83	\
 		--prefix=/usr	\
 		$CONFIGURE_ARGS &&
 	make &&

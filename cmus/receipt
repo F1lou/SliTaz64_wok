@@ -11,8 +11,8 @@ WEB_SITE="https://cmus.github.io/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/$PACKAGE/$PACKAGE/archive/v$VERSION/$TARBALL"
 
-DEPENDS="alsa-lib flac gcc83-lib-base libmad libvorbis ncurses"
-BUILD_DEPENDS="alsa-lib-dev flac-dev gcc83 libmad-dev libvorbis-dev 
+DEPENDS="alsa-lib flac gcc-lib-base libmad libvorbis ncurses"
+BUILD_DEPENDS="alsa-lib-dev flac-dev gcc libmad-dev libvorbis-dev 
 	ncurses-dev"
 
 # Rules to configure and make the package.
@@ -21,8 +21,6 @@ compile_rules()
 	export	LDFLAGS="$LDFLAGS -latomic"
 	
 	./configure			\
-		CC=gcc-83		\
-		CXX=g++-83		\
 		CONFIG_AO=n		\
 		CONFIG_FFMPEG=n		\
 		CONFIG_JACK=n		\

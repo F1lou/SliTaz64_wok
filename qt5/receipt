@@ -14,11 +14,11 @@ TARBALL="$SOURCE-$VERSION.tar.xz"
 WGET_URL="http://download.qt.io/archive/qt/${VERSION%.*}/$VERS[BION/single/$TARBALL"
 PROVIDE="qt-x11-opensource-src Qt5"
 
-DEPENDS="gcc83-lib-base glibc-locale libQt3Support libQt5Core libQt5DBus 
+DEPENDS="gcc-lib-base glibc-locale libQt3Support libQt5Core libQt5DBus 
 	libQt5Designer libQt5Gui libQt5Help libQt5Network libQt5OpenGL 
 	libQt5Script libQt5Sql libQt5Svg libQt5Xml"
 SUGGESTED="libQt5Plugins libQt5ScriptTools"
-BUILD_DEPENDS="alsa-lib-dev cups-dev dbus-dev eudev-dev gcc83 glib-dev 
+BUILD_DEPENDS="alsa-lib-dev cups-dev dbus-dev eudev-dev gcc glib-dev 
 	gst-plugins-base-1.0-dev gtk+3-dev icu-dev fontconfig-dev 
 	freetype-dev harfbuzz-dev libjpeg-turbo-dev libpng-dev 
 	libxcb-dev libxkbcommon-dev mesa-dev openssl-dev pcre-dev 
@@ -30,7 +30,7 @@ compile_rules()
 {
 	export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${src}/lib"
 
-	sed -i 's|gcc|gcc-83|; s|g++|g++-83|'	qtbase/mkspecs/common/g++-base.conf
+	#sed -i 's|gcc|gcc-83|; s|g++|g++-83|'	qtbase/mkspecs/common/g++-base.conf
 
 	./configure						\
 		-prefix /usr					\

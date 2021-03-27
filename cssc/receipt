@@ -13,15 +13,13 @@ SOURCE="CSSC"
 TARBALL="$SOURCE-$VERSION.tar.gz"
 WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
 
-DEPENDS="gcc83-lib-base"
-BUILD_DEPENDS="gcc83"
+DEPENDS="gcc-lib-base"
+BUILD_DEPENDS="gcc"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	./configure				\
-		CC=gcc-83			\
-		CXX=g++-83			\
 		--prefix=/usr			\
 		--infodir=/usr/share/info	\
 		--libexecdir=/usr/lib/$PACKAGE	\

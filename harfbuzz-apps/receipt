@@ -8,7 +8,7 @@ MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL2"
 WEB_SITE="https://www.freedesktop.org/wiki/Software/HarfBuzz/"
 
-DEPENDS="cairo-gl gcc83-lib-base harfbuzz"
+DEPENDS="cairo-gl gcc-lib-base harfbuzz"
 WANTED="harfbuzz"
 
 HOST_ARCH="x86_64 i486 arm"

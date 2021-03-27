@@ -12,9 +12,9 @@ WEB_SITE="https://www.videolan.org/vlc/"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://download.videolan.org/pub/videolan/$PACKAGE/$VERSION/$TARBALL"
 
-DEPENDS="gcc83-lib-base libQtCore libQtGui libvlc"
+DEPENDS="gcc-lib-base libQtCore libQtGui libvlc"
 BUILD_DEPENDS="alsa-lib-dev cairo-dev dbus-dev expat-dev ffmpeg-dev flac-dev 
-	fluidsynth-dev fribidi-dev gcc83 gcc83-lib-base gettext gmp-dev gnutls-dev 
+	fluidsynth-dev fribidi-dev gcc gcc-lib-base gettext gmp-dev gnutls-dev 
 	hicolor-icon-theme jack-audio-connection-kit-dev libarchive-dev 
 	libavc1394-dev libcaca-dev libcddb-dev libdvdread-dev libdvdnav-dev 
 	libegl-mesa libgnutls libmad-dev libmodplug-dev libmpeg2-dev libmtp-dev 
@@ -35,7 +35,6 @@ compile_rules()
 	# export ncurses paths 
 	export NCURSES_CFLAGS="-I/usr/include"
 	export NCURSES_LIBS="-L/lib -lncurses -ltinfo"
-	export CC=gcc-83 CXX=g++-83 BUILDCC=gcc-83
 
 	./configure			\
 		--prefix=/usr		\

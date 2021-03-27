@@ -11,16 +11,14 @@ WEB_SITE="https://linuxcontainers.org/lxc/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://linuxcontainers.org/downloads/$PACKAGE/$TARBALL"
 
-DEPENDS="bridge-utils gcc83-lib-base gnutls iptables libcap linux-bridge 
+DEPENDS="bridge-utils gcc-lib-base gnutls iptables libcap linux-bridge 
 	linux-netfilter perl util-linux-getopt"
-BUILD_DEPENDS="gcc83 gnutls-dev libcap-dev util-linux-getopt"
+BUILD_DEPENDS="gcc gnutls-dev libcap-dev util-linux-getopt"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	./configure				\
-		CC=gcc-83			\
-		CXX=g++-83			\
 		--prefix=/usr			\
 		--mandir=/usr/share/man		\
 		--sysconfdir=/etc		\

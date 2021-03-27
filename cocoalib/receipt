@@ -11,9 +11,9 @@ WEB_SITE="http://cocoa.dima.unige.it/cocoalib/"
 TARBALL="CoCoALib-$VERSION.tgz"
 WGET_URL="${WEB_SITE}tgz/$TARBALL"
 
-DEPENDS="gcc83-lib-base gmp gsl libboost-filesystem libboost-iostreams 
+DEPENDS="gcc-lib-base gmp gsl libboost-filesystem libboost-iostreams 
 	libboost-system libboost-thread libboost-tr1"
-BUILD_DEPENDS="bash gcc83 gmp-dev gsl-dev libboost-filesystem-dev 
+BUILD_DEPENDS="bash gcc gmp-dev gsl-dev libboost-filesystem-dev 
 	libboost-iostreams-dev libboost-system-dev libboost-thread-dev 
 	libboost-tr1-dev"
 
@@ -22,9 +22,6 @@ compile_rules()
 {
 #	find | grep Makefile | sed 's/Makefile.*/Makefile_dependencies/' | \
 #		xargs touch -d 197001010000
-
-	export	CC=gcc-83	# rejected as configure parameter
-	export	CXX=g++-83
 
 	./configure &&
 	make library

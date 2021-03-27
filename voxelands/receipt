@@ -12,8 +12,8 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://gitlab.com/$PACKAGE/$PACKAGE/-/archive/$VERSION/$PACKAGE-$VERSION.tar.gz --no-check-certificate"
 
 DEPENDS="curl irrlicht jpeg libglu-mesa libpng libspatialindex libssl \
-	libvorbis luajit mesa openal sqlite gcc83-lib-base"
-BUILD_DEPENDS="curl-dev freetype-dev gcc83 irrlicht-dev jpeg-dev \
+	libvorbis luajit mesa openal sqlite gcc-lib-base"
+BUILD_DEPENDS="curl-dev freetype-dev gcc irrlicht-dev jpeg-dev \
 	libglu-mesa-dev libogg-dev libpng-dev libspatialindex-dev \
 	libvorbis-dev luajit-dev mesa-dev openal-dev sqlite-dev \
 	xorg-libXxf86vm-dev cmake"
@@ -23,9 +23,6 @@ compile_rules()
 {
 	# As gcc-4.6.3 is insufficient, the most recent version of gcc
 	# available in the cooking repository is used
-	export	CC=gcc-83
-	export	CXX=g++-83
-
 	cmake					\
 		-DCMAKE_INSTALL_PREFIX=/usr	\
 		-DBUILD_SERVER=1		\

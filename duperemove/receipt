@@ -11,13 +11,13 @@ WEB_SITE="https://github.com/markfasheh/duperemove"
 WGET_URL="$WEB_SITE/archive/v$VERSION.tar.gz"
 
 DEPENDS="glib libsqlite"
-BUILD_DEPENDS="gcc83 glib-dev sqlite-dev"
+BUILD_DEPENDS="gcc glib-dev sqlite-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	sed -i 's|/local||' Makefile
-	make CC=gcc-83 &&
+	make &&
 	make DESTDIR=$DESTDIR install
 }
 

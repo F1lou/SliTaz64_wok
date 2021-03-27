@@ -12,8 +12,8 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="http://znc.in/releases/archive/$TARBALL"
 
 SUGGESTED="tcl"
-DEPENDS="gcc83-lib-base libssl zlib"
-BUILD_DEPENDS="gcc83 openssl-dev tcl-dev zlib-dev"
+DEPENDS="gcc-lib-base libssl zlib"
+BUILD_DEPENDS="gcc openssl-dev tcl-dev zlib-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 
@@ -21,8 +21,6 @@ HOST_ARCH="x86_64 i486 arm"
 compile_rules()
 {
 	 ./configure			\
-		CC=gcc-83		\
-		CXX=g++-83		\
 		--enable-tcl		\
 		--disable-python	\
 		--disable-perl		\

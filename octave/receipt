@@ -12,7 +12,7 @@ WEB_SITE="https://www.gnu.org/software/octave/"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="http://ftp.gnu.org/gnu/$PACKAGE/$TARBALL"
 
-DEPENDS="bash expat fltk freetype gcc83 gcc83-lib-base gnuplot lapack libcurl libdrm \
+DEPENDS="bash expat fltk freetype gcc gcc-lib-base gnuplot lapack libcurl libdrm \
 	libgfortran libglu-mesa mesa ncurses pcre readline xorg-libX11 \
 	xorg-libXau xorg-libXdamage xorg-libXdmcp xorg-libXext xorg-libXxf86vm \
 	xorg-libXfixes zlib"
@@ -29,8 +29,6 @@ compile_rules()
 	export	FFLAGS="-O -ffloat-store"
 
 	./configure				\
-		CC=gcc-83			\
-		CXX=g++-83			\
 		--prefix=/usr			\
 		--infodir=/usr/share/info	\
 		--libexecdir=/usr/lib/$PACKAGE	\

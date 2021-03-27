@@ -11,14 +11,12 @@ WEB_SITE="http://zbackup.org/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/zbackup/zbackup/archive/$VERSION.tar.gz"
 
-DEPENDS="gcc83-lib-base liblzma libssl protobuf zlib"
-BUILD_DEPENDS="cmake gcc83 liblzma-dev lzo-dev openssl-dev protobuf-dev zlib-dev"
+DEPENDS="gcc-lib-base liblzma libssl protobuf zlib"
+BUILD_DEPENDS="cmake gcc liblzma-dev lzo-dev openssl-dev protobuf-dev zlib-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export CC=gcc-83
-	export CXX=g++-83
 	cmake -DCMAKE_INSTALL_PREFIX=/usr . &&
 	make &&
 	make DESTDIR=$DESTDIR install

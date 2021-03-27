@@ -12,11 +12,11 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="http://distfiles.audacious-media-player.org/$TARBALL"
 
 SUGGESTED="lame neon libmms"
-DEPENDS="alsa-lib curl dbus-glib faad2 flac gcc83-lib-base gtk+ 
+DEPENDS="alsa-lib curl dbus-glib faad2 flac gcc-lib-base gtk+ 
 	libcdio libcomerr3 libmad libogg libsndfile libvorbis 
 	libxml2 mpg123 neon taglib wavpack"
 BUILD_DEPENDS="alsa-lib-dev audacious audacious-dev curl-dev 
-	dbus-glib-dev faad2-dev flac-dev gcc83 gtk+-dev lame-dev 
+	dbus-glib-dev faad2-dev flac-dev gcc gtk+-dev lame-dev 
 	libmad-dev libmcs-dev libmowgli-dev libogg-dev 
 	libsamplerate-dev libvorbis-dev libxml2-dev mesa-dev 
 	mpg123-dev neon-dev wavpack-dev"
@@ -28,8 +28,6 @@ compile_rules()
 #XML_CFLAGS=-I/usr/include/libxml2 
 
 	./configure				\
-		CC=gcc-83			\
-		CXX=g++-83			\
 		--prefix=/usr			\
 		--infodir=/usr/share/info	\
 		--mandir=/usr/share/man		\

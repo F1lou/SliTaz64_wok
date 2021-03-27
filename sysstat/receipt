@@ -11,14 +11,13 @@ WEB_SITE="http://sebastien.godard.pagesperso-orange.fr/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="http://pagesperso-orange.fr/sebastien.godard/$TARBALL"
 
-DEPENDS="gcc83-lib-base"
-BUILD_DEPENDS="bzip2 gcc83 gettext"
+DEPENDS="gcc-lib-base"
+BUILD_DEPENDS="bzip2 gcc gettext"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i 's|(uname -m)|(echo i686)|' configure
-	export CC=gcc-83 CXX=g++-83
+	#sed -i 's|(uname -m)|(echo i686)|' configure
 
 	./configure $CONFIGURE_ARGS &&
 	make &&

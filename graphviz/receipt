@@ -11,9 +11,9 @@ WEB_SITE="https://www.graphviz.org/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://gitlab.com/graphviz/graphviz/-/archive/stable_release_$VERSION/graphviz-stable_release_$VERSION.tar.gz"
 
-DEPENDS="expat gcc83-lib-base jpeg libpng librsvg libxml2 pcre 
+DEPENDS="expat gcc-lib-base jpeg libpng librsvg libxml2 pcre 
 	util-linux-uuid zlib"
-BUILD_DEPENDS="gcc83 expat-dev gdk-pixbuf-dev guile-dev jpeg-dev 
+BUILD_DEPENDS="gcc expat-dev gdk-pixbuf-dev guile-dev jpeg-dev 
 	libcroco-dev libgd-dev libpng-dev librsvg-dev libxml2-dev 
 	lua-dev ocaml pango-dev pcre-dev php-cli php-dev pkg-config 
 	python-dev ruby-dev swig tcl-dev tk-dev util-linux-uuid-dev 
@@ -29,8 +29,6 @@ compile_rules()
 
 	./autogen.sh
 	./configure				\
-		CC=gcc-83			\
-		CXX=g++-83			\
 		--prefix=/usr			\
 		--infodir=/usr/share/info	\
 		--disable-static		\

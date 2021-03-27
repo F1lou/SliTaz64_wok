@@ -9,7 +9,7 @@ LICENSE="Eclipse"
 WEB_SITE="http://www.graphviz.org/"
 WANTED="graphviz"
 
-DEPENDS="gcc83 graphviz"
+DEPENDS="gcc graphviz"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

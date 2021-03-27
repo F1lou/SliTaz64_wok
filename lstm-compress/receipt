@@ -10,13 +10,13 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="https://github.com/byronknoll/lstm-compress"
 WGET_URL="$WEB_SITE/archive/v$VERSION.tar.gz"
 
-DEPENDS="gcc83-lib-base"
-BUILD_DEPENDS="gcc83"
+DEPENDS="gcc-lib-base"
+BUILD_DEPENDS="gcc"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	make CC=g++-83
+	make
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

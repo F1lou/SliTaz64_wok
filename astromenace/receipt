@@ -12,18 +12,15 @@ WEB_SITE="https://viewizard.com/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/viewizard/$PACKAGE/archive/v$VERSION.tar.gz"
 
-DEPENDS="freealut freetype gcc83-lib-base libogg libglu-mesa libsdl2 
+DEPENDS="freealut freetype gcc-lib-base libogg libglu-mesa libsdl2 
 	libvorbis openal xorg-libXinerama"
-BUILD_DEPENDS="cmake freealut-dev freetype-dev gcc83 libglu-mesa-dev 
+BUILD_DEPENDS="cmake freealut-dev freetype-dev gcc libglu-mesa-dev 
 	libogg-dev libsdl2-dev libvorbis-dev mesa-dev openal-dev 
 	xorg-libXinerama-dev libatomic"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export	CC=gcc-83
-	export	CXX=g++-83
-
 	cmake	.	\
 		-DCMAKE_BUILD_TYPE=Release &&
 	make

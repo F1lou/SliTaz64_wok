@@ -10,13 +10,13 @@ TARBALL="$PACKAGE-v$VERSION.zip"
 WEB_SITE="http://www.byronknoll.com/cmix.html"
 WGET_URL="http://www.byronknoll.com/$TARBALL"
 
-DEPENDS="gcc83-lib-base"
-BUILD_DEPENDS="gcc83"
+DEPENDS="gcc-lib-base"
+BUILD_DEPENDS="gcc"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	make CC=g++-83
+	make
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

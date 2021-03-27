@@ -19,8 +19,8 @@ BUILD_DEPENDS="gcc openssl-dev python-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i 's|uname -m|echo i486|' Makefile
-	export	LD_LIBRARY_PATH="/usr/libgcc83:$LD_LIBRARY_PATH"
+	#sed -i 's|uname -m|echo i486|' Makefile
+	#export	LD_LIBRARY_PATH="/usr/libgcc83:$LD_LIBRARY_PATH"
 	export	LDFLAGS="$LDFLAGS -latomic"
 
 	./configure --prefix=/usr &&

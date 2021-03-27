@@ -11,8 +11,8 @@ WEB_SITE="https://xpra.org/"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="${WEB_SITE}src/$TARBALL"
 
-DEPENDS="ffmpeg gcc83-lib-base gtk+ libvpx pygobject pygtk python x264"
-BUILD_DEPENDS="ffmpeg-dev gcc83 gtk+-dev libvpx-dev pkg-config \
+DEPENDS="ffmpeg gcc-lib-base gtk+ libvpx pygobject pygtk python x264"
+BUILD_DEPENDS="ffmpeg-dev gcc gtk+-dev libvpx-dev pkg-config \
 	pygobject-dev pygtk-dev python-cython python-dev x264-dev xorg-dev"
 
 # Rules to configure and make the package.
@@ -22,9 +22,6 @@ compile_rules()
 #	sed -i '736s/if/if True or/'	setup.py
 	#3.0.2 Setting also needed for SliTaz:
 	sed -i '678s/if/if True or/'	setup.py
-
-	export	CC=gcc-83
-	export	CXX=g++-83
 
 	python setup.py build &&
 	python setup.py install --root=$DESTDIR
