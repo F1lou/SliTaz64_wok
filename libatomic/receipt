@@ -8,11 +8,11 @@ WEB_SITE="https://gcc.gnu.org/"
 MAINTAINER="mojo@slitaz.org"
 LICENSE="GPL2"
 
-WANTED=""
+WANTED="gcc"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
 	mkdir -p $fs/usr/lib
-	cp -a $install/usr/libgcc/libatomic.so* $fs/usr/lib
+	cp -a $install/usr/lib/libatomic.so* $fs/usr/lib
 }

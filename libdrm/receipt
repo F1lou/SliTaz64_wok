@@ -13,8 +13,7 @@ WGET_URL="$WEB_SITE/$PACKAGE/$TARBALL"
 
 DEPENDS="glibc-base linux-drm udev xorg-libpciaccess"
 BUILD_DEPENDS="gc-dev libpthread-stubs-dev pkg-config \
-	udev-dev xorg-libpciaccess-dev"
-	#xorg-dev xorg-dev-proto
+	eudev-dev xorg-libpciaccess-dev xorg-dev xorg-dev-proto"
 
 HOST_ARCH="x86_64 i486 arm"
 

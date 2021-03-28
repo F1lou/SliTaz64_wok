@@ -22,7 +22,8 @@ compile_rules()
 {
 #	find | grep Makefile | sed 's/Makefile.*/Makefile_dependencies/' | \
 #		xargs touch -d 197001010000
-
+	export CXX=""
+	
 	./configure &&
 	make library
 	# INSTALL TARGET for CoCoALib NOT YET IMPLEMENTED

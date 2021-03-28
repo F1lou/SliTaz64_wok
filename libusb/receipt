@@ -11,8 +11,8 @@ WEB_SITE="https://libusb.info/"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="https://github.com/$PACKAGE/$PACKAGE/releases/download/v$VERSION/$TARBALL"
 
-DEPENDS="udev"
-BUILD_DEPENDS="udev-dev"
+DEPENDS="eudev"
+BUILD_DEPENDS="eudev-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 

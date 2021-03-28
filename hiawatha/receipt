@@ -38,7 +38,7 @@ genpkg_rules()
 
 	cp -a $install/var	$fs
 	cp -a $install/etc	$fs
-	cp -a $install/usr/lib	$fs/usr
+	cp -a $install/usr/lib64	$fs/usr
 	cp -a $install/usr/bin	$fs/usr
 	cp -a $install/usr/sbin	$fs/usr
 }

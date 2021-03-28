@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="https://github.com/libusb/$PACKAGE-0.1/releases/download/v$VERSION/$TARBALL"
 
 DEPENDS="libusb"
-BUILD_DEPENDS="libusb-dev udev-dev"
+BUILD_DEPENDS="libusb-dev eudev-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 
