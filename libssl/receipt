@@ -15,6 +15,6 @@ DEPENDS="libcrypto"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib
-	cp -a $install/usr/lib/libssl.so* $fs/usr/lib
+	mkdir -p $fs/usr/lib64
+	cp -a $install/usr/lib64/libssl.so* $fs/usr/lib64
 }
