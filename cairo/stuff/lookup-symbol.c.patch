@@ -1,0 +1,12 @@
+148c148
+<     if ((bfd_get_section_flags (symtab->bfd, section) & SEC_ALLOC) == 0)
+---
+>     if ((bfd_section_flags (section) & SEC_ALLOC) == 0)
+151c151
+<     vma = bfd_get_section_vma (symtab->bfd, section);
+---
+>     vma = bfd_section_vma (section);
+155c155
+<     size = bfd_section_size (symtab->bfd, section);
+---
+>     size = bfd_section_size (section);

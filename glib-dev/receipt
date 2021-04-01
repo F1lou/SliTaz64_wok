@@ -15,10 +15,10 @@ DEPENDS="glib perl python libffi-dev libgio libgio-dev pcre-dev pkg-config"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib $fs/usr/bin $fs/usr/share
-	cp -a $install/usr/lib/*.*a $fs/usr/lib
-	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
-	cp -a $install/usr/lib/glib* $fs/usr/lib
+	mkdir -p $fs/usr/lib64 $fs/usr/bin $fs/usr/share
+	cp -a $install/usr/lib64/*.*a $fs/usr/lib64
+	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib64
+	cp -a $install/usr/lib64/glib* $fs/usr/lib64
 	cp -a $install/usr/include $fs/usr
 	cp -a $install/usr/share/aclocal $fs/usr/share
 	cp -a $install/usr/share/glib-2.0 $fs/usr/share
@@ -32,9 +32,9 @@ genpkg_rules()
 	done
 
 	# Remove libgio-dev
-	rm -rf $fs/usr/lib/libgio*.*a
+	rm -rf $fs/usr/lib64/libgio*.*a
 	rm -rf $fs/usr/include/gio-unix-2.0
-	rm $fs/usr/lib/pkgconfig/gio*.pc
+	rm $fs/usr/lib64/pkgconfig/gio*.pc
 
 	# exclude from files.list (for tazpkg-find-depends)
 	cd $fs/usr/share/gdb/auto-load

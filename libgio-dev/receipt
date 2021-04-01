@@ -15,8 +15,8 @@ DEPENDS="libgio pkg-config"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib/pkgconfig $fs/usr/include
-	cp -a $install/usr/lib/libgio*.*a $fs/usr/lib
-	cp -a $install/usr/lib/pkgconfig/gio*.pc $fs/usr/lib/pkgconfig
+	mkdir -p $fs/usr/lib64/pkgconfig $fs/usr/include
+	cp -a $install/usr/lib64/libgio*.*a $fs/usr/lib64
+	cp -a $install/usr/lib64/pkgconfig/gio*.pc $fs/usr/lib64/pkgconfig
 	cp -a $install/usr/include/gio-unix-2.0 $fs/usr/include
 }
