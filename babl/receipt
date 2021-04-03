@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="babl"
-VERSION="0.1.72"
+VERSION="0.1.86"
 CATEGORY="system-tools"
 SHORT_DESC="Pixel format translation library."
 MAINTAINER="erjo@slitaz.org"
@@ -28,10 +28,11 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/lib64
 
-	cp -a $install/usr/lib/*.so*	$fs/usr/lib
-	cp -a $install/usr/lib/babl-*	$fs/usr/lib
+	cp -a $install/usr/lib64/*.so*	$fs/usr/lib64
+	cp -a $install/usr/lib64/babl-*	$fs/usr/lib64
+	
 #	rm $fs/usr/lib/babl-*/*.*a
 }
 

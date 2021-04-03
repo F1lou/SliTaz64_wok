@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="babl-dev"
-VERSION="0.1.72"
+VERSION="0.1.86"
 CATEGORY="development"
 SHORT_DESC="Pixel format translation library - development files."
 MAINTAINER="erjo@slitaz.org"
@@ -18,9 +18,9 @@ genpkg_rules()
 {
 	mkdir -p $fs/usr/lib
 
-	cp -a $install/usr/lib/pkgconfig	$fs/usr/lib
+	cp -a $install/usr/lib64/pkgconfig	$fs/usr/lib
 #	cp -a $install/usr/lib/*.*a		$fs/usr/lib
 	cp -a $install/usr/include		$fs/usr
-	cp -a $install/usr/lib/babl-*		$fs/usr/lib
-	rm					$fs/usr/lib/babl-*/*.so
+	cp -a $install/usr/lib64/babl-*		$fs/usr/lib64/
+	rm $fs/usr/lib64/babl-*/*.so
 }

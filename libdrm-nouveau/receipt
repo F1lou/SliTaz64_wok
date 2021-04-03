@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libdrm-nouveau"
-VERSION="2.4.100"
+VERSION="2.4.104"
 CATEGORY="x-window"
 SHORT_DESC="Freedesktop DRM Library (nouveau library)."
 MAINTAINER="pankso@slitaz.org"
@@ -14,6 +14,6 @@ WANTED="libdrm"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib
-	cp -a $install/usr/lib/libdrm_nouveau*.so*	$fs/usr/lib
+	mkdir -p $fs/usr/lib64
+	cp -a $install/usr/lib64/libdrm_nouveau*.so*	$fs/usr/lib64
 }
