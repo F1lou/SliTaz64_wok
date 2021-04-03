@@ -12,8 +12,8 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="${WEB_SITE}files/$TARBALL"
 
 SUGGESTED="ccid"
-DEPENDS="udev"
-BUILD_DEPENDS="libtool perl udev-dev"
+DEPENDS="eudev"
+BUILD_DEPENDS="libtool perl eudev-dev"
 
 # Rules to configure and make the package.
 compile_rules()

@@ -10,7 +10,7 @@ WEB_SITE="https://www.x.org/"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="xorg-libxkbfile-dev xorg-libpciaccess-dev xorg-libXxf86vm-dev \
-xorg-libXfont-dev libgcrypt-dev pixman-dev udev-dev mesa-dev pkg-config \
+xorg-libXfont-dev libgcrypt-dev pixman-dev eudev-dev mesa-dev pkg-config \
 perl flex xorg-server xorg-xf86driproto xorg-xcmiscproto xorg-bigreqsproto \
 xorg-dri2proto xorg-xextproto xorg-xproto xorg-fontsproto xorg-inputproto \
 xorg-kbproto xorg-randrproto xorg-renderproto xorg-videoproto \
@@ -20,7 +20,7 @@ xorg-xf86bigfontproto xorg-xf86miscproto xorg-trapproto"
 
 # Use devel files from ARCH default Xserver
 case "$ARCH" in
-	i?86) 
+	i?86|x86_64) 
 		WANTED="xorg-server" ;;
 	arm) 
 		WANTED="xorg-server-light" 

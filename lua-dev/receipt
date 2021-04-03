@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="lua-dev"
-VERSION="5.2.4"
+VERSION="5.4.3"
 CATEGORY="development"
 SHORT_DESC="Lua development files."
 MAINTAINER="pankso@slitaz.org"

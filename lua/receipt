@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="lua"
-VERSION="5.2.4"
+VERSION="5.4.3"
 CATEGORY="development"
 SHORT_DESC="Powerful, fast, light-weight, embeddable scripting language."
 MAINTAINER="pankso@slitaz.org"
@@ -26,6 +26,8 @@ compile_rules()
 			make CC=${HOST_SYSTEM}-gcc posix ;;
 		i486)
 			sed -i s"/-O2/-Os -march=$ARCH/" src/Makefile
+			make linux MYLIBS=/lib/libtic.so ;;
+		x86_64)
 			make linux MYLIBS=/lib/libtic.so ;;
 	esac &&
 

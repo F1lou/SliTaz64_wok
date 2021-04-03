@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xorg-server-light"
-VERSION="1.12.4"
+VERSION="1.18.4"
 CATEGORY="x-window"
 SHORT_DESC="Xorg core server light version (no dri, gl, and friends)."
 MAINTAINER="pankso@slitaz.org"
@@ -17,14 +17,14 @@ SUGGESTED="xorg-xf86-video-vesa xorg-xf86-video-fbdev"
 DEPENDS="xorg-xkeyboard-config xorg-libpciaccess xorg-libXxf86vm \
 xorg-libXfont xorg-libXau xorg-base-fonts libgcrypt pixman \
 xorg-xf86-input-evdev libgpg-error libgcrypt freetype libxcb \
-xorg-libXcomposite xorg-libXv bzip2 udev"
+xorg-libXcomposite xorg-libXv bzip2 eudev"
 BUILD_DEPENDS="xorg-libxkbfile-dev xorg-libpciaccess-dev pixman-dev \
 xorg-util-macros xorg-libXfont-dev libgcrypt-dev xorg-resourceproto \
 xorg-bigreqsproto xorg-xcmiscproto xorg-renderproto xorg-damageproto \
 xorg-compositeproto xorg-xf86dgaproto  xorg-randrproto xorg-recordproto \
 xorg-videoproto xorg-xtrans libgpg-error-dev libgcrypt-dev freetype-dev \
 libxcb-dev xorg-libXcomposite-dev xorg-libXxf86vm-dev xorg-libXv-dev \
-bzip2-dev udev-dev xorg-resourceproto xorg-xf86dgaproto xorg-bigreqsproto \
+bzip2-dev eudev-dev xorg-resourceproto xorg-xf86dgaproto xorg-bigreqsproto \
 xorg-bigreqsproto xorg-xcmiscproto xorg-bigreqsproto xorg-resourceproto"
 
 # Handle cross compilation. ARM use build host: perl flex
@@ -34,8 +34,8 @@ case "$ARCH" in
 		ARCH_ARGS="--enable-malloc0returnsnull" 
 		OS_NAME="SliTaz ARM"
 		VENDOR="http://arm.slitaz.org" ;;
-	i?86)
-		BUILD_DEPENDS="$BUILD_DEPENDS perl flex udev-dev"
+	i?86|x86_64)
+		BUILD_DEPENDS="$BUILD_DEPENDS perl flex eudev-dev"
 		OS_NAME="SliTaz GNU/Linux"
 		VENDOR="http://www.slitaz.org" ;;
 esac

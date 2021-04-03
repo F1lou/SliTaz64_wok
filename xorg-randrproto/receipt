@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xorg-randrproto"
-VERSION="1.5.0"
+VERSION="1.6.0"
 CATEGORY="development"
 SHORT_DESC="Randr extension headers."
 MAINTAINER="pankso@slitaz.org"
@@ -10,8 +10,8 @@ WEB_SITE="https://www.x.org/wiki/"
 
 SOURCE="randrproto"
 TARBALL="$SOURCE-$VERSION.tar.bz2"
-WGET_URL="$XORG_MIRROR/proto/$TARBALL"
-
+#WGET_URL="$XORG_MIRROR/proto/$TARBALL"
+WGET_URL="https://gitlab.freedesktop.org/xorg/proto/xorgproto/-/archive/master/xorgproto-master.tar.bz2"
 DEPENDS="pkg-config xorg-renderproto"
 BUILD_DEPENDS="xorg-util-macros"
 
@@ -20,12 +20,16 @@ HOST_ARCH="x86_64 i486 arm"
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure			\
-		--sysconfdir=/etc	\
-		--localstatedir=/var	\
-		$CONFIGURE_ARGS &&
-	make &&
-	make install
+	meson setup build
+	meson configure build
+	ninja
+	
+	#~ ./configure			\
+		#~ --sysconfdir=/etc	\
+		#~ --localstatedir=/var	\
+		#~ $CONFIGURE_ARGS &&
+	#~ make &&
+	#~ make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

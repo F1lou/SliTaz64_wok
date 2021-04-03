@@ -11,8 +11,8 @@ WEB_SITE="http://0pointer.de/blog/projects/being-smart.html"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="http://0pointer.de/public/$TARBALL"
 
-DEPENDS="udev"
-BUILD_DEPENDS="udev-dev"
+DEPENDS="eudev"
+BUILD_DEPENDS="eudev-dev"
 
 # Rules to configure and make the package.
 compile_rules()
