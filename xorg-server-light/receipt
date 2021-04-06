@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xorg-server-light"
-VERSION="1.18.4"
+VERSION="1.20.10"
 CATEGORY="x-window"
 SHORT_DESC="Xorg core server light version (no dri, gl, and friends)."
 MAINTAINER="pankso@slitaz.org"
@@ -25,7 +25,8 @@ xorg-compositeproto xorg-xf86dgaproto  xorg-randrproto xorg-recordproto \
 xorg-videoproto xorg-xtrans libgpg-error-dev libgcrypt-dev freetype-dev \
 libxcb-dev xorg-libXcomposite-dev xorg-libXxf86vm-dev xorg-libXv-dev \
 bzip2-dev eudev-dev xorg-resourceproto xorg-xf86dgaproto xorg-bigreqsproto \
-xorg-bigreqsproto xorg-xcmiscproto xorg-bigreqsproto xorg-resourceproto"
+xorg-bigreqsproto xorg-xcmiscproto xorg-bigreqsproto xorg-resourceproto \
+libepoxy-dev"
 
 # Handle cross compilation. ARM use build host: perl flex
 case "$ARCH" in

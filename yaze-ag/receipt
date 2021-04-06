@@ -13,9 +13,9 @@ WGET_URL="$WEB_SITE/devel/$TARBALL"
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed "s|\\([^=]\\) \\(\\\$(...DIR\\)|\\1 $DESTDIR\\2|" \
+	#sed "s|\\([^=]\\) \\(\\\$(...DIR\\)|\\1 $DESTDIR\\2|" \
 		Makefile_linux_32_i586 > Makefile
-	sed -i 's|/local||g' Makefile yaze.* doc/*
+	#sed -i 's|/local||g' Makefile yaze.* doc/*
 	mkdir -p $DESTDIR/usr/bin $DESTDIR/usr/lib
 	make &&
 	make install

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xpaint"
-VERSION="2.10.2"
+VERSION="3.0.3"
 CATEGORY="graphics"
 SHORT_DESC="Simple paint program for X."
 MAINTAINER="mojo@slitaz.org"
@@ -21,7 +21,7 @@ HOST_ARCH="x86_64 i486 arm"
 compile_rules()
 {
 	case "$ARCH" in
-		i?86) LIBTOOL=libtool ;;
+		x86_64|i?86) LIBTOOL=libtool ;;
 		arm) LIBTOOL=${HOST_SYSTEM}-libtool ;;
 	esac
 

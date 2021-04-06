@@ -1,24 +1,24 @@
 # SliTaz package receipt.
 
 PACKAGE="mesa-wayland"
-VERSION="9.2.5"
+VERSION="21.0.1"
 CATEGORY="x-window"
 SHORT_DESC="3D Graphics Library that is an open-source implementaton of OpenGL."
 MAINTAINER="pascal.bellard@slitaz.org"
 LICENSE="MIT"
 WEB_SITE="https://www.mesa3d.org/"
 
-SOURCE="Mesa"
-TARBALL="${SOURCE}Lib-$VERSION.tar.bz2"
-WGET_URL="ftp://ftp.freedesktop.org/pub/mesa/older-versions/${VERSION%%.*}.x/$VERSION/$TARBALL"
+SOURCE="mesa"
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WGET_URL="ftp://ftp.freedesktop.org/pub/mesa/$TARBALL"
 
 # Have Wayland support by default ?
 PROVIDE="libegl-mesa libgl libglw-mesa"
 
 SUGGESTED="nvidia"
-DEPENDS="expat libdrm udev wayland xorg-libXdamage xorg-libXt xorg-libXxf86vm"
+DEPENDS="expat libdrm eudev wayland xorg-libXdamage xorg-libXt xorg-libXxf86vm"
 BUILD_DEPENDS="expat-dev lesstif-dev libdrm-dev libxml2-python pkg-config 
-	udev-dev wayland-dev xorg-dri2proto xorg-glproto \
+	eudev-dev wayland-dev xorg-dri2proto xorg-glproto \
 	xorg-libXdamage-dev xorg-libXt-dev xorg-libXxf86vm-dev xorg-server-dev"
 
 #HOST_ARCH="x86_64 arm i486"

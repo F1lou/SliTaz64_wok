@@ -15,10 +15,10 @@ HOST_ARCH="x86_64 i486 arm"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib/jack
+	mkdir -p $fs/usr/lib64/jack
 
-	cp -a $install/usr/lib/*.la		$fs/usr/lib
-	cp -a $install/usr/lib/jack/*.la	$fs/usr/lib/jack
-	cp -a $install/usr/lib/pkgconfig	$fs/usr/lib
+	cp -a $install/usr/lib64/*.la		$fs/usr/lib64
+	cp -a $install/usr/lib64/jack/*.la	$fs/usr/lib64/jack
+	cp -a $install/usr/lib64/pkgconfig	$fs/usr/lib
 	cp -a $install/usr/include		$fs/usr
 }

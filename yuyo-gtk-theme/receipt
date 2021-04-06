@@ -2,7 +2,7 @@
 
 PACKAGE="yuyo-gtk-theme"
 VERSION="1.0"
-CATEGORY="customization"
+CATEGORY="gnome"
 LICENSE="GPL3"
 SHORT_DESC="Yuyo is a GTK theme belonging to the Ubuntu MATE project."
 MAINTAINER="yuripourre@gmail.com"

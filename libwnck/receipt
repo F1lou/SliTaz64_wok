@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libwnck"
-VERSION="2.31.0"
+VERSION="3.36.0"
 CATEGORY="x-window"
 SHORT_DESC="A Window Navigator Construction Kit."
 MAINTAINER="pankso@slitaz.org"

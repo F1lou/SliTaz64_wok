@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xorg-xf86-input-synaptics"
-VERSION="1.6.2"
+VERSION="1.9.1"
 CATEGORY="x-window"
 SHORT_DESC="Xorg synaptics driver."
 MAINTAINER="pankso@slitaz.org"

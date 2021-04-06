@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libwebkit"
-VERSION="1.8.3"
+VERSION="1.9.6"
 CATEGORY="network"
 SHORT_DESC="xHTML render library."
 MAINTAINER="devel@slitaz.org"

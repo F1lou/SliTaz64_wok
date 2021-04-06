@@ -10,7 +10,7 @@ WEB_SITE="https://www.x.org/wiki/"
 
 SOURCE="libxshmfence"
 TARBALL="$SOURCE-$VERSION.tar.bz2"
-WGET_URL="https://www.x.org/pub/individual/lib/$TARBALL"
+WGET_URL="https://www.x.org/archive//individual/lib/$TARBALL"
 
 DEPENDS=""
 BUILD_DEPENDS=""
