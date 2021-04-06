@@ -39,6 +39,6 @@ genpkg_rules()
 {
 	mkdir -p $fs/usr/lib64
 
-	cp -a $install/usr/lib64/libdrm.so*	$fs/usr/lib64
+	cp -a $install/usr/lib64/libdrm*.so*	$fs/usr/lib64
 	cp -a $install/usr/lib64/libkms*.so*	$fs/usr/lib64
 }

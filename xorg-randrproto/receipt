@@ -20,9 +20,9 @@ HOST_ARCH="x86_64 i486 arm"
 # Rules to configure and make the package.
 compile_rules()
 {
-	meson setup build
-	meson configure build
-	ninja
+	./autogen.sh &&
+	make &&
+	make install
 	
 	#~ ./configure			\
 		#~ --sysconfdir=/etc	\

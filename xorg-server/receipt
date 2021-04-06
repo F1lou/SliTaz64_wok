@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xorg-server"
-VERSION="1.12.4"
+VERSION="1.20.10"
 CATEGORY="x-window"
 SHORT_DESC="Xorg core server."
 MAINTAINER="pankso@slitaz.org"
@@ -16,7 +16,7 @@ DEPENDS="xorg-xkeyboard-config xorg-libpciaccess xorg-libXxf86vm \
 xorg-libXfont xorg-libXau xorg-base-fonts libgcrypt pixman eudev libdrm \
 xorg-xf86-input-evdev"
 BUILD_DEPENDS="xorg-libxkbfile-dev xorg-libpciaccess-dev xorg-libXxf86vm-dev \
-xorg-libXfont-dev libgcrypt-dev pixman-dev eudev-dev mesa-dev pkg-config perl \
+xorg-libXfont-dev libgcrypt-dev pixman-dev eudev-dev pkg-config perl \
 flex xorg-xf86driproto xorg-xcmiscproto xorg-bigreqsproto xorg-randrproto \
 xorg-dri2proto xorg-libXau-dev xorg-dev-proto libdrm-dev xorg-glproto \
 xorg-libXv-dev"

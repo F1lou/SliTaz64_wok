@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
-PACKAGE="wayland"
-VERSION="1.19.0"
+PACKAGE="wayland-protocols"
+VERSION="1.20"
 CATEGORY="x-window"
 SHORT_DESC="Wayland simpler X display server protocol."
 MAINTAINER="pankso@slitaz.org"
@@ -13,8 +13,8 @@ HOST_ARCH="x86_64 i486 arm"
 
 # WARNING: wayland must be installed in chroot since build host 
 # wayland-scanner is used for cross compilation to ARM
-DEPENDS="libffi expat"
-BUILD_DEPENDS="libffi-dev expat-dev"
+DEPENDS="wayland"
+BUILD_DEPENDS="wayland-dev"
 
 # Handle cross compilation
 case "$ARCH" in
@@ -34,8 +34,6 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib $fs/usr/share
-	[ -d "$install/usr/bin" ] && cp -a $install/usr/bin $fs/usr
-	cp -a $install/usr/lib/*.so* $fs/usr/lib
-	cp -a $install/usr/share/wayland $fs/usr/share
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/share/* $fs/usr/share
 }
