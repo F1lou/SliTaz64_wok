@@ -2,7 +2,7 @@
 
 PACKAGE="gnome-icon-theme"
 VERSION="3.12.0"
-CATEGORY="customization"
+CATEGORY="gnome"
 SHORT_DESC="Default GNOME icon theme."
 MAINTAINER="pankso@slitaz.org"
 LICENSE="LGPL3"

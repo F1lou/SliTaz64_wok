@@ -20,7 +20,7 @@ DEPENDS="atk cairo expat fontconfig freetype gdk-pixbuf glib glibc-base
 
 BUILD_DEPENDS="atk-dev automake dbus-dev dbus-glib-dev faenza-icon-theme 
 	fontconfig-dev freetype-dev gdk-pixbuf-dev harfbuzz-dev libffi-dev 
-	libpng-dev libxcb-dev libxml2-dev optipng pango-dev pixman-dev 
+	libpng-dev libxcb-dev libxml2-dev pango-dev pixman-dev 
 	xorg-inputproto xorg-libX11-dev xorg-libXext-dev xorg-libXrender-dev 
 	xorg-xextproto"
 
@@ -28,7 +28,7 @@ HOST_ARCH="x86_64 i486 arm"
 
 # Handle cross compilation.
 case "$ARCH" in
-	i?86)
+	x86_64|i?86)
 		BUILD_DEPENDS="$BUILD_DEPENDS bash cups-dev gobject-introspection-dev \
 		perl pkg-config" ;;
 	arm*)
@@ -53,8 +53,8 @@ compile_rules()
 		--with-html-dir=/usr/share/doc	\
 		$CONFIGURE_ARGS ${ARCH_ARGS} &&
 	# https://bugzilla.gnome.org/show_bug.cgi?id=655517
-	sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool &&
-	make $MAKEFLAGS $LIBTOOL &&
+	#~ sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool &&
+	make &&
 	make DESTDIR=$DESTDIR install
 }
 

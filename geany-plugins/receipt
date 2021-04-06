@@ -1,13 +1,13 @@
 # SliTaz package receipt.
 
 PACKAGE="geany-plugins"
-VERSION="1.23"
+VERSION="1.36"
 CATEGORY="development"
 SHORT_DESC="Additionnal plugins for Geany."
 MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL2"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
-WEB_SITE="https://plugins.geany.org/"
+WEB_SITE="https://plugins.geany.org"
 WGET_URL="$WEB_SITE/$PACKAGE/$TARBALL"
 #HOST_ARCH="x86_64 i486 arm"
 COOKOPTS="!pngquant !optipng"
@@ -17,7 +17,7 @@ BUILD_DEPENDS="gtkspell-dev geany-dev lua-dev libxml2-dev bash"
 
 # Handle cross compilation.
 case "$ARCH" in
-	i?86) 
+	x86_64|i?86) 
 		BUILD_DEPENDS="gtkspell-dev geany-dev lua-dev libxml2-dev vte-dev"
 esac
 
@@ -38,9 +38,9 @@ compile_rules()
 		--disable-geanyextrasel \
 		--disable-geanygendoc \
 		--disable-geanyinsertnum \
-		--disable-geanylatex \
+		--enable-geanylatex \
 		--disable-geanylipsum \
-		--disable-geanylua \
+		--enable-geanylua \
 		--disable-geanymacro \
 		--disable-geanyminiscript \
 		--disable-geanynumberedbookmarks \
@@ -50,7 +50,7 @@ compile_rules()
 		--disable-largefile \
 		--disable-geniuspaste \
 		--disable-gproject \
-		--disable-markdown \
+		--enable-markdown \
 		--disable-peg-markdown \
 		--disable-multiterm \
 		--disable-pretty_printer \
