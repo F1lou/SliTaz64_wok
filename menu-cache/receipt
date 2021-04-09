@@ -1,4 +1,4 @@
-# SliTaz package receipt.
+cd /h	# SliTaz package receipt.
 
 PACKAGE="menu-cache"
 VERSION="1.1.0"
@@ -24,7 +24,7 @@ compile_rules()
 		--libexecdir=/usr/lib \
 		--disable-static \
 		$CONFIGURE_ARGS &&
-	make && make install
+	make CFLAGS="$CFLAGS -fcommon" && make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

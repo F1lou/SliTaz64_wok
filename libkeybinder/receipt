@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libkeybinder"
-VERSION="0.3.0"
+VERSION="0.3.2"
 CATEGORY="x-window"
 SHORT_DESC="Library for registering global keyboard shortcuts"
 MAINTAINER="al.bobylev@gmail.com"
@@ -13,15 +13,15 @@ WGET_URL="http://kaizer.se/publicfiles/$SOURCE/$TARBALL"
 
 DEPENDS="gtk+"
 BUILD_DEPENDS="gtk+-dev gobject-introspection-dev xorg-libXext-dev python-dev \
-pygtk-dev pygobject-dev automake autoconf libtool lua5.1-dev"
+pygtk-dev pygobject-dev automake autoconf libtool lua-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	autoreconf -vif &&
 	./configure \
-		--with-lua-suffix=5.1 \
-		--with-lua-includes=/usr/include/lua/5.1 \
+		--with-lua-suffix=5.4 \
+		--with-lua-includes=/usr/include/lua/5.4 \
 		$CONFIGURE_ARGS &&
 	make && make install
 }

@@ -13,7 +13,7 @@ WGET_URL="http://ftp.de.debian.org/debian/pool/main/c/$PACKAGE/${PACKAGE}_$VERSI
 
 DEPENDS="gtk+ cairo librsvg xorg-xcompmgr libglade libgsf"
 BUILD_DEPENDS="intltool gtk+ cairo-dev librsvg-dev libglade-dev libgsf-dev \
-libcroco gcc3"
+libcroco gcc"
 
 # Rules to configure and make the package.
 compile_rules()
