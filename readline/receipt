@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="readline"
-VERSION="8.0"
+VERSION="8.1"
 CATEGORY="system-tools"
 SHORT_DESC="GNU readline."
 MAINTAINER="pankso@slitaz.org"
@@ -19,16 +19,20 @@ HOST_ARCH="x86_64 i486 arm"
 # Rules to configure and make the package.
 compile_rules()
 {
-	case "$ARCH" in
-		arm*) export bash_cv_wcwidth_broken=true ;;
-	esac
+	sed -i '/MV.*old/d' Makefile.in
+	sed -i '/{OLDSUFF}/c:' support/shlib-install
+
+	#~ case "$ARCH" in
+		#~ arm*) export bash_cv_wcwidth_broken=true ;;
+	#~ esac
 
 #	patch -Np1 -i $stuff/readline-6.3-upstream_fixes-3.patch
-	sed -i '/(MV)/d' Makefile*
+	#~ sed -i '/(MV)/d' Makefile*
 
-	./configure --disable-install-examples $CONFIGURE_ARGS &&
-	make -j 1 &&
-	make DESTDIR=$DESTDIR install
+	./configure --disable-install-examples --prefix=/usr  \
+		--disable-static --with-curses $CONFIGURE_ARGS &&
+	make SHLIB_LIBS="-lncursesw" &&
+	make SHLIB_LIBS="-lncursesw" DESTDIR=$DESTDIR install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

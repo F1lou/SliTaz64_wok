@@ -15,9 +15,13 @@ DEPENDS="libcomerr3 libcrypto libdb libkrb5 libsasl"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	while read file; do
-		dir=${file%/*}
-		[ -d $fs$dir ] || mkdir -p $fs$dir
-		cp -a $install$file $fs$dir
-	done < $wanted_stuff/$PACKAGE.files-list
+	mkdir -p $fs/usr/lib/sasl2
+	
+	cp -a $install/usr/lib/sasl2/*.so*	$fs/usr/lib/sasl2
+	
+	#~ while read file; do
+		#~ dir=${file%/*}
+		#~ [ -d $fs$dir ] || mkdir -p $fs$dir
+		#~ cp -a $install$file $fs$dir
+	#~ done < $wanted_stuff/$PACKAGE.files-list
 }

@@ -1,0 +1,47 @@
+# SliTaz package receipt.
+
+PACKAGE="libpng12"
+VERSION="1.2.56"
+CATEGORY="x-window"
+SHORT_DESC="PNG images library."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="zlib/libpng"
+SOURCE="libpng"
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WEB_SITE="http://libpng.org/pub/png/libpng.html"
+WGET_URL="$SF_MIRROR/$SOURCE/$TARBALL"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="zlib"
+BUILD_DEPENDS="pkg-config gawk zlib-dev"
+
+# Handle cross compilation.
+case "$ARCH" in
+	arm) BUILD_DEPENDS="" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src
+	./configure \
+		--enable-shared \
+		--prefix=/usr \
+		--mandir=/usr/share/man \
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+
+	cd contrib/pngminus
+	make PNGLIB="-L$DESTDIR/usr/lib -lpng" -f makefile.std png2pnm pnm2png
+	mkdir -p $DESTDIR/usr/bin
+	cp -a png2pnm pnm2png $DESTDIR/usr/bin
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/libpng*.so* $fs/usr/lib
+	cp -a $install/usr/bin $fs/usr
+}

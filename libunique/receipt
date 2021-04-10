@@ -15,19 +15,19 @@ DEPENDS="cairo gtk+"
 BUILD_DEPENDS="cairo-dev gtk+-dev glib-dev expat-dev"
 
 case "$ARCH" in
-	i?86)
+	x86_64|i?86)
 		BUILD_DEPENDS="$BUILD_DEPENDS gobject-introspection-dev perl"
-		export CFLAGS="$CFLAGS -Wno-error=unused-but-set-variable"
+		export CFLAGS="$CFLAGS -Wno-error=unused-but-set-variable -fcommon"
 esac
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	patch -Np1 -i $stuff/remove_G_CONST_RETURN.patch || return 1
+	#~ patch -Np1 -i $stuff/remove_G_CONST_RETURN.patch || return 1
 	./configure \
 		--disable-dbus \
 		$CONFIGURE_ARGS &&
-	make && make install
+	make CFLAGS="-fcommon" && make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

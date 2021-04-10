@@ -1,41 +1,47 @@
 # SliTaz package receipt.
 
 PACKAGE="harfbuzz"
-VERSION="2.6.7"
+VERSION="2.8.0"
 CATEGORY="system-tools"
 SHORT_DESC="OpenType text shaping engine."
 MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL2"
 WEB_SITE="https://www.freedesktop.org/wiki/Software/HarfBuzz/"
 
-TARBALL="$PACKAGE-$VERSION.tar.xz"
-WGET_URL="https://www.freedesktop.org/software/$PACKAGE/release/$TARBALL"
+#~ TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="git|https://github.com/$PACKAGE/$PACKAGE.git"
 
 DEPENDS="cairo freetype gcc-lib-base glib libffi pcre"
-BUILD_DEPENDS="cairo-dev fontconfig-dev freetype-dev gcc glib-dev"
+BUILD_DEPENDS="cairo-dev fontconfig-dev freetype-dev gcc glib-dev gtk-doc python3-pygments"
 
 HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -lstdc++"
+	mkdir build && cd build &&
 
-	./configure		\
-		--with-freetype	\
-		--with-glib	\
-		--with-gobject	\
-		--with-icu=no	\
-		$CONFIGURE_ARGS &&
-	make -j 1 &&
-	make install
+	meson --prefix=/usr .. &&
+	ninja
+	DESTDIR=$DESTDIR ninja install
+	
+	#~ export LDFLAGS="$LDFLAGS -lstdc++"
+
+	#~ ./configure		\
+		#~ --with-freetype	\
+		#~ --with-glib	\
+		#~ --with-gobject	\
+		#~ --with-icu=no	\
+		#~ $CONFIGURE_ARGS &&
+	#~ make -j 1 &&
+	#~ make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/lib64
 
 	#cp -a $install/usr/bin		$fs/usr
-	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+	cp -a $install/usr/lib64/*.so*	$fs/usr/lib64
 }

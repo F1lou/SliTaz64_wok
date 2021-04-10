@@ -2,7 +2,7 @@
 
 PACKAGE="openbox-theme-chrommo"
 VERSION="20150601"
-CATEGORY="customization"
+CATEGORY="x-window"
 SHORT_DESC="Chrommo - theme for Openbox 3"
 MAINTAINER="al.bobylev@gmail.com"
 LICENSE="PublicDomain"

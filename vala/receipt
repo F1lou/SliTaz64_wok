@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="vala"
-VERSION="0.36.4"
+VERSION="0.52.1"
 CATEGORY="development"
 SHORT_DESC="Compiler for the GObject type system"
 MAINTAINER="mimas@slitaz.org"

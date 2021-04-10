@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="jpeg-turbo"
-VERSION="2.0.4"
+VERSION="2.0.6"
 CATEGORY="x-window"
 TAGS="jpeg jpg"
 SHORT_DESC="JPEG image programs."

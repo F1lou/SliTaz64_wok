@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="lvm2"
-VERSION="2.03.08"
+VERSION="2.03.11"
 CATEGORY="system-tools"
 SHORT_DESC="Linux Logical Volume Manager."
 MAINTAINER="guillaume.michon@laposte.net"
@@ -14,7 +14,7 @@ WGET_URL="ftp://sourceware.org/pub/lvm2/old/$TARBALL"
 
 DEPENDS="libaio libdevmapper linux-md ncurses readline"
 BUILD_DEPENDS="coreutils-file-format libaio-dev ncurses-dev readline-dev 
-	udev-dev"
+	eudev-dev"
 
 # Rules to configure and make the package.
 compile_rules()

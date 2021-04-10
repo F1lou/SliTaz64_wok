@@ -14,6 +14,12 @@ WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
 # Rules to configure and make the package.
 compile_rules()
 {
+	# patch some files for gcc10 (according to BLFS10.1 Chapter 4.15.2)
+	sed -i 's/BUFSIZ/rw_base_size/' src/unshar.c
+	sed -i '/program_name/s/^/extern /' src/*opts.h
+	sed -i 's/IO_ftrylockfile/IO_EOF_SEEN/' lib/*.c
+	echo "#define _IO_IN_BACKUP 0x100" >> lib/stdio-impl.h
+
 	./configure				\
 		--prefix=/usr			\
 		--infodir=/usr/share/info	\

@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="libpng12-dev"
+VERSION="1.2.56"
+CATEGORY="development"
+SHORT_DESC="PNG images library devel files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="zlib/libpng"
+WANTED="libpng12"
+WEB_SITE="http://libpng.org/pub/png/libpng.html"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="libpng12 pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+}

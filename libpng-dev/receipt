@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libpng-dev"
-VERSION="1.2.56"
+VERSION="1.6.37"
 CATEGORY="development"
 SHORT_DESC="PNG images library devel files."
 MAINTAINER="pankso@slitaz.org"

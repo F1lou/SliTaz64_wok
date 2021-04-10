@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="pango-dev"
-VERSION="1.36.8"
+VERSION="1.48.4"
 CATEGORY="development"
 SHORT_DESC="Library for layout and rendering of text devel files."
 MAINTAINER="pankso@slitaz.org"
@@ -15,14 +15,14 @@ DEPENDS="pango cairo-dev pkg-config harfbuzz-dev"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib $fs/usr/share
-	cp -a $install/usr/lib/*.*a $fs/usr/lib
-	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
-	[ -d "$install/usr/lib/girepository-1.0" ] && \
-		cp -a $install/usr/lib/girepository-1.0 $fs/usr/lib
+	mkdir -p $fs/usr/lib $fs/usr/lib64 $fs/usr/share
+	#~ cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib
+	[ -d "$install/usr/lib64/girepository-1.0" ] && \
+		cp -a $install/usr/lib64/girepository-1.0 $fs/usr/lib64
 	[ -d "$install/usr/share/gir-1.0" ] && \
 		cp -a $install/usr/share/gir-1.0 $fs/usr/share
 	cp -a $install/usr/include $fs/usr
-	cp -a $install/usr/lib/pango $fs/usr/lib
-	rm -rf $fs/usr/lib/pango/1.8.0/modules/*.so
+	#~ cp -a $install/usr/lib/pango $fs/usr/lib
+	#~ rm -rf $fs/usr/lib/pango/1.8.0/modules/*.so
 }

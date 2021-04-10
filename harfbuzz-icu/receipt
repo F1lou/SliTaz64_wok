@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="harfbuzz-icu"
-VERSION="2.6.7"
+VERSION="2.8.0"
 CATEGORY="system-tools"
 SHORT_DESC="OpenType text shaping engine with icu support."
 MAINTAINER="pankso@slitaz.org"
@@ -9,7 +9,7 @@ LICENSE="GPL2"
 WEB_SITE="https://www.freedesktop.org/wiki/Software/HarfBuzz"
 
 SOURCE="harfbuzz"
-TARBALL="$SOURCE-$VERSION.tar.xz"
+TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="https://www.freedesktop.org/software/$SOURCE/release/$TARBALL"
 
 PROVIDE="harfbuzz"
@@ -19,21 +19,27 @@ BUILD_DEPENDS="freetype-dev gcc glib-dev icu-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure		\
-		--with-freetype	\
-		--with-glib	\
-		--with-gobject	\
-		--with-icu=yes	\
-		$CONFIGURE_ARGS && 
-	make -j 1 &&
-	make install
+	mkdir build && cd build &&
+
+	meson --prefix=/usr .. &&
+	ninja
+	DESTDIR=$DESTDIR ninja install
+	
+	#~ ./configure		\
+		#~ --with-freetype	\
+		#~ --with-glib	\
+		#~ --with-gobject	\
+		#~ --with-icu=yes	\
+		#~ $CONFIGURE_ARGS && 
+	#~ make -j 1 &&
+	#~ make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/lib64
 
 	cp -a $install/usr/bin		$fs/usr
-	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+	cp -a $install/usr/lib64/*.so*	$fs/usr/lib64
 }

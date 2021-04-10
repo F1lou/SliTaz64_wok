@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="pango"
-VERSION="1.36.8"
+VERSION="1.48.4"
 CATEGORY="x-window"
 SHORT_DESC="Layout and rendering of internationalized text"
 MAINTAINER="pankso@slitaz.org"
@@ -13,11 +13,11 @@ CONFIG_FILES="/etc/pango/pango.modules"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="cairo xorg-libXft slitaz-base-files gcc-lib-base util-linux-uuid"
-BUILD_DEPENDS="cairo-dev libxml2-dev xorg-libXft-dev"
+BUILD_DEPENDS="cairo-dev libxml2-dev xorg-libXft-dev fribidi"
 
 # Handle cross compilation
 case "$ARCH" in
-	i?86)
+	x86_64|i?86)
 		BUILD_DEPENDS="$BUILD_DEPENDS gobject-introspection-dev" ;;
 	arm*)
 		export LIBTOOL=${HOST_SYSTEM}-libtool
@@ -27,29 +27,33 @@ esac
 # Rules to configure and make the package. 
 compile_rules()
 {
-	./configure \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--with-html-dir=/usr/share/doc \
-		$CONFIGURE_ARGS $ARCH_ARGS &&
-	make && make install
+	meson --buildtype=release --prefix=/usr --sysconfdir=/etc build &&
+	cd build && ninja
+	DESTDIR=$DESTDIR ninja install
+
+	#~ ./configure \
+		#~ --prefix=/usr \
+		#~ --sysconfdir=/etc \
+		#~ --with-html-dir=/usr/share/doc \
+		#~ $CONFIGURE_ARGS $ARCH_ARGS &&
+	#~ make && make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/bin $fs/usr/lib $fs/etc/pango
-	cp -a $install/usr/bin/* $fs/usr/bin
-	cp -a $install/usr/lib/*.so* $fs/usr/lib
-	cp -a $install/usr/lib/pango $fs/usr/lib
-	rm -rf $fs/usr/lib/pango/1.8.0/modules/*.la
-	[ -d "$install/etc" ] && cp -a $install/etc $fs
-	touch $fs/etc/pango/pango.modules
+	mkdir -p $fs/usr/lib64 $fs/etc/pango
+	cp -a $install/usr/bin $fs/usr/
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
+	#~ cp -a $install/usr/lib/pango $fs/usr/lib
+	#~ rm -rf $fs/usr/lib/pango/1.8.0/modules/*.la
+	#~ [ -d "$install/etc" ] && cp -a $install/etc $fs
+	#~ touch $fs/etc/pango/pango.modules
 }
 
 # Pre and post install commands for Tazpkg.
-post_install()
-{
-	# Rebuilds pango.modules when installed.
-	chroot "$1/" /usr/bin/pango-querymodules > "$1/etc/pango/pango.modules"
-}
+#~ post_install()
+#~ {
+	#~ # Rebuilds pango.modules when installed.
+	#~ chroot "$1/" /usr/bin/pango-querymodules > "$1/etc/pango/pango.modules"
+#~ }

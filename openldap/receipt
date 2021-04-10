@@ -13,8 +13,8 @@ TAZPANEL_DAEMON="man::slapd|help::/usr/libexec/slapd|edit::/etc/openldap/slapd.c
 CONFIG_FILES="/etc/openldap"
 DATABASE_FILES="/var/openldap-*"
 
-DEPENDS="libdb openssl libcomerr3 util-linux-uuid libldap"
-BUILD_DEPENDS="db-dev libdb util-linux-uuid-dev openssl-dev util-linux-uuid"
+DEPENDS="libdb5 openssl libcomerr3 util-linux-uuid libldap"
+BUILD_DEPENDS="db5-dev libdb5 util-linux-uuid-dev openssl-dev util-linux-uuid"
 
 # Rules to configure and make the package.
 compile_rules()

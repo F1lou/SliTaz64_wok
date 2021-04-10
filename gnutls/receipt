@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gnutls"
-VERSION="3.6.12"
+VERSION="3.7.1"
 CATEGORY="security"
 SHORT_DESC="GNU Transport Layer Security Library."
 MAINTAINER="erjo@slitaz.org"
@@ -26,7 +26,7 @@ esac
 
 # Handle cross compilation.
 case "$ARCH" in
-	i?86) 
+	x86_64|i?86) 
 		BUILD_DEPENDS="$BUILD_DEPENDS p11-kit-dev cacerts" ;;
 	arm*) 
 		ARCH_ARGS="--with-libgcrypt-prefix=/cross/$ARCH/sysroot/usr \

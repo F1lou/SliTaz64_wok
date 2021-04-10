@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gtk+"
-VERSION="2.24.32"
+VERSION="2.24.33"
 CATEGORY="x-window"
 SHORT_DESC="The GIMP Toolkit."
 MAINTAINER="pankso@slitaz.org"
@@ -27,17 +27,17 @@ BUILD_DEPENDS="atk-dev automake dbus-dev dbus-glib-dev faenza-icon-theme
 HOST_ARCH="x86_64 i486 arm"
 
 # Handle cross compilation.
-case "$ARCH" in
-	x86_64|i?86)
-		BUILD_DEPENDS="$BUILD_DEPENDS bash cups-dev gobject-introspection-dev \
-		perl pkg-config" ;;
-	arm*)
-		ARCH_ARGS="--enable-introspection=no --disable-glibtest --disable-cups \
-		--disable-papi --with-gdktarget=x11 --with-xinput gio_can_sniff=yes"
-		export LDFLAGS="$LDFLAGS -L/cross/$ARCH/sysroot/usr/lib"
-		export CPPFLAGS="$CPPFLAGS -I/cross/$ARCH/sysroot/usr/include"
-		export LIBTOOL=${HOST_SYSTEM}-libtool ;;
-esac
+#~ case "$ARCH" in
+	#~ x86_64|i?86)
+		#~ BUILD_DEPENDS="$BUILD_DEPENDS bash cups-dev gobject-introspection-dev \
+		#~ perl pkg-config" ;;
+	#~ arm*)
+		#~ ARCH_ARGS="--enable-introspection=no --disable-glibtest --disable-cups \
+		#~ --disable-papi --with-gdktarget=x11 --with-xinput gio_can_sniff=yes"
+		#~ export LDFLAGS="$LDFLAGS -L/cross/$ARCH/sysroot/usr/lib"
+		#~ export CPPFLAGS="$CPPFLAGS -I/cross/$ARCH/sysroot/usr/include"
+		#~ export LIBTOOL=${HOST_SYSTEM}-libtool ;;
+#~ esac
 
 # Rules to configure and make the package.
 compile_rules()

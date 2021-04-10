@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="graphviz"
-VERSION="2.42.2"
+VERSION="2.44.1"
 CATEGORY="x-window"
 SHORT_DESC="Automatic graph drawing."
 MAINTAINER="pascal.bellard@slitaz.org"

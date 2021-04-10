@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libdevmapper"
-VERSION="2.03.08"
+VERSION="2.03.11"
 CATEGORY="system-tools"
 SHORT_DESC="Linux device mapper library."
 MAINTAINER="b1+slitaz@nagel.org"
@@ -20,7 +20,7 @@ genpkg_rules()
 	cp -a $install/lib/udev $fs/etc
 }
 
-post_install()
-{
-	tazpkg reconfigure udev --root="$1"
-}
+#~ post_install()
+#~ {
+	#~ tazpkg reconfigure udev --root="$1"
+#~ }

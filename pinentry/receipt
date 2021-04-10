@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="pinentry"
-VERSION="1.1.0"
+VERSION="1.1.1"
 CATEGORY="security"
 SHORT_DESC="Collection of dialog programs that allow GnuPG to read passphrases and PIN numbers in a secure manner."
 MAINTAINER="pascal.bellard@slitaz.org"

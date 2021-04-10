@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gdk-pixbuf"
-VERSION="2.31.1"
+VERSION="2.42.6"
 CATEGORY="x-window"
 SHORT_DESC="An image loading library for gtk2."
 MAINTAINER="slaxemulator@gmail.com"
@@ -19,7 +19,7 @@ HOST_ARCH="x86_64 i486 arm"
 
 # Handle cross compilation
 case "$ARCH" in
-	i?86) BUILD_DEPENDS="$BUILD_DEPENDS gobject-introspection-dev" ;;
+	x86_64|i?86) BUILD_DEPENDS="$BUILD_DEPENDS gobject-introspection-dev" ;;
 	arm) ARCH_ARGS="--enable-introspection=no --cache-file=arm.cache" ;;
 esac
 
@@ -29,27 +29,23 @@ compile_rules()
 	case "$ARCH" in
 		arm) echo "gio_can_sniff=yes" > arm.cache ;;
 	esac
-	./configure			\
-		--disable-glibtest	\
-		--without-libjasper	\
-		--with-x11		\
-		$CONFIGURE_ARGS $ARCH_ARGS &&
-	make &&
-	make install
+	mkdir build && cd build &&
+
+	meson --prefix=/usr &&
+	ninja
+	DESTDIR=$DESTDIR ninja install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders
-
+	mkdir -p $fs/usr/lib64
+	
 	cp -a $install/usr/bin		$fs/usr
-	cp -a $install/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders/*.so \
-					$fs/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders
-	[ -d "$install/usr/lib/girepository-1.0" ] &&
-		cp -a $install/usr/lib/girepository-1.0	$fs/usr/lib
-	cp -a $install/usr/lib/*.so*	$fs/usr/lib
-	touch $fs/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache
+	cp -a $install/usr/lib64/gdk-pixbuf-2.0 $fs/usr/lib64
+	[ -d "$install/usr/lib64/girepository-1.0" ] &&
+		cp -a $install/usr/lib64/girepository-1.0	$fs/usr/lib64
+	cp -a $install/usr/lib64/*.so*	$fs/usr/lib64
 }
 
 # Pre and post install commands for Tazpkg.

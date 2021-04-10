@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gobject-introspection"
-VERSION="1.43.3"
+VERSION="1.68.0"
 CATEGORY="development"
 SHORT_DESC="Introspection system for GObject-based libraries"
 MAINTAINER="pankso@slitaz.org"
@@ -27,20 +27,22 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure \
-		--disable-static \
-		$CONFIGURE_ARGS &&
-	make && make install
+	mkdir build &&
+	cd    build &&
+
+	meson --prefix=/usr .. &&
+	ninja	&&
+	ninja install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
 	mkdir -p \
-		$fs/usr/lib \
+		$fs/usr/lib64 \
 		$fs/usr/share
 	cp -a $install/usr/bin $fs/usr
-	cp -a $install/usr/lib/girepository-1.0 $fs/usr/lib
-	cp -a $install/usr/lib/gobject-introspection $fs/usr/lib
-	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib64/girepository-1.0 $fs/usr/lib64
+	cp -a $install/usr/lib64/gobject-introspection $fs/usr/lib64
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
 }

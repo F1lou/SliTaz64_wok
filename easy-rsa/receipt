@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="easy-rsa"
-VERSION="3.0.6"
+VERSION="3.0.8"
 CATEGORY="security"
 SHORT_DESC="A Shell-based CA Utility"
 MAINTAINER="pascal.bellard@slitaz.org"

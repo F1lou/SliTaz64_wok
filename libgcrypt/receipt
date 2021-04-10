@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libgcrypt"
-VERSION="1.8.5"
+VERSION="1.9.2"
 CATEGORY="security"
 SHORT_DESC="Cryptographic library based on GnuPG."
 MAINTAINER="erjo@slitaz.org"
@@ -20,7 +20,7 @@ HOST_ARCH="x86_64 i486 arm"
 compile_rules()
 {
 	# Integrity check: https://www.gnupg.org/download/integrity_check.html
-	echo "2d8781e92f88706707a1e76fb628b499ad538a30  $SRC/$TARBALL" | sha1sum -c || exit 1
+	echo "29bd5d0a8f674d4521167dd518ef99b26d1e8f27 $SRC/$TARBALL" | sha1sum -c || exit 1
 
 	case "$ARCH" in
 		arm)
