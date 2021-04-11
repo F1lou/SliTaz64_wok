@@ -12,9 +12,9 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="http://www.apache.org/dist/apr/$TARBALL"
 
 DEPENDS="apr expat ncurses readline zlib"
-BUILD_DEPENDS="apr-dev expat-dev gawk libmysqlclient 
-	libpostgresqlclient libtool mysql-dev postgresql-dev 
-	sqlite-dev unixODBC-dev util-linux-uuid-dev"
+BUILD_DEPENDS="apr-dev expat-dev gawk db-dev
+	libpostgresqlclient libtool postgresql-dev 
+	sqlite-dev unixODBC-dev util-linux-uuid-dev" # libmysqlclient mysql-dev
 
 # Rules to configure and make the package.
 compile_rules()
@@ -22,13 +22,15 @@ compile_rules()
 	./configure					\
 		--with-apr=$(apr-1-config --bindir)	\
 		--with-pgsql=/usr			\
-		--with-mysql				\
+		--with-gdbm=/usr			\
 		--prefix=/usr				\
 		--infodir=/usr/share/info		\
 		--mandir=/usr/share/man			\
 		$CONFIGURE_ARGS &&
 	make &&
 	make DESTDIR=$DESTDIR install
+	
+	#--with-mysql				
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

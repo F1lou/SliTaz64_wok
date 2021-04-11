@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="php"
-VERSION="7.4.4"
+VERSION="8.0.3"
 CATEGORY="development"
 SHORT_DESC="PHP web programming language."
 MAINTAINER="pankso@slitaz.org"
@@ -13,18 +13,18 @@ WGET_URL="https://www.php.net/distributions/$TARBALL"
 
 PROVIDE="php:lighttpd"
 DEPENDS="libssl libzip libxml2 lighttpd php-common sqlite"
-BUILD_DEPENDS="apache apache-dev apr-dev apr-util-dev c-client 
+BUILD_DEPENDS="apache apache-dev apr-dev apr-util-dev 
 	coreutils-conditions curl-dev cyrus-sasl-dev gettext 
 	jpeg-dev libldap libmcrypt-dev libmysqlclient libpng-dev 
 	libtool libunixODBC libvpx-dev libxml2-dev libzip-dev 
 	mhash-dev mysql-dev net-snmp-dev openldap-dev openssl-dev 
 	perl pkg-config postgresql-dev re2c sed sqlite-dev 
-	unixODBC-dev"
+	unixODBC-dev"	# c-client 
 
 #HOST_ARCH="x86_64 i486 arm"
 
 case "$ARCH" in
-	i?86)
+	x86_64|i?86)
 		# 7.4.4 unrecognised:
 		# 	--enable-zip
 		#	--with-jpeg-dir=/usr

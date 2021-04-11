@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libcap"
-VERSION="2.33"
+VERSION="2.49"
 CATEGORY="system-tools"
 SHORT_DESC="Support for getting and setting POSIX.1e capabilities."
 MAINTAINER="pankso@slitaz.org"
@@ -18,7 +18,7 @@ HOST_ARCH="x86_64 i486 arm"
 
 # Handle cross compilation.
 case "$ARCH" in
-	i?86) BUILD_DEPENDS="$BUILD_DEPENDS perl"  ;;
+	x86_64|i?86) BUILD_DEPENDS="$BUILD_DEPENDS perl"  ;;
 	arm*) ARCH_ARGS="CC=$HOST_SYSTEM-gcc BUILD_CC=gcc" ;;
 esac
 
@@ -35,9 +35,9 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/lib
+	mkdir -p $fs/lib64
 
-	cp -a $install/lib/*.so*	$fs/lib
-	chmod +x			$fs/lib/*
+	cp -a $install/lib64/*.so*	$fs/lib64
+	chmod +x			$fs/lib64/*
 	cp -a $install/sbin		$fs
 }

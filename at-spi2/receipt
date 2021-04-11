@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="at-spi2"
-VERSION="2.15.4"
+VERSION="2.40.0"
 CATEGORY="libdevel"
 LICENSE="GPL3"
 SHORT_DESC="Bridges ATK to At-Spi2 D-Bus service."
@@ -17,12 +17,22 @@ BUILD_DEPENDS="dbus-dev glib-dev gobject-introspection-dev util-linux-uuid-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		$CONFIGURE_ARGS &&
-	make &&
-	make DESTDIR=$DESTDIR install
+	mkdir build && cd build
+
+	meson --prefix=/usr     \
+		  -Dsystemd_user_dir=/tmp \
+		  -Dsysconfdir=/etc	\
+		   .. &&
+	ninja
+	
+	DESTDIR=$DESTDIR ninja install
+
+	#~ ./configure \
+		#~ --prefix=/usr \
+		#~ --sysconfdir=/etc \
+		#~ $CONFIGURE_ARGS &&
+	#~ make &&
+	#~ make DESTDIR=$DESTDIR install
 }
 
 genpkg_rules()

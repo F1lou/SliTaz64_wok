@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="glib-networking"
-VERSION="2.43.1"
+VERSION="2.64.3"
 CATEGORY="x-window"
 SHORT_DESC="TLS support for glib."
 MAINTAINER="pankso@slitaz.org"
@@ -18,23 +18,32 @@ HOST_ARCH="x86_64 i486 arm"
 
 # Handle cross compilation.
 case "$ARCH" in
-	i?86) BUILD_DEPENDS="$BUILD_DEPENDS intltool automake autoconf" ;;
+	x86_64|i?86) BUILD_DEPENDS="$BUILD_DEPENDS intltool automake autoconf" ;;
 esac
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure				\
-		--prefix=/usr			\
-		--without-ca-certificates	\
-		$CONFIGURE_ARGS &&
-	make &&
-	make install
+	mkdir build && cd build &&
+
+	meson --prefix=/usr          \
+		  -Dlibproxy=disabled \
+		  -Dopenssl=enabled .. &&
+	ninja
+	
+	DESTDIR=$DESTDIR ninja install
+
+	#~ ./configure				\
+		#~ --prefix=/usr			\
+		#~ --without-ca-certificates	\
+		#~ $CONFIGURE_ARGS &&
+	#~ make &&
+	#~ make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib/gio/modules
-	cp -a $install/usr/lib/gio/modules/*.so* $fs/usr/lib/gio/modules
+	mkdir -p $fs/usr/lib64/gio/modules
+	cp -a $install/usr/lib64/gio/modules/*.so* $fs/usr/lib64/gio/modules
 }

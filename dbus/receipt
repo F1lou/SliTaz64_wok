@@ -1,14 +1,14 @@
 # SliTaz package receipt.
 
 PACKAGE="dbus"
-VERSION="1.12.18"
+VERSION="1.13.18"
 CATEGORY="x-window"
 SHORT_DESC="A message bus system."
 MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL2"
 WEB_SITE="https://www.freedesktop.org/wiki/Software/dbus/"
 
-TARBALL="$PACKAGE-$VERSION.tar.gz"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://dbus.freedesktop.org/releases/dbus/$TARBALL"
 
 DEPENDS="expat slitaz-base-files util-linux-uuid xorg-libICE 
