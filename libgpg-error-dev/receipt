@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libgpg-error-dev"
-VERSION="1.37"
+VERSION="1.42"
 CATEGORY="development"
 SHORT_DESC="Common error messages for GnuPG - development files."
 MAINTAINER="erjo@slitaz.org"

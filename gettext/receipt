@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gettext"
-VERSION="0.19.8.1"
+VERSION="0.21"
 CATEGORY="development"
 SHORT_DESC="Utilities for the GNU Translation Project."
 MAINTAINER="pankso@slitaz.org"
@@ -27,6 +27,14 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
+	cd libtextstyle
+	./configure		\
+		$CONFIGURE_ARGS	\
+		$ARCH_ARGS &&
+	make &&
+	make install
+	
+	cd ..
 	./configure		\
 		$CONFIGURE_ARGS	\
 		$ARCH_ARGS &&

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="attr"
-VERSION="2.4.48"
+VERSION="2.5.1"
 CATEGORY="system-tools"
 SHORT_DESC="Commands for Manipulating Filesystem Extended Attributes."
 MAINTAINER="rcx@zoominternet.net"
@@ -23,20 +23,20 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	# Need bash sh to compile
-	mv /bin/sh /bin/sh.bak
-	ln -s /bin/bash /bin/sh
+	#~ # Need bash sh to compile
+	#~ mv /bin/sh /bin/sh.bak
+	#~ ln -s /bin/bash /bin/sh
 
-	# No need to use rpm
-	rm /bin/rpm
+	#~ # No need to use rpm
+	#~ rm /bin/rpm
 
-	export INSTALL_USER=root INSTALL_GROUP=root
+	#~ export INSTALL_USER=root INSTALL_GROUP=root
 
 	./configure $CONFIGURE_ARGS &&
 	make &&
 	make install install-lib install-dev DIST_ROOT=$DESTDIR
 	
-	mv -f /bin/sh.bak /bin/sh
+	#~ mv -f /bin/sh.bak /bin/sh
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

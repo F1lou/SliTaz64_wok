@@ -15,7 +15,7 @@ DEPENDS="bzlib fontconfig freetype glib glibc-base harfbuzz libffi libpng \
 libxcb libxml2 pcre pixman xorg-libX11 xorg-libXau xorg-libXdmcp xorg-libXext \
 xorg-libXrender zlib"
 BUILD_DEPENDS="pkg-config glib-dev libpng-dev zlib-dev fontconfig-dev \
-freetype-dev xorg-libX11-dev pixman-dev xorg-libXau-dev xorg-libXdmcp-dev \
+freetype-dev xorg-libX11-dev pixman-dev xorg-libXau-dev xorg-libXdmcp-dev harfbuzz-dev \
 xorg-libXrender-dev xcb-util-dev libxcb-dev expat-dev libxml2-dev util-linux-uuid-dev"
 SPLIT="cairo-tools"
 SIBLINGS="cairo-gl"
