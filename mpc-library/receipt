@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="mpc-library"
-VERSION="1.1.0"
+VERSION="1.2.1"
 CATEGORY="development"
 SHORT_DESC="A C library for the arithmetic of complex numbers."
 MAINTAINER="pankso@slitaz.org"

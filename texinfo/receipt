@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="texinfo"
-VERSION="4.13a"
+VERSION="6.7"
 CATEGORY="development"
 SHORT_DESC="GNU documentation tools."
 MAINTAINER="rcx@zoominternet.net"

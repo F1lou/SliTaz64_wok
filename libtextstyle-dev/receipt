@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="libtextstyle-dev"
+VERSION="0.21"
+CATEGORY="development"
+SHORT_DESC="Utilities for the GNU Translation Project."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://www.gnu.org/software/gettext/"
+
+WANTED="libtextstyle"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Handle cross compilation. Glibc-locale are installed in cross chroot.
+case "$ARCH" in
+	arm) BUILD_DEPENDS="attr-dev ncurses-dev libxml2-tools libxml2-dev"
+	     ARCH_ARGS="--disable-acl" ;;
+esac
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/include	$fs/usr/
+	cp -a $install/usr/lib/*.*a	$fs/usr/lib/
+}

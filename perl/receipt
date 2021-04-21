@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="perl"
-VERSION="5.32.0"
+VERSION="5.32.1"
 MAINVERSION="5.32"
 CATEGORY="development"
 SHORT_DESC="Full Perl interpreter and modules."
@@ -27,7 +27,7 @@ cook_tmp_toolchain()
 		-Darchlibexp="/usr/lib/perl5/$MAINVERSION/$ARCH-linux" \
 		-Dinstallarchlib="/usr/lib/perl5/$MAINVERSION/$ARCH-linux" \
 		-Dvendorlib="/usr/lib/perl5/5.32/vendor_perl"	\
-		-Dvendorarch="/usr/lib/perl5/5.32/vendor_perl"
+		-Dvendorarch="/usr/lib/perl5/5.32/vendor_perl" \
 		-Dstatic_ext='Data/Dumper Fcntl IO'
 	
 	# Only few tools are needed in the tmp toolchain.
@@ -43,10 +43,14 @@ cook_tmp_toolchain()
 #
 compile_rules()
 {
-	./configure.gnu --prefix=/usr \
-		-Darchname="$ARCH-linux" \
-		-Dmyarchname="$ARCH-linux" \
-		-Dsitearch="/usr/lib/perl5/site_perl/$VERSION/$ARCH-linux" \
+	export BUILD_ZLIB=False
+	export BUILD_BZIP2=0
+	sh Configure -des -Dprefix=/usr \
+		-Darchname="$ARCH-linux" 	\
+		-Dmyarchname="$ARCH-linux" 	\
+		-Duseshrplib				\
+        -Dusethreads				\
+        -Dsitearch="/usr/lib/perl5/site_perl/$VERSION/$ARCH-linux" \
 		-Dsitearchexp="/usr/lib/perl5/site_perl/$VERSION/$ARCH-linux" \
 		-Darchlib="/usr/lib/perl5/$VERSION/$ARCH-linux" \
 		-Darchlibexp="/usr/lib/perl5/$VERSION/$ARCH-linux" \
@@ -56,17 +60,17 @@ compile_rules()
 
 	# make microperl here
 	# patch to fix compiling microperl
-	patch -p0 -i $stuff/miniperlmain.patch
-	# Install in /usr (default is /usr/local).
-	sed -i s/'usr\/local'/'usr'/ uconfig.sh
+	#~ patch -p0 -i $stuff/miniperlmain.patch
+	#~ # Install in /usr (default is /usr/local).
+	#~ sed -i s/'usr\/local'/'usr'/ uconfig.sh
 	# Sed to search mods in /usr/lib/perl5.
-	sed -i s/'perl5\/'${VERSION%.*}/'perl5'/ uconfig.sh
+	#~ sed -i s/'perl5\/'${VERSION%.*}/'perl5'/ uconfig.sh
 	# Optimisation.
-	sed -i s/'unknown'/'$HOST_SYSTEM'/ uconfig.sh
+	#~ sed -i s/'unknown'/'$HOST_SYSTEM'/ uconfig.sh
 	# Make it!
-	make -f Makefile.micro regen_uconfig &&
-	make -f Makefile.micro &&
-	strip microperl
+	#~ make -f Makefile.micro regen_uconfig64 &&
+	#~ make -f Makefile.micro &&
+	#~ strip microperl
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

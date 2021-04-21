@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="autoconf"
-VERSION="2.69"
+VERSION="2.71"
 CATEGORY="development"
 SHORT_DESC="A GNU tool for automatically configuring source code"
 MAINTAINER="pankso@slitaz.org"

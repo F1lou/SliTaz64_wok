@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libmicrohttpd-dev"
-VERSION="0.9.70"
+VERSION="0.9.72"
 CATEGORY="development"
 SHORT_DESC="Development files for libmicrohttp."
 MAINTAINER="slaxemulator@gmail.com"
