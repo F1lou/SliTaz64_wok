@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="enchant2"
-VERSION="2.2.7"
+VERSION="2.2.15"
 CATEGORY="x-window"
 TAGS="spell check"
 SHORT_DESC="Enchant spell checking library."

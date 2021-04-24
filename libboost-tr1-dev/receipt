@@ -2,7 +2,7 @@
 
 PACKAGE="libboost-tr1-dev"
 LIB_NAME="tr1"
-VERSION="1.69.0"
+VERSION="1.76.0"
 
 CATEGORY="development"
 SHORT_DESC="Part of the Boost C++ Libraries collection."
@@ -19,5 +19,5 @@ genpkg_rules()
 {
 	mkdir -p $fs/usr/lib $fs/usr/include/$SOURCE
 	cp -a $install/usr/include/$SOURCE/math/*$LIB_NAME* $fs/usr/include/boost
-	cp -a $install/usr/lib/*$LIB_NAME*.*a $fs/usr/lib
+	#~ cp -a $install/usr/lib/*$LIB_NAME*.*a $fs/usr/lib
 }

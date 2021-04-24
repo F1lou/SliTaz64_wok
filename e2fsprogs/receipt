@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="e2fsprogs"
-VERSION="1.45.5"
+VERSION="1.46.2"
 CATEGORY="base-system"
 SHORT_DESC="Filesystem utilities for use with ext2, ext3 and ext4 (without fsck*)."
 MAINTAINER="pankso@slitaz.org"

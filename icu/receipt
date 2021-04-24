@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="icu"
-VERSION="54.2"
+VERSION="69.1"
 CATEGORY="system-tools"
 SHORT_DESC="C/C++ and Java libraries providing Unicode and Globalization."
 MAINTAINER="pankso@slitaz.org"
@@ -9,7 +9,7 @@ LICENSE="MIT"
 SOURCE="icu4c"
 TARBALL="$SOURCE-${VERSION//./_}-src.tgz"
 WEB_SITE="https://www.icu-project.org/"
-WGET_URL="http://download.icu-project.org/files/$SOURCE/$VERSION/$TARBALL"
+WGET_URL="https://github.com/unicode-org/icu/releases/download/release-69-1/$TARBALL"
 #WGET_URL="http://www.sfr-fresh.com/unix/misc/$TARBALL"
 
 # Rules to configure and make the package.

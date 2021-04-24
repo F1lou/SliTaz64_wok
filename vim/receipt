@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="vim"
-VERSION="8.2.0664"
+VERSION="8.2.2604"
 CATEGORY="editors"
 TAGS="text-editor"
 SHORT_DESC="Advanced text editor."

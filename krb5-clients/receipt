@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="krb5-clients"
-VERSION="1.18"
+VERSION="1.19.1"
 CATEGORY="security"
 SHORT_DESC="Miscellaneous clients using MIT Kerberos."
 MAINTAINER="pascal.bellard@slitaz.org"

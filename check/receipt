@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="check"
-VERSION="0.13.0"
+VERSION="0.15.2"
 CATEGORY="system-tools"
 SHORT_DESC="A unit testing framework for C."
 MAINTAINER="erjo@slitaz.org"

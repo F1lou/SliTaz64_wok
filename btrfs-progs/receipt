@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="btrfs-progs"
-VERSION="5.7"
+VERSION="5.11.1"
 CATEGORY="system-tools"
 TAGS="filesystem fault-tolerance"
 SHORT_DESC="Btrfs Filesystem user space tools."

@@ -4,8 +4,6 @@
 /usr/bin/psql
 /usr/bin/createdb
 /usr/bin/dropdb
-/usr/bin/createlang
-/usr/bin/droplang
 /usr/bin/createuser
 /usr/bin/dropuser
 /usr/bin/clusterdb

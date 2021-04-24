@@ -1,8 +1,8 @@
 # SliTaz package receipt.
 
 PACKAGE="libjson-c"
-VERSION="0.13.1"
-REL_DATE="20180305"
+VERSION="0.15"
+REL_DATE="20200726"
 CATEGORY="development"
 SHORT_DESC="A JSON implementation in C."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -18,19 +18,22 @@ BUILD_DEPENDS="automake bash libtool"
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i 's/-Werror /&-Wno-error=unused-but-set-variable /' Makefile*
+	mkdir build && cd build
+	cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+	
+	#~ sed -i 's/-Werror /&-Wno-error=unused-but-set-variable /' Makefile*
 
-	./autogen.sh &&
-	./configure		\
-		--prefix=/usr	\
-		$CONFIGURE_ARGS &&
-	make -j 1 &&
+	#~ ./autogen.sh &&
+	#~ ./configure		\
+		#~ --prefix=/usr	\
+		#~ $CONFIGURE_ARGS &&
+	make &&
 	make DESTDIR=$DESTDIR install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib
-	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	mkdir -p $fs/usr/lib64
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
 }

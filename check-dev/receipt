@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="check-dev"
-VERSION="0.13.0"
+VERSION="0.15.2"
 CATEGORY="development"
 SHORT_DESC="Check - development files."
 MAINTAINER="erjo@slitaz.org"

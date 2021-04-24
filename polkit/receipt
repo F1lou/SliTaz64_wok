@@ -1,14 +1,15 @@
 # SliTaz package receipt.
 
 PACKAGE="polkit"
-VERSION="0.104"
+VERSION="0.118"
 CATEGORY="base-system"
 SHORT_DESC="Application development toolkit for controlling system-wide privileges."
 MAINTAINER="slaxemulator@gmail.com"
 LICENSE="LGPL2"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://www.freedesktop.org/wiki/Software/PolicyKit"
-WGET_URL="http://hal.freedesktop.org/releases/$TARBALL"
+WGET_URL="https://www.freedesktop.org/software/$PACKAGE/releases/$TARBALL"
+
 CROSS="error: cannot check for file existence when cross compiling"
 
 DEPENDS="glib libgio dbus dbus-glib expat util-linux-eject"

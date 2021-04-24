@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="iproute2"
-VERSION="5.5.0"
+VERSION="5.11.0"
 CATEGORY="network"
 TAGS="network route"
 SHORT_DESC="Utilites for networking and traffic control."

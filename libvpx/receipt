@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libvpx"
-VERSION="1.8.2"
+VERSION="1.10.0"
 CATEGORY="multimedia"
 SHORT_DESC="The VP8 Codec SDK."
 MAINTAINER="slaxemulator@gmail.com"
@@ -17,16 +17,17 @@ BUILD_DEPENDS="coreutils-file-format diffutils yasm"
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure				\
-		--enable-vp8			\
-		--enable-runtime-cpu-detect	\
-		--enable-postproc		\
+	sed -i 's/cp -p/cp/' build/make/Makefile
+
+	mkdir libvpx-build && cd libvpx-build
+
+	../configure --prefix=/usr  \
 		--enable-shared			\
-		--enable-pic			\
-		--disable-install-docs		\
-		--disable-install-srcs &&
-	make -j 1 &&
-	make DIST_DIR=$DESTDIR/usr install
+        --disable-static 		
+		#~ --disable-install-docs	\
+		#~ --disable-install-srcs &&
+	make 
+	make DESTDIR=$DESTDIR install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="postgresql-contrib"
-VERSION="9.2.3"
+VERSION="13.2"
 CATEGORY="misc"
 SHORT_DESC="SQL database system user contributions."
 MAINTAINER="pascal.bellard@slitaz.org"
