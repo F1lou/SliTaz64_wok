@@ -1,12 +1,13 @@
 # SliTaz package receipt.
 
-PACKAGE="libsigc++"
-VERSION="2.10.6"
+PACKAGE="libsigc++3"
+VERSION="3.0.6"
 CATEGORY="system-tools"
 SHORT_DESC="Callback Framework for C++"
 MAINTAINER="pankso@slitaz.org"
 LICENSE="LGPL2.1"
-TARBALL="$PACKAGE-$VERSION.tar.xz"
+SOURCE="libsigc++"
+TARBALL="$SOURCE-$VERSION.tar.xz"
 WEB_SITE="https://developer.gnome.org/libsigc++/"
 WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION%.*}/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"

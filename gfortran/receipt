@@ -18,8 +18,9 @@ genpkg_rules()
 	cp -a $install/usr/bin/*gfortran $fs/usr/bin
 	cp -a $install/usr/lib/libgfortran*a $fs/usr/lib
 	cp -a $install/usr/lib/libgfortran.spec $fs/usr/lib
-	cp -a $install/usr/lib/gcc/$HOST_SYSTEM/$VERSION/f* \
+	cp -a $install/usr/lib/gcc/*/$VERSION/f* \
 		$fs/usr/lib/gcc/$HOST_SYSTEM/$VERSION
-	cp -a $install/usr/lib/gcc/$HOST_SYSTEM/$VERSION/libgfortran* \
-		$fs/usr/lib/gcc/$HOST_SYSTEM/$VERSION
+	ln -s $fs/usr/lib/gcc/$HOST_SYSTEM/$VERSION/f951 $fs/usr/lib/gcc/x86_64-pc-linux-gnu/$VERSION/
+	#~ cp -a $install/usr/lib/gcc/*/$VERSION/libgfortran* \
+		#~ $fs/usr/lib/gcc/$HOST_SYSTEM/$VERSION
 }

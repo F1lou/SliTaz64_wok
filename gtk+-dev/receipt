@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gtk+-dev"
-VERSION="2.24.32"
+VERSION="2.24.33"
 CATEGORY="development"
 SHORT_DESC="The GIMP Toolkit - development files."
 MAINTAINER="pankso@slitaz.org"

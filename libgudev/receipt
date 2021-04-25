@@ -1,20 +1,32 @@
 # SliTaz package receipt.
 
 PACKAGE="libgudev"
-VERSION="182"
+VERSION="236"
 CATEGORY="development"
 SHORT_DESC="GObject-based wrapper library for libudev."
 MAINTAINER="gokhlayeh@slitaz.org"
 LICENSE="GPL2"
-WANTED="udev"
+#~ WANTED="eudev"
 WEB_SITE="https://www.kernel.org/pub/linux/utils/kernel/hotplug/udev.html"
 HOST_ARCH="x86_64 i486 arm"
 
-DEPENDS="udev"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="$GNOME_MIRROR/$PACKAGE/$VERSION/$TARBALL"
+
+DEPENDS="eudev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir bld && cd bld
+	meson --prefix=/usr .. &&
+	ninja &&
+	DESTDIR=$DESTDIR ninja install
+}
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/lib
-	cp -a $install/lib/libgudev*so* $fs/lib
+	mkdir -p $fs/usr/lib64
+	cp -a $install/usr/lib64/libgudev*so* $fs/usr/lib64
 }

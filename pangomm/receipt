@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="pangomm"
-VERSION="2.35.1"
+VERSION="2.48.0"
 CATEGORY="x-window"
 SHORT_DESC="Pango binding for GTKmm."
 MAINTAINER="pankso@slitaz.org"
@@ -16,18 +16,23 @@ BUILD_DEPENDS="cairo-dev cairomm-dev glibmm-dev pango-dev libxml2-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
-    cd $src
-    ./configure \
-	--disable-documentation \
-	$CONFIGURE_ARGS &&
-    make &&
-    make install
+ 	mkdir bld && cd bld &&
+
+	meson --prefix=/usr .. &&
+	ninja && ninja install
+	
+	   #~ cd $src
+    #~ ./configure \
+	#~ --disable-documentation \
+	#~ $CONFIGURE_ARGS &&
+    #~ make &&
+    #~ make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib
-	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	mkdir -p $fs/usr/lib64
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
 }
 

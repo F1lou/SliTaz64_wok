@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="doxygen"
-VERSION="1.8.17"
+VERSION="1.9.1"
 CATEGORY="development"
 TAGS="language documentation"
 SHORT_DESC="Source code documentation generator tool."

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libical-dev"
-VERSION="3.0.8"
+VERSION="3.0.10"
 CATEGORY="development"
 SHORT_DESC="Opensource ICalendar - development files."
 MAINTAINER="erjo@slitaz.org"
@@ -14,11 +14,11 @@ WANTED="libical"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/lib $fs/usr/lib64
 
 	cp -a $install/usr/include		$fs/usr
-	cp -a $install/usr/lib/*.*a		$fs/usr/lib
-	cp -a $install/usr/lib/pkgconfig	$fs/usr/lib
+	cp -a $install/usr/lib64/*.*a		$fs/usr/lib64
+	cp -a $install/usr/lib64/pkgconfig	$fs/usr/lib
 
 	sed -i 's|/include$|/include/libical|' \
 		$fs/usr/lib/pkgconfig/libical.pc

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="qca"
-VERSION="2.0.3"
+VERSION="2.3.2"
 CATEGORY="system-tools"
 SHORT_DESC="QCA aims to provide a straightforward and cross-platform crypto API"
 MAINTAINER="pankso@slitaz.org"

@@ -1,15 +1,16 @@
 # SliTaz package receipt.
 
-PACKAGE="cairomm-dev"
-VERSION="1.16.0"
+PACKAGE="libsigc++3-dev"
+VERSION="3.0.6"
 CATEGORY="development"
-SHORT_DESC="Cairomm library devel files."
+SHORT_DESC="Callback Framework for C++ devel files."
 MAINTAINER="pankso@slitaz.org"
-LICENSE="LGPL2"
-WANTED="cairomm"
-WEB_SITE="https://www.cairographics.org/"
+LICENSE="LGPL2.1"
+WANTED="libsigc++3"
+WEB_SITE="https://developer.gnome.org/libsigc++/"
+HOST_ARCH="x86_64 i486 arm"
 
-DEPENDS="cairomm cairo-dev pkg-config"
+DEPENDS="libsigc++3 pkg-config"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
@@ -17,6 +18,6 @@ genpkg_rules()
 	mkdir -p $fs/usr/lib $fs/usr/lib64
 	#~ cp -a $install/usr/lib/*.*a $fs/usr/lib
 	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib
+	cp -a $install/usr/lib64/sigc++-3.0 $fs/usr/lib64
 	cp -a $install/usr/include $fs/usr
-	cp -a $install/usr/lib64/cairomm-${VERSION:0:4} $fs/usr/lib64
 }

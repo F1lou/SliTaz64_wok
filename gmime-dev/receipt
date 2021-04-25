@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gmime-dev"
-VERSION="3.2.6"
+VERSION="3.2.7"
 CATEGORY="development"
 SHORT_DESC="Library for parsing messages using MIME."
 MAINTAINER="allan316@gmail.com"

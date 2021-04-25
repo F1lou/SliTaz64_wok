@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gtk-girepository"
-VERSION="2.24.32"
+VERSION="2.24.33"
 SHORT_DESC="Required to run pygobject3 applications."
 CATEGORY="development"
 MAINTAINER="psychomaniak@xakep.ru"

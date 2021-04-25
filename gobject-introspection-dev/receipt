@@ -20,7 +20,7 @@ genpkg_rules()
 		$fs/usr/share
 	cp -a $install/usr/include $fs/usr
 	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib
-	cp -a $install/usr/lib64/*.la $fs/usr/lib64
+	#~ cp -a $install/usr/lib64/*.la $fs/usr/lib64
 	cp -a $install/usr/share/aclocal $fs/usr/share
 	cp -a $install/usr/share/gir-1.0 $fs/usr/share
 	cp -a $install/usr/share/gobject-introspection-* $fs/usr/share

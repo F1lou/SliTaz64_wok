@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="glibmm"
-VERSION="2.40.0"
+VERSION="2.68.0"
 CATEGORY="x-window"
 SHORT_DESC="C++ interface for the popular GUI library GTK+."
 MAINTAINER="pankso@slitaz.org"
@@ -16,16 +16,22 @@ BUILD_DEPENDS="glib-dev libsigc++-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
-	find . -name '*.[ch]*' | xargs sed -i 's|<glib/.*h|<glib.h|'
-	./configure $CONFIGURE_ARGS && 
-	make && make install
+	#~ find . -name '*.[ch]*' | xargs sed -i 's|<glib/.*h|<glib.h|'
+	#~ ./configure $CONFIGURE_ARGS && 
+	#~ make && make install
+	 mkdir bld && cd bld
+
+	 meson --prefix=/usr .. &&
+	 ninja
+
+	 ninja install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib
-	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	mkdir -p $fs/usr/lib64
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
 	# Remove libgiomm
 	rm -rf $fs/usr/lib/libgiomm*
 }

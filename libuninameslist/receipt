@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libuninameslist"
-VERSION="20190701"
+VERSION="20200413"
 CATEGORY="misc"
 SHORT_DESC="A Library of Unicode names and annotation data."
 MAINTAINER="al.bobylev@gmail.com"

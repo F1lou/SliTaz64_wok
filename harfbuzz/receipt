@@ -8,7 +8,7 @@ MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL2"
 WEB_SITE="https://www.freedesktop.org/wiki/Software/HarfBuzz/"
 
-#~ TARBALL="$PACKAGE-$VERSION.tar.xz"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="git|https://github.com/$PACKAGE/$PACKAGE.git"
 
 DEPENDS="cairo freetype gcc-lib-base glib libffi pcre"

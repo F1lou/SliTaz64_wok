@@ -19,12 +19,12 @@ BUILD_DEPENDS="libpng+apng-dev zlib-dev"
 compile_rules()
 {
 	sed -i 's|prefix)/man|prefix)/share/man|' configure
-
-	./configure		\
-		-prefix=/usr	\
-		-with-system-libpng &&
+	
+	./configure		 	\
+		--prefix=/usr	\
+		--with-system-libpng &&
 	make &&
-	make test &&
+	#~ make test &&
 	make install
 }
 

@@ -12,12 +12,12 @@ TARBALL="$PACKAGE-$VERSION-src.tar.gz"
 WGET_URL="${WEB_SITE}$TARBALL"
 
 DEPENDS="lcms2 libpng"
-BUILD_DEPENDS="lcms2-dev libpng-dev"
+BUILD_DEPENDS="lcms2-dev libpng-dev rust"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure		\
+	CC=gcc ./configure		\
 		--prefix=/usr	\
 		$CONFIGURE_ARGS &&
 	make &&

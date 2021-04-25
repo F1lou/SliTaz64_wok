@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libical"
-VERSION="3.0.8"
+VERSION="3.0.10"
 CATEGORY="system-tools"
 SHORT_DESC="Opensource ICalendar implementation."
 MAINTAINER="erjo@slitaz.org"
@@ -29,6 +29,6 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib
-	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+	mkdir -p $fs/usr/lib64
+	cp -a $install/usr/lib64/*.so*	$fs/usr/lib64
 }

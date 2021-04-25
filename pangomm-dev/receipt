@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="pangomm-dev"
-VERSION="2.35.1"
+VERSION="2.48.0"
 CATEGORY="development"
 SHORT_DESC="Pangomm library devel files."
 MAINTAINER="pankso@slitaz.org"
@@ -15,7 +15,7 @@ DEPENDS="pangomm cairomm-dev pkg-config"
 genpkg_rules()
 {
 	mkdir -p $fs/usr/lib
-	cp -a $install/usr/lib/*.*a $fs/usr/lib
-	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
-	cp -a $install/usr/include $install/usr/lib/*/include $fs/usr
+	#~ cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib
+	cp -a $install/usr/include $install/usr/lib64/*/include $fs/usr
 }
