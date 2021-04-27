@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libraw-dev"
-VERSION="0.19.5"
+VERSION="0.20.2"
 CATEGORY="development"
 SHORT_DESC="Development files for libraw."
 MAINTAINER="slaxemulator@gmail.com"

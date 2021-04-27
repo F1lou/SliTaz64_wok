@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libspiro"
-VERSION="0.5.20150702"
+VERSION="20200505"
 CATEGORY="misc"
 SHORT_DESC="Spiro simplifies the drawing of beautiful curves."
 MAINTAINER="al.bobylev@gmail.com"

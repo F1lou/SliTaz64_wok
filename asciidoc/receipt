@@ -1,15 +1,15 @@
 # SliTaz package receipt.
 
 PACKAGE="asciidoc"
-VERSION="8.6.9"
+VERSION="9.1.0"
 CATEGORY="system-tools"
 SHORT_DESC="Text based document generation"
 MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL2"
 WEB_SITE="http://www.methods.co.nz/asciidoc/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
-WGET_URL="$SF_MIRROR/project/asciidoc/asciidoc/$VERSION/$TARBALL"
-
+#~ WGET_URL="$SF_MIRROR/project/asciidoc/asciidoc/$VERSION/$TARBALL"
+WGET_URL="https://github.com/asciidoc-py/asciidoc-py/archive/refs/tags/$VERSION.tar.gz"
 DEPENDS="python"
 BUILD_DEPENDS=""
 

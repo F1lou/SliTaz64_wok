@@ -25,15 +25,15 @@ compile_rules()
 		-G "Unix Makefiles"		\
 		-DCMAKE_INSTALL_PREFIX=/usr &&
 	cmake --build . &&
-	make -j 1 &&
+	make &&
 	make DESTDIR=$DESTDIR install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/lib64
 
 	cp -a $install/usr/bin		$fs/usr
-	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+	cp -a $install/usr/lib64/*.so*	$fs/usr/lib64
 }

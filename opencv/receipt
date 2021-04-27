@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="opencv"
-VERSION="4.2.0"
+VERSION="4.5.2"
 CATEGORY="development"
 SHORT_DESC="Open source computer vision library."
 MAINTAINER="pascal.bellard@slitaz.org"

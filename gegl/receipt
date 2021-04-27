@@ -1,12 +1,12 @@
 # SliTaz package receipt.
 
 PACKAGE="gegl"
-VERSION="0.3.12"
+VERSION="0.4.30"
 CATEGORY="system-tools"
 SHORT_DESC="Generic Graphics Library"
 MAINTAINER="erjo@slitaz.org"
 LICENSE="GPL3"
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
 WEB_SITE="https://gegl.org/"
 WGET_URL="http://download.gimp.org/pub/$PACKAGE/${VERSION%.*}/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
@@ -19,16 +19,13 @@ util-linux-mount-dev"
 compile_rules()
 {
 	# Keep gegl light so we can make smaller gimp LiveCD flavors
-	./configure \
-		--disable-docs \
-		--without-sdl \
-		--without-librsvg \
-		--without-graphviz \
-		--without-lua \
-		--without-libavformat \
-		--without-libv4l \
-		$CONFIGURE_ARGS &&
-	make && make install
+	mkdir build && cd build
+	meson --prefix=/usr -Dsdl2=disabled -Dlibrsvg=disabled -Dgraphviz=disabled 	\
+		-Dlua=disabled -Dlibav=disabled -Dlibv4l=disabled 			\
+		-Dlibv4l2=disabled ..
+	
+	ninja && 
+	DESTDIR=$DESTDIR ninja install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
@@ -36,7 +33,7 @@ genpkg_rules()
 {
 	mkdir -p $fs/usr/lib
 	cp -a $install/usr/bin $fs/usr
-	cp -a $install/usr/lib/*.so* $fs/usr/lib
-	cp -a $install/usr/lib/gegl-* $fs/usr/lib
-	rm $fs/usr/lib/gegl-*/*.*a
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
+	cp -a $install/usr/lib64/gegl-* $fs/usr/lib64
+	#~ rm $fs/usr/lib/gegl-*/*.*a
 }
