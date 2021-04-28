@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="bluefish"
-VERSION="2.2.10"
+VERSION="2.2.12"
 CATEGORY="development"
 TAGS="text-editor language HTML programming scripting"
 SHORT_DESC="A powerful editor"

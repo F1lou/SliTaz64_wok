@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="mousepad"
-VERSION="0.4.2"
+VERSION="0.5.4"
 CATEGORY="x-window"
 TAGS="text-editor"
 SHORT_DESC="Xfce Text Editor."

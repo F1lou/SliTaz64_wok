@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="imagemagick-dev"
-VERSION="7.0.9.26"
+VERSION="7.0.11.9"
 CATEGORY="development"
 SHORT_DESC="ImagesMagick development files."
 MAINTAINER="pankso@slitaz.org"

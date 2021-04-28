@@ -1,0 +1,25 @@
+# SliTaz package receipt.
+
+PACKED_SIZE="20K"
+UNPACKED_SIZE="48K"
+PACKAGE="libiconv-dev"
+VERSION="1.16"
+CATEGORY="text"
+SHORT_DESC="The libiconv development files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3 LGPL2.1"
+WEB_SITE="https://www.gnu.org/software/libtasn1/"
+
+DEPENDS="libiconv pkg-config"
+WANTED="libiconv"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/lib/*.*a		$fs/usr/lib
+	cp -a $install/usr/include		$fs/usr
+}

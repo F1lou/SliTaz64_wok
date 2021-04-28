@@ -16,6 +16,7 @@ BUILD_DEPENDS=""
 # Rules to configure and make the package.
 compile_rules()
 {
+	autoconf
 	./configure \
 		--sysconfdir=/etc \
 		$CONFIGURE_ARGS &&
