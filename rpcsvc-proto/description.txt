@@ -1,0 +1,3 @@
+The rpcsvc-proto package contains the rcpsvc protocol files and headers,
+formerly included with glibc, that are not included in replacement libtirpc,
+along with the rpcgen program.

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gstreamer-1.0-dev"
-VERSION="1.16.2"
+VERSION="1.18.4"
 SERIES="1.0"
 CATEGORY="development"
 SHORT_DESC="The gstreamer-1.0 development files."

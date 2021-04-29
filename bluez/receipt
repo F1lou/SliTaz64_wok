@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="bluez"
-VERSION="5.54"
+VERSION="5.58"
 CATEGORY="system-tools"
 TAGS="bluetooth"
 SHORT_DESC="Bluetooth protocol stack."
@@ -64,7 +64,7 @@ genpkg_rules()
 
 	cp -a $install/etc			$fs
 	cp -a $install/lib/bluetooth		$fs/lib
-	cp -a $install/lib/udev			$fs/lib
+	#~ cp -a $install/lib/udev			$fs/lib
 	cp -a $install/usr/bin			$fs/usr
 #	cp -a $install/usr/sbin			$fs/usr
 	cp -a $install/usr/lib/*.so*		$fs/usr/lib

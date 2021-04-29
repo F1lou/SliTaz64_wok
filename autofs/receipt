@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="autofs"
-VERSION="5.1.6"
+VERSION="5.1.7"
 CATEGORY="system-tools"
 TAGS="filesystem"
 SHORT_DESC="Linux automounter."

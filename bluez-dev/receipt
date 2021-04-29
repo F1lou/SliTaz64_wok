@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="bluez-dev"
-VERSION="5.54"
+VERSION="5.58"
 CATEGORY="development"
 SHORT_DESC="Bluez development files."
 MAINTAINER="pankso@slitaz.org"

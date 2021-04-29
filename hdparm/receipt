@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="hdparm"
-VERSION="9.58"
+VERSION="9.61"
 CATEGORY="system-tools"
 SHORT_DESC="Get and set [S]ATA drive parameters under Linux"
 MAINTAINER="lufeng369@slitaz.org"

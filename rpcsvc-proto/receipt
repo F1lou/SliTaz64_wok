@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="rpcsvc-proto"
+VERSION="1.4.2"
+CATEGORY="utilities"
+LICENSE="GNU C"
+SHORT_DESC="RPC protocol compiler and definitions"
+MAINTAINER="nhc1@gmx.net"
+WEB_SITE="https://github.com/thkukuk/rpcsvc-proto/"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="https://github.com/thkukuk/$PACKAGE/releases/download/v$VERSION/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure --sysconfdir=/etc &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/include	$fs/usr	
+}

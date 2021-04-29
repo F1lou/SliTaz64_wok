@@ -44,8 +44,6 @@
 /usr/share/i18n/locales/translit_small
 /usr/share/i18n/locales/translit_wide
 
-/usr/share/zoneinfo/UTC
-
 /etc/rpc
 /etc/ld.so.conf
 /etc/ld.so.cache
@@ -61,7 +59,7 @@
 /lib64/libpthread.so.0
 /lib64/libthread_db.so.1
 /lib64/libm.so.6
-/lib64/ld-linux.so.2
+/lib64/ld-linux-x86-64.so.2
 /lib64/libresolv.so.2
 /lib64/libnsl.so.1
 /lib64/libnss_files.so.2
@@ -74,7 +72,6 @@
 /usr/lib64/libm.so
 /usr/lib64/librt.so
 /usr/lib64/libresolv.so
-/usr/lib64/libnsl.so
 /usr/lib64/libutil.so
 /usr/lib64/libanl.so
 /usr/lib64/libthread_db.so

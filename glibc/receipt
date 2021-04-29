@@ -49,8 +49,8 @@ cook_tmp_toolchain()
 		--disable-profile --enable-add-ons \
 		--enable-kernel=2.6.30 --with-headers=/tools/include \
 		libc_cv_forced_unwind=yes libc_cv_c_cleanup=yes &&
-	make -j1 &&
-	make -j1 install
+	make &&
+	make install
 	} || return 1
 
 	# Link compiler to this new glibc.

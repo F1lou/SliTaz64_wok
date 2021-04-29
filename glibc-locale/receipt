@@ -21,7 +21,7 @@ genpkg_rules()
 	cp -a $install/usr/lib64/gconv $fs/usr/lib64
 	cp -a $install/usr/share/locale $fs/usr/share
 	cp -a $install/usr/share/i18n $fs/usr/share
-	cp -a $install/usr/share/zoneinfo $fs/usr/share
+	#~ cp -a $install/usr/share/zoneinfo $fs/usr/share
 
 	# Utilities and tools
 	cp -a $install/usr/bin/iconv $fs/usr/bin
