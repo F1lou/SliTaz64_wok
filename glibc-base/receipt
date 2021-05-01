@@ -111,6 +111,7 @@ genpkg_rules()
 			do
 				cp -a ${install}$file ${fs}$file
 			done
+			ln -s $fs/lib64/libnsl-2.32.so $fs/lib64/libnsl.so
 			get_locales "usr/share"
 	esac
 }

@@ -18,15 +18,15 @@ BUILD_DEPENDS="coreutils-file-format diffutils yasm"
 compile_rules()
 {
 	sed -i 's/cp -p/cp/' build/make/Makefile
-
 	mkdir libvpx-build && cd libvpx-build
 
 	../configure --prefix=/usr  \
 		--enable-shared			\
-        --disable-static 		
-		#~ --disable-install-docs	\
-		#~ --disable-install-srcs &&
-	make 
+        --disable-static 		\
+		--disable-install-docs	\
+		--disable-install-srcs \
+		--as=yasm &&
+	make &&
 	make DESTDIR=$DESTDIR install
 }
 

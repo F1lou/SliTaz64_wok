@@ -5,6 +5,7 @@
 /lib64/libm-2.32.so
 /lib64/libpthread-2.32.so
 /lib64/libthread_db-1.0.so
+/lib64/libnsl-2.32.so
 /lib64/libnss_compat-2.32.so
 /lib64/libc-2.32.so
 /lib64/librt-2.32.so
@@ -53,6 +54,7 @@
 /lib64/libdl.so.2
 /lib64/libanl.so.1
 /lib64/libutil.so.1
+/lib64/libnsl.so.1
 /lib64/libnss_dns.so.2
 /lib64/libnss_compat.so.2
 /lib64/libcrypt.so.1
