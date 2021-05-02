@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="discount-dev"
-VERSION="2.2.6"
+VERSION="2.2.7"
 CATEGORY="development"
 SHORT_DESC="A C implementation of the markdown language - development files."
 MAINTAINER="necrophcodr@necrophcodr.me"
