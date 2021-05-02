@@ -12,7 +12,7 @@ WEB_SITE="https://www.gnome.org/"
 WGET_URL="http://ftp.gnome.org/pub/gnome/sources/$SOURCE/${VERSION%.*}/$TARBALL"
 
 DEPENDS="dbus glib gobject-introspection util-linux-uuid"
-BUILD_DEPENDS="dbus-dev glib-dev gobject-introspection-dev util-linux-uuid-dev"
+BUILD_DEPENDS="dbus-dev glib-dev gobject-introspection-dev util-linux-uuid-dev xorg-libXtst-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -37,5 +37,7 @@ compile_rules()
 
 genpkg_rules()
 {
+	mkdir -p $fs/usr/lib
 	cp -a $install/usr $fs
+	mv $fs/usr/lib64/pkgconfig $fs/usr/lib/
 }

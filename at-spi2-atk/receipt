@@ -32,5 +32,7 @@ compile_rules()
 
 genpkg_rules()
 {
+	mkdir -p $fs/usr/lib
 	cp -a $install/usr $fs
+	mv $fs/usr/lib64/pkgconfig $fs/usr/lib/
 }
