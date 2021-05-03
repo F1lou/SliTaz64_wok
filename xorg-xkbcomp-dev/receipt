@@ -1,0 +1,20 @@
+# SliTaz package receipt.
+
+PACKAGE="xorg-xkbcomp-dev"
+VERSION="1.4.3"
+CATEGORY="x-window"
+SHORT_DESC="Xorg keyboard composite."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://www.x.org/wiki/"
+
+WANTED="xorg-xkbcomp"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib	$fs/usr
+}

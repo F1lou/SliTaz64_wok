@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="font-util"
+VERSION="1.3.2"
+CATEGORY="fonts"
+TAGS="X font util"
+SHORT_DESC="X.Org font package creation/installation utilities"
+MAINTAINER="nhc1@gmx.net"
+LICENSE="FSF"
+WEB_SITE="https://gitlab.freedesktop.org/xorg/font/util"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="$XORG_MIRROR/font/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure --prefix=/usr &&
+	make $MAKEFLAGS &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs
+	cp -a $install/usr $fs
+}
