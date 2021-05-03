@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="xorg-proto"
+VERSION="2021.4"
+CATEGORY="development"
+SHORT_DESC="proto headers."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="other"
+WEB_SITE="https://www.x.org/wiki/"
+
+SOURCE="xorgproto"
+TARBALL="$SOURCE-$VERSION.tar.bz2"
+WGET_URL="$XORG_MIRROR/proto/$TARBALL"
+
+DEPENDS="pkg-config xorg-util-macros"
+BUILD_DEPENDS="xorg-util-macros"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir build && cd build
+	meson --prefix=/usr -Dlegacy=true .. &&
+	meson install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	#~ mkdir -p $fs/usr/share/licenses
+
+	#~ cp -a $src/COPYING	$fs/usr/share/licenses/$PACKAGE.txt
+	cp -a $install/*	$fs
+
+	rm -rf $fs/usr/share/doc
+}

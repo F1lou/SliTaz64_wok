@@ -14,12 +14,12 @@ WGET_URL="http://xorg.freedesktop.org/releases/individual/xserver/$TARBALL"
 # Mesa build dep make also Xorg depends on libdrm.
 DEPENDS="xorg-xkeyboard-config xorg-libpciaccess xorg-libXxf86vm \
 xorg-libXfont xorg-libXau xorg-base-fonts libgcrypt pixman eudev libdrm \
-xorg-xf86-input-evdev"
+xorg-xf86-input-evdev libepoxy"
 BUILD_DEPENDS="xorg-libxkbfile-dev xorg-libpciaccess-dev xorg-libXxf86vm-dev \
 xorg-libXfont-dev libgcrypt-dev pixman-dev eudev-dev pkg-config perl \
 flex xorg-xf86driproto xorg-xcmiscproto xorg-bigreqsproto xorg-randrproto \
 xorg-dri2proto xorg-libXau-dev xorg-dev-proto libdrm-dev xorg-glproto \
-xorg-libXv-dev"
+xorg-libXv-dev mesa-dev libepoxy-dev xorg-proto"
 
 # Rules to configure and make the package.
 compile_rules()
