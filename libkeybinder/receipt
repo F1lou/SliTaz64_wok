@@ -8,8 +8,8 @@ MAINTAINER="al.bobylev@gmail.com"
 LICENSE="GPL2"
 WEB_SITE="https://github.com/kupferlauncher/keybinder"
 SOURCE="keybinder"
-TARBALL="$SOURCE-$VERSION.tar.gz"
-WGET_URL="http://kaizer.se/publicfiles/$SOURCE/$TARBALL"
+TARBALL="$SOURCE-3.0-$VERSION.tar.gz"
+WGET_URL="https://github.com/kupferlauncher/$SOURCE/releases/download/$SOURCE-3.0-v$VERSION/$TARBALL"
 
 DEPENDS="gtk+"
 BUILD_DEPENDS="gtk+-dev gobject-introspection-dev xorg-libXext-dev python-dev \

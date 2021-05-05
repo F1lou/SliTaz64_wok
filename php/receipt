@@ -41,7 +41,6 @@ case "$ARCH" in
 			 --enable-exif					\
 			 --enable-ftp					\
 			 --enable-gd=shared				\
-			 --enable-maintainer-zts			\
 			--disable-mbregex				\
 			 --enable-mbstring				\
 			 --enable-soap=shared,/usr			\
@@ -97,12 +96,12 @@ esac
 compile_rules()
 {
 	sed -i 's/pam_start/pam_nostart/' configure
-
+	export LDFLAGS="$LDFLAGS -liconv"
 	./configure $ARCH_ARGS $CONFIGURE_ARGS &&
 	make $MAKEFLAGS &&
-	make -j1 INSTALL_ROOT=$DESTDIR install &&
-	./configure $ARCH_ARGS $CONFIGURE_ARGS --with-apxs2=/usr/bin/apxs &&
-	make $MAKEFLAGS &&
+	#~ make -j1 INSTALL_ROOT=$DESTDIR install &&
+	#~ ./configure $ARCH_ARGS $CONFIGURE_ARGS --with-apxs2=/usr/bin/apxs &&
+	#~ make $MAKEFLAGS &&
 	{
 		mkdir -p $DESTDIR/etc/apache
 		cp /etc/apache/httpd.conf	$DESTDIR/etc/apache/httpd.conf

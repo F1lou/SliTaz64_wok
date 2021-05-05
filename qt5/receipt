@@ -2,7 +2,7 @@
 
 PACKAGE="qt5"
 SOURCE="qt-everywhere-src"
-VERSION="5.14.2"
+VERSION="5.15.2"
 CATEGORY="meta"
 TAGS="qt"
 SHORT_DESC="qt x11 toolkit"

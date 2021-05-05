@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="php-cherokee"
-VERSION="7.4.4"
+VERSION="8.0.3"
 CATEGORY="development"
 SHORT_DESC="PHP module for cherokee."
 MAINTAINER="shann@slitaz.org"
