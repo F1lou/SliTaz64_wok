@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="glib-networking"
-VERSION="2.64.3"
+VERSION="2.66.0"
 CATEGORY="x-window"
 SHORT_DESC="TLS support for glib."
 MAINTAINER="pankso@slitaz.org"
@@ -44,6 +44,6 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib64/gio/modules
-	cp -a $install/usr/lib64/gio/modules/*.so* $fs/usr/lib64/gio/modules
+	mkdir -p $fs/usr
+	cp -a $install/usr/lib64 $fs/usr/
 }

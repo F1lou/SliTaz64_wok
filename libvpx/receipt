@@ -17,10 +17,12 @@ BUILD_DEPENDS="coreutils-file-format diffutils yasm"
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i 's/cp -p/cp/' build/make/Makefile
-	mkdir libvpx-build && cd libvpx-build
-
-	../configure --prefix=/usr  \
+	#~ sed -i 's/cp -p/cp/' build/make/Makefile
+	#~ mkdir libvpx-build && cd libvpx-build
+	unset CFLAGS
+	unset CXXFLAGS
+	export LDFLAGS="-lpthread"
+	./configure --prefix=/usr  \
 		--enable-shared			\
         --disable-static 		\
 		--disable-install-docs	\
