@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gtk+3"
-VERSION="3.94.0"
+VERSION="3.24.25"
 CATEGORY="x-window"
 SHORT_DESC="The GIMP Toolkit 3.x"
 MAINTAINER="pankso@slitaz.org"
