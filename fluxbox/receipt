@@ -19,7 +19,8 @@ compile_rules()
 {
 	cd $src
 	./configure $CONFIGURE_ARGS &&
-	make 2>&1 | grep -v defaults.cc: && make install
+	#~ make 2>&1 | grep -v defaults.cc: && make install
+	make && make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

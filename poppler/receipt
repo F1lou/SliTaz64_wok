@@ -14,26 +14,31 @@ DEPENDS="expat freetype glib jpeg xorg-libXdamage lcms \
 gcc-lib-base cairo tiff bzlib libpng"
 BUILD_DEPENDS="$DEPENDS expat-dev pkg-config jpeg-dev tiff-dev \
 freetype-dev fontconfig-dev glib-dev lcms-dev zlib-dev cairo-dev \
-automake bzip2-dev libpng-dev libtool Qt4-dev libxml2-dev"
+automake bzip2-dev libpng-dev libtool libxml2-dev" # Qt4-dev
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	autoreconf -fi
-	./configure \
-		--enable-zlib \
-		--enable-cairo-output \
-		--enable-poppler-qt4 \
-		--disable-libopenjpeg \
-		$CONFIGURE_ARGS &&
+	mkdir build && cd build 
+	cmake  -DCMAKE_BUILD_TYPE=Release   \
+		-DCMAKE_INSTALL_PREFIX=/usr  \
+		-DENABLE_UNSTABLE_API_ABI_HEADERS=ON \
+		.. &&
+	#~ autoreconf -fi
+	#~ ./configure \
+		#~ --enable-zlib \
+		#~ --enable-cairo-output \
+		#~ --enable-poppler-qt4 \
+		#~ --disable-libopenjpeg \
+		#~ $CONFIGURE_ARGS &&
 	make &&	make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib
-	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	mkdir -p $fs/usr/lib64
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
 	#following libs are included in poppler-qt4
 	rm -r $fs/usr/lib/*qt4.so*
 }

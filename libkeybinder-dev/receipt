@@ -19,6 +19,7 @@ genpkg_rules()
 	cp -a $install/usr/include $fs/usr
 	cp -a $install/usr/lib/gir* $fs/usr/lib
 	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	ln -s $fs/usr/lib/pkgconfig/keybinder-*.pc $fs/usr/lib/pkgconfig/keybinder.pc
 	cp -a $install/usr/lib/*.la* $fs/usr/lib
 	cp -a $install/usr/share/gir* $fs/usr/share
 }
