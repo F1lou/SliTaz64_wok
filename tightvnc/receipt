@@ -13,19 +13,20 @@ DEPENDS="xorg-base-fonts jpeg zlib"
 BUILD_DEPENDS="xorg-imake xorg-gccmakedep xorg-cf-files xorg-libXp \
 xorg-libXaw-dev xorg-libXt-dev xorg-xproto xorg-libXau-dev xorg-libXdmcp-dev \
 xorg-libXmu-dev xorg-xextproto xorg-printproto xorg-kbproto xorg-inputproto \
-xorg-scrnsaverproto xorg-xauth jpeg-dev zlib-dev xorg-libXrandr-dev"
+xorg-scrnsaverproto xorg-xauth jpeg-dev zlib-dev xorg-libXrandr-dev
+xorg-libXaw-dev xorg-libXmu-dev xorg-gccmakedep xorg-imake"
 TAGS="remote-desktop vnc"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	[ -d vnc_unixsrc ] && mv vnc_unixsrc $src
-	cd $src
-	sed -i	-e "s| FONTDIR =.*$| FONTDIR = /usr/share/fonts/X11|" \
-		-e 's|\(define DefaultRGBDatabase\) .*|\1 /usr/share/X11/rgb|' \
-			Xvnc/config/cf/X11.tmpl
+	#~ [ -d vnc_unixsrc ] && mv vnc_unixsrc $src
+	#~ cd $src
+	#~ sed -i	-e "s| FONTDIR =.*$| FONTDIR = /usr/share/fonts/X11|" \
+		#~ -e 's|\(define DefaultRGBDatabase\) .*|\1 /usr/share/X11/rgb|' \
+			#~ Xvnc/config/cf/X11.tmpl
 	xmkmf &&
-	make -j1 World &&
+	make World &&
 	cd Xvnc &&
 	./configure --prefix=/usr $CONFIGURE_ARGS || return 1
 	  sed 's|PROTO_DEFINES =|PROTO_DEFINES = -D_XOPEN_SOURCE=500L|' \

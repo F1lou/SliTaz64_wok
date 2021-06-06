@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libwnck"
-VERSION="3.36.0"
+VERSION="2.31.0"
 CATEGORY="x-window"
 SHORT_DESC="A Window Navigator Construction Kit."
 MAINTAINER="pankso@slitaz.org"
@@ -33,5 +33,5 @@ genpkg_rules()
 
 	cp -a $install/usr/bin			$fs/usr
 	cp -a $install/usr/lib/*.so*		$fs/usr/lib
-	cp -a $install/usr/lib/girepository-1.0	$fs/usr/lib
+	cp -a $install/usr/lib64/girepository-1.0	$fs/usr/lib64
 }

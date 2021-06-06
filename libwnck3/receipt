@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libwnck3"
-VERSION="3.14.1"
+VERSION="3.36.0"
 CATEGORY="x-window"
 SHORT_DESC="Window Navigator Construction Kit (GTK+3)"
 MAINTAINER="al.bobylev@gmail.com"
@@ -20,17 +20,17 @@ xcb-util-dev"
 compile_rules()
 {
 	export LDFLAGS="$LDFLAGS -lxcb-util"
-	./configure \
-		$CONFIGURE_ARGS &&
-	make &&
-	make DESTDIR=$install install
+	mkdir build && cd build
+	meson --prefix=/usr .. &&
+	ninja &&
+	ninja install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/lib $fs/usr/lib64
 	cp -a $install/usr/bin $fs/usr
-	cp -a $install/usr/lib/*.so* $fs/usr/lib
-	cp -a $install/usr/lib/girepository-1.0 $fs/usr/lib
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
+	cp -a $install/usr/lib64/girepository-1.0 $fs/usr/lib64
 }

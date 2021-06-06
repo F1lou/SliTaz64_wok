@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libwnck3-dev"
-VERSION="3.14.1"
+VERSION="3.36.0"
 CATEGORY="development"
 SHORT_DESC="libwnck devel files (GTK+3)"
 MAINTAINER="al.bobylev@gmail.com"
@@ -15,8 +15,8 @@ DEPENDS="libwnck3 pkg-config gtk+3-dev startup-notification-dev"
 genpkg_rules()
 {
 	mkdir -p $fs/usr/lib $fs/usr/share
-	cp -a $install/usr/lib/*.*a $fs/usr/lib
-	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	#~ cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib
 	cp -a $install/usr/include $fs/usr
 	cp -a $install/usr/share/gir-1.0 $fs/usr/share
 }

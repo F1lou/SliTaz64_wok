@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="fontforge"
-VERSION="20190801"
+VERSION="20201107"
 CATEGORY="development"
 TAGS="editor font"
 SHORT_DESC="An outline font editor."
@@ -9,7 +9,7 @@ MAINTAINER="al.bobylev@gmail.com"
 LICENSE="BSD GPL3"
 WEB_SITE="https://fontforge.github.io/"
 
-TARBALL="$PACKAGE-$VERSION.tar.gz"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://github.com/$PACKAGE/$PACKAGE/releases/download/$VERSION/$TARBALL"
 
 DEPENDS="gtk+ libltdl libspiro libuninameslist python"
@@ -25,24 +25,27 @@ BUILD_DEPENDS="autoconf automake bash cacerts cairo-dev \
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i 's|_Noreturn||' fontforge/*.c
-	./bootstrap --skip-git &&
-	./configure			\
-		$CONFIGURE_ARGS &&
-	make -j 1 &&
-	make DESTDIR=$install install
+	mkdir build && cd build
+	cmake -DCMAKE_INSTALL_PREFIX=/usr -GNinja ..
+	ninja
+	ninja install
+
+	#~ sed -i 's|_Noreturn||' fontforge/*.c
+	#~ ./bootstrap --skip-git &&
+	#~ ./configure			\
+		#~ $CONFIGURE_ARGS &&
+	#~ make -j 1 &&
+	#~ make DESTDIR=$install install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib/python2.7/site-packages
 	mkdir -p $fs/usr/share
 
 	cp -a $install/usr/bin			$fs/usr
-	cp -a $install/usr/lib/*.so*		$fs/usr/lib
-	cp -a $install/usr/lib/python2.7/site-packages/*.so \
-		$fs/usr/lib/python2.7/site-packages
+	cp -a $install/usr/lib			$fs/usr
+	cp -a $install/usr/lib64		$fs/usr
 	cp -a $install/usr/share/fontforge	$fs/usr/share
 
 	# Desktop integration not auto-installed
