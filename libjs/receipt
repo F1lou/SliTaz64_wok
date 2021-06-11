@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="libjs"
+VERSION="78.8.0esr"
+CATEGORY="network"
+MAINTAINER="filou@slitaz.org"
+LICENSE="MPL2"
+SHORT_DESC="Mozilla's JavaScript Engine"
+WEB_SITE="http://www.mozilla.org/firefox"
+SOURCE="firefox"
+TARBALL="${SOURCE}-$VERSION.source.tar.xz"
+WGET_URL="https://archive.mozilla.org/pub/$SOURCE/releases/$VERSION/source/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS="autoconf213 icu rust which"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mountpoint -q /dev/shm || mount -t tmpfs devshm /dev/shm
+	export SHELL=/bin/sh
+	mkdir obj && cd obj
+	../js/src/configure --prefix=/usr            \
+                    --with-intl-api          \
+                    --with-system-zlib       \
+                    --with-system-icu        \
+                    --disable-jemalloc       \
+                    --disable-debug-symbols  \
+                    --enable-readline &&
+	make && make install
+}
+	
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/bin $fs/usr/
+	cp -a $install/usr/lib/*.so $fs/usr/lib/
+}

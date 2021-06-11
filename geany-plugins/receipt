@@ -24,7 +24,7 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	ln -fs bash /bin/sh	# needs var+="string" support
+	# ln -fs bash /bin/sh	# needs var+="string" support
 	./configure \
 		--libexecdir=/usr/lib \
 		--enable-addons \

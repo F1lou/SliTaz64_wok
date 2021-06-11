@@ -19,16 +19,20 @@ dbus-glib-dev expat-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var \
-		--libexecdir=/usr/lib/polkit-1 \
-		--disable-man-pages \
-		--disable-gtk-doc \
-		--with-authfw=shadow \
-		$CONFIGURE_ARGS &&
-	make && make install
+	mkdir build && cd build
+	meson --prefix=/usr .. &&
+	ninja && ninja install
+	
+	#~ ./configure \
+		#~ --prefix=/usr \
+		#~ --sysconfdir=/etc \
+		#~ --localstatedir=/var \
+		#~ --libexecdir=/usr/lib/polkit-1 \
+		#~ --disable-man-pages \
+		#~ --disable-gtk-doc \
+		#~ --with-authfw=shadow \
+		#~ $CONFIGURE_ARGS &&
+	#~ make && make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

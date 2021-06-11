@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="lxpanel-extra"
-VERSION="0.10.0"
+VERSION="0.10.1"
 CATEGORY="x-window"
 SHORT_DESC="LXDE panel (extra files and plugins)"
 MAINTAINER="devel@slitaz.org"
