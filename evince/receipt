@@ -1,37 +1,41 @@
 # SliTaz package receipt.
 
 PACKAGE="evince"
-VERSION="2.32.0"
+VERSION="3.39.2"
 CATEGORY="office"
 SHORT_DESC="Document viewer for Gnome"
 MAINTAINER="erjo@slitaz.org"
 LICENSE="GPL2"
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
 WEB_SITE="http://projects.gnome.org/evince/"
 WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION:0:4}/$TARBALL"
 TAGS="viewer pdf tiff ps postscript dvi"
 
 DEPENDS="lcms poppler tiff dbus-glib glib util-linux-uuid"
 BUILD_DEPENDS="gnome-doc-utils-dev docbook-xml libxml2-dev \
-gnome-icon-theme gtk+-dev intltool lcms-dev util-linux-uuid-dev \
+gnome-icon-theme gtk+3-dev intltool lcms-dev util-linux-uuid-dev \
 poppler-dev tiff-dev dbus-glib-dev xorg-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure --prefix=/usr \
-		--libexecdir=/usr/lib/$PACKAGE \
-		--disable-nautilus \
-		--disable-scrollkeeper \
-		--disable-comics \
-		--without-gconf \
-		--without-keyring \
-		--disable-schemas-install \
-		--disable-gtk-doc-html \
-		--with-help-formats=none \
-		--disable-help \
-		$CONFIGURE_ARGS &&
-	make && make DESTDIR=$DESTDIR install
+	mkdir build && cd build
+	meson --prefix=/usr -Dgtk_doc=false -Dsystemduserunitdir=no .. &&
+	ninja && ninja install
+
+	#~ ./configure --prefix=/usr \
+		#~ --libexecdir=/usr/lib/$PACKAGE \
+		#~ --disable-nautilus \
+		#~ --disable-scrollkeeper \
+		#~ --disable-comics \
+		#~ --without-gconf \
+		#~ --without-keyring \
+		#~ --disable-schemas-install \
+		#~ --disable-gtk-doc-html \
+		#~ --with-help-formats=none \
+		#~ --disable-help \
+		#~ $CONFIGURE_ARGS &&
+	#~ make && make DESTDIR=$DESTDIR install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

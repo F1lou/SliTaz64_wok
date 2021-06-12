@@ -1,14 +1,15 @@
 # SliTaz package receipt.
 
 PACKAGE="udisks2"
+SOURCE="udisks"
 VERSION="2.9.2"
 CATEGORY="system-tools"
 SHORT_DESC="D-Bus service to access and manipulate storage devices"
 MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL2"
 WEB_SITE="https://www.freedesktop.org/wiki/Software/udisks/"
-TARBALL="udisks-$VERSION.tar.bz2"
-WGET_URL="https://udisks.freedesktop.org/releases/$TARBALL"
+TARBALL="$SOURCE-$VERSION.tar.bz2"
+WGET_URL="https://github.com/storaged-project/$SOURCE/releases/download/$SOURCE-$VERSION/$TARBALL"
 
 DEPENDS="libatasmart libgudev polkit"
 BUILD_DEPENDS="docbook-xsl gtk-doc libgudev-dev polkit-dev libatasmart-dev \

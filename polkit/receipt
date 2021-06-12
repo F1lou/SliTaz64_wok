@@ -19,9 +19,13 @@ dbus-glib-dev expat-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
+	addgroup -g 27 polkitd
+	adduser -D -u 27 -G polkitd -s /bin/false -h /etc/polkit-1 polkitd
+
 	mkdir build && cd build
-	meson --prefix=/usr .. &&
-	ninja && ninja install
+	meson .. &&
+	ninja && 
+	ninja install
 	
 	#~ ./configure \
 		#~ --prefix=/usr \
@@ -38,13 +42,13 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib $fs/usr/share
+	mkdir -p $fs/usr/lib64 $fs/usr/share
 	cp -a $install/usr/bin $fs/usr
 	cp -a $install/etc $fs
-	cp -a $install/usr/lib/*.so* $fs/usr/lib
-	cp -a $install/usr/lib/polkit-1 $fs/usr/lib
-	rm $fs/usr/lib/polkit-1/extensions/*.*a
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
+	cp -a $install/usr/lib64/polkit-1 $fs/usr/lib64
+	#~ rm $fs/usr/lib64/polkit-1/extensions/*.*a
 	cp -a $install/usr/share/dbus-1 $fs/usr/share
 	cp -a $install/usr/share/polkit-1 $fs/usr/share
-	cp -a $install/var $fs
+	#~ cp -a $install/var $fs
 }

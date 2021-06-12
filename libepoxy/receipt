@@ -11,8 +11,8 @@ WEB_SITE="https://github.com/anholt/libepoxy"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://github.com/anholt/$PACKAGE/releases/download/$VERSION/$TARBALL"
 
-DEPENDS=""
-BUILD_DEPENDS=""
+DEPENDS="mesa"
+BUILD_DEPENDS="mesa-dev"
 
 HOST_ARCH="x86_64"
 
