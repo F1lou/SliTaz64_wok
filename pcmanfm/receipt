@@ -47,7 +47,7 @@ genpkg_rules()
 	# XDG autostart desktop file (lxsession will use it automatically)
 	cp -a $stuff/autostart $fs/etc/xdg
 
-	cp -a $install/usr/share/applications $fs/usr/share
+	# cp -a $install/usr/share/applications $fs/usr/share
 
 	# Add custom actions
 	mkdir -p $fs/usr/share/file-manager
