@@ -33,17 +33,17 @@ esac
 compile_rules()
 {
 	# libwebkit does not like parallel builds.
-	export MAKEFLAGS=$(echo $MAKEFLAGS | sed 's/-j[0-9]*/-j1/')
+	#~ export MAKEFLAGS=$(echo $MAKEFLAGS | sed 's/-j[0-9]*/-j1/')
 	# fix Bug 84526: webkit-gtk-1.8.0 fails to build with --disable-video
 	# Build fix with newer bison 2.6
-	if [ ! "$continue" ]; then
-		for file_diff in $stuff/*.diff; do
-			echo -n "Applying patch $(basename $file_diff)"
-			patch -Np1 -i $file_diff > /dev/null
-			status
-		done
-		patch -p0 < $stuff/CodeGeneratorGObject-bug-84526.patch || exit 1
-	fi
+	#~ if [ ! "$continue" ]; then
+		#~ for file_diff in $stuff/*.diff; do
+			#~ echo -n "Applying patch $(basename $file_diff)"
+			#~ patch -Np1 -i $file_diff > /dev/null
+			#~ status
+		#~ done
+		#~ patch -p0 < $stuff/CodeGeneratorGObject-bug-84526.patch || exit 1
+	#~ fi
 	# Build
 	./configure \
 		--enable-introspection=no \
@@ -52,7 +52,7 @@ compile_rules()
 		--disable-webgl \
 		--disable-geolocation \
 		--with-unicode-backend=glib \
-		--with-gtk=2.0 \
+		--with-gtk=3.0 \
 		--disable-gtk-doc \
 		$CONFIGURE_ARGS &&
 	make all stamp-po 2>&1 | grep -v Source/WebCore/dom/testing &&

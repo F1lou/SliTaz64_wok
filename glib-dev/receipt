@@ -16,10 +16,10 @@ DEPENDS="glib perl python libffi-dev libgio libgio-dev pcre-dev pkg-config"
 genpkg_rules()
 {
 	mkdir -p $fs/usr/lib $fs/usr/lib64 $fs/usr/bin $fs/usr/share
-	cp -a $install/usr/lib64/*.*a $fs/usr/lib64
+	#~ cp -a $install/usr/lib64/*.*a $fs/usr/lib64
 	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib
-	cp -a $install/usr/lib64/glib* $fs/usr/lib64
-	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/include $fs/usr/
+	cp -a $install/usr/lib64/glib-2.0 $fs/usr/lib64/
 	cp -a $install/usr/share/aclocal $fs/usr/share
 	cp -a $install/usr/share/glib-2.0 $fs/usr/share
 	cp -a $install/usr/share/gdb $fs/usr/share
@@ -37,8 +37,13 @@ genpkg_rules()
 	rm $fs/usr/lib/pkgconfig/gio*.pc
 
 	# exclude from files.list (for tazpkg-find-depends)
-	cd $fs/usr/share/gdb/auto-load
-	for i in $(ls *.py);do mv -f $i ${i//./-.-};done
+	#~ cd $fs/usr/share/gdb/auto-load
+	#~ for i in $(ls *.py);do mv -f $i ${i//./-.-};done
+	
+	# create links for header file directories
+	cd $fs/usr/include
+	ln -s ../lib64/glib-2.0/include/*.h .
+	ln -s glib-2.0/* .
 }
 post_install()
 {

@@ -11,9 +11,9 @@ WEB_SITE="https://www.gtk.org/"
 WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION:0:4}/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
-DEPENDS="pcre libffi libxml2 elfutils"
+DEPENDS="pcre libffi libxml2 elfutils libiconv"
 BUILD_DEPENDS="pcre-dev libffi-dev zlib-dev perl python-dev \
-elfutils-dev libxml2-dev libxml2-tools automake"
+elfutils-dev libxml2-dev libxml2-tools automake libiconv-dev"
 
 # Handle cross comilation. Use host Perl, Python, etc
 case "$ARCH" in
@@ -26,6 +26,7 @@ compile_rules()
 {
 	case "$ARCH" in
 		x86_64|i?86)
+			export LDFLAGS="$LDFLAGS -liconv"
 			mkdir build && cd build
 			meson --prefix=/usr \
 				-Dselinux=disabled \
@@ -52,9 +53,9 @@ compile_rules()
 				--host=$ARCH-slitaz-linux-gnueabi \
 				--enable-shared=yes \
 				--enable-static=yes \
-				--disable-rpath ;;
-	esac && 
-	make && make install
+				--disable-rpath
+			make && make install ;;
+	esac
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

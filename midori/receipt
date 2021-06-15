@@ -1,18 +1,18 @@
 # SliTaz package receipt.
 
 PACKAGE="midori"
-VERSION="0.5.2"
+VERSION="9.0"
 CATEGORY="network"
 SHORT_DESC="Lightweight web browser based on GTK+/WebKit"
 MAINTAINER="pankso@slitaz.org"
 LICENSE="LGPL2.1"
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
+TARBALL="$PACKAGE-v$VERSION.tar.gz"
 #TARBALL="${PACKAGE}_${VERSION}_all_.tar.bz2"
-WEB_SITE="http://twotoasts.de/index.php/midori/"
+WEB_SITE="https://github.com/midori-browser/core"
 #WGET_URL="http://midori-browser.org/downloads/$TARBALL"
-WGET_URL="http://archive.xfce.org/src/apps/$PACKAGE/${VERSION:0:3}/$TARBALL"
+WGET_URL="https://github.com/midori-browser/core/releases/download/v$VERSION/$TARBALL"
 TAGS="web-browser"
-#HOST_ARCH="x86_64 i486 arm"
+HOST_ARCH="x86_64 i486 arm"
 
 GENERIC_MENUS="no"
 DEPENDS="libnotify libunique libsoup libwebkit xorg-libXss libxslt"
@@ -29,19 +29,9 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i 's|[^\.]ListStore| Gtk.ListStore|' extensions/history-list.vala
-	sed -i 's|store.remove (iter)|store.remove (ref iter)|' extensions/transfers.vala
-	#mkdir -p build && cd build
-	#cmake \
-		#-DCMAKE_INSTALL_PREFIX=/usr \
-		#-DCMAKE_INSTALL_LIBDIR=lib \
-		#-DUSE_ZEITGEIST=0 .. &&
-	./configure \
-		--jobs=4 \
-		--prefix=/usr \
-		--disable-zeitgeist &&
-	make &&
-	make install
+	mkdir build && cd build
+	meson --prefix=/usr .. &&
+	ninja && ninja install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

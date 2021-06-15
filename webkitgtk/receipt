@@ -1,0 +1,40 @@
+# SliTaz package receipt.
+
+PACKAGE="webkitgtk"
+VERSION="2.32.1"
+CATEGORY="network"
+SHORT_DESC="xHTML render library."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="BSD LGPL"
+TARBALL="$PACKAGE-${VERSION}.tar.xz"
+WEB_SITE="https://webkitgtk.org/"
+WGET_URL="https://webkitgtk.org/releases/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS="cairo-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir build && cd build &&
+	cmake -DCMAKE_BUILD_TYPE=Release  \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_SKIP_RPATH=ON       \
+      -DPORT=GTK                  \
+      -DLIB_INSTALL_DIR=/usr/lib  \
+      -DUSE_LIBHYPHEN=OFF         \
+      -DENABLE_MINIBROWSER=ON     \
+      -DUSE_WOFF2=OFF             \
+      -DUSE_WPE_RENDERER=OFF      \
+      -DUSE_SYSTEMD=OFF           \
+      -DENABLE_BUBBLEWRAP_SANDBOX=OFF \
+      -Wno-dev -G Ninja .. &&
+     ninja
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}
