@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="volume_key"
+VERSION="0.3.12"
+CATEGORY="system-tools"
+SHORT_DESC="Library for manipulating storage volume encryption keys and storing them separately from volumes to handle forgotten passphrases"
+MAINTAINER="nhc1@gmx.net"
+LICENSE="GPL2"
+WEB_SITE="https://pagure.io/volume_key"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/felixonmars/$PACKAGE/archive/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS="swig"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	autoreconf -fiv              &&
+	./configure --prefix=/usr    \
+            --without-python &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+	cp -a $install/usr/lib/python3.9	$fs/usr/lib
+}

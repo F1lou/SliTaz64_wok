@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="libbytesize"
+VERSION="2.5"
+CATEGORY="development"
+SHORT_DESC="The libbytesize package is a library which facilitates the common operations with sizes in bytes."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="LGPL2"
+WEB_SITE="https://github.com/storaged-project/libbytesize"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/releases/download/$VERSION/$TARBALL"
+#HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS=""
+BUILD_DEPENDS="pcre2-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure --prefix=/usr &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/bin $fs/usr/
+	cp -a $install/usr/lib/python3.9 $fs/usr/lib/
+	cp -a $install/usr/lib/*.so* $fs/usr/lib/
+}
