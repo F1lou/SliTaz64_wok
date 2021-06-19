@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="libbytesize-dev"
+VERSION="2.5"
+CATEGORY="development"
+SHORT_DESC="The libbytesize package is a library which facilitates the common operations with sizes in bytes."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="LGPL2"
+WEB_SITE="https://github.com/storaged-project/libbytesize"
+WANTED="libbytesize"
+
+DEPENDS="libbytesize"
+BUILD_DEPENDS=""
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/include $fs/usr/
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib/
+	cp -a $install/usr/lib/*.la* $fs/usr/lib/
+}

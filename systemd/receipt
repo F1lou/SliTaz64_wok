@@ -1,15 +1,15 @@
 # SliTaz package receipt.
 
 PACKAGE="systemd"
-VERSION="221"
+VERSION="248"
 CATEGORY="base-system"
 SHORT_DESC="System and service manager for Linux."
 MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL2 LGPL2.1 MIT"
 WEB_SITE="http://freedesktop.org/wiki/Software/systemd/"
 
-TARBALL="$PACKAGE-$VERSION.tar.xz"
-WGET_URL="http://www.freedesktop.org/software/systemd/$TARBALL"
+TARBALL="v$VERSION.tar.gz"
+WGET_URL="https://github.com/systemd/$PACKAGE/archive/refs/tags/$TARBALL"
 
 DEPENDS="acl dbus glib kmod libcap libwrap pam pciutils usbutils util-linux-blkid"
 BUILD_DEPENDS="acl-dev dbus-dev glib-dev glibc-dev gperf intltool \
@@ -35,18 +35,9 @@ compile_rules()
 	#~ patch --strip=0 --input=$stuff/systemd-195.journal-vacuum.c.patch \
 		#~ src/journal/journal-vacuum.c
 
-	./configure						\
-		--prefix=/usr					\
-		--sysconfdir=/etc				\
-		--localstatedir=/var				\
-		--libexecdir=/usr/lib				\
-		--with-pci-ids-path=/usr/share/misc/pci.ids.gz	\
-		--with-usb-ids-path=/usr/share/misc/usb.ids.gz	\
-		--disable-ima					\
-		--with-distro=other				\
-		$CONFIGURE_ARGS &&
-	make &&
-	make install
+	mkdir build && cd build
+	meson --prefix=/usr .. &&
+	ninja && ninja install
 
 		#~ --with-sysvinit-path=				\
 		#~ --with-sysvrcd-path=				\

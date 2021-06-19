@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKED_SIZE="60.0K"
+UNPACKED_SIZE="248.0K"
+PACKAGE="xxhash-dev"
+VERSION="0.8.0"
+CATEGORY="development"
+SHORT_DESC="Extremely fast non-cryptographic hash algorithm, development files."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="BSD GPL2"
+WEB_SITE="http://cyan4973.github.io/xxHash/"
+WANTED="xxhash"
+
+DEPENDS="xxhash-lib pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/include $fs/usr/include
+	cp -a $install/usr/lib/*.a $fs/usr/lib/
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib/
+}

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="rsync"
-VERSION="3.1.3"
+VERSION="3.2.3"
 CATEGORY="network"
 SHORT_DESC="Utility that provides fast incremental."
 MAINTAINER="pankso@slitaz.org"
@@ -23,15 +23,13 @@ TAZPANEL_DAEMON="man::rsync|help::rsync|edit|options|web::$WEB_SITE"
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure \
+	LDFLAGS="$LDFLAGS -liconv" ./configure \
 		--prefix=/usr \
 		--mandir=/usr/share/man \
-		--disable-iconv \
-		--disable-iconv-open \
 		$CONFIGURE_ARGS
-	sed -i  -e 's/HAVE_ICONV_H ./HAVE_ICONV_H 0/' \
-		-e 's/HAVE_ICONV_OPEN ./HAVE_ICONV_OPEN 0/' config.h
-	sed -i 's/-liconv//' Makefile
+	#~ sed -i  -e 's/HAVE_ICONV_H ./HAVE_ICONV_H 0/' \
+		#~ -e 's/HAVE_ICONV_OPEN ./HAVE_ICONV_OPEN 0/' config.h
+	#~ sed -i 's/-liconv//' Makefile
 	make &&
 	make DESTDIR=$DESTDIR install
 }
