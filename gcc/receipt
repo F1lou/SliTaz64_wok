@@ -16,7 +16,7 @@ TAGS="compiler C"
 # for cookutils that are not used by tazwok/cook-toolchain since it installs
 # and uses its own copy.
 DEPENDS="binutils libgomp libobjc gcc-lib-base mpc-library elfutils"
-BUILD_DEPENDS="mpc-library mpfr-dev gmp-dev elfutils-dev"
+BUILD_DEPENDS="mpc-library mpfr-dev gmp-dev elfutils-dev gc-dev"
 
 # Handle cross compilation (native i486/ARM gcc)
 case "$ARCH" in
@@ -26,7 +26,7 @@ case "$ARCH" in
 		languages="c,c++,objc,fortran" ;;
 	x86_64)
 		pkgversion="SliTaz"
-		languages="c,c++,fortran" ;;
+		languages="c,c++,objc,fortran" ;;
 	arm*)
 		pkgversion="SliTaz ARM"
 		languages="c,c++" ;;
@@ -99,7 +99,7 @@ genpkg_rules()
 	mkdir -p  $fs/usr/share
 	cp -a $install/usr/bin $fs/usr
 
-	# Copy all libs. Remove libgcc_s.so and libstdc++.so they goes in
+	# Copy all libs. Remove libgcc_s.so and libstdc++.so they go in
 	# the gcc-lib-base package.
 	cp -a $install/usr/lib $fs/usr
 	rm -f $fs/usr/lib/libgcc_s.so*
