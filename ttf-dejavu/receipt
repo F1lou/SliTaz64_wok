@@ -12,7 +12,7 @@ WEB_SITE="https://dejavu-fonts.github.io/"
 TARBALL="dejavu-fonts-ttf-$VERSION.tar.bz2"
 WGET_URL="$SF_MIRROR/dejavu/$TARBALL"
 
-BUILD_DEPENDS="fontforge"
+BUILD_DEPENDS="fontforge gtk+3-dev libepoxy-dev"
 SPLIT="ttf-dejavu-extra"
 
 HOST_ARCH="x86_64 i486 arm"
