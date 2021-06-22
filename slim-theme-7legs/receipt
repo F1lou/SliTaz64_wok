@@ -2,7 +2,7 @@
 
 PACKAGE="slim-theme-7legs"
 VERSION="20130527"
-CATEGORY="customization"
+CATEGORY="x-window"
 SHORT_DESC="Seven legged Spider - theme for SLiM"
 MAINTAINER="al.bobylev@gmail.com"
 LICENSE="CC-BY"

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="consolekit2"
-VERSION="1.2.1"
+VERSION="1.2.3"
 CATEGORY="system-tools"
 SHORT_DESC="ConsoleKit framework."
 MAINTAINER="developer@slitaz.org"
@@ -11,19 +11,19 @@ LFS="http://www.linuxfromscratch.org/blfs/view/svn/postlfs/consolekit.html"
 REPOLOGY="consolekit"
 
 SOURCE="ConsoleKit2"
-TARBALL="$SOURCE-$VERSION.tar.bz2"
-WGET_URL="https://github.com/$SOURCE/$SOURCE/releases/download/$VERSION/$TARBALL"
+TARBALL="$VERSION.tar.gz"
+WGET_URL="https://github.com/$SOURCE/$SOURCE/archive/refs/tags/$TARBALL"
 TARBALL_SHA1="28869807eed0cc4a7a1d98030be1f2c7e5700d0e"
 
 
 DEPENDS="acl dbus eudev glib polkit xorg-libX11 zlib"
 BUILD_DEPENDS="acl-dev dbus-dev docbook-xsl eudev-dev gettext-base \
-	glib-dev libtool libxml2-tools libxslt polkit-dev \
+	glib-dev libtool libxml2-tools libxslt polkit-dev attr-dev \
 	util-linux-getopt util-linux-uuid-dev xmlto xorg-libX11-dev"
 
 compile_rules()
 {
-	./configure							\
+	./autogen.sh 							\
 		--localstatedir=/var					\
 		--enable-udev-acl					\
 		--enable-polkit						\

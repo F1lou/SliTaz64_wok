@@ -2,7 +2,7 @@
 
 PACKAGE="slim-theme-japan-art"
 VERSION="20150603"
-CATEGORY="customization"
+CATEGORY="x-window"
 SHORT_DESC="Japan Art - theme for SLiM"
 MAINTAINER="al.bobylev@gmail.com"
 LICENSE="PublicDomain"
