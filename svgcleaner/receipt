@@ -8,8 +8,8 @@ MAINTAINER="al.bobylev@gmail.com"
 LICENSE="GPL2"
 WEB_SITE="https://github.com/RazrFalcon/svgcleaner"
 
-TARBALL="$PACKAGE-$VERSION.tar.gz"
-WGET_URL="$WEB_SITE/archive/${COMMIT:-v$VERSION}.tar.gz"
+TARBALL="v$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/archive/refs/tags/$TARBALL"
 
 BUILD_DEPENDS="rust-cargo cacerts"
 
@@ -18,7 +18,7 @@ compile_rules()
 {
 	# to build from crates: no source needed, but no version control
 	#cargo install svgcleaner --root=$install/usr
-
+	export GIT_SSL_NO_VERIFY=true
 	cargo build --release
 
 	mkdir -p $install/usr/bin

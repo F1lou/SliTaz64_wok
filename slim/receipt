@@ -21,9 +21,7 @@ BUILD_DEPENDS="freetype-dev jpeg-dev libpng-dev xorg-libXft-dev xorg-libXmu-dev 
 # Handle cross compilation
 case "$ARCH" in
 	x86_64|i?86) 
-		BUILD_DEPENDS="$BUILD_DEPENDS cmake" 
-		INCL=/usr/include
-		LIBS=/usr/lib ;;
+		BUILD_DEPENDS="$BUILD_DEPENDS cmake";;
 	arm*)
 		INCL=/cross/$ARCH/sysroot/usr/include
 		LIBS=/cross/$ARCH/sysroot/usr/lib ;;
@@ -35,12 +33,8 @@ compile_rules()
 	#~ patch -p1 < $stuff/$PACKAGE-$VERSION.patch || return 1
 	sed -i 's|install(TARGETS slimlock RUNTIME DESTINATION bin)||' CMakeLists.txt
 	mkdir build; cd build
-	LDFLAGS="$LDFLAGS -lpthread" cmake \
-		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DX11_Xmu_LIB="$LIBS/libXmu.so" \
-		-DX11_Xft_INCLUDE_PATH=${INCL} \
-		-DX11_Xmu_INCLUDE_PATH= ${INCL} \
-		.. &&
+	cmake \
+		-DCMAKE_INSTALL_PREFIX=/usr	.. &&
 	make &&
 	make DESTDIR=$DESTDIR install
 }

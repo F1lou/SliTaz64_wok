@@ -13,16 +13,15 @@ WGET_URL="https://downloads.xiph.org/releases/cdparanoia/$TARBALL"
 # Rules to configure and make the package.
 compile_rules()
 {
-	fgrep -qs 'define u8' interface/low_interface.h ||
-	sed -i 's|#include <scsi/scsi.h>|#define u8 __u8\n&|' \
-		interface/low_interface.h
+	#~ fgrep -qs 'define u8' interface/low_interface.h ||
+	#~ sed -i 's|#include <scsi/scsi.h>|#define u8 __u8\n&|' \
+		#~ interface/low_interface.h
 
-	./configure \
+	CC="gcc" AR="ar" RANLIB="ranlib" LD="ld" CFLAGS="-g -O2" ./configure \
 		--prefix=/usr \
 		--infodir=/usr/share/info \
-		--mandir=/usr/share/man \
-		$CONFIGURE_ARGS &&
-	make -j1
+		--mandir=/usr/share/man &&
+	make all
 
 	cook_pick_manpages cdparanoia.1
 	mkdir -p $install/usr/share/man/jp/man1

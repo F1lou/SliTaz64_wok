@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="svgcleaner-static"
+SOURCE="svgcleaner"
+VERSION="0.9.5"
+CATEGORY="graphics"
+SHORT_DESC="Clean up SVG files from the unnecessary data."
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://github.com/RazrFalcon/svgcleaner"
+TARBALL="${SOURCE}_linux_x86_64_$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/releases/download/v$VERSION/$TARBALL"
+
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mv $TARBALL $SOURCE
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp $src/svgcleaner $fs/usr/bin/
+}
