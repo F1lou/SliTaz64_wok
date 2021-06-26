@@ -15,13 +15,10 @@ gdk-pixbuf glib glibc-base gtk+3 harfbuzz libcroco libffi libgio libgsf libpng \
 librsvg libxcb libxml2 libxslt pango pcre pixman util-linux-uuid xorg-libICE \
 xorg-libSM xorg-libX11 xorg-libXau xorg-libXcomposite xorg-libXcursor \
 xorg-libXdamage xorg-libXdmcp xorg-libXext xorg-libXfixes xorg-libXi \
-xorg-libXinerama xorg-libXrandr xorg-libXrender zlib dconf"
+xorg-libXinerama xorg-libXrandr xorg-libXrender zlib dconf goffice"
 BUILD_DEPENDS="gtk-doc bison goffice-dev gtk+3-dev libcroco-dev rarian
-xorg-libXinerama-dev xorg-libXi-dev xorg-libXrandr-dev
-	xorg-libXcursor-dev xorg-libXcomposite-dev xorg-libXdamage-dev
-	mesa-dev at-spi2 at-spi2-atk xorg-libXxf86vm-dev
-	xorg-libXtst-dev libxml2-dev util-linux-uuid-dev
-	freetype-dev libpng-dev liblzma-dev libepoxy-dev"
+	xorg-dev mesa-dev at-spi2 at-spi2-atk libxml2-dev util-linux-uuid-dev
+	freetype-dev libpng-dev liblzma-dev libepoxy-dev xorg-libXxf86vm-dev"
 
 # Rules to configure and make the package.
 compile_rules()

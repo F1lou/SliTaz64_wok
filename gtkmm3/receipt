@@ -1,0 +1,40 @@
+# SliTaz package receipt.
+
+PACKAGE="gtkmm3"
+SOURCE="gtkmm"
+VERSION="3.24.5"
+CATEGORY="x-window"
+SHORT_DESC="C++ interface for the popular GUI library GTK+."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2.1"
+WEB_SITE="https://www.gtkmm.org/"
+
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WGET_URL="$GNOME_MIRROR/$SOURCE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="atkmm cairomm gcc-lib-base glibmm gtk+3 libgiomm libsigc++ pangomm \
+	xorg-libXdamage"
+BUILD_DEPENDS="atkmm-dev cairomm-dev doxygen glibmm-dev gtk+3-dev libgiomm-dev \
+	libsigc++-dev  mm-common pangomm-dev libxkbcommon-dev xorg-libXtst-dev
+	xorg-dev libgio-dev libgiomm-dev pangomm-dev xorg-libXshmfence-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir bld && cd bld
+	meson --prefix=/usr -Dbuild-documentation=false .. &&
+	ninja && ninja install
+	
+	#~ ./configure			\
+		#~ --disable-documentation	\
+		#~ $CONFIGURE_ARGS &&
+	#~ make -j 1 &&
+	#~ make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

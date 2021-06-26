@@ -1,14 +1,15 @@
 # SliTaz package receipt.
 
-PACKAGE="php"
-VERSION="8.0.3"
+PACKAGE="php7"
+SOURCE="php"
+VERSION="7.4.20"
 CATEGORY="development"
 SHORT_DESC="PHP web programming language."
 MAINTAINER="pankso@slitaz.org"
 LICENSE="BSD"
 WEB_SITE="https://www.php.net/"
 
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
+TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="https://www.php.net/distributions/$TARBALL"
 
 PROVIDE="php:lighttpd"
@@ -19,7 +20,7 @@ BUILD_DEPENDS="apache apache-dev apr-dev apr-util-dev
 	libtool libunixODBC libxml2-dev libzip-dev 
 	mhash-dev mysql-dev net-snmp-dev openldap-dev openssl-dev 
 	perl pkg-config postgresql-dev re2c sed sqlite-dev 
-	unixODBC-dev c-client"	# libvpx-dev
+	unixODBC-dev"	# libvpx-dev c-client 
 
 #HOST_ARCH="x86_64 i486 arm"
 
