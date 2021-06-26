@@ -1,51 +1,59 @@
 # SliTaz package receipt.
 
 PACKAGE="seamonkey"
-VERSION="2.7.2"
+VERSION="2.53.7.1"
 CATEGORY="network"
 SHORT_DESC="Seamonkey suite (browser, mail, news reader)."
 MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL MPL"
-TARBALL="$PACKAGE-$VERSION.source.tar.bz2"
+TARBALL="$PACKAGE-$VERSION.source.tar.xz"
 WEB_SITE="https://www.seamonkey-project.org/"
 WGET_URL="ftp://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/$VERSION/source/$TARBALL"
 TAGS="web-browser"
 
-DEPENDS="gtk+ glib jpeg xorg-libX11 libIDL alsa-lib xorg-libXt curl libnotify \
-libevent libvpx"
-BUILD_DEPENDS="gtk+-dev zip libIDL coreutils xorg-libXft-dev libevent-dev \
-libvpx-dev perl alsa-lib alsa-lib-dev findutils python python-dev \
-wireless_tools-dev mesa-dev yasm libnotify-dev curl-dev hunspell-dev"
+DEPENDS="gtk+3 fribidi libepoxy"
+BUILD_DEPENDS="rust rust-cargo pango-dev util-linux-mount fribidi-dev
+	xorg-dev nasm zip autoconf213 gtk+3-dev glib-dev gobject-dev 
+	shared-mime-info-dev libepoxy-dev mesa-dev GConf-dev dbus-glib-dev
+	pulseaudio-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i	-e 's|return true|return boolean(true)|' \
-		-e 's|return false|return boolean(false)|' \
-			mozilla/image/decoders/nsJPEGDecoder.cpp
-	sed -i	-e 's|return 1|return boolean(1)|' \
-		-e 's|\(jpeg_.*\)1)|\1boolean(1))|' \
-			mozilla/image/encoders/jpeg/nsJPEGEncoder.cpp
-
-	grep -rsl 'uname -m' $src | xargs sed -i 's|uname -m|echo i686|'
-	cp -a $stuff/seamonkey.mozconfig $src/.mozconfig
-	cd $src
-	sed -i -e 's/USE_INPUT_PARTITION/USE_INPUT_FRAGMENTS/' \
-		-e 's/0.9.7/1.0.0/' mozilla/configure.in mozilla/configure
-	#patch -p1 -i $stuff/google-breakpad.u || exit 1
-	cat >> mozilla/layout/build/Makefile.in << "EOF"
-ifdef MOZ_ENABLE_CANVAS
-EXTRA_DSO_LDOPTS += $(XLDFLAGS) -lX11 -lXrender
-endif
-EOF
-	unset CFLAGS
-	unset CXXFLAGS
-	patch -Np1 -i $stuff/seamonkey-2.0-lang.patch
-	patch -Np1 -i $stuff/seamonkey-install-dir.patch
-	export LDFLAGS="$LDFLAGS -Wl,-rpath,/usr/lib/seamonkey"
-	./configure $CONFIGURE_ARGS 2>&1 | grep -v 'cthandlers/calendar/Makefile.in' &&
+	mkdir bld && cd bld
+	export SHELL=/bin/sh
+	../configure --prefix=/usr 
 	make &&
 	make DESTDIR=$DESTDIR install
+	
+	
+	
+	#~ sed -i	-e 's|return true|return boolean(true)|' \
+		#~ -e 's|return false|return boolean(false)|' \
+			#~ mozilla/image/decoders/nsJPEGDecoder.cpp
+	#~ sed -i	-e 's|return 1|return boolean(1)|' \
+		#~ -e 's|\(jpeg_.*\)1)|\1boolean(1))|' \
+			#~ mozilla/image/encoders/jpeg/nsJPEGEncoder.cpp
+
+	#~ grep -rsl 'uname -m' $src | xargs sed -i 's|uname -m|echo i686|'
+	#~ cp -a $stuff/seamonkey.mozconfig $src/.mozconfig
+	#~ cd $src
+	#~ sed -i -e 's/USE_INPUT_PARTITION/USE_INPUT_FRAGMENTS/' \
+		#~ -e 's/0.9.7/1.0.0/' mozilla/configure.in mozilla/configure
+	#~ #patch -p1 -i $stuff/google-breakpad.u || exit 1
+	#~ cat >> mozilla/layout/build/Makefile.in << "EOF"
+#~ ifdef MOZ_ENABLE_CANVAS
+#~ EXTRA_DSO_LDOPTS += $(XLDFLAGS) -lX11 -lXrender
+#~ endif
+#~ EOF
+	#~ unset CFLAGS
+	#~ unset CXXFLAGS
+	#~ patch -Np1 -i $stuff/seamonkey-2.0-lang.patch
+	#~ patch -Np1 -i $stuff/seamonkey-install-dir.patch
+	#~ export LDFLAGS="$LDFLAGS -Wl,-rpath,/usr/lib/seamonkey"
+	#~ ./configure $CONFIGURE_ARGS 2>&1 | grep -v 'cthandlers/calendar/Makefile.in' &&
+	#~ make &&
+	#~ make DESTDIR=$DESTDIR install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
