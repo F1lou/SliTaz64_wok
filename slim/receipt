@@ -31,11 +31,14 @@ esac
 compile_rules()
 {
 	#~ patch -p1 < $stuff/$PACKAGE-$VERSION.patch || return 1
-	sed -i 's|install(TARGETS slimlock RUNTIME DESTINATION bin)||' CMakeLists.txt
-	sed -i '/if(USE_PAM)/,/endif(USE_PAM)/d' CMakeLists.txt
+	#~ sed -i 's|install(TARGETS slimlock RUNTIME DESTINATION bin)||' CMakeLists.txt
+	#~ sed -i 's|install(FILES slimlock.1 DESTINATION ${MANDIR}/man1/)||' CMakeLists.txt
+	#~ sed -i '/if(USE_PAM)/,/endif(USE_PAM)/d' CMakeLists.txt
+	#~ sed -i '/if(BUILD_SLIMLOCK)/,/endif(BUILD_SLIMLOCK)/d' CMakeLists.txt
+	
+	cp $stuff/CMakeLists.txt .
 	mkdir build; cd build
-	cmake \
-		-DCMAKE_INSTALL_PREFIX=/usr	.. &&
+	cmake -DCMAKE_INSTALL_PREFIX=/usr .. &&
 	make &&
 	make DESTDIR=$DESTDIR install
 }
