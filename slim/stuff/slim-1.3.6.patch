@@ -1,5 +1,5 @@
---- slim-1.3.5/app.cpp
-+++ slim-1.3.5/app.cpp
+--- slim-1.3.6/app.cpp
++++ slim-1.3.6/app.cpp
 
 Link forgotten header.
 @@ -25,6 +25,7 @@
@@ -27,11 +27,11 @@ login field (suspend, halt or reboot).
  		}
 
 
---- slim-1.3.5/cfg.cpp
-+++ slim-1.3.5/cfg.cpp
+--- slim-1.3.6/cfg.cpp
++++ slim-1.3.6/cfg.cpp
 
 Change default settings for SliTaz.
-@@ -28,34 +28,35 @@
+@@ -29,33 +29,35 @@
  	: currentSession(-1)
  {
  	/* Configuration options */
@@ -72,18 +72,18 @@ Change default settings for SliTaz.
 -	options.insert(option("shutdown_msg","The system is halting..."));
 +	options.insert(option("shutdown_msg","The system is going down..."));
  	options.insert(option("reboot_msg","The system is rebooting..."));
--	options.insert(option("sessions","wmaker,blackbox,icewm"));
-+	options.insert(option("sessions","openbox,e17,jwm"));
- 	options.insert(option("sessiondir",""));
+-	options.insert(option("sessiondir",""));
 -	options.insert(option("hidecursor","false"));
++	options.insert(option("sessions","openbox,e17,jwm"));
++	options.insert(option("sessiondir","/usr/share/xsessions/"));
 +	options.insert(option("hidecursor","true"));
  
  	/* Theme stuff */
  	options.insert(option("input_panel_x","50%"));
 
 
---- slim-1.3.5/slim.conf.original
-+++ slim-1.3.5/slim.conf
+--- slim-1.3.6/slim.conf.original
++++ slim-1.3.6/slim.conf
 
 Change default settings for SliTaz too.
 @@ -1,13 +1,16 @@
@@ -167,3 +167,43 @@ Change default settings for SliTaz too.
  
  # Log file
  logfile             /var/log/slim.log
+
+
+--- slim-1.3.6/CMakeLists.txt
++++ slim-1.3.6/CMakeLists.txt
+
+Patch cmake-file for not building simlock without pam
+@@ -72,6 +72,9 @@
+ 	set(common_srcs ${common_srcs} PAM.cpp)
+     # for now, only build slimlock if we are using PAM.
+     set(BUILD_SLIMLOCK 1)
++else (USE_PAM)
++	message(STATUS "PAM is DISABLED, slimlock is depend on PAM and not be built")
++	set (BUILD_SLIMLOCK 0)
+ endif(USE_PAM)
+ 
+ # Build common library
+@@ -221,7 +224,10 @@
+ ####### install
+ # slim
+ install(TARGETS slim RUNTIME DESTINATION bin)
+-install(TARGETS slimlock RUNTIME DESTINATION bin)
++if (BUILD_SLIMLOCK)
++	install(TARGETS slimlock RUNTIME DESTINATION bin)
++endif (BUILD_SLIMLOCK)
++
+ 
+ if (BUILD_SHARED_LIBS)
+ 	set_target_properties(libslim PROPERTIES
+@@ -236,7 +242,10 @@
+ 
+ # man file
+ install(FILES slim.1 DESTINATION ${MANDIR}/man1/)
+-install(FILES slimlock.1 DESTINATION ${MANDIR}/man1/)
++if (BUILD_SLIMLOCK)
++	install(FILES slimlock.1 DESTINATION ${MANDIR}/man1/)
++endif (BUILD_SLIMLOCK)
++
+ # configure
+ install(FILES slim.conf DESTINATION ${SYSCONFDIR})
+ # systemd service file
