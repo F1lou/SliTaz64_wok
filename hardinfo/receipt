@@ -6,16 +6,18 @@ CATEGORY="system-tools"
 SHORT_DESC="A tool to get hardware informations and perform benchmarks."
 MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL2"
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
+TARBALL="release-$VERSION.tar.gz"
 WEB_SITE="https://github.com/lpereira/hardinfo"
-WGET_URL="http://download.berlios.de/hardinfo/$TARBALL"
+WGET_URL="$WEB_SITE/archive/refs/tags/$TARBALL"
 
 DEPENDS="gtk+ pciutils xorg-libXdamage"
-BUILD_DEPENDS="gtk+ gtk+-dev"
+BUILD_DEPENDS="gtk+ gtk+-dev util-linux-mount-dev fribidi-dev
+	xorg-libXft-dev shared-mime-info-dev libsoup-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	cd hardinfo2
 	while read file; do
 		[ -f done.$file ] && continue
 		patch -p0 < $stuff/$file || return 1
@@ -24,7 +26,7 @@ compile_rules()
 languages.patch
 os.patch
 EOT
-	sed -i 's|uname -m|echo i686|' configure
+	#~ sed -i 's|uname -m|echo i686|' configure
 	./configure \
 		--prefix=/usr \
 		$CONFIGURE_ARGS &&
