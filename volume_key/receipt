@@ -12,14 +12,15 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/felixonmars/$PACKAGE/archive/$TARBALL"
 
 DEPENDS=""
-BUILD_DEPENDS="swig"
+BUILD_DEPENDS="nss-dev cryptsetup-dev util-linux-blkid-dev
+	util-linux-uuid-dev gpgme-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	autoreconf -fiv              &&
 	./configure --prefix=/usr    \
-            --without-python &&
+            --without-python --without-python3 &&
 	make &&
 	make DESTDIR=$DESTDIR install
 }
@@ -31,5 +32,5 @@ genpkg_rules()
 
 	cp -a $install/usr/bin		$fs/usr
 	cp -a $install/usr/lib/*.so*	$fs/usr/lib
-	cp -a $install/usr/lib/python3.9	$fs/usr/lib
+	#~ cp -a $install/usr/lib/python3.9	$fs/usr/lib
 }

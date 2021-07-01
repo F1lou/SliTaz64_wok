@@ -13,7 +13,7 @@ WGET_URL="https://github.com/storaged-project/$SOURCE/releases/download/$SOURCE-
 
 DEPENDS="libatasmart libgudev polkit"
 BUILD_DEPENDS="docbook-xsl gtk-doc libgudev-dev polkit-dev libatasmart-dev \
-gobject-introspection-dev util-linux-blockdev"
+	gobject-introspection-dev zlib-dev util-linux-mount-dev libblockdev-dev "
 
 # Rules to configure and make the package.
 compile_rules()

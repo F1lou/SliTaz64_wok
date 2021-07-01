@@ -1,0 +1,46 @@
+# SliTaz package receipt.
+
+PACKAGE="elogind"
+VERSION="246.10"
+CATEGORY="base-system"
+SHORT_DESC="elogind is the systemd project's \"logind\", extracted out to be a standalone daemon"
+MAINTAINER="nhc1@gmx.net"
+LICENSE="GPL2"
+WEB_SITE="https://github.com/elogind/elogind/"
+
+TARBALL="v$VERSION.tar.gz"
+WGET_URL="https://github.com/$PACKAGE/$PACKAGE/archive/refs/tags/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS="libcap-dev eudev-dev pam-dev"
+
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir build && cd build
+	meson --prefix=/usr .. &&
+	ninja && ninja install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/share
+
+	#~ cp -a $install/etc		$fs
+	#~ rm -rf $fs/etc/bash_*
+	#~ cp -a $install/var		$fs
+	#~ cp -a $install/usr/bin		$fs/usr
+	#~ cp -a $install/usr/lib/*.so*	$fs/usr/lib
+	#~ cp -a $install/usr/lib/*d	$fs/usr/lib
+	#~ cp -a $install/usr/lib/udev	$fs/usr/lib
+
+	#~ mkdir -p $fs/usr/lib/security
+	#~ cp -a $install/usr/share/*-1	$fs/usr/share
+	#~ cp -a $install/usr/share/systemd $fs/usr/share
+	#~ # For kernel opt: init=/bin/systemd
+	#~ mkdir -p $fs/bin
+	#~ cd $fs/bin && ln -s ../usr/lib/systemd/systemd systemd
+}

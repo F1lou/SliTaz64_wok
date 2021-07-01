@@ -1,0 +1,24 @@
+# SliTaz package receipt.
+
+PACKAGE="libblockdev-dev"
+VERSION="2.25"
+CATEGORY="development"
+SHORT_DESC="C library supporting GObject Introspection for manipulation of block devices"
+MAINTAINER="nhc1@gmx.net"
+LICENSE="LGPL2"
+WEB_SITE="http://storaged.org/libblockdev/"
+WANTED="libblockdev"
+
+DEPENDS=""
+BUILD_DEPENDS=""
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/include	$fs/usr/
+	cp -a $install/usr/lib/*.*a* $fs/usr/lib/
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib/
+	#~ cp -a $install/usr/lib/*.so* $fs/usr/lib/
+	#~ cp -a $install/usr/lib/python3.9 $fs/usr/lib/
+}
