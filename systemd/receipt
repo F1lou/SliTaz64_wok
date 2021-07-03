@@ -14,7 +14,8 @@ WGET_URL="https://github.com/systemd/$PACKAGE/archive/refs/tags/$TARBALL"
 DEPENDS="acl dbus glib kmod libcap libwrap pam pciutils usbutils util-linux-blkid"
 BUILD_DEPENDS="acl-dev dbus-dev glib-dev glibc-dev gperf intltool \
 	kmod-dev libcap-dev m4 pam-dev pciutils-dev pkg-config \
-	usbutils-dev util-linux-blkid-dev util-linux-uuid-dev"
+	usbutils-dev util-linux-blkid-dev util-linux-uuid-dev util-linux-mount-dev
+	rsync libgcrypt-dev"
 PROVIDE="udev"
 
 #
@@ -54,9 +55,9 @@ genpkg_rules()
 	rm -rf $fs/etc/bash_*
 	cp -a $install/var		$fs
 	cp -a $install/usr/bin		$fs/usr
-	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+	cp -a $install/lib64/*.so*	$fs/usr/lib
 	cp -a $install/usr/lib/*d	$fs/usr/lib
-	cp -a $install/usr/lib/udev	$fs/usr/lib
+	cp -a $install/lib/udev	$fs/usr/lib
 
 	mkdir -p $fs/usr/lib/security
 	cp -a $install/usr/share/*-1	$fs/usr/share
