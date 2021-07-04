@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="expat"
-VERSION="2.3.0"
+VERSION="2.4.1"
 CATEGORY="x-window"
 SHORT_DESC="XML parsing C library"
 MAINTAINER="pankso@slitaz.org"
