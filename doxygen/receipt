@@ -13,15 +13,15 @@ TARBALL="$PACKAGE-$VERSION.src.tar.gz"
 WGET_URL="${WEB_SITE}files/$TARBALL"
 
 DEPENDS="gcc-lib-base"
-BUILD_DEPENDS="bison cmake flex gcc python"
+BUILD_DEPENDS="bison cmake flex gcc python libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	mkdir build
-	cd build
+	mkdir build && cd build
+	export LDFLAGS="$LDFLAGS -liconv"
 	cmake -G "Unix Makefiles" .. &&
-	make -j 1 &&
+	make &&
 	make DESTDIR=$DESTDIR install
 }
 

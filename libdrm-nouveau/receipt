@@ -8,7 +8,7 @@ MAINTAINER="pankso@slitaz.org"
 LICENSE="MIT"
 WEB_SITE="https://dri.freedesktop.org/"
 
-DEPENDS="glibc-base libdrm udev"
+DEPENDS="glibc-base libdrm eudev"
 WANTED="libdrm"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

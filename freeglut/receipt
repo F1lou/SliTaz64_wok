@@ -16,15 +16,16 @@ DEPENDS="glibc-base libdrm mesa libglu-mesa \
 	xorg-libX11 xorg-libXau xorg-libXdamage xorg-libXdmcp \
 	xorg-libXext xorg-libXfixes xorg-libXi xorg-libXxf86vm"
 BUILD_DEPENDS="cmake libglu-mesa libglu-mesa-dev libxcb-dev mesa mesa-dev 
-	xorg-inputproto xorg-libX11-dev xorg-libXau-dev xorg-libXdamage-dev 
+	xorg-dev xorg-inputproto xorg-libX11-dev xorg-libXau-dev xorg-libXdamage-dev 
 	xorg-libXdmcp-dev xorg-libXext-dev xorg-libXfixes-dev xorg-libXi-dev 
-	xorg-libXxf86vm-dev xorg-xproto"
+	xorg-libXxf86vm-dev xorg-xproto libiconv-dev xorg-libXshmfence-dev
+	libbsd-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	# Binutils 2.22 break many packages build without LDFLAGS set correctly.
-	export LDFLAGS="$LDFLAGS -Wl,--copy-dt-needed-entries"
+	export LDFLAGS="$LDFLAGS -liconv -Wl,--copy-dt-needed-entries"
 	
 	# fixes an issue with the radeon[hd] ATI opensource drivers
 	# ref: http://bugs.gentoo.org/show_bug.cgi?id=295163
