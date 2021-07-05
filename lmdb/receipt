@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="lmdb"
+SOURCE="LMDB"
+VERSION="0.9.29"
+CATEGORY="database"
+SHORT_DESC="mas LMDB is an extraordinarily fast, memory-efficient database developed for the OpenLDAP Project."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="GPL2"
+WEB_SITE="https://symas.com/lmdb/"
+TARBALL="${SOURCE}_${VERSION}.tar.gz"
+WGET_URL="https://github.com/$SOURCE/$PACKAGE/archive/refs/tags/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd libraries/liblmdb
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/local/bin $fs/usr/
+	cp -a $install/usr/local/lib/*.so $fs/usr/lib
+}

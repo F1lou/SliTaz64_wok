@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="appstream-dev"
+VERSION="0.14.4"
+CATEGORY="system-tools"
+SHORT_DESC="AppStream is a cross-distribution effort for enhancing the way we interact with the software repositories provided by (Linux) distributions by standardizing software component metadata."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="GPL2"
+WEB_SITE="https://www.freedesktop.org/wiki/Distributions/AppStream/"
+WANTED="appstream"
+DEPENDS="appstream"
+BUILD_DEPENDS=""
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share
+	cp -a $install/usr/include $fs/usr/
+	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib/
+	cp -a $install/usr/lib64/girepository* $fs/usr/lib/
+	cp -a $install/usr/share/gir-* $fs/usr/share/
+}

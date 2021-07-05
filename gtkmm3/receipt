@@ -15,8 +15,8 @@ WGET_URL="$GNOME_MIRROR/$SOURCE/${VERSION%.*}/$TARBALL"
 DEPENDS="atkmm cairomm gcc-lib-base glibmm gtk+3 libgiomm libsigc++ pangomm \
 	xorg-libXdamage"
 BUILD_DEPENDS="atkmm-dev cairomm-dev doxygen glibmm-dev gtk+3-dev libgiomm-dev \
-	libsigc++-dev  mm-common pangomm-dev libxkbcommon-dev xorg-libXtst-dev
-	xorg-dev libgio-dev libgiomm-dev pangomm-dev xorg-libXshmfence-dev
+	libsigc++-dev mm-common pangomm-dev libxkbcommon-dev xorg-libXtst-dev
+	xorg-dev libgio-dev libgiomm-dev pangomm-dev libbsd-dev xorg-libXshmfence-dev
 	libiconv-dev glib-dev pango-dev libgio-dev mesa-dev libepoxy-dev
 	util-linux-mount-dev fribidi-dev gdk-pixbuf-dev shared-mime-info-dev
 	libxkbcommon-dev iso-codes wayland-dev gobject-introspection-dev
@@ -26,8 +26,12 @@ BUILD_DEPENDS="atkmm-dev cairomm-dev doxygen glibmm-dev gtk+3-dev libgiomm-dev \
 compile_rules()
 {
 	mkdir bld && cd bld
-	export LDFLAGS="$LDFLAGS -liconv -lgio-2.0"
-	meson --prefix=/usr -Dbuild-documentation=false .. &&
+	export LDFLAGS="$LDFLAGS -liconv -lGL" # -lgio-2.0"
+	meson --prefix=/usr \
+		-D build-documentation=false \
+		-D maintainer-mode=false \
+		-D build-demos=false \
+		-D build-tests=false .. &&
 	ninja && ninja install
 	
 	#~ ./configure			\

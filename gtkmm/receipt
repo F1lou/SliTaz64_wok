@@ -14,11 +14,13 @@ WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION%.*}/$TARBALL"
 DEPENDS="atkmm cairomm gcc-lib-base glibmm gtk+ libgiomm libsigc++ pangomm \
 	xorg-libXdamage"
 BUILD_DEPENDS="atkmm-dev cairomm-dev doxygen glibmm-dev gtk+-dev libgiomm-dev \
-	libsigc++-dev  mm-common pangomm-dev"
+	libsigc++-dev mm-common pangomm-dev util-linux-mount-dev fribidi-dev
+	xorg-libXft-dev shared-mime-info-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	./configure			\
 		--disable-documentation	\
 		$CONFIGURE_ARGS &&
