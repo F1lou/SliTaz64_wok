@@ -27,6 +27,9 @@ compile_rules()
 	# Binutils 2.22 break many packages build without LDFLAGS set correctly.
 	export LDFLAGS="$LDFLAGS -liconv -Wl,--copy-dt-needed-entries"
 	
+	# patching for gcc10 compatibility
+	patch -p0 -i $stuff/freeglut-3.2.1-gcc10-fno-common.patch
+	
 	# fixes an issue with the radeon[hd] ATI opensource drivers
 	# ref: http://bugs.gentoo.org/show_bug.cgi?id=295163
 #	patch -p0 -i $stuff/2.6.0-GFX_radeon.patch
@@ -41,6 +44,6 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib
-	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+	mkdir -p $fs/usr/lib64
+	cp -a $install/usr/lib64/*.so*	$fs/usr/lib64
 }

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libmtp"
-VERSION="1.1.17"
+VERSION="1.1.18"
 CATEGORY="system-tools"
 SHORT_DESC="LGPL library implementation of the Media Transfer Protocol (MTP)."
 MAINTAINER="keupont@no-log.org"
@@ -11,12 +11,13 @@ WEB_SITE="http://libmtp.sourceforge.net/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
-DEPENDS="libusb udev"
-BUILD_DEPENDS="libusb-dev"
+DEPENDS="libusb eudev"
+BUILD_DEPENDS="libusb-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	./configure		\
 		--disable-mtpz	\
 		$CONFIGURE_ARGS &&

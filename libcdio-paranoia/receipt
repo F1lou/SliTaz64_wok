@@ -12,10 +12,11 @@ TARBALL="$PACKAGE-${VERSION%.*.*.*}+${VERSION#*.*.}.tar.gz"
 WGET_URL="$GNU_MIRROR/libcdio/$TARBALL"
 
 DEPENDS="libcdio"
-BUILD_DEPENDS="libcdio-dev libtool"
+BUILD_DEPENDS="libcdio-dev libtool libiconv-dev"
 
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	./configure			\
 		 --enable-cpp-progs	\
 		--disable-example-progs	\
