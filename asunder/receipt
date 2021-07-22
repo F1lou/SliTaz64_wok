@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="asunder"
-VERSION="2.9.5"
+VERSION="2.9.7"
 CATEGORY="multimedia"
 TAGS="audio rip"
 SHORT_DESC="GTK light CD ripper."
