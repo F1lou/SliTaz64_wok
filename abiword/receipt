@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="abiword"
-VERSION="2.8.6"
+VERSION="3.0.5"
 CATEGORY="office"
 SHORT_DESC="Light and speed word processing application."
 MAINTAINER="pankso@slitaz.org"
@@ -13,12 +13,14 @@ WGET_URL="http://www.abisource.com/downloads/abiword/$VERSION/source/$TARBALL"
 TAGS="word doc office"
 LOCALES="cs da de es fr hu id it pt ru sl sv zh"
 
-DEPENDS="gtk+ libgnomeprint libgnomeprintui libgnomecanvas fribidi libglade \
+DEPENDS="gtk+3 libgnomeprint libgnomeprintui libgnomecanvas fribidi libglade \
 popt libxml2 libart_lgpl libgsf libgio enchant wv xorg-libXdamage gcc-lib-base \
 librsvg goffice glibc-locale libffi"
-BUILD_DEPENDS="$DEPENDS gtk+-dev libgnomeprint-dev libgnomeprintui-dev \
+BUILD_DEPENDS="$DEPENDS gtk+3-dev libgnomeprint-dev libgnomeprintui-dev \
 fribidi-dev libglade-dev popt-dev libxml2-dev libart_lgpl-dev libgsf-dev \
-enchant-dev wv-dev libgnomecanvas-dev libcroco-dev libboost-dev librsvg-dev"
+enchant-dev wv-dev libgnomecanvas-dev libcroco-dev libboost-dev librsvg-dev \
+libiconv-dev libpng-dev libepoxy-dev libxslt-dev mesa-dev xorg-libXtst-dev \
+xorg-libXxf86vm-dev libdrm-dev libjpeg-turbo-dev liblzma-dev libbsd-dev"
 SUGGESTED="abiword-plugins"
 
 # Rules to configure and make the package.
@@ -29,6 +31,7 @@ compile_rules()
 	sed -i 's|--no-undefined||' src/Makefile*
 	sed -i 's|cat \$(BUILTIN_STAMP)|& 2> /dev/null|' src/plugins/Makefile*
 	sed -i 's|TRUE|boolean(TRUE)|' src/af/util/xp/ut_jpeg.cpp
+	export LDFLAGS="$LDFLAGS -liconv"
 	./configure \
 		--prefix=/usr \
 		--infodir=/usr/share/info \
@@ -48,7 +51,7 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/share/pixmaps $fs/usr/lib/abiword-2.8/plugins $fs/usr/share/icons
+	mkdir -p $fs/usr/share/pixmaps $fs/usr/lib/abiword-3.0/plugins $fs/usr/share/icons
 
 	cp -a $install/usr/bin $fs/usr
 	cp -a $install/usr/lib/*.so $fs/usr/lib
@@ -56,11 +59,11 @@ genpkg_rules()
 	cp -a $install/usr/share/abiword-* $fs/usr/share
 
 	# Non standard pixmap
-	cp $install/usr/share/icons/abiword_48.png \
-		$fs/usr/share/pixmaps/abiword.png
+	cp $install/usr/share/icons/hicolor/48x48/apps/abiword.png \
+		$fs/usr/share/pixmaps/
 
 	# fix error when abiword is run in command line
-	ln -sf /usr/share/pixmaps/abiword.png $fs/usr/share/icons/abiword_48.png
+	#~ ln -sf /usr/share/pixmaps/abiword.png $fs/usr/share/icons/abiword_48.png
 
 	# Non-standard locale use: get all official SliTaz locales
 	rm $fs/usr/share/abiword-*/strings/*

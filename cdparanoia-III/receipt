@@ -10,18 +10,21 @@ WEB_SITE="https://www.xiph.org/paranoia/"
 TARBALL="$PACKAGE-$VERSION.src.tgz"
 WGET_URL="https://downloads.xiph.org/releases/cdparanoia/$TARBALL"
 
+BUILD_DEPENDS="libcdio-dev"
+
 # Rules to configure and make the package.
 compile_rules()
 {
 	#~ fgrep -qs 'define u8' interface/low_interface.h ||
 	#~ sed -i 's|#include <scsi/scsi.h>|#define u8 __u8\n&|' \
 		#~ interface/low_interface.h
-
-	CC="gcc" AR="ar" RANLIB="ranlib" LD="ld" CFLAGS="-g -O2" ./configure \
+	unset CC 
+	unset LD
+	CFLAGS="-fPIC" ./configure \
 		--prefix=/usr \
 		--infodir=/usr/share/info \
 		--mandir=/usr/share/man &&
-	make all
+	make
 
 	cook_pick_manpages cdparanoia.1
 	mkdir -p $install/usr/share/man/jp/man1

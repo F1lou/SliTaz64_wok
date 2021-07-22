@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="abiword-plugins"
-VERSION="2.8.6"
+VERSION="3.0.5"
 CATEGORY="office"
 SHORT_DESC="Extra plugins for Abiword (MSWord, OpenDocument, Wikipedia, etc)."
 MAINTAINER="pankso@slitaz.org"
@@ -15,9 +15,9 @@ DEPENDS="abiword libgio readline xorg-libXdamage fribidi libxslt"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib/abiword-2.8/plugins $fs/usr/share
+	mkdir -p $fs/usr/lib/abiword-3.0/plugins $fs/usr/share
 
 	cp -a $install/usr/lib/abiword-*/plugins/*.so \
-		$fs/usr/lib/abiword-2.8/plugins
+		$fs/usr/lib/abiword-3.0/plugins
 }
 
