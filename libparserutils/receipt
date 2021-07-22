@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libparserutils"
-VERSION="0.1.1"
+VERSION="0.2.4"
 CATEGORY="system-tools"
 SHORT_DESC="Various pieces of functionality that are useful for parsers."
 MAINTAINER="pankso@slitaz.org"
@@ -10,11 +10,13 @@ WEB_SITE="http://www.netsurf-browser.org/projects/libparserutils/"
 TARBALL="$PACKAGE-$VERSION-src.tar.gz"
 WGET_URL="http://download.netsurf-browser.org/libs/releases/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
+BUILD_DEPENDS="libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	make install DESTDIR=$DESTDIR PREFIX=/usr &&
+	export CFLAGS="$CFLAGS -liconv"
+	#~ make install DESTDIR=$DESTDIR PREFIX=/usr &&
 	make install COMPONENT_TYPE=lib-shared DESTDIR=$DESTDIR PREFIX=/usr 
 }
 

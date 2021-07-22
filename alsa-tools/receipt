@@ -1,19 +1,20 @@
 # SliTaz package receipt.
 
 PACKAGE="alsa-tools"
-VERSION="1.1.5"
+VERSION="1.2.5"
 CATEGORY="meta"
 SHORT_DESC="Alsa sound system additionnal tools (meta package)."
 MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL2"
 WEB_SITE="http://www.alsa-project.org/"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
-WGET_URL="http://alsa.cybermirror.org/tools/$TARBALL"
+WGET_URL="http://www.alsa-project.org/files/pub/tools/$TARBALL"
 GENERIC_MENUS="no"
 
 # We don't want all card mixer as dep.
 DEPENDS="alsa-lib" # alsa-tools-ac3dec
-BUILD_DEPENDS="alsa-lib-dev gtk+-dev fltk-dev autoconf automake"
+BUILD_DEPENDS="alsa-lib-dev gtk+-dev gtk+3-dev fltk-dev autoconf automake
+libepoxy-dev desktop-file-utils-extra xorg-libXxf86vm-dev xorg-libXtst-dev"
 
 # List of tools we want to build, then splited into individual packages
 TOOLS="as10k1 envy24control hdsploader hdspconf hdspmixer \

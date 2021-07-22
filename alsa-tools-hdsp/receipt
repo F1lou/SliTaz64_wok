@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="alsa-tools-hdsp"
-VERSION="1.1.5"
+VERSION="1.2.5"
 CATEGORY="multimedia"
 SHORT_DESC="RME Hammerfall DSP cards firmware loader, mixer and config tool."
 MAINTAINER="pankso@slitaz.org"
@@ -18,6 +18,6 @@ genpkg_rules()
 	cp -a $install/usr/bin/hdsp* $fs/usr/bin
 	cp -a $install/usr/share/applications/hdsp*.desktop \
 		$fs/usr/share/applications
-	cp -a $install/usr/share/pixmaps/hdsp*.png \
+	cp -a $install/usr/share/icons/hicolor/48x48/apps/hdsp*.png \
 		$fs/usr/share/pixmaps
 }

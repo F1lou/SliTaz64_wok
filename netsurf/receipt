@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="netsurf"
-VERSION="3.9"
+VERSION="3.10"
 CATEGORY="network"
 TAGS="web-browser"
 SHORT_DESC="A simple, fast and light web browser using GTK."

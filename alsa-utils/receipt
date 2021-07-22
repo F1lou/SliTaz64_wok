@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="alsa-utils"
-VERSION="1.2.4"
+VERSION="1.2.5.1"
 CATEGORY="multimedia"
 SHORT_DESC="Alsa sound system utilities and config tools."
 MAINTAINER="pankso@slitaz.org"
@@ -13,7 +13,7 @@ CONFIG_FILES="/var/lib/alsa/asound.state"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="alsa-lib ncurses util-linux-getopt"
-BUILD_DEPENDS="alsa-lib-dev ncurses-dev"
+BUILD_DEPENDS="alsa-lib-dev ncurses-dev eudev-dev"
 
 # Rules to configure and make the package.
 compile_rules()
