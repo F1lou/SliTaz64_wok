@@ -1,8 +1,8 @@
 # SliTaz package receipt.
 
 PACKAGE="gst-plugins-bad"
-VERSION="0.10.23"
-SERIES="0.10"
+VERSION="1.19.1"
+SERIES="1.0"
 CATEGORY="multimedia"
 SHORT_DESC="GStreamer Bad Plugins"
 MAINTAINER="jozee@slitaz.org"

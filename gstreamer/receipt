@@ -1,8 +1,8 @@
 # SliTaz package receipt.
 
 PACKAGE="gstreamer"
-VERSION="0.10.36"
-SERIES="0.10"
+VERSION="1.19.1"
+SERIES="1.0"
 CATEGORY="multimedia"
 SHORT_DESC="GStreamer Multimedia Framework"
 MAINTAINER="jozee@slitaz.org"
@@ -14,12 +14,12 @@ HOST_ARCH="x86_64 i486 arm"
 
 LOCALES="da de es fr id it pt_BR ru zh_CN"
 DEPENDS="glib libgio libxml2"
-BUILD_DEPENDS="glib-dev libgio-dev libxml2-dev"
+BUILD_DEPENDS="glib-dev libgio-dev libxml2-dev gsl-dev"
 
 # Handle cross compilation
 case "$ARCH" in
-	i?86) BUILD_DEPENDS="$BUILD_DEPENDS gobject-introspection-dev \
-python-dev bison flex m4 valgrind" 
+	x86_64|i?86) BUILD_DEPENDS="$BUILD_DEPENDS gobject-introspection-dev \
+py3k-dev bison flex m4 valgrind" 
 		origin="http://www.slitaz.org" ;;
 	arm*) 
 		origin="http://arm.slitaz.org"
@@ -28,33 +28,38 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
+	mkdir build && cd build
+	meson --prefix=/usr .. &&
+	ninja && ninja install
+	
+	
 	# YYLEX_PARAM is no longer supported in Bison 3
-	sed -i "/YYLEX_PARAM/d;s|%left '!.*|&\\n%lex-param { void *scanner }|" \
-		gst/parse/grammar.y
+	#~ sed -i "/YYLEX_PARAM/d;s|%left '!.*|&\\n%lex-param { void *scanner }|" \
+		#~ gst/parse/grammar.y
 
-	./configure \
-		--sysconfdir=/etc \
-		--localstatedir=/var \
-		--libexecdir=/usr/lib \
-		--enable-silent-rules \
-		--disable-static \
-		--disable-examples \
-		--disable-debug \
-		--with-package-name="GStreamer ($SERIES)" \
-		--with-package-origin="$origin" \
-		$CONFIGURE_ARGS &&
-	make $MAKEFLAGS && make install
+	#~ ./configure \
+		#~ --sysconfdir=/etc \
+		#~ --localstatedir=/var \
+		#~ --libexecdir=/usr/lib \
+		#~ --enable-silent-rules \
+		#~ --disable-static \
+		#~ --disable-examples \
+		#~ --disable-debug \
+		#~ --with-package-name="GStreamer ($SERIES)" \
+		#~ --with-package-origin="$origin" \
+		#~ $CONFIGURE_ARGS &&
+	#~ make $MAKEFLAGS && make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib/gstreamer-$SERIES $fs/usr/bin $fs/usr/share/locale
+	mkdir -p $fs/usr/lib64/gstreamer-$SERIES $fs/usr/bin $fs/usr/share/locale
 	cp -a $install/usr/bin/*-$SERIES $fs/usr/bin
-	cp -a $install/usr/lib/*.so* $fs/usr/lib
-	cp -a $install/usr/lib/gstreamer-$SERIES/*.so $fs/usr/lib/gstreamer-$SERIES
-	cp -a $install/usr/lib/gstreamer-$SERIES/gst-* $fs/usr/lib/gstreamer-$SERIES
-	# for locale in $LOCALES; do
-	# 	mv $install/usr/share/locale/$locale $fs/usr/share/locale
-	# done
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
+	cp -a $install/usr/lib64/gstreamer-$SERIES/*.so $fs/usr/lib64/gstreamer-$SERIES
+	#~ cp -a $install/usr/lib64/gstreamer-$SERIES/gst-* $fs/usr/lib/gstreamer-$SERIES
+	for locale in $LOCALES; do
+		mv $install/usr/share/locale/$locale $fs/usr/share/locale
+	done
 }

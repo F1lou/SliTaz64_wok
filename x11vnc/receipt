@@ -22,6 +22,7 @@ HOST_ARCH="x86_64 i486 arm"
 # Rules to configure and make the package.
 compile_rules()
 {
+	patch -p1 -i $stuff/0004-x11vnc.ftbfs-gcc10.patch &&
 	./autogen.sh		\
 		--prefix=/usr	\
 		$CONFIGURE_ARGS &&
