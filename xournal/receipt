@@ -14,7 +14,9 @@ WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 SUGGESTED="ghostscript"
 DEPENDS="gcc-lib-base gtk+ libgnomecanvas poppler poppler-apps"
 BUILD_DEPENDS="autoconf automake gtk+-dev libart_lgpl-dev 
-	libgnomecanvas-dev poppler-dev zlib-dev"
+	libgnomecanvas-dev poppler poppler-dev zlib-dev libbsd pango-dev
+	harfbuzz-dev freetype-dev cairo-dev gdk-pixbuf-dev
+	pixman-dev xorg-libXext-dev tiff-dev xorg-dev openjpeg2-dev"
 
 # Rules to configure and make the package.
 compile_rules()

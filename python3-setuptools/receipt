@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="python3-setuptools"
-VERSION="57.0.0"
+VERSION="57.4.0"
 CATEGORY="development"
 SHORT_DESC="Easily download, build, install, upgrade, and uninstall Python packages."
 MAINTAINER="maintainer@slitaz.org"

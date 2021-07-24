@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libvncserver"
-VERSION="0.9.9"
+VERSION="0.9.13"
 CATEGORY="network"
 SHORT_DESC="The vnc library"
 MAINTAINER="slaxemulator@gmail.com"
@@ -9,25 +9,30 @@ LICENSE="GPL2"
 SOURCE="LibVNCServer"
 TARBALL="$SOURCE-$VERSION.tar.gz"
 WEB_SITE="http://libvncserver.sourceforge.net/"
-WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+WGET_URL="https://github.com/LibVNC/libvncserver/archive/refs/tags/$TARBALL"
 
 DEPENDS="jpeg zlib libssl"
-BUILD_DEPENDS="jpeg-dev zlib openssl-dev"
+BUILD_DEPENDS="jpeg-dev zlib openssl-dev libjpeg-turbo-dev lzo-dev
+	libsdl2-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	cd $src
-	./configure \
-		$CONFIGURE_ARGS &&
-	make && make install
+	mkdir build && cd build
+	cmake -DCMAKE_INSTALL_PREFIX=/usr .. &&
+	cmake --build . &&
+	make install
+	#~ cd $src
+	#~ ./configure \
+		#~ $CONFIGURE_ARGS &&
+	#~ make && make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib
-	cp -a $install/usr/bin $fs/usr
-	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	mkdir -p $fs/usr/lib64
+	#~ cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
 }
 

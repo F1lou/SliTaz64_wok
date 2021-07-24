@@ -16,7 +16,7 @@ BUILD_DEPENDS="libiconv-dev"
 compile_rules()
 {
 	export CFLAGS="$CFLAGS -liconv"
-	#~ make install DESTDIR=$DESTDIR PREFIX=/usr &&
+	make install DESTDIR=$DESTDIR PREFIX=/usr &&
 	make install COMPONENT_TYPE=lib-shared DESTDIR=$DESTDIR PREFIX=/usr 
 }
 

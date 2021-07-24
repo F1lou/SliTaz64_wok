@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="mesa-wayland-dev"
-VERSION="9.2.5"
+VERSION="21.0.1"
 CATEGORY="development"
 SHORT_DESC="Wayland X server - development files."
 MAINTAINER="pankso@slitaz.org"
@@ -14,10 +14,10 @@ WANTED="mesa-wayland"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib/dri
+	mkdir -p $fs/usr/lib
 
 	cp -a $install/usr/include		$fs/usr
-	cp -a $install/usr/lib/*.*a		$fs/usr/lib
-	cp -a $install/usr/lib/dri/*.*a		$fs/usr/lib/dri
-	cp -a $install/usr/lib/pkgconfig	$fs/usr/lib
+	#~ cp -a $install/usr/lib/*.*a		$fs/usr/lib
+	#~ cp -a $install/usr/lib/dri/*.*a		$fs/usr/lib/dri
+	cp -a $install/usr/lib64/pkgconfig	$fs/usr/lib
 }

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="audacious"
-VERSION="3.10.1"
+VERSION="4.0.5"
 CATEGORY="multimedia"
 TAGS="music audio player mp3 ogg"
 SHORT_DESC="Music player like xmms."
@@ -12,10 +12,10 @@ WEB_SITE="https://audacious-media-player.org/"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="http://distfiles.audacious-media-player.org/$TARBALL"
 
-DEPENDS="dbus-glib gcc-lib-base gtk+ libmcs libmowgli libsamplerate libxml2 
+DEPENDS="dbus-glib gcc-lib-base gtk+3 libmcs libmowgli libsamplerate libxml2 
 	xorg-libXdamage"
-BUILD_DEPENDS="dbus-dev dbus-glib-dev gcc gtk+-dev libmcs libmcs-dev 
-	libmowgli libmowgli-dev libsamplerate-dev libxml2-dev"
+BUILD_DEPENDS="dbus-dev dbus-glib-dev gcc gtk+3-dev libmcs libmcs-dev 
+	libmowgli libmowgli-dev libsamplerate-dev libxml2-dev zlib-dev"
 
 # Rules to configure and make the package.
 compile_rules()

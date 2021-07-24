@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libcss"
-VERSION="0.1.2"
+VERSION="0.9.1"
 CATEGORY="system-tools"
 SHORT_DESC="CSS Parser"
 MAINTAINER="erjo@slitaz.org"

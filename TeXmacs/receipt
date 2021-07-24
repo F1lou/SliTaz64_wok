@@ -1,15 +1,14 @@
 # SliTaz package receipt.
 
 PACKAGE="TeXmacs"
-VERSION="1.0.7.8"
+VERSION="2.1"
 CATEGORY="office"
 SHORT_DESC="The high quality of TeX with a wisiwyg editor"
 MAINTAINER="slitaz@leledy.fr"
 LICENSE="GPL"
 TARBALL="$PACKAGE-$VERSION-src.tar.gz"
 WEB_SITE="http://www.texmacs.org/"
-WGET_URL="ftp://ftp.texmacs.org/pub/$PACKAGE/targz/$TARBALL"
-
+WGET_URL="https://www.texmacs.org/Download/ftp/tmftp/source/$TARBALL"
 DEPENDS="ghostscript gmp guile freetype TeXmacs-windows-fonts"
 # freetype and TeXmacs-windows-fonts avoid depending on TeX which is a *huge* system
 BUILD_DEPENDS="xorg-libX11-dev gmp-dev guile-dev freetype-dev imlib2-dev"

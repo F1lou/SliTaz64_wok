@@ -11,7 +11,7 @@ WEB_SITE="https://web.archive.org/web/20150801144644/http://cita.disability.uiuc
 WGET_URL="$(dirname $WEB_SITE)/files/$TARBALL"
 
 DEPENDS="tk tcl"
-BUILD_DEPENDS="xorg-libX11-dev"
+BUILD_DEPENDS="xorg-libX11-dev xorg-dev"
 
 # Rules to configure and make the package.
 compile_rules()

@@ -13,7 +13,9 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/LibVNC/$PACKAGE/archive/$VERSION.tar.gz"
 
 DEPENDS="jpeg libvncserver openssl xorg-libXdamage xorg-libXtst zlib"
-BUILD_DEPENDS="libtool jpeg-dev libvncserver-dev openssl-dev"
+BUILD_DEPENDS="libtool jpeg-dev libvncserver-dev openssl-dev
+	xorg-libXinerama-dev xorg-libXtst-dev xorg-libXcomposite-dev
+	xorg-libXcursor-dev libjpeg-turbo-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 
@@ -24,8 +26,8 @@ compile_rules()
 		--prefix=/usr	\
 		$CONFIGURE_ARGS &&
 	make &&
-	make -j1 DESTDIR=$DESTDIR install &&
-	echo rm -rf $DESTDIR/usr/share/applications
+	make DESTDIR=$DESTDIR install #&&
+	#~ echo rm -rf $DESTDIR/usr/share/applications
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

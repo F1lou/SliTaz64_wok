@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="poppler-dev"
-VERSION="21.05.0"
+VERSION="21.07.0"
 CATEGORY="development"
 SHORT_DESC="Poppler PDF rendering library devel files."
 MAINTAINER="pankso@slitaz.org"
@@ -26,8 +26,8 @@ genpkg_rules()
 	cp $src/splash/*.h $fs/usr/include/poppler/splash
 	cp $src/fofi/*.h $fs/usr/include/poppler/fofi
 	#included in poppler-qt4-dev
-	rm -r $fs/usr/include/poppler/qt4
+	#~ rm -r $fs/usr/include/poppler/qt4
 	#~ rm $fs/usr/lib/*qt4.*a
-	rm $fs/usr/lib/pkgconfig/poppler-qt4.pc
+	#~ rm $fs/usr/lib/pkgconfig/poppler-qt4.pc
 }
 

@@ -1,14 +1,14 @@
 # SliTaz package receipt.
 
 PACKAGE="lorcon"
-VERSION="163"
+VERSION="2020.06.06"
 CATEGORY="network"
 SHORT_DESC="A generic library for injecting 802.11 frames, capable of injection via multiple driver frameworks, without forcing modification of the application code."
 MAINTAINER="slaxemulator@gmail.com"
 LICENSE="GPL2"
-WEB_SITE="http://802.11ninja.net/lorcon/"
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
-WGET_URL="subversion|http://802.11ninja.net/svn/lorcon/trunk"
+WEB_SITE="https://github.com/kismetwireless/lorcon"
+TARBALL="$VERSION.tar.gz"
+WGET_URL="https://github.com/kismetwireless/$PACKAGE/archive/refs/tags/$TARBALL"
 BRANCH="$VERSION"
 
 BUILD_DEPENDS="subversion"

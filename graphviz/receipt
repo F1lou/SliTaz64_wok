@@ -13,9 +13,9 @@ WGET_URL="https://gitlab.com/$PACKAGE/$PACKAGE/-/archive/$VERSION/$TARBALL"
 
 DEPENDS="expat gcc-lib-base jpeg libpng librsvg libxml2 pcre 
 	util-linux-uuid zlib"
-BUILD_DEPENDS="gcc expat-dev gdk-pixbuf-dev guile-dev jpeg-dev 
+BUILD_DEPENDS="py3k py3k-dev gcc expat-dev gdk-pixbuf-dev guile-dev jpeg-dev 
 	libcroco-dev libgd-dev libpng-dev librsvg-dev libxml2-dev 
-	ocaml pango-dev pcre-dev pkg-config 
+	ocaml pango-dev pcre-dev pkg-config libiconv-dev
 	python-dev ruby-dev swig tcl-dev tk-dev util-linux-uuid-dev 
 	xorg-dev zlib-dev automake sed liblzma-dev libbsd-dev" # php-cli php-dev lua-dev
 
@@ -27,7 +27,7 @@ compile_rules()
 	#~ sed -i 's/.*PHPWRITE.*/    TSRMLS_FETCH();\n&/' \
 		#~ tclpkg/gv/gv_php_init.c
 
-	CFLAGS="$CFLAGS -fPIC"
+	CFLAGS="$CFLAGS -fPIC -liconv"
 	./autogen.sh
 	./configure				\
 		--prefix=/usr			\
@@ -56,7 +56,7 @@ compile_rules()
 		--enable-php=yes		\
 		--enable-ruby=yes		\
 		--enable-tcl=yes		\
-		--enable-python=yes		\
+		--enable-python3=yes	\
 		--disable-python23		\
 		--disable-python24		\
 		--disable-python25		\
