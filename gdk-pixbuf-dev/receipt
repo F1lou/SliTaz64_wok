@@ -8,7 +8,8 @@ MAINTAINER="slaxemulator@gmail.com"
 LICENSE="GPL2"
 WEB_SITE="https://www.gtk.org/"
 
-DEPENDS="gdk-pixbuf glib-dev jpeg-dev libpng-dev pkg-config shared-mime-info-dev"
+DEPENDS="gdk-pixbuf glib-dev jpeg-dev libpng-dev pkg-config \
+		tiff-dev shared-mime-info-dev"
 WANTED="gdk-pixbuf"
 
 HOST_ARCH="x86_64 i486 arm"

@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="libnsl-dev"
+VERSION="1.3.0"
+CATEGORY="development"
+SHORT_DESC="Public client interface for NIS(YP) and NIS+ in a IPv6 ready version"
+MAINTAINER="nhc1@gmx.net"
+LICENSE="LGPL2.1"
+WANTED="libnsl"
+
+DEPENDS="libtirpc-dev"
+BUILD_DEPENDS=""
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/include $fs/usr/
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib/
+	cp -a $install/usr/lib/*.*a $fs/usr/lib/
+}
