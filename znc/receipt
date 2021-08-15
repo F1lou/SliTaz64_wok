@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="znc"
-VERSION="1.8.1"
+VERSION="1.8.2"
 CATEGORY="network"
 SHORT_DESC="An IRC bouncer with modules and scripts support."
 MAINTAINER="pankso@slitaz.org"
@@ -13,14 +13,14 @@ WGET_URL="http://znc.in/releases/archive/$TARBALL"
 
 SUGGESTED="tcl"
 DEPENDS="gcc-lib-base libssl zlib"
-BUILD_DEPENDS="gcc openssl-dev tcl-dev zlib-dev"
+BUILD_DEPENDS="gcc openssl-dev tcl-dev zlib-dev libiconv-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	 ./configure			\
+	 LDFLAGS="$LDFLAGS -liconv" ./configure			\
 		--enable-tcl		\
 		--disable-python	\
 		--disable-perl		\

@@ -15,7 +15,7 @@ DEPENDS="lcms poppler tiff dbus-glib glib util-linux-uuid"
 BUILD_DEPENDS="gnome-doc-utils-dev docbook-xml libxml2-dev \
 gnome-icon-theme gtk+3-dev intltool lcms-dev util-linux-uuid-dev \
 poppler-dev tiff-dev dbus-glib-dev xorg-dev pixman-dev \
-libepoxy-dev mesa-dev adwaita-icon-theme"
+libepoxy-dev mesa-dev adwaita-icon-theme libhandy-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()

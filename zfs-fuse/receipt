@@ -13,7 +13,7 @@ WGET_URL="$ARCHIVE$WEB_SITE/releases/$VERSION/$TARBALL"
 
 DEPENDS="fuse libaio libcrypto perl"
 BUILD_DEPENDS="fuse-dev scons libaio-dev attr-dev zlib-dev acl-dev openssl-dev \
-file"
+	file libtirpc-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -29,6 +29,7 @@ compile_rules()
 	# glibc 2.14 update
 	sed -i 's/\*__malloc_initialize_hook/* __volatile __malloc_initialize_hook/' \
 		lib/libumem/malloc.c
+	export LDFLAGS="$LDFLAGS -ltirpc"
 	scons PREFIX=/usr &&
 	scons install_dir=$DESTDIR/usr/sbin \
 	      cfg_dir=$DESTDIR/etc \

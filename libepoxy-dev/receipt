@@ -9,6 +9,7 @@ LICENSE="other"
 WEB_SITE="https://github.com/anholt/libepoxy"
 
 WANTED="libepoxy"
+DEPENDS="mesa-dev"
 
 
 genpkg_rules() {

@@ -12,7 +12,8 @@ WGET_URL="$WEB_SITE$TARBALL"
 TAGS="mixer"
 
 DEPENDS="gtk+ alsa-lib"
-BUILD_DEPENDS="gtk+-dev alsa-lib-dev pkg-config"
+BUILD_DEPENDS="gtk+-dev alsa-lib-dev pkg-config pango-dev gdk-pixbuf-dev \
+		tiff-dev shared-mime-info-dev"
 
 # Rules to configure and make the package.
 compile_rules()
