@@ -12,26 +12,28 @@ WEB_SITE="https://ignorantguru.github.io/spacefm/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/IgnorantGuru/$PACKAGE/archive/$VERSION.tar.gz"
 
-DEPENDS="bash dbus dbus-glib expat gdk-pixbuf glib glibc-base gtk+ libgio 
-	libxcb startup-notification udev udevil util-linux-uuid xcb-util"
+DEPENDS="bash dbus dbus-glib expat gdk-pixbuf glib glibc-base gtk+3 libgio 
+	libxcb startup-notification eudev udevil util-linux-uuid xcb-util"
 BUILD_DEPENDS="coreutils-file-special dbus-dev dbus-glib-dev expat-dev 
-	gdk-pixbuf-dev gtk+-dev intltool libxcb-dev startup-notification-dev 
-	udev-dev xcb-util-dev"
+	gdk-pixbuf-dev gtk+3-dev intltool libxcb-dev startup-notification-dev 
+	eudev-dev xcb-util-dev xorg-dev glibc-dev desktop-file-utils
+	shared-mime-info-dev libbsd-dev libepoxy-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	patch --input=$stuff/patches/prefdlg.ui-$VERSION \
-		data/ui/prefdlg.ui
-	patch --input=$stuff/patches/settings.h-$VERSION \
-		src/settings.h
-	patch --input=$stuff/patches/vfs-file-task.c-$VERSION \
-		src/vfs/vfs-file-task.c
+	patch --input=$stuff/patches/main.c-$VERSION src/main.c
+	patch --input=$stuff/patches/prefdlg.ui-$VERSION data/ui/prefdlg.ui
+	patch --input=$stuff/patches/settings.c-$VERSION src/settings.c
+	patch --input=$stuff/patches/settings.h-$VERSION src/settings.h
+	patch --input=$stuff/patches/vfs-file-task.c-$VERSION src/vfs/vfs-file-task.c
 
+	export LDFLAGS="$LDFLAGS -lX11" 
 	./configure					\
 		--with-preferable-sudo="/usr/bin/subox"	\
 		--disable-video-thumbnails		\
 		--disable-pixmaps			\
+		--with-gtk3	\
 		$CONFIGURE_ARGS &&
 	make &&
 	make install
@@ -44,7 +46,7 @@ genpkg_rules()
 	mkdir -p $fs/etc/spacefm
 
 	cp -a $install/usr/bin	$fs/usr
-	for d in applications icons spacefm
+	for d in icons spacefm # applications
 	  do
 		cp -a $install/usr/share/$d	$fs/usr/share
 	  done
