@@ -11,7 +11,7 @@ WEB_SITE="http://www.alsa-project.org/"
 WGET_URL="ftp://ftp.alsa-project.org/pub/lib/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
-DEPENDS="linux"
+DEPENDS="linux alsa-ucm-conf"
 
 # Rules to configure and make the package.
 compile_rules()

@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="alsa-ucm-conf"
+VERSION="1.2.5.1"
+CATEGORY="multimedia"
+SHORT_DESC="Alsa sound system config files."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="GPL2"
+WEB_SITE="http://www.alsa-project.org/"
+TARBALL="v$VERSION.tar.gz"
+WGET_URL="https://github.com/alsa-project/$PACKAGE/archive/refs/tags/$TARBALL"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS=""
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir -p $install/ucm2
+	cp -a ucm2 $install/
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/alsa
+	
+	cp -a $install/ucm* $fs/usr/share/alsa
+}

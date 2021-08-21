@@ -14,7 +14,8 @@ GENERIC_MENUS="no"
 # We don't want all card mixer as dep.
 DEPENDS="alsa-lib" # alsa-tools-ac3dec
 BUILD_DEPENDS="alsa-lib-dev gtk+-dev gtk+3-dev fltk-dev autoconf automake
-libepoxy-dev desktop-file-utils-extra xorg-libXxf86vm-dev xorg-libXtst-dev"
+libepoxy-dev desktop-file-utils-extra xorg-libXxf86vm-dev xorg-libXtst-dev
+libbsd-dev"
 
 # List of tools we want to build, then splited into individual packages
 TOOLS="as10k1 envy24control hdsploader hdspconf hdspmixer \
