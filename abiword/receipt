@@ -51,7 +51,7 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/share/pixmaps $fs/usr/lib/abiword-3.0/plugins $fs/usr/share/icons
+	mkdir -p $fs/usr/share/pixmaps $fs/usr/lib/abiword-3.0/plugins $fs/usr/share/icons/hicolor
 
 	cp -a $install/usr/bin $fs/usr
 	cp -a $install/usr/lib/*.so $fs/usr/lib
@@ -60,7 +60,7 @@ genpkg_rules()
 	
 	#icons
 	for SIZE in 16 22 32 48 256; do
-		cp -a $install/usr/share/icons/hicolor/${SIZE}x${SIZE} $fs/usr/share/icons/
+		cp -a $install/usr/share/icons/hicolor/${SIZE}x${SIZE} $fs/usr/share/icons/hicolor/
 	done
 		
 	# Non standard pixmap
