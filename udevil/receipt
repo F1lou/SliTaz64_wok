@@ -11,8 +11,8 @@ WEB_SITE="https://ignorantguru.github.io/udevil/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/IgnorantGuru/$PACKAGE/archive/$VERSION.tar.gz"
 
-DEPENDS="udev glib"
-BUILD_DEPENDS="udev-dev glib-dev file"
+DEPENDS="eudev glib"
+BUILD_DEPENDS="eudev-dev glib-dev file"
 
 # Rules to configure and make the package.
 compile_rules()

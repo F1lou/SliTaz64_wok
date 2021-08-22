@@ -1,0 +1,8 @@
+# SpaceFM As-Root Session File
+
+# THIS FILE IS NOT DESIGNED TO BE EDITED
+
+
+root_editor-s=leafpad
+main_terminal-s=lxterminal
+main_terminal-b=2

@@ -57,7 +57,12 @@ genpkg_rules()
 	cp -a $install/usr/lib/*.so $fs/usr/lib
 
 	cp -a $install/usr/share/abiword-* $fs/usr/share
-
+	
+	#icons
+	for SIZE in 16 22 32 48 256; do
+		cp -a $install/usr/share/icons/hicolor/${SIZE}x${SIZE} $fs/usr/share/icons/
+	done
+		
 	# Non standard pixmap
 	cp $install/usr/share/icons/hicolor/48x48/apps/abiword.png \
 		$fs/usr/share/pixmaps/

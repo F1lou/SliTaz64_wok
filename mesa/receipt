@@ -20,12 +20,14 @@ BUILD_DEPENDS="autoconf automake expat-dev file lesstif-dev libdrm-dev
 	libdrm-nouveau libpthread-stubs-dev libtool libxml2-python llvm 
 	pkg-config talloc eudev-dev xorg-dri2proto xorg-glproto xorg-imake 
 	xorg-libXdamage-dev xorg-libXt-dev xorg-libXxf86vm-dev 
-	xorg-makedepend xorg-server-dev"
+	xorg-makedepend xorg-server-dev libiconv-dev python3-mako
+	wayland-dev elfutils-dev xorg-libXshmfence-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	mkdir build && cd build && 
+	export LDFLAGS="$LDFLAGS -liconv"
 	meson --prefix=/usr -Dbuildtype=release -Dgallium-nine=false .. &&
 	ninja install
 }

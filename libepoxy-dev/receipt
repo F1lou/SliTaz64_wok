@@ -9,7 +9,7 @@ LICENSE="other"
 WEB_SITE="https://github.com/anholt/libepoxy"
 
 WANTED="libepoxy"
-DEPENDS="mesa-dev"
+DEPENDS="mesa-dev xorg-dev xorg-libXshmfence-dev"
 
 
 genpkg_rules() {
