@@ -11,7 +11,8 @@ WEB_SITE="https://en.wikipedia.org/wiki/Util-linux"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://www.kernel.org/pub/linux/utils/util-linux/v${VERSION%.*}/$TARBALL"
 
-BUILD_DEPENDS="libcap-ng-dev ncursesw-dev readline-dev python-dev eudev-dev"
+BUILD_DEPENDS="libcap-ng-dev ncursesw-dev readline-dev python-dev eudev-dev
+	libmagic-dev"
 SPLIT="util-linux-bash-completion util-linux-blkid util-linux-blkid-dev 
 	util-linux-blockdev util-linux-cfdisk util-linux-column util-linux-cramfs 
 	util-linux-eject util-linux-fdisk util-linux-fdisk-dev util-linux-flock 

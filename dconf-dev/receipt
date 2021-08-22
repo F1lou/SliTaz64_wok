@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="dconf-dev"
-VERSION="0.13.0"
+VERSION="0.40.0"
 CATEGORY="development"
 SHORT_DESC="Development files for dconf"
 MAINTAINER="al.bobylev@gmail.com"
@@ -14,10 +14,8 @@ DEPENDS="dconf pkg-config"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p \
-		$fs/usr/lib \
-		$fs/usr/share
+	mkdir -p $fs/usr/lib $fs/usr/share
 	cp -a $install/usr/include $fs/usr
-	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib
 	cp -a $install/usr/share/vala $fs/usr/share
 }
