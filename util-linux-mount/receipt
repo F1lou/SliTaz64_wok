@@ -8,7 +8,7 @@ MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL2"
 WEB_SITE="https://en.wikipedia.org/wiki/Util-linux"
 
-DEPENDS="glibc-base udev util-linux-blkid util-linux-smartcols util-linux-uuid"
+DEPENDS="glibc-base eudev util-linux-blkid util-linux-smartcols util-linux-uuid"
 WANTED="util-linux"
 
 HOST_ARCH="x86_64 i486 arm"
