@@ -38,7 +38,8 @@ esac
 compile_rules()
 {
 	# libwebkit does not like parallel builds.
-	export MAKEFLAGS=$(echo $MAKEFLAGS | sed 's/-j[0-9]*/-j1/')
+	#~ export MAKEFLAGS=$(echo $MAKEFLAGS | sed 's/-j[0-9]*/-j1/')
+	export CXXFLAGS="$CXXFLAGS -I/usr/include/harfbuzz/ -Wno-expansion-to-defined"
 	# fix Bug 84526: webkit-gtk-1.8.0 fails to build with --disable-video
 	# Build fix with newer bison 2.6
 	#~ if [ ! "$continue" ]; then
