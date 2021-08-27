@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libv4l"
-VERSION="0.8.5"
+VERSION="1.20.0"
 CATEGORY="multimedia"
 MAINTAINER="jozee@slitaz.org"
 LICENSE="GPL2"
@@ -13,12 +13,13 @@ WGET_URL="http://linuxtv.org/downloads/v4l-utils/$TARBALL"
 TAGS="webcam video"
 
 DEPENDS="libjpeg"
-BUILD_DEPENDS="jpeg-dev"
+BUILD_DEPENDS="jpeg-dev libiconv-dev linux-api-headers"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i 's|jpeg_mem|_&|' lib/libv4lconvert/jpeg_memsrcdest.h
+	#~ sed -i 's|jpeg_mem|_&|' lib/libv4lconvert/jpeg_memsrcdest.h
+	LDFLAGS="$LDFLAGS -liconv" ./configure --prefix=/usr &&
 	make &&
 	make install PREFIX="/usr" DESTDIR="$DESTDIR"
 }

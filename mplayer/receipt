@@ -34,7 +34,7 @@ case "$ARCH" in
 	x86_64) 
 		ARCH_ARGS="--target=x86_64-linux --disable-sdl --enable-runtime-cpudetection" 
 		BUILD_DEPENDS="$BUILD_DEPENDS cdparanoia-III-dev x264-dev enca-dev \
-		libmng-dev lirc-dev" ;;
+		libmng-dev" ;;	# lirc-dev
 	i?86) 
 		ARCH_ARGS="--target=i386-linux --disable-sdl --enable-runtime-cpudetection" 
 		BUILD_DEPENDS="$BUILD_DEPENDS cdparanoia-III-dev x264-dev enca-dev \
@@ -65,6 +65,7 @@ compile_rules()
 		--disable-openal \
 		--disable-faac \
 		--disable-speex \
+		--disable-vstream \
 		${ARCH_ARGS} &&
 	make $MAKEFLAGS &&
 	make DESTDIR=$DESTDIR install | sed '/install: strip: .*/'d
