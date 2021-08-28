@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libv4l-dev"
-VERSION="0.8.5"
+VERSION="1.20.0"
 CATEGORY="development"
 SHORT_DESC="libv4l devel library."
 MAINTAINER="jozee@slitaz.org"

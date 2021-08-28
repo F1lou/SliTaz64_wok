@@ -12,13 +12,13 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}archive/v$VERSION.tar.gz"
 
 DEPENDS="gcc-lib-base libatomic"
-BUILD_DEPENDS="automake gcc libtool"
+BUILD_DEPENDS="automake gcc libtool libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	./autogen.sh &&
-	./configure		\
+	LDFLAGS="$LDFLAGS -liconv" ./configure		\
 		--prefix=/usr	\
 		$CONFIGURE_ARGS &&
 	make &&
