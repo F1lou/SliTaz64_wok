@@ -1,15 +1,15 @@
 # SliTaz package receipt.
 
-PACKAGE="portaudio-dev"
+PACKAGE="portaudiocpp-dev"
 VERSION="190700_20210406"
 CATEGORY="development"
-SHORT_DESC="Portaudio - development files."
+SHORT_DESC="Portaudio c++ bindings- development files."
 MAINTAINER="erjo@slitaz.org"
 LICENSE="MIT"
 WEB_SITE="http://www.portaudio.com/"
 
-DEPENDS="portaudio pkg-config"
-WANTED="portaudio"
+DEPENDS="portaudiocpp pkg-config"
+WANTED="portaudiocpp"
 
 HOST_ARCH="x86_64 i486 arm"
 

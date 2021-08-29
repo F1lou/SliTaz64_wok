@@ -1,29 +1,29 @@
 # SliTaz package receipt.
 
 PACKAGE="xournal"
-VERSION="0.4.8"
+VERSION="0.4.8.2016"
 CATEGORY="utilities"
 SHORT_DESC="Notetaking application."
 MAINTAINER="meshca@clarkson.edu"
 LICENSE="GPL2"
 WEB_SITE="http://xournal.sourceforge.net/"
 
-TARBALL="$PACKAGE-$VERSION.2016.tar.gz"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
 SUGGESTED="ghostscript"
-DEPENDS="gcc-lib-base gtk+ libgnomecanvas poppler poppler-apps"
-BUILD_DEPENDS="autoconf automake gtk+-dev libart_lgpl-dev 
+DEPENDS="gcc-lib-base gtk+3 libgnomecanvas poppler poppler-apps"
+BUILD_DEPENDS="autoconf automake gtk+3-dev libart_lgpl-dev 
 	libgnomecanvas-dev poppler poppler-dev zlib-dev libbsd pango-dev
-	harfbuzz-dev freetype-dev cairo-dev gdk-pixbuf-dev
+	harfbuzz-dev freetype-dev cairo-dev gdk-pixbuf-dev gsl gsl-dev
 	pixman-dev xorg-libXext-dev tiff-dev xorg-dev openjpeg2-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	CFLAGS="$CFLAGS `pkg-config --cflags --libs gtk+-2.0` `pkg-config --libs x11` -lm -lz"
-#	wget http://people.slitaz.org/~naitsirhc/xournal.patch && \
-#	patch -p1 -i xournal.patch && 
+	#~ CFLAGS="$CFLAGS `pkg-config --cflags --libs gtk+-2.0` `pkg-config --libs x11` -lm -lz"
+	#~ wget --no-check-certificate http://people.slitaz.org/~naitsirhc/xournal.patch && \
+	#~ patch -p1 -i xournal.patch && 
 
 	./configure				\
 		--prefix=/usr			\

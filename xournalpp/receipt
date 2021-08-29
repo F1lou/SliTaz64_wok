@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="xournalpp"
+VERSION="1.1.0"
+CATEGORY="utilities"
+SHORT_DESC="Notetaking application."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="GPL2"
+WEB_SITE="https://github.com/xournalpp/xournalpp"
+
+TARBALL="$VERSION.tar.gz"
+WGET_URL="https://github.com/$PACKAGE/$PACKAGE/archive/refs/tags/$TARBALL"
+SUGGESTED="ghostscript"
+DEPENDS="gtk+3"
+BUILD_DEPENDS="libiconv-dev xorg-dev gtk+3-dev poppler-dev librsvg-dev \
+	libzip libzip-dev glibc-dev libsndfile-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export LDFLAGS="$LDFLAGS -liconv"
+	mkdir build && cd build
+	cmake .. -DCMAKE_INSTALL_PREFIX=/usr &&
+	cmake --build . --target install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/share/icons		$fs/usr/share
+	cp -a $install/usr/share/thumbnailers	$fs/usr/share
+	cp -a $install/usr/share/xournalpp	$fs/usr/share
+}

@@ -1,28 +1,26 @@
 # SliTaz package receipt.
 
-PACKAGE="portaudio"
+PACKAGE="portaudiocpp"
 VERSION="190700_20210406"
 CATEGORY="system-tools"
-SHORT_DESC="A portable cross-platform audio API."
-MAINTAINER="erjo@slitaz.org"
+SHORT_DESC="Portaudio c++ bindings"
+MAINTAINER="nhc1@gmx.net"
 LICENSE="MIT"
 WEB_SITE="http://www.portaudio.com/"
 
-TARBALL="pa_stable_v${VERSION}.tgz"
-WGET_URL="http://files.portaudio.com/archives/$TARBALL"
+WANTED="portaudio"
 
 DEPENDS="alsa-lib jack-audio-connection-kit"
-BUILD_DEPENDS="alsa-lib-dev jack-audio-connection-kit-dev"
+BUILD_DEPENDS="alsa-lib-dev jack-audio-connection-kit-dev libiconv-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure				\
+	cd bindings/cpp
+	LDFLAGS="$LDFLAGS -liconv" ./configure				\
 		--prefix=/usr			\
-		--infodir=/usr/share/info	\
-		--mandir=/usr/share/man		\
 		$CONFIGURE_ARGS &&
 	make &&
 	make DESTDIR=$DESTDIR install
