@@ -6,43 +6,51 @@ CATEGORY="system-tools"
 SHORT_DESC="A tool to get hardware informations and perform benchmarks."
 MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL2"
-TARBALL="release-$VERSION.tar.gz"
+#TARBALL="release-$VERSION.tar.gz"
+TARBALL="master.zip"
 WEB_SITE="https://github.com/lpereira/hardinfo"
-WGET_URL="$WEB_SITE/archive/refs/tags/$TARBALL"
+#WGET_URL="$WEB_SITE/archive/refs/tags/$TARBALL"
+WGET_URL="$WEB_SITE/archive/refs/heads/$TARBALL"
 
-DEPENDS="gtk+ pciutils xorg-libXdamage"
+DEPENDS="gtk+ pciutils xorg-libXdamage libsoup json-glib"
 BUILD_DEPENDS="gtk+ gtk+-dev util-linux-mount-dev fribidi-dev
-	xorg-libXft-dev shared-mime-info-dev libsoup-dev"
+	xorg-libXft-dev shared-mime-info-dev libsoup-dev libbsd-dev
+	xorg-dev libiconv-dev json-glib-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	cd hardinfo2
-	while read file; do
-		[ -f done.$file ] && continue
-		patch -p0 < $stuff/$file || return 1
-		touch done.$file
-	done <<EOT
-languages.patch
-os.patch
-EOT
+	#~ cd hardinfo2
+	#~ while read file; do
+		#~ [ -f done.$file ] && continue
+		#~ patch -p0 < $stuff/$file || return 1
+		#~ touch done.$file
+	#~ done <<EOT
+#~ languages.patch
+#~ os.patch
+#~ EOT
 	#~ sed -i 's|uname -m|echo i686|' configure
-	./configure \
-		--prefix=/usr \
-		$CONFIGURE_ARGS &&
-	sed -i 's/^GTK_LIBS.*/& -lgmodule-2.0 -lm/' Makefile && make &&
-	make DESTDIR=$DESTDIR install
+	#~ ./configure \
+		#~ --prefix=/usr \
+		#~ $CONFIGURE_ARGS &&
+	#~ make &&
+	#~ make DESTDIR=$DESTDIR install
+	
+	export LDFLAGS="$LDFLAGS -liconv"
+	mkdir build && cd build
+	cmake -DCMAKE_INSTALL_PREFIX=/usr .. &&
+	make && make install 
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib/$PACKAGE/modules $fs/usr/share/pixmaps
+	mkdir -p $fs/usr/lib64/$PACKAGE $fs/usr/share/pixmaps
 	cp -a $install/usr/bin $fs/usr
-	cp -a $src/*.so $fs/usr/lib/$PACKAGE/modules
+	cp -a $install/usr/lib64/$PACKAGE/modules $fs/usr/lib64/$PACKAGE/
 	cp -a $install/usr/share/$PACKAGE $fs/usr/share
-	cd $fs/usr/share/pixmaps
-	rm ../$PACKAGE/pixmaps/logo.xcf
-	ln -s ../$PACKAGE/pixmaps/logo.png hardinfo.png
+	#~ cd $fs/usr/share/pixmaps
+	#~ rm ../$PACKAGE/pixmaps/logo.xcf
+	#~ ln -s ../$PACKAGE/pixmaps/logo.png hardinfo.png
 }
 
