@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gtksourceview-dev"
-VERSION="2.11.2"
+VERSION="3.24.11"
 CATEGORY="development"
 SHORT_DESC="The gtksourceview library devel files."
 MAINTAINER="pankso@slitaz.org"
@@ -17,6 +17,7 @@ genpkg_rules()
 	mkdir -p $fs/usr/lib $fs/usr/share
 	cp -a $install/usr/lib/*.*a $fs/usr/lib
 	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/lib/girepository* $fs/usr/lib
 	cp -a $install/usr/include $fs/usr
 }
 

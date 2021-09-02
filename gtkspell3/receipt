@@ -1,18 +1,20 @@
 # SliTaz package receipt.
 
 PACKAGE="gtkspell3"
-VERSION="3.0.8"
+VERSION="3.0.10"
 CATEGORY="text"
 SHORT_DESC="On-the-fly spell checking for GtkTextView widgets."
 MAINTAINER="al.bobylev@gmail.com"
 LICENSE="GPL2"
 WEB_SITE="http://gtkspell.sourceforge.net/"
 
-TARBALL="$PACKAGE-$VERSION.tar.gz"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="$SF_MIRROR/gtkspell/$TARBALL"
 
 DEPENDS="enchant gtk+3"
-BUILD_DEPENDS="enchant-dev gobject-introspection gtk+3-dev gtk-doc vala"
+BUILD_DEPENDS="enchant-dev gobject-introspection gtk+3-dev gtk-doc vala
+	libepoxy-dev mesa-dev xorg-dev xorg-libXxf86vm-dev enchant2-dev
+	liblzma-dev aspell-dev libbsd-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 

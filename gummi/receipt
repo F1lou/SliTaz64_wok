@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gummi"
-VERSION="0.6.6"
+VERSION="0.8.2"
 CATEGORY="office"
 TAGS="editor LaTeX"
 SHORT_DESC="LaTeX editor designed with simplicity in mind."
@@ -12,14 +12,21 @@ WEB_SITE="https://github.com/alexandervdm/gummi"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/alexandervdm/$PACKAGE/releases/download/$VERSION/$TARBALL"
 
-DEPENDS="gtk+ gtksourceview gtkspell poppler"
-BUILD_DEPENDS="glib gtk+-dev gtksourceview-dev gtkspell-dev intltool poppler-dev"
+DEPENDS="gtk+3 gtksourceview gtkspell3 poppler"
+BUILD_DEPENDS="glib gtk+3 gtk+3-dev gtksourceview-dev gtkspell3-dev intltool poppler-dev
+	harfbuzz-dev cairo-dev gdk-pixbuf-dev atk-dev xorg-libXxf86vm-dev xorg-libXtst-dev
+	enchant2-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export CFLAGS="$CFLAGS -I/usr/include/gtk-3.0/ -I/usr/include/harfbuzz/ \
+	-I/usr/include/cairo/ -I/usr/include/gdk-pixbuf-2.0/ -I/usr/include/atk-1.0/" 
+	export LDFLAGS="$LDFLAGS -Wl,--copy-dt-needed-entries -lgthread-2.0"
+	export synctex_LIBS="$stuff/SyncTeXPackage/"
+	export synctex_CFLAGS="-I$stuff/SyncTeXPackage/"
 	./configure $CONFIGURE_ARGS &&
-	make LDFLAGS="-Wl,--copy-dt-needed-entries -lgthread-2.0" -j 1 &&
+	make &&
 	make install
 }
 
