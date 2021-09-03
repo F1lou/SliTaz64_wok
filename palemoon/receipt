@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="palemoon"
-VERSION="26.5.0"
+VERSION="29.4.0.2"
 CATEGORY="network"
 LICENSE="MPL2"
 SHORT_DESC="Browser based on Firefox that's optimised for performance"
@@ -12,39 +12,39 @@ WGET_URL="https://github.com/MoonchildProductions/Pale-Moon/archive/${VERSION}_R
 TAGS="browser web-browser"
 PROVIDE="browser-html5"
 
-DEPENDS="gtk+"
-BUILD_DEPENDS="autoconf213 gtk+-dev yasm zip unzip iw dbus-dev dbus-glib-dev \
-iw libpng-dev gstreamer gstreamer-dev gst-plugins-base-dev gst-plugins-base \
-libvpx-dev mesa-dev python-setuptools virtualenv zlib-dev bzip2-dev python-dev \
-pixman pixman-dev libffi libffi-dev" # sqlite sqlite-dev libevent libevent-dev
+DEPENDS="gtk+3"
+BUILD_DEPENDS="autoconf213 gtk+3-dev yasm zip unzip iw dbus-dev dbus-glib-dev \
+iw libpng-dev gstreamer gstreamer-dev gst-plugins-base-1.0-dev gst-plugins-base-1.0 \
+libvpx-dev mesa-dev python-setuptools zlib-dev bzip2-dev python-dev \
+pixman pixman-dev libffi libffi-dev sqlite sqlite-dev libevent libevent-dev" # virtualenv 
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i 's|\(.\)uname -m|\1echo i686|' \
-		modules/freetype2/builds/unix/config.guess \
-		modules/freetype2/builds/unix/configure \
-		build/unix/mozconfig.linux32 \
-		build/autoconf/config.guess \
-		memory/jemalloc/src/config.guess \
-		memory/jemalloc/src/configure \
-		configure.in \
-		security/nss/coreconf/arch.mk \
-		security/nss/tests/run_niscc.sh \
-		nsprpub/build/autoconf/config.guess \
-		nsprpub/configure.in \
-		nsprpub/configure \
-		media/webrtc/trunk/build/install-build-deps.sh \
-		media/webrtc/trunk/build/common.gypi \
-		media/webrtc/trunk/build/install-chroot.sh \
-		media/webrtc/trunk/build/android/envsetup_functions.sh \
-		intl/icu/source/config.guess \
-		intl/icu/source/configure \
-		js/src/build/autoconf/config.guess \
-		js/src/ctypes/libffi/config.guess \
-		js/src/ctypes/libffi/configure \
-		ipc/chromium/src/third_party/libevent/config.guess \
-		ipc/chromium/src/third_party/libevent/configure
+	#~ sed -i 's|\(.\)uname -m|\1echo i686|' \
+		#~ modules/freetype2/builds/unix/config.guess \
+		#~ modules/freetype2/builds/unix/configure \
+		#~ build/unix/mozconfig.linux32 \
+		#~ build/autoconf/config.guess \
+		#~ memory/jemalloc/src/config.guess \
+		#~ memory/jemalloc/src/configure \
+		#~ configure.in \
+		#~ security/nss/coreconf/arch.mk \
+		#~ security/nss/tests/run_niscc.sh \
+		#~ nsprpub/build/autoconf/config.guess \
+		#~ nsprpub/configure.in \
+		#~ nsprpub/configure \
+		#~ media/webrtc/trunk/build/install-build-deps.sh \
+		#~ media/webrtc/trunk/build/common.gypi \
+		#~ media/webrtc/trunk/build/install-chroot.sh \
+		#~ media/webrtc/trunk/build/android/envsetup_functions.sh \
+		#~ intl/icu/source/config.guess \
+		#~ intl/icu/source/configure \
+		#~ js/src/build/autoconf/config.guess \
+		#~ js/src/ctypes/libffi/config.guess \
+		#~ js/src/ctypes/libffi/configure \
+		#~ ipc/chromium/src/third_party/libevent/config.guess \
+		#~ ipc/chromium/src/third_party/libevent/configure
 	find -type f | grep duckduckgo | xargs \
 		sed -i 's|name="t" value="palemoon"|name="t" value="slitaz"|'
 	cp $stuff/mozconfig $src
@@ -57,7 +57,7 @@ compile_rules()
 	python2 mach configure
 	python2 mach build || echo "Next =>"
 	python2 mach build
-	cd $src/obj-i686-pc-linux-gnu
+	cd $src/obj-x86_64-pc-linux-gnu
 	( make package | egrep -v 'error|ERROR' ) > ./instLOG 2>&1
 	cd dist
 	for i in bin lib share/applications;
