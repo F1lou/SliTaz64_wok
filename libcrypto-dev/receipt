@@ -15,7 +15,7 @@ DEPENDS="pkg-config"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib/pkgconfig
-	cp -a $install/usr/lib64/libcrypto*.*a $fs/usr/lib64
-	cp -a $install/usr/lib64/pkgconfig/libcrypto* $fs/usr/lib/pkgconfig
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib64/libcrypto*.*a $fs/usr/lib
+	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib
 }

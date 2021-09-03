@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gst-plugins-base-1.0-dev"
-VERSION="1.16.2"
+VERSION="1.19.1"
 SERIES="1.0"
 CATEGORY="development"
 SHORT_DESC="gst-plugins-base development files."
@@ -19,11 +19,12 @@ HOST_ARCH="x86_64 i486 arm"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib/gstreamer-$SERIES
+	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/lib64/gstreamer-$SERIES
 	mkdir -p $fs/usr/share
 
 	cp -a $install/usr/include			$fs/usr
-	cp -a $install/usr/lib/pkgconfig		$fs/usr/lib
-	cp -a $install/usr/lib/*.*a			$fs/usr/lib/
-	cp -a $install/usr/lib/gstreamer-$SERIES/*.*a	$fs/usr/lib/gstreamer-$SERIES
+	cp -a $install/usr/lib64/pkgconfig		$fs/usr/lib
+	#~ cp -a $install/usr/lib/*.*a			$fs/usr/lib/
+	#~ cp -a $install/usr/lib/gstreamer-$SERIES/*.*a	$fs/usr/lib/gstreamer-$SERIES
 }
