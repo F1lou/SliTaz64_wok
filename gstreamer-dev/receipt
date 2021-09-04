@@ -20,10 +20,9 @@ genpkg_rules()
 	cp -a $install/usr/include $fs/usr
 	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib
 	#~ cp -a $install/usr/lib/*.*a $fs/usr/lib/
-	#~ cp -a $install/usr/lib/gstreamer-$SERIES/*.*a \
-		$fs/usr/lib/gstreamer-$SERIES
+	#~ cp -a $install/usr/lib/gstreamer-$SERIES/*.*a $fs/usr/lib/gstreamer-$SERIES
 	[ -d "$install/usr/lib64/girepository-1.0" ] && \
-		cp -a $install/usr/lib64/girepository-1.0 $fs/usr/lib
+		cp -a $install/usr/lib64/girepository-1.0 $fs/usr/lib64
 	[ -d "$install/usr/share/gir-1.0" ] && \
 		cp -a $install/usr/share/gir-1.0 $fs/usr/share
 	cp -a $install/usr/share/aclocal $fs/usr/share

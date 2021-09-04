@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="ftp://ftp.lyx.org/pub/lyx/stable/${VERSION%.*.*}.x/$TARBALL"
 
 DEPENDS="aiksaurus aspell bzlib gcc-lib-base libQtGui libQtSvg python"
-BUILD_DEPENDS="aiksaurus-dev aspell-dev bison gcc python Qt4-dev
+BUILD_DEPENDS="aiksaurus-dev aspell-dev bison gcc python qt5-dev
 	zlib-dev libiconv-dev xorg-libX11-dev"
 
 # Rules to configure and make the package.

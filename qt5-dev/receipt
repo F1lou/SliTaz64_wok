@@ -8,7 +8,7 @@ MAINTAINER="allan316@gmail.com"
 LICENSE="GPL3 LGPL2.1"
 SUGGESTED="libmng nvidia"
 WEB_SITE="http://qt-project.org/"
-WANTED="qt4"
+WANTED="qt5"
 
 DEPENDS="Qt5Designer jpeg tiff libpng mesa libglu-mesa \
 freetds libmysqlclient libpostgresqlclient libunixODBC xcb-util \

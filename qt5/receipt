@@ -23,7 +23,7 @@ BUILD_DEPENDS="alsa-lib-dev cups-dev dbus-dev eudev-dev gcc glib-dev
 	freetype-dev harfbuzz-dev libjpeg-turbo-dev libpng-dev 
 	libxcb-dev libxkbcommon-dev mesa-dev openssl-dev pcre-dev 
 	sqlite-dev tslib-dev xorg-libX11-dev xorg-libXcomposite-dev 
-	xorg-libXrender-dev zlib-dev libiconv-dev"
+	xorg-libXrender-dev zlib-dev libiconv libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
