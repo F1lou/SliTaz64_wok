@@ -1,26 +1,34 @@
 # SliTaz package receipt.
 
 PACKAGE="palemoon"
-VERSION="29.4.0.2"
+VERSION="29.4.0"
 CATEGORY="network"
 LICENSE="MPL2"
 SHORT_DESC="Browser based on Firefox that's optimised for performance"
 WEB_SITE="http://palemoon.org"
 MAINTAINER="psychomaniak@xakep.ru"
-TARBALL="$PACKAGE-$VERSION.tar.gz"
-WGET_URL="https://github.com/MoonchildProductions/Pale-Moon/archive/${VERSION}_Release.tar.gz"
+TARBALL="${VERSION}_Release.tar.gz"
+WGET_URL="https://repo.palemoon.org/MoonchildProductions/Pale-Moon/archive/$TARBALL"
 TAGS="browser web-browser"
 PROVIDE="browser-html5"
 
 DEPENDS="gtk+3"
 BUILD_DEPENDS="autoconf213 gtk+3-dev yasm zip unzip iw dbus-dev dbus-glib-dev \
-iw libpng-dev gstreamer gstreamer-dev gst-plugins-base-1.0-dev gst-plugins-base-1.0 \
-libvpx-dev mesa-dev python-setuptools zlib-dev bzip2-dev python-dev \
+libpng-dev gstreamer gstreamer-dev gst-plugins-base-1.0-dev gst-plugins-base-1.0 \
+libvpx-dev mesa-dev python-setuptools zlib-dev bzip2-dev python-dev libiconv-dev \
 pixman pixman-dev libffi libffi-dev sqlite sqlite-dev libevent libevent-dev" # virtualenv 
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	wget "https://repo.palemoon.org/MoonchildProductions/Pale-Moon/releases/tag/${VERSION}_Release"
+	XUL=$(grep -e "Built with the .* XUL Platform" ${VERSION}_Release | sed 's|.*href=\"||' | sed 's|\" rel=\"nofollow.*||' | sed 's|releases/tag|archive|')
+	rmdir platform
+	cd $stuff
+	wget -c https://repo.palemoon.org${XUL}.tar.gz
+	cd $src
+	tar xf $stuff/RELBASE*.tar.gz
+	mv uxp platform
 	#~ sed -i 's|\(.\)uname -m|\1echo i686|' \
 		#~ modules/freetype2/builds/unix/config.guess \
 		#~ modules/freetype2/builds/unix/configure \
@@ -48,15 +56,17 @@ compile_rules()
 	find -type f | grep duckduckgo | xargs \
 		sed -i 's|name="t" value="palemoon"|name="t" value="slitaz"|'
 	cp $stuff/mozconfig $src
-	chmod -R +x build/autoconf/* python/*
-	find . -name '*.sh' -exec chmod +x {} \;
+	#~ chmod -R +x build/autoconf/* python/*
+	#~ find . -name '*.sh' -exec chmod +x {} \;
 	export MOZBUILD_STATE_PATH="$src/mozbuild"
 	export MOZCONFIG="$src/mozconfig"
 	export CPPFLAGS="$CPPFLAGS -O2"
 	export MAKEFLAGS="$MAKEFLAGS"
-	python2 mach configure
-	python2 mach build || echo "Next =>"
-	python2 mach build
+	export SHELL=/bin/bash
+	export LDFLAGS="$LDFLAGS -liconv"
+	#~ ./mach configure
+	#~ ./mach build || echo "Next =>"
+	./mach build
 	cd $src/obj-x86_64-pc-linux-gnu
 	( make package | egrep -v 'error|ERROR' ) > ./instLOG 2>&1
 	cd dist
