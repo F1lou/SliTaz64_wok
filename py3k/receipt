@@ -20,13 +20,14 @@ ncursesw-dev liblzma-dev wget libunistring-dev pcre2-dev bzip2-dev expat-dev"
 compile_rules()
 {
 	mkdir -p $DESTDIR/usr/lib/pkgconfig build
-	CXXFLAGS="$CXXFLAGS -fPIC" ./configure --enable-shared \
-	--enable-optimizations --with-system-expat \
+	CFLAGS="$CFLAGS -fPIC" CXXFLAGS="$CXXFLAGS -fPIC" ./configure \
+	--enable-shared --enable-optimizations --with-system-expat \
 	--prefix=/usr --infodir=/usr/share/info \
 	--with-system-ffi --with-ensurepip=yes \
 	--mandir=/usr/share/man $CONFIGURE_ARGS &&
 	make &&
 	make DESTDIR=$DESTDIR install
+	$install/usr/bin/python3 -m ensurepip --upgrade
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
