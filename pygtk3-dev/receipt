@@ -1,0 +1,25 @@
+# SliTaz package receipt.
+
+PACKAGE="pygtk3-dev"
+VERSION="3.42.0"
+CATEGORY="development"
+SHORT_DESC="GTK+3 for Python dev files with codegen."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="LGPL2.1"
+WEB_SITE="http://www.pygtk.org/"
+WANTED="pygtk"
+
+DEPENDS="pygtk3 gtk+3-dev pygobject3-dev pycairo3-dev pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib  $fs/usr/share
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/lib/pygtk $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/pygtk $fs/usr/share
+	chmod +x $fs/usr/bin/*
+}
+

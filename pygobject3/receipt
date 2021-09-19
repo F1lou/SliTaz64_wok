@@ -2,7 +2,7 @@
 
 PACKAGE="pygobject3"
 SOURCE="pygobject"
-VERSION="3.40.1"
+VERSION="3.42.0"
 CATEGORY="development"
 SHORT_DESC="Python bindings for the GObject3 library"
 MAINTAINER="psychomaniak@xakep.ru"
@@ -12,9 +12,9 @@ WEB_SITE="http://live.gnome.org/PyGObject"
 WGET_URL="$GNOME_MIRROR/$SOURCE/${VERSION%.*}/$TARBALL"
 
 PROVIDE="python-gi"
-DEPENDS="python pycairo glib libffi libgio gtk-girepository"
-BUILD_DEPENDS="$DEPENDS python python-dev pkg-config glib-dev libgio-dev \
-pycairo-dev cairo-dev libffi-dev gobject-introspection-dev"
+DEPENDS="py3k pycairo3 glib libffi libgio gtk-girepository"
+BUILD_DEPENDS="$DEPENDS py3k-dev pkg-config glib-dev libgio-dev \
+pycairo3-dev cairo-dev libffi-dev gobject-introspection-dev"
 
 # Rules to configure and make the package.
 compile_rules()

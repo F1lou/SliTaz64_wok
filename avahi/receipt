@@ -1,0 +1,47 @@
+# SliTaz package receipt.
+
+PACKAGE="avahi"
+VERSION="0.8"
+CATEGORY="system-tools"
+TAGS="filesystem"
+SHORT_DESC="System for service discovery on a local network via mDNS/DNS-SD."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="LGPL-2.1"
+WEB_SITE="https://avahi.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/download/$TARBALL"
+
+DEPENDS="libevent gtk+3 expat gdbm libdaemon pygobject"
+BUILD_DEPENDS="libevent-dev gtk+3-dev expat-dev gdbm-dev libdaemon-dev \
+	pygobject3-dev xorg-dev"
+
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure				\
+		--prefix=/usr			\
+		--infodir=/usr/share/info	\
+		--mandir=/usr/share/man		\
+		--sysconfdir=/etc 			\
+		--localstatedir=/var 		\
+		--with-distro=none 			\
+		--enable-gtk3				\
+		--disable-qt5				\
+		--disable-qt4				\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	mkdir -p $fs/etc/init.d
+
+	cp -a $install/usr/sbin	$fs/usr
+	cp -a $install/usr/lib	$fs/usr
+	cp -a $stuff/etc/*	$fs/etc
+}

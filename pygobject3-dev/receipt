@@ -1,0 +1,26 @@
+# SliTaz package receipt.
+
+PACKAGE="pygobject3-dev"
+VERSION="3.42.0"
+CATEGORY="development"
+SHORT_DESC="Python bindings for the GObject library - development files."
+MAINTAINER="erjo@slitaz.org"
+LICENSE="LGPL2.1"
+WEB_SITE="https://wiki.gnome.org/Projects/PyGObject"
+
+DEPENDS="pygobject3 libffi-dev pkg-config"
+WANTED="pygobject3"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/share
+
+	#~ cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/include		$fs/usr
+	#~ cp -a $install/usr/share/pygobject	$fs/usr/share
+	#~ cp -a $install/usr/share/gtk-doc	$fs/usr/share
+	cp -a $install/usr/lib64/pkgconfig	$fs/usr/lib
+	#~ cp -a $install/usr/lib/*.*a		$fs/usr/lib
+}
