@@ -33,7 +33,7 @@ compile_rules()
 	LDFLAGS="-ltirpc -liconv" \
 	./configure --prefix=/usr \
 	--with-piddir=/var/run/samba --with-lockdir=/var/run/samba \
-	--with-winbind --with-ldap --enable-fhs --enable-shared-libs \
+	--with-winbind --with-ldap --enable-fhs \
 	--without-pam --without-systemd --disable-cups \
 	--sysconfdir=/etc --localstatedir=/var \
 	$CONFIGURE_ARGS &&	
