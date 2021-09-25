@@ -1,0 +1,27 @@
+# SliTaz package receipt.
+
+PACKAGE="python3-dnspython"
+VERSION="2.1.0"
+CATEGORY="development"
+SHORT_DESC="A DNS toolkit for Python."
+MAINTAINER="monghitri@aruba.it"
+LICENSE="BSD"
+WEB_SITE="https://www.dnspython.org/"
+
+SOURCE="dnspython"
+TARBALL="$SOURCE-$VERSION.zip"
+WGET_URL="https://files.pythonhosted.org/packages/13/27/5277de856f605f3429d752a39af3588e29d10181a3aa2e2ee471d817485a/$TARBALL"
+DEPENDS="py3k"
+BUILD_DEPENDS="py3k py3k-dev python3-setuptools"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python3 setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr	$fs
+}

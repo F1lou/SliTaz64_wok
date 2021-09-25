@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="nfs-utils"
-VERSION="2.4.3"
+VERSION="2.5.2"
 CATEGORY="system-tools"
 TAGS="filesystem"
 SHORT_DESC="Network FileSystem tools."
@@ -12,9 +12,9 @@ WEB_SITE="http://nfs.sourceforge.net/"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="$SF_MIRROR/nfs/$PACKAGE/$VERSION/$TARBALL"
 
-DEPENDS="libcap libtirpc libwrap rpcbind util-linux-blkid util-linux-uuid"
-BUILD_DEPENDS="libcap-dev libtirpc-dev libwrap-dev util-linux-blkid \
-	util-linux-blkid-dev util-linux-uuid-dev"
+DEPENDS="libcap libtirpc rpcbind util-linux-blkid util-linux-uuid" # libwrap
+BUILD_DEPENDS="libcap-dev libtirpc-dev util-linux-blkid \
+	util-linux-blkid-dev util-linux-uuid-dev rpcsvc-proto" # libwrap-dev
 CONFIG_FILES="/etc/exports"
 
 HOST_ARCH="x86_64 i486 arm"
@@ -34,8 +34,12 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	#sh autogen.sh
+	sh autogen.sh
+	export CFLAGS="$CFLAGS -I/usr/include/rpc/"
 	./configure		\
+		--prefix=/usr          \
+		--sysconfdir=/etc      \
+		--sbindir=/sbin        \
 		--disable-nfsv4	\
 		--disable-gss	\
 		$CONFIGURE_ARGS	\

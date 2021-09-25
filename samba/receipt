@@ -20,15 +20,8 @@ DEPENDS="libldap samba-common glibc-base ncursesw popt cifs-utils acl \
 BUILD_DEPENDS="openldap openldap-dev libcomerr-dev cups-dev talloc-dev \
 	pkg-config libldap krb5-dev lmdb zlib-dev lmdb-dev gnutls-dev py3k-dev \
 	perl-parse-yapp jansson-dev libarchive-dev dbus-dev icu-dev \
-	rpcsvc-proto libiconv-dev talloc-python libtirpc-dev libxslt-dev"
-
-# CAUTION!
-# This is still a preliminary version of samba x86_64.
-# integration of CUPS is disabled, since CUPS has not been fully
-# compiled yet!
-# python3-pip is not fully functional yet and has been realized
-# locally for compilation, as well as python-markdown and
-# python-dns, which are build deps but not realizes as packages yet.
+	rpcsvc-proto libiconv-dev talloc-python libtirpc-dev libxslt-dev \
+	python3-markdown python3-dnspython"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -36,11 +29,11 @@ compile_rules()
 	#~ patch -p0 < $stuff/CVE-2017-7494.u
 	#~ cd $src/source3
 	ln -s /usr/bin/python3-config /usr/bin/python-config
-	#CFLAGS="-I/usr/include/rpc" 
+	CFLAGS="$CFLAGS -fPIC" 
 	LDFLAGS="-ltirpc -liconv" \
 	./configure --prefix=/usr \
 	--with-piddir=/var/run/samba --with-lockdir=/var/run/samba \
-	--with-winbind --with-ldap --enable-fhs \
+	--with-winbind --with-ldap --enable-fhs --enable-shared-libs \
 	--without-pam --without-systemd --disable-cups \
 	--sysconfdir=/etc --localstatedir=/var \
 	$CONFIGURE_ARGS &&	
