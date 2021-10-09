@@ -12,16 +12,17 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}releases/$TARBALL"
 
 DEPENDS="alsa-lib libsdl libsdl-ttf"
-BUILD_DEPENDS="alsa-lib-dev libsdl-dev libsdl-ttf-dev"
+BUILD_DEPENDS="alsa-lib-dev libsdl-dev libsdl-ttf-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	./configure		\
 		--enable-alsa	\
 		--prefix /usr	\
 		$CONFIGURE_ARGS &&
-	LDFLAGS=-Os make &&
+	make &&
 	make install
 }
 

@@ -1,14 +1,16 @@
 # SliTaz package receipt.
 
 PACKAGE="ypbind-mt"
-VERSION="1.31"
+VERSION="2.7.2"
 CATEGORY="network"
 SHORT_DESC="Yellow pages client daemon"
 MAINTAINER="pascal.bellard@slitaz.org"
 LICENSE="GPL2"
-TARBALL="$PACKAGE-$VERSION.tar.gz"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
 WEB_SITE="https://www.kernel.org/pub/linux/utils/net/NIS/"
-WGET_URL="$WEB_SITE/$TARBALL"
+WGET_URL="https://github.com/thkukuk/ypbind-mt/releases/download/v$VERSION/$TARBALL"
+
+BUILD_DEPENDS="libnsl-dev"
 
 # Rules to configure and make the package.
 compile_rules()

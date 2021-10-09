@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="yandex-disk"
-VERSION="0.1.5.1039"
+VERSION="0.1.6.1074"
 CATEGORY="misc"
 SHORT_DESC="Yandex.Disk keeps your files with you at all times"
 MAINTAINER="al.bobylev@gmail.com"

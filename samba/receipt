@@ -29,7 +29,7 @@ compile_rules()
 	#~ patch -p0 < $stuff/CVE-2017-7494.u
 	#~ cd $src/source3
 	ln -s /usr/bin/python3-config /usr/bin/python-config
-	CFLAGS="$CFLAGS -fPIC" 
+	CFLAGS="$CFLAGS -fPIC -Wnoerror" 
 	LDFLAGS="-ltirpc -liconv" \
 	./configure --prefix=/usr \
 	--with-piddir=/var/run/samba --with-lockdir=/var/run/samba \

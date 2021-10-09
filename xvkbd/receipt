@@ -13,7 +13,8 @@ WGET_URL="https://sources.voidlinux.org/$PACKAGE-$VERSION/$TARBALL"
 
 DEPENDS="xorg-libXaw xorg-libXaw3d xorg-libXp xorg-libXtst"
 BUILD_DEPENDS="xorg-imake xorg-libXaw-dev xorg-libXaw3d-dev xorg-libXp-dev 
-	xorg-libXtst-dev xorg-xproto"
+	xorg-libXtst-dev xorg-xproto xorg-libXt-dev xorg-libSM-dev
+	xorg-libICE-dev xorg-libXi-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -28,7 +29,7 @@ compile_rules()
 
 	# Add .desktop file
 	mkdir -p $install/usr/share/applications
-	cp $stuff/usr/share/applications/xvkbd.desktop \
+	#~ cp $stuff/usr/share/applications/xvkbd.desktop \
 		$install/usr/share/applications
 
 	# Add icon

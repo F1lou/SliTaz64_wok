@@ -16,6 +16,7 @@ BUILD_DEPENDS=""
 # Rules to configure and make the package.
 compile_rules()
 {
+	export CFLAGS="$CFLAGS -fcommon"
 	cd $src
 	sed -i 's|/local||' config.mk
 	make && make DESTDIR=$DESTDIR install

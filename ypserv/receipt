@@ -11,7 +11,7 @@ WEB_SITE="http://www.linux-nis.org/"
 WGET_URL="$WEB_SITE/download/$PACKAGE/$TARBALL"
 
 DEPENDS="gdbm portmap"
-BUILD_DEPENDS="gdbm-dev"
+BUILD_DEPENDS="gdbm-dev libtirpc-dev libnsl-dev"
 
 # Rules to configure and make the package.
 compile_rules()

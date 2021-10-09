@@ -11,12 +11,12 @@ WEB_SITE="https://github.com/mchehab/zbar"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$WEB_SITE/archive/$VERSION.tar.gz"
 
-DEPENDS="atk cairo fontconfig freetype gcc-lib-base gtk+ 
+DEPENDS="atk cairo fontconfig freetype gcc-lib-base gtk+3 
 	imagemagick jpeg libgio pango"
 BUILD_DEPENDS="atk-dev cairo-dev fftw-dev fontconfig-dev freetype-dev 
-	gcc gdk-pixbuf graphviz-dev gtk+-dev ilmbase-dev imagemagick-dev 
+	gcc gdk-pixbuf graphviz-dev gtk+3-dev ilmbase-dev imagemagick-dev 
 	jpeg-dev lcms-dev libgio-dev libtool libxml2-dev linux-api-headers 
-	openexr-dev pango-dev util-linux-uuid-dev"
+	openexr-dev pango-dev util-linux-uuid-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -24,7 +24,7 @@ compile_rules()
 #	sed -i 's|w\(and/MagickWand\.h\)|MagickW\1|' configu* zbarimg/zbarimg.c
 
 	autoreconf -vfi &&
-	./configure			\
+	LDFLAGS="$LDFLAGS -liconv" ./configure			\
 		--prefix=/usr		\
 		--mandir=/usr/share/man	\
 		--localstatedir=/var	\

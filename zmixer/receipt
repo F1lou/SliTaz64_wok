@@ -13,12 +13,12 @@ TAGS="mixer"
 
 DEPENDS="gtk+ alsa-lib"
 BUILD_DEPENDS="gtk+-dev alsa-lib-dev pkg-config pango-dev gdk-pixbuf-dev \
-		tiff-dev shared-mime-info-dev"
+		tiff-dev shared-mime-info-dev libbsd-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	make
+	CFLAGS="$CFLAGS -fcommon" LDFLAGS="$LDFLAGS -liconv" make
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

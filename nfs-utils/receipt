@@ -9,8 +9,8 @@ MAINTAINER="pascal.bellard@slitaz.org"
 LICENSE="GPL2"
 WEB_SITE="http://nfs.sourceforge.net/"
 
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
-WGET_URL="$SF_MIRROR/nfs/$PACKAGE/$VERSION/$TARBALL"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="https://www.kernel.org/pub/linux/utils/$PACKAGE/$VERSION/$TARBALL"
 
 DEPENDS="libcap libtirpc rpcbind util-linux-blkid util-linux-uuid" # libwrap
 BUILD_DEPENDS="libcap-dev libtirpc-dev util-linux-blkid \
@@ -34,9 +34,9 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	sh autogen.sh
-	export CFLAGS="$CFLAGS -I/usr/include/rpc/"
-	./configure		\
+	#~ sh autogen.sh
+	export CFLAGS="$CFLAGS -Werror"
+	LDFLAGS="$LDFLAGS -ltirpc" ./configure		\
 		--prefix=/usr          \
 		--sysconfdir=/etc      \
 		--sbindir=/sbin        \

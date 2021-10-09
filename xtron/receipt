@@ -11,7 +11,7 @@ WEB_SITE="ftp://ibiblio.org/pub/Linux/games/arcade/xtron-1.1a.lsm"
 WGET_URL="$(dirname $WEB_SITE)/$TARBALL"
 
 DEPENDS="xorg-libXpm xorg-libXau libxcb"
-BUILD_DEPENDS="xorg-dev"
+BUILD_DEPENDS="xorg-dev xorg-libXpm-dev"
 
 # Rules to configure and make the package.
 compile_rules()

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="imagemagick"
-VERSION="7.0.11.9"
+VERSION="7.1.0.9"
 SHORT_VERSION="${VERSION%.*}"
 CATEGORY="graphics"
 TAGS="image photo toolkit"
@@ -22,12 +22,13 @@ BUILD_DEPENDS="bzip2-dev cairo-dev expat-dev fftw-dev fontconfig-dev \
 	freetype-dev graphviz-dev ilmbase-dev jasper-dev jpeg-dev \
 	lcms-dev libcroco-dev libgio-dev libgsf-dev libpng-dev \
 	librsvg-dev libtool libxml2-dev openexr-dev pango-dev perl \
-	tiff-dev util-linux-uuid-dev xorg-libXext-dev"
+	tiff-dev util-linux-uuid-dev xorg-libXext-dev xorg-randrproto \
+	libiconv-dev liblzma-dev libbsd-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure				\
+	LDFLAGS="$LDFLAGS -liconv" ./configure				\
 		--prefix=/usr			\
 		--infodir=/usr/share/info	\
 		--mandir=/usr/share/man		\
