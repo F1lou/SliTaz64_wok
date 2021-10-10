@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libXaw3dXft-dev"
-VERSION="1.6.2e"
+VERSION="1.6.2h"
 CATEGORY="development"
 SHORT_DESC="Xpaint module development files."
 MAINTAINER="pascal.bellard@slitaz.org"

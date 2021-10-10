@@ -1,27 +1,27 @@
 # SliTaz package receipt.
 
 PACKAGE="sane-backends"
-VERSION="1.0.22"
+VERSION="1.0.32"
 CATEGORY="system-tools"
 SHORT_DESC="Scanner Access Now Easy."
 MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL2"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://www.sane-project.org/"
-WGET_URL="ftp://ftp2.sane-project.org/pub/sane/$PACKAGE-$VERSION/$TARBALL"
+WGET_URL="https://anduin.linuxfromscratch.org/BLFS/sane/$TARBALL"
 
 DEPENDS="libusb-compat jpeg tiff zlib libgphoto2 libv4l libltdl"
 BUILD_DEPENDS="libusb-compat-dev jpeg-dev tiff-dev zlib-dev libv4l-dev \
-libgphoto2-dev libtool"
+libgphoto2-dev libtool liblzma-dev"
 SUGGESTED="imagemagick gocr tesseract-ocr"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	sed -i 's|prefix}/doc|prefix}/share/doc|' configure
-	patch -Np1 -i $stuff/libv4l-0.8.3.patch
+	#~ patch -Np1 -i $stuff/libv4l-0.8.3.patch
 	# fix https://bugs.archlinux.org/task/26114
-	patch -Np1 -i $stuff/xerox_mfp_fix_usb_devices.patch
+	#~ patch -Np1 -i $stuff/xerox_mfp_fix_usb_devices.patch
 	./configure \
 		--prefix=/usr \
 		--sysconfdir=/etc \

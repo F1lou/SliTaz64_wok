@@ -12,8 +12,8 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="$SF_MIRROR/sf-$PACKAGE/files/$TARBALL"
 
 DEPENDS="libXaw3dXft openjpeg"
-BUILD_DEPENDS="expat-dev jpeg-dev libpng-dev libtool libXaw3dXft-dev 
-	libxml2-dev openjpeg-dev tiff-dev util-linux-uuid-dev"
+BUILD_DEPENDS="expat-dev jpeg-dev libpng-dev libtool libXaw3dXft \
+	libXaw3dXft-dev libxml2-dev openjpeg-dev tiff-dev util-linux-uuid-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 
@@ -35,7 +35,7 @@ compile_rules()
 	sed -i s'/$(CC) preproc.c/gcc preproc.c/' \
 		Makefile &&
 
-	make -j 1 LIBTOOL=${LIBTOOL} &&
+	CFLAGS="$CFLAGS -IX11/Xaw3dxft/" make -j 1 LIBTOOL=${LIBTOOL} &&
 	make install
 }
 

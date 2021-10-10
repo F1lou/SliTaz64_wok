@@ -14,7 +14,7 @@ TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="$XORG_MIRROR/driver/$TARBALL"
 
 DEPENDS="xorg-server"
-BUILD_DEPENDS="xorg-server-dev"
+BUILD_DEPENDS="xorg-server-dev xorg-randrproto"
 
 MODS='/usr/lib/X11/modules'
 

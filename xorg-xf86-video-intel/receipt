@@ -15,13 +15,17 @@ WGET_URL="$XORG_MIRROR/driver/$TARBALL"
 
 DEPENDS="libdrm libdrm-intel mesa-dri-intel xcb-util xorg-libXvMC xorg-server"
 BUILD_DEPENDS="libdrm-dev libpthread-stubs-dev xcb-util-dev 
-	xorg-libXvMC-dev xorg-server-dev"
+	xorg-libXvMC-dev xorg-server-dev xorg-libXfont2-dev"
 
 MODS='/usr/lib/X11/modules'
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export CFLAGS="$CFLAGS -Wno-error=implicit-function-declaration"
+	sed -i 's|#define BLOCKHANDLER_ARGS_DECL ScreenPtr arg, pointer timeout, pointer read_mask|#define BLOCKHANDLER_ARGS_DECL ScreenPtr arg, void* pTimeout|' ./src/compat-api.h
+	sed -i 's|#define BLOCKHANDLER_ARGS arg, timeout, read_mask|#define BLOCKHANDLER_ARGS arg, pTimeout|' ./src/compat-api.h
+	
 	./configure				\
 		--sysconfdir=/etc		\
 		--mandir=/usr/share/man		\

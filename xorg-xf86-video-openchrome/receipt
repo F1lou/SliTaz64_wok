@@ -21,6 +21,7 @@ MODS='/usr/lib/X11/modules'
 compile_rules()
 {
 	cd $src
+	export CFLAGS="$CFLAGS -fcommon"
 	./configure \
 		--sysconfdir=/etc \
 		--mandir=/usr/share/man \

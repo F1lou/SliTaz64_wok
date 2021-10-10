@@ -21,7 +21,7 @@ BUILD_DEPENDS="bc gdk-pixbuf-dev gtk+-dev jpeg-dev libglade-dev
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS $(pkg-config --libs gtk+-2.0 gdk-pixbuf-xlib-2.0 gl)"
+	#~ export LDFLAGS="$LDFLAGS $(pkg-config --libs gtk+-2.0 gdk-pixbuf-xlib-2.0 gl)"
 
 	./configure $CONFIGURE_ARGS &&
 	make && 

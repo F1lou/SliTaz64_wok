@@ -19,7 +19,10 @@ BUILD_DEPENDS="xorg-libxkbfile-dev xorg-libpciaccess-dev xorg-libXxf86vm-dev \
 xorg-libXfont-dev libgcrypt-dev pixman-dev eudev-dev pkg-config perl \
 flex xorg-xf86driproto xorg-xcmiscproto xorg-bigreqsproto xorg-randrproto \
 xorg-dri2proto xorg-libXau-dev xorg-dev-proto libdrm-dev xorg-glproto \
-xorg-libXv-dev mesa-dev libepoxy-dev xorg-proto"
+xorg-libXv-dev mesa-dev libepoxy-dev xorg-proto xorg-libXfont2-dev \
+xcb-util-renderutil-dev xorg-xkbcomp xcb-util-dev xcb-util-image-dev \
+xcb-util-wm-dev xcb-util-keysyms-dev libbsd-dev nettle-dev \
+xorg-libXshmfence xorg-xkbcomp"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -70,7 +73,7 @@ genpkg_rules()
 	rm $fs/usr/bin/Xvfb
 	# Kdrive/tinyX --> xorg-server-Xephyr xorg-server-Xfbdev
 	rm $fs/usr/bin/Xephyr
-	rm $fs/usr/bin/Xfbdev
+	#~ rm $fs/usr/bin/Xfbdev
 }
 
 # We need /var/tmp rw to let xkbcomp builr XKB definition.

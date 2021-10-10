@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xorgxrdp"
-VERSION="0.2.11"
+VERSION="0.2.17"
 CATEGORY="network"
 SHORT_DESC="Xorg drivers for xrdp."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -13,8 +13,8 @@ WGET_URL="https://github.com/neutrinolabs/$PACKAGE/releases/download/v$VERSION/$
 
 SUGGESTED="xrdp"
 DEPENDS="xorg-server"
-BUILD_DEPENDS="autoconf automake libtool nasm pkg-config 
-	xorg-server-dev xrdp-dev"
+BUILD_DEPENDS="autoconf automake libtool nasm pkg-config libdrm-dev
+	xorg-server-dev xrdp-dev xorg-libXfont2-dev"
 
 # Rules to configure and make the package.
 compile_rules()

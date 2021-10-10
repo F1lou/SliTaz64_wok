@@ -11,14 +11,14 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$WEB_SITE/$TARBALL"
 
 DEPENDS="xorg-libXpm xorg-libXext"
-BUILD_DEPENDS="xorg-imake xorg-gccmakedep"
+BUILD_DEPENDS="xorg-imake xorg-gccmakedep xorg-libXpm-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	xmkmf && make depend && make && make install
 	mkdir -p $install/usr/share/applications
-	cp -a $stuff/xsnow.desktop $install/usr/share/applications
+	#~ cp -a $stuff/xsnow.desktop $install/usr/share/applications
 	cp -a $stuff/xsnow.sh $install/usr/bin
 }
 

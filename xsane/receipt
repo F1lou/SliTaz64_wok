@@ -11,11 +11,12 @@ WEB_SITE="http://www.xsane.org/"
 WGET_URL="https://gitlab.com/sane-project/frontend/xsane/-/archive/$VERSION/$TARBALL"
 
 DEPENDS="sane-backends gtk+ tiff xorg-libXdamage lcms libv4l libltdl"
-BUILD_DEPENDS="gtk+-dev sane-backends-dev lcms-dev "
+BUILD_DEPENDS="gtk+-dev sane-backends-dev lcms-dev libpng-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	sed -i -e 's/png_ptr->jmpbuf/png_jmpbuf(png_ptr)/' src/xsane-save.c &&
 	./configure \
 		--prefix=/usr \
 		--mandir=/usr/share/man \
