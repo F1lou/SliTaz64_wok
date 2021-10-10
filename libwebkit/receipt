@@ -20,7 +20,8 @@ gcc-lib-base libtasn1 util-linux-uuid glib-networking"
 BUILD_DEPENDS="enchant-dev libxslt-dev jpeg-dev libpng-dev \
 glib-dev sqlite-dev gnutls-dev xorg-libXdamage-dev acl-dev libsoup-dev \
 libxml2-dev libxcb-dev xcb-util-dev util-linux-uuid-dev zlib-dev \
-libtasn1-dev glib-networking-dev ruby harfbuzz-dev"
+libtasn1-dev glib-networking-dev ruby harfbuzz-dev xorg-libXcursor-dev \
+at-spi2 at-spi2-atk dbus-dev ruby-dev"
 
 # Handle cross compilation.
 case "$ARCH" in
@@ -38,7 +39,7 @@ esac
 compile_rules()
 {
         # libwebkit does not like parallel builds.
-        #~ export MAKEFLAGS=$(echo $MAKEFLAGS | sed 's/-j[0-9]*/-j1/')
+        export MAKEFLAGS=$(echo $MAKEFLAGS | sed 's/-j[0-9]*/-j1/')
         export CXXFLAGS="$CXXFLAGS -I/usr/include/harfbuzz/ -Wno-expansion-to-defined -Wno-unused-local-typedefs"
         export LDFLAGS="$LDFLAGS -liconv"
         # fix Bug 84526: webkit-gtk-1.8.0 fails to build with --disable-video

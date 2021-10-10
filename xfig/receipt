@@ -13,7 +13,7 @@ SUGGESTED="transfig"
 
 DEPENDS="jpeg libpng xorg xorg-libXp"
 BUILD_DEPENDS="xorg-imake xorg-cf-files xorg-gccmakedep jpeg-dev \
-libpng-dev xorg-libXp"
+libpng-dev xorg-libXp xorg-libXpm-dev xorg-libXaw-dev"
 
 # Rules to configure and make the package.
 compile_rules()

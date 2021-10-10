@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xfe"
-VERSION="1.43.2"
+VERSION="1.44"
 CATEGORY="system-tools"
 TAGS="file-manager"
 SHORT_DESC="Xfe File manager and utility using Fox toolkit."
@@ -9,12 +9,12 @@ MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL2"
 WEB_SITE="http://roland65.free.fr/xfe/"
 
-TARBALL="$PACKAGE-$VERSION.tar.gz"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
 SUGGESTED="adie calculator shutterbug xfe-extras xfi"
-DEPENDS="fox jpeg libpng tiff xcb-util xorg-libXft"
-BUILD_DEPENDS="automake fox-dev jpeg-dev libpng-dev tiff-dev 
+DEPENDS="fox16 jpeg libpng tiff xcb-util xorg-libXft"
+BUILD_DEPENDS="automake fox16-dev jpeg-dev libpng-dev tiff-dev 
 	xcb-util-dev xorg-libXft-dev"
 
 GENERIC_MENUS="no"
@@ -25,14 +25,14 @@ GENERIC_MENUS="no"
 case "$ARCH" in
 	i?86) BUILD_DEPENDS="$BUILD_DEPENDS intltool" ;;
 	arm)
-		export LDLAGS="-L/cross/$ARCH/sysroot/usr/lib" ;;
+		export LDFLAGS="-L/cross/$ARCH/sysroot/usr/lib" ;;
 esac
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	# Required by freetype-dev-2.4.11
-	sed -i 's|config/ftheader.h|freetype/config/ftheader.h|' configure.ac
+	#~ sed -i 's|config/ftheader.h|freetype/config/ftheader.h|' configure.ac
 	export	LDFLAGS="$LDFLAGS -lrt"
 
 	./autogen.sh &&

@@ -12,7 +12,7 @@ WGET_URL="http://sillycycle.com/xlock/$TARBALL"
 
 DEPENDS="xorg-libX11 freetype freetype1"
 BUILD_DEPENDS="xorg-libXdmcp-dev xorg-libXpm-dev xorg-libX11-dev \
-xorg-libXt-dev openmotif-dev"
+xorg-libXt-dev openmotif-dev libglu-mesa-dev xorg-libXshmfence-dev"
 
 # Rules to configure and make the package.
 compile_rules()

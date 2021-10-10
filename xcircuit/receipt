@@ -12,7 +12,8 @@ TARBALL="$PACKAGE-$VERSION.tgz"
 WGET_URL="${WEB_SITE}archive/$TARBALL"
 
 DEPENDS="cairo tcl tk xorg-libXpm zlib"
-BUILD_DEPENDS="automake cairo-dev tcl-dev tk-dev xorg-libXpm-dev xorg-libXt-dev zlib-dev"
+BUILD_DEPENDS="automake cairo-dev tcl-dev tk-dev xorg-libXpm-dev 
+	xorg-libXt-dev zlib-dev xorg-libXss-dev xorg-libXScrnSaver-dev"
 
 # Rules to configure and make the package.
 compile_rules()

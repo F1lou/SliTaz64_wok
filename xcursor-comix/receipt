@@ -2,7 +2,7 @@
 
 PACKAGE="xcursor-comix"
 VERSION="0.9.1"
-CATEGORY="customization"
+CATEGORY="x-window"
 TAGS="cursor-theme"
 SHORT_DESC="Comix cursor theme."
 MAINTAINER="al.bobylev@gmail.com"

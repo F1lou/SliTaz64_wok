@@ -2,7 +2,7 @@
 
 PACKAGE="xcursor-human"
 VERSION="0.6"
-CATEGORY="customization"
+CATEGORY="x-window"
 SHORT_DESC="Human cursor theme"
 MAINTAINER="al.bobylev@gmail.com"
 LICENSE="CC-ASA"

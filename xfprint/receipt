@@ -14,7 +14,7 @@ DEPENDS="libxfcegui4 libxfce4util cups dbus-glib startup-notification \
 libcomerr3 util-linux-uuid"
 BUILD_DEPENDS="libxfcegui4-dev libxfce4util-dev cups-dev intltool xfconf-dev \
 dbus-glib-dev startup-notification-dev util-linux-uuid-dev gtk+-dev \
-xcb-util-dev"
+xcb-util-dev pango-dev gtk+"
 
 # Rules to configure and make the package.
 compile_rules()

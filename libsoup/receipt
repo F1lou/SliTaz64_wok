@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libsoup"
-VERSION="2.48.0"
+VERSION="2.74.0"
 CATEGORY="x-window"
 SHORT_DESC="GNOME Soup Library."
 MAINTAINER="pankso@slitaz.org"
@@ -14,7 +14,7 @@ HOST_ARCH="x86_64 i486 arm"
 DEPENDS="glib glibc-base libffi libgio libxml2 pcre zlib"
 BUILD_DEPENDS="glib-networking-dev libgio-dev \
 libxml2-dev libgcrypt-dev libtasn1-dev gnutls-dev zlib-dev \
-libgnome-keyring-dev sqlite-dev dbus-dev"
+libgnome-keyring-dev sqlite-dev dbus-dev brotli"
 
 # Handle cross compilation.
 case "$ARCH" in
@@ -24,11 +24,14 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure \
-		--with-html-dir=/usr/share/doc \
-		--disable-gtk-doc \
-		$CONFIGURE_ARGS &&
-	make && make install
+	mkdir build && cd build
+	meson --prefix=/usr .. &&
+	ninja && ninja install
+	#~ ./configure \
+		#~ --with-html-dir=/usr/share/doc \
+		#~ --disable-gtk-doc \
+		#~ $CONFIGURE_ARGS &&
+	#~ make && make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

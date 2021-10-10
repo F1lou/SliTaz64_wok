@@ -11,13 +11,13 @@ WEB_SITE="http://www.xbill.org/"
 WGET_URL="$WEB_SITE/download/$TARBALL"
 
 DEPENDS="gtk+ xorg-libXaw lesstif"
-BUILD_DEPENDS="gtk+-dev xorg-libXaw-dev lesstif-dev"
+BUILD_DEPENDS="gtk+-dev xorg-libXaw-dev lesstif-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	cd $src
-	./configure \
+	LDFLAGS="$LDFLAGS -liconv -lXpm" ./configure \
 		--prefix=/usr \
 		--infodir=/usr/share/info \
 		--mandir=/usr/share/man \
