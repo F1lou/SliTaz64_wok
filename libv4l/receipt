@@ -13,13 +13,15 @@ WGET_URL="http://linuxtv.org/downloads/v4l-utils/$TARBALL"
 TAGS="webcam video"
 
 DEPENDS="libjpeg"
-BUILD_DEPENDS="jpeg-dev libiconv-dev linux-api-headers"
+BUILD_DEPENDS="jpeg-dev libiconv-dev linux-api-headers eudev-dev
+	expat"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	#~ sed -i 's|jpeg_mem|_&|' lib/libv4lconvert/jpeg_memsrcdest.h
-	LDFLAGS="$LDFLAGS -liconv" ./configure --prefix=/usr &&
+	sed -i 's|jpeg_mem|_&|' lib/libv4lconvert/jpeg_memsrcdest.h
+	export LDFLAGS="$LDFLAGS -liconv" 
+	./configure --prefix=/usr &&
 	make &&
 	make install PREFIX="/usr" DESTDIR="$DESTDIR"
 }

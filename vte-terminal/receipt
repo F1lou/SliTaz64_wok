@@ -12,6 +12,7 @@ TAGS="terminal"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="expat vte"
+BUILD_DEPENDS="liblzma-dev"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

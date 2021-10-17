@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="wireshark"
-VERSION="2.6.1"
+VERSION="3.4.9"
 CATEGORY="network"
 SHORT_DESC="Wireshark is an award-winning network protocol analyzer."
 MAINTAINER="pankso@slitaz.org"
@@ -11,22 +11,26 @@ WEB_SITE="https://www.wireshark.org/"
 WGET_URL="https://1.eu.dl.wireshark.org/src/$TARBALL"
 TAGS="network analysis"
 
-DEPENDS="gnutls libgpg-error libcap gtk+ pcre xorg-libXdamage libcomerr3 attr \
+DEPENDS="gnutls libgpg-error libcap gtk+3 pcre xorg-libXdamage libcomerr3 attr \
 libgcrypt portaudio libpcap libkrb5"
-BUILD_DEPENDS="gnutls-dev libgpg-error-dev libcap-dev libpcap-dev gtk+-dev \
-libgcrypt-dev flex libtasn1-dev bison perl wget libgnutls"
+BUILD_DEPENDS="gnutls-dev libgpg-error-dev libcap-dev libpcap-dev gtk+3-dev \
+libgcrypt-dev flex libtasn1-dev bison perl wget libgnutls libiconv-dev \
+c-ares-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure \
-		--prefix=/usr \
-		--mandir=/usr/share/man \
-		--enable-setuid-install \
-		--with-qt=no \
-		--with-gtk=2 \
-		$CONFIGURE_ARGS
-	sed -i 's/mozilla/browser/' config.h
+	#~ ./configure \
+		#~ --prefix=/usr \
+		#~ --mandir=/usr/share/man \
+		#~ --enable-setuid-install \
+		#~ --with-qt=no \
+		#~ --with-gtk=3 \
+		#~ $CONFIGURE_ARGS
+	#~ sed -i 's/mozilla/browser/' config.h
+	export LDFLAGS="$LDFLAGS -liconv"
+	mkdir build && cd build
+	cmake .. &&
 	make $MAKEFLAGS &&
 	make install
 }

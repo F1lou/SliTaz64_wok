@@ -12,7 +12,8 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="http://nullwise.com/files/$PACKAGE/$TARBALL"
 
 DEPENDS="alsa-lib gtk+3 libnotify"
-BUILD_DEPENDS="alsa-lib-dev gtk+3-dev libnotify-dev"
+BUILD_DEPENDS="alsa-lib-dev gtk+3-dev libnotify-dev xorg-libXxf86vm-dev
+	xorg-libXtst-dev"
 
 #HOST_ARCH="x86_64 i486 arm"
 

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gammu-dev"
-VERSION="1.41.0"
+VERSION="1.42.0"
 CATEGORY="system-tools"
 SHORT_DESC="Gammu development files."
 MAINTAINER="pankso@slitaz.org"
@@ -19,6 +19,6 @@ genpkg_rules()
 
 	cp -a $install/usr/bin/gammu-config	$fs/usr/bin
 	#cp -a $install/usr/lib/*.*a		$fs/usr/lib
-	cp -a $install/usr/lib/pkgconfig	$fs/usr/lib
+	cp -a $install/usr/lib64/pkgconfig	$fs/usr/lib
 	cp -a $install/usr/include		$fs/usr
 }

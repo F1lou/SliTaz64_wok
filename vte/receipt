@@ -16,9 +16,9 @@ BUILD_DEPENDS="gtk+-dev ncurses-dev"
 
 # Handle cross compilation.
 case "$ARCH" in
-	i?86) 
+	i?86|x86_64) 
 		BUILD_DEPENDS="pygtk-dev python-dev gobject-introspection-dev
-		perl perl-xml-parser ncurses-dev"
+		perl perl-xml-parser ncurses-dev liblzma-dev libbsd-dev"
 		ARCH_ARGS="--enable-introspection=yes" ;;
 	arm) 
 		ARCH_ARGS="--enable-introspection=no" ;;

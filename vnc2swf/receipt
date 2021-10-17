@@ -17,11 +17,12 @@ xorg-libXau xorg-libXaw xorg-libXdmcp xorg-libXext xorg-libXmu xorg-libXpm \
 xorg-libXt zlib "
 BUILD_DEPENDS="xorg-libICE-dev xorg-libSM-dev xorg-libX11-dev \
 xorg-libXau-dev xorg-libXaw-dev xorg-libXdmcp-dev xorg-libXext-dev \
-xorg-libXmu-dev xorg-libXpm-dev xorg-libXt-dev zlib-dev"
+xorg-libXmu-dev xorg-libXpm-dev xorg-libXt-dev zlib-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	cd $src
 	./configure --prefix=/usr $CONFIGURE_ARGS &&
 	make &&

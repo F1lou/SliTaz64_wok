@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="dialog"
-VERSION="1.3_20210324"
+VERSION="1.3_20210621"
 CATEGORY="base-system"
 SHORT_DESC="Script-interpreter which provides a set of curses widgets."
 MAINTAINER="pankso@slitaz.org"

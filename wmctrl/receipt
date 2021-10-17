@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}dist/$TARBALL"
 
 DEPENDS="glib"
-BUILD_DEPENDS="glib-dev"
+BUILD_DEPENDS="glib-dev xorg-libXmu-dev"
 
 # Rules to configure and make the package.
 compile_rules()
