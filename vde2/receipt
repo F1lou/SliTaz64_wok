@@ -11,13 +11,13 @@ WEB_SITE="http://vde.sourceforge.net/"
 WGET_URL="$SF_MIRROR/vde/$TARBALL"
 
 DEPENDS="libcrypto"
-BUILD_DEPENDS="libcrypto libcrypto-dev"
+BUILD_DEPENDS="libcrypto libcrypto-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	cd $src
-	./configure --prefix=/usr \
+	LDFLAGS="$LDFLAGS -liconv" ./configure --prefix=/usr \
 	--libexecdir=/usr/lib/$PACKAGE \
 	--sysconfdir=/etc \
 	--mandir=/usr/share/man \

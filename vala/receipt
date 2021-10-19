@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="vala"
-VERSION="0.52.4"
+VERSION="0.54.2"
 CATEGORY="development"
 SHORT_DESC="Compiler for the GObject type system"
 MAINTAINER="mimas@slitaz.org"
@@ -13,7 +13,8 @@ TAGS="compiler"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="glib"
-BUILD_DEPENDS="flex bison glib-dev pkg-config expat-dev libiconv-dev"
+BUILD_DEPENDS="flex bison glib-dev pkg-config expat-dev libiconv-dev
+	graphviz-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -28,6 +29,7 @@ genpkg_rules()
 	mkdir -p $fs/usr/lib $fs/usr/share
 	cp -a $install/usr/bin $fs/usr
 	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib/$PACKAGE-${VERSION%.*}/*.so* $fs/usr/lib
 	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
 	cp -a $install/usr/include $fs/usr
 	cp -a $install/usr/share/vala* $fs/usr/share

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="varka"
-VERSION="0.1"
+VERSION="0.9"
 CATEGORY="development"
 SHORT_DESC="A library on top of gtk to build applications"
 MAINTAINER="al.bobylev@gmail.com"

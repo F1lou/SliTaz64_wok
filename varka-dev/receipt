@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="varka-dev"
-VERSION="0.1"
+VERSION="0.9"
 CATEGORY="development"
 SHORT_DESC="Development files for varka"
 MAINTAINER="al.bobylev@gmail.com"

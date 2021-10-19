@@ -18,7 +18,7 @@ BUILD_DEPENDS="file groff libmagic-dev ncurses-dev util-linux-whereis \
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure			\
+	CFLAGS="$CFLAGS -fcommon" ./configure			\
 		--prefix=/usr		\
 		--without-gtk		\
 		--with-libmagic		\
