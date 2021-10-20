@@ -12,10 +12,10 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="http://hal.freedesktop.org/releases/$TARBALL"
 
 DEPENDS="dbus dbus-helper libatasmart libdevmapper libgio libgudev libsgutils2 
-	lsof parted polkit sg3_utils udev util-linux-blkid util-linux-mount"
+	lsof parted polkit sg3_utils eudev util-linux-blkid util-linux-mount"
 BUILD_DEPENDS="dbus-dev dbus-glib-dev docbook-xsl flex libatasmart-dev 
 	libdevmapper-dev libgudev-dev libxslt parted-dev pcre-dev polkit-dev 
-	sg3_utils-dev udev-dev util-linux-blkid-dev util-linux-uuid-dev"
+	sg3_utils-dev eudev-dev util-linux-blkid-dev util-linux-uuid-dev"
 
 # Rules to configure and make the package.
 compile_rules()

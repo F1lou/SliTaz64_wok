@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="emacs-help"
-VERSION="26.3"
+VERSION="27.2"
 CATEGORY="development"
 SHORT_DESC="The GNU Emacs editor - Help files."
 MAINTAINER="domcox@slitaz.org"
@@ -37,8 +37,8 @@ genpkg_rules()
 	# Documentation
 	echo -n "Copying documentation files"
 	DOC_FILES="DOC DEVEL.HUMOR ERC-NEWS ETAGS.EBNF \
-GNUS-NEWS HELLO JOKES LINUX-GNU MH-E-NEWS MORE.STUFF \
-NEWS.* NXML-NEWS ORG-NEWS PROBLEMS TERMS THE-GNU-PROJECT WHY-FREE \
+HELLO JOKES MH-E-NEWS \
+NEWS.* NXML-NEWS ORG-NEWS PROBLEMS TERMS \
 compilation.txt gnus-tut.txt grep.txt"
 	for file in $DOC_FILES
 	  do

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="urbackup-server"
-VERSION="2.4.12"
+VERSION="2.4.13"
 CATEGORY="network"
 TAGS="backup"
 SHORT_DESC="An easy to setup Open Source client-server backup system."
@@ -12,12 +12,13 @@ WEB_SITE="https://www.urbackup.org/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://hndl.urbackup.org/Server/$VERSION/$TARBALL"
 
-DEPENDS="cryptopp libcurl"
-BUILD_DEPENDS="cryptopp curl-dev"
+DEPENDS="cryptopp libcurl zlib"
+BUILD_DEPENDS="cryptopp curl-dev libiconv-dev zlib-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	sed -i 's/chown/echo &/;s/adduser/echo &/g' Makefile*
 
 	./configure			\

@@ -14,7 +14,7 @@ WGET_URL="$WEB_SITE/download/$TARBALL"
 compile_rules()
 {
 	cd $src
-	./configure --enable-shared $CONFIGURE_ARGS && 
+	CFLAGS="$CFLAGS -fcommon" ./configure --enable-shared $CONFIGURE_ARGS && 
 	make && make install
 }
 

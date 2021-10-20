@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="unrar"
-VERSION="5.9.2"
+VERSION="6.0.2"
 CATEGORY="utilities"
 SHORT_DESC="The free unrar."
 MAINTAINER="gokhlayeh@slitaz.org"
@@ -12,11 +12,12 @@ TARBALL="${PACKAGE}src-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}rar/$TARBALL"
 
 DEPENDS="gcc-lib-base"
+BUILD_DEPENDS="libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	make
+	LDFLAGS="$LDFLAGS -liconv" make
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

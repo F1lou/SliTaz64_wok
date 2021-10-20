@@ -12,11 +12,11 @@ WGET_URL="$WEB_SITE/archive/$VERSION.tar.gz"
 
 DEPENDS="libboost-date-time libboost-filesystem libboost-program-options \
 libboost-regex libboost-system libboost-test libboost-serialization \
-libboost-thread libboost-tr1 udev python"
-BUILD_DEPENDS="wget cmake python python-mako libboost-date-time-dev \
+libboost-thread libboost-tr1 eudev py3k"
+BUILD_DEPENDS="wget cmake py3k python3-mako libboost-date-time-dev \
 libboost-filesystem-dev libboost-program-options-dev libboost-regex-dev \
 libboost-system-dev libboost-test-dev libboost-serialization-dev \
-libboost-thread-dev libboost-tr1-dev libusb-dev udev-dev"
+libboost-thread-dev libboost-tr1-dev libusb-dev eudev-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -28,7 +28,7 @@ compile_rules()
 		host/examples/tx_samples_from_file.cpp
 	sed -i 's|\(:seconds\)\(.*\))|\1(long\2))|' \
 		host/examples/rx_samples_to_file.cpp
-	export LDFLAGS="$LDFLAGS -ltinfo"
+	export LDFLAGS="$LDFLAGS -ltinfo -liconv"
 	cd $src/host
 	mkdir build
 	cd build

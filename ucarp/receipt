@@ -18,7 +18,7 @@ DEPENDS="libpcap"
 compile_rules()
 {
 	sed -i 's/\$(SHELL) @install_sh@/@install_sh@/' po/Makefile.in*
-	./configure --prefix=/usr --mandir=/usr/share/man \
+	CFLAGS="$CFLAGS -fcommon" ./configure --prefix=/usr --mandir=/usr/share/man \
 		--localstatedir=/var \
 	$CONFIGURE_ARGS &&
 	make &&

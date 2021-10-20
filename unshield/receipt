@@ -24,8 +24,8 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/lib64
 
 	cp -a $install/var/tmp/$PACKAGE/bin		$fs/usr
-	cp -a $install/var/tmp/$PACKAGE/lib/*.so*	$fs/usr/lib
+	cp -a $install/var/tmp/$PACKAGE/lib64/*.so*	$fs/usr/lib64
 }

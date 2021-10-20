@@ -13,13 +13,15 @@ TARBALL="$SOURCE-$VERSION.tar.gz"
 WGET_URL="http://www.libsdl.org/projects/SDL_mixer/release/$TARBALL"
 
 DEPENDS="libmad libogg libsdl2 libvorbis"
-BUILD_DEPENDS="libmad-dev libogg-dev libsdl2 libsdl2-dev libvorbis-dev"
+BUILD_DEPENDS="libmad-dev libogg-dev libsdl2 libsdl2-dev libvorbis-dev
+	libiconv-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	./configure			\
 		--prefix=/usr		\
 		--enable-music-mp3-mad	\

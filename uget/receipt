@@ -12,17 +12,16 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$SF_MIRROR/urlget/$TARBALL"
 
 DEPENDS="curl glib gtk+3 pcre"
-BUILD_DEPENDS="curl-dev glib-dev gtk+3-dev intltool pcre-dev"
+BUILD_DEPENDS="curl-dev glib-dev gtk+3-dev intltool pcre-dev cairo-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure			\
+	CFLAGS="$CFLAGS -fcommon" ./configure			\
 		--prefix=/usr		\
 		--sysconfdir=/etc	\
 		--disable-gstreamer	\
 		--disable-notify	\
-		--with-gtk3		\
 		$CONFIGURE_ARGS		\
 		LDFLAGS='-Wl,-O1 -Wl,--as-needed' &&
 	make -j2 -s &&

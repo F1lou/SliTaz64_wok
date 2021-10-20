@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="emacs-pkg-lua-mode"
-VERSION="20130419"
+VERSION="20210802"
 CATEGORY="development"
 TAGS="emacs lua"
 SHORT_DESC="An Emacs major mode for editing Lua code."
@@ -9,8 +9,8 @@ MAINTAINER="domcox@slitaz.org"
 LICENSE="GPL3"
 WEB_SITE="https://github.com/immerrr/lua-mode/"
 
-TARBALL="$PACKAGE-rel-$VERSION.tar.gz"
-WGET_URL="${WEB_SITE}archive/rel-$VERSION.tar.gz"
+TARBALL="v$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}archive/refs/tags/$TARBALL"
 
 DEPENDS="emacs"
 BUILD_DEPENDS="emacs"

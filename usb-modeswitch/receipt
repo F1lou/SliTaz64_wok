@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="usb-modeswitch"
-VERSION="2.5.2"
+VERSION="2.6.0"
 PACKAGE_DATA="${PACKAGE}-data-20170806"
 CATEGORY="system-tools"
 TAGS="3g-modem"
@@ -25,18 +25,18 @@ compile_rules()
 	mkdir -p $DESTDIR/usr/share/man/man1
 
 	make &&
-	make install-static
+	make install
 
 	# download data
 	[ -s $SOURCES_REPOSITORY/$PACKAGE_DATA.tar.bz2 ] ||
-		wget -P $SOURCES_REPOSITORY $WEB_SITE/$PACKAGE_DATA.tar.bz2
+		wget -P $SOURCES_REPOSITORY $WEB_SITE/$PACKAGE_DATA.tar.bz2 --no-check-certificate
 	[ -d $PACKAGE_DATA ] ||
 		tar -xjf $SOURCES_REPOSITORY/$PACKAGE_DATA.tar.bz2
 
 	# download setup config
 	[ -s  $SOURCES_REPOSITORY/usb_modeswitch.setup ] ||
 		wget -O $SOURCES_REPOSITORY/usb_modeswitch.setup \
-			$WEB_SITE/device_reference.txt
+			$WEB_SITE/device_reference.txt --no-check-certificate
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

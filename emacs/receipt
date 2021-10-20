@@ -13,17 +13,18 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
 
 SUGGESTED="alsa-lib"
-DEPENDS="atk cairo dbus expat fontconfig freetype giflib glib gnutls gtk+ 
+DEPENDS="atk cairo dbus expat fontconfig freetype giflib glib gnutls gtk+3 
 	harfbuzz jpeg libgio libgnutls libgsf libpng librsvg libtinfo ncurses 
 	pango tiff util-linux-uuid xorg-server zlib"
 BUILD_DEPENDS="atk-dev autoconf cairo-dev dbus-dev expat-dev fontconfig-dev 
-	freetype-dev giflib-dev glib-dev gnutls-dev gtk+-dev jpeg-dev libgio-dev 
+	freetype-dev giflib-dev glib-dev gnutls-dev gtk+3-dev jpeg-dev libgio-dev 
 	libgnutls libpng-dev librsvg-dev ncurses-dev pango-dev pkg-config tiff-dev 
-	xorg-dev xorg-dev-proto"
+	xorg-dev xorg-dev-proto libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	sed -i 's|EGifPutExtensionLast|EGifPutExtensionTrailer|' configure*
 	sed -i 's|\(gif = fn_DGifOpen.*\));|\1,NULL);|' src/image.c
 	sed -i 's|fn_DGifCloseFile (gif|&,NULL|' src/image.c
@@ -190,7 +191,7 @@ images/tree-widget/folder"
 	  done
 
 	# Licence
-	GNU_FILES="AUTHORS CENSORSHIP COPYING DISTRIB FTP GNU ORDERS README"
+	GNU_FILES="AUTHORS COPYING DISTRIB README"
 	echo -n "Copying License files"
 	for file in $GNU_FILES
 	  do

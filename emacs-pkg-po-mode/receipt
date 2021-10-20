@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="emacs-pkg-po-mode"
-VERSION="0.19.8.1"
+VERSION="0.21"
 CATEGORY="development"
 SHORT_DESC="An Emacs major mode for editing or modifying PO files."
 MAINTAINER="domcox@slitaz.org"
@@ -10,7 +10,7 @@ WEB_SITE="http://www.gnu.org/software/hello/manual/gettext/PO-Mode.html"
 WANTED="gettext"
 
 DEPENDS="emacs"
-BUILD_DEPENDS="emacs"
+BUILD_DEPENDS="emacs liblzma-dev"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
