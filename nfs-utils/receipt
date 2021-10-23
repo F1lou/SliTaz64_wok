@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="nfs-utils"
-VERSION="2.5.2"
+VERSION="2.5.4"
 CATEGORY="system-tools"
 TAGS="filesystem"
 SHORT_DESC="Network FileSystem tools."
@@ -21,7 +21,7 @@ HOST_ARCH="x86_64 i486 arm"
 
 # Handle SliTaz arch.
 case "$SLITAZ_ARCH" in
-	i?86) DEPENDS="$DEPENDS linux-nfsd" ;;
+	i?86|x86_64) DEPENDS="$DEPENDS linux-nfsd" ;;
 esac
 
 # Handle cross compilation.
@@ -34,9 +34,7 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	#~ sh autogen.sh
-	export CFLAGS="$CFLAGS -Werror"
-	LDFLAGS="$LDFLAGS -ltirpc" ./configure		\
+	./configure		\
 		--prefix=/usr          \
 		--sysconfdir=/etc      \
 		--sbindir=/sbin        \
@@ -56,7 +54,7 @@ genpkg_rules()
 	cp -a stuff/*		$fs
 	cp -a $install/var	$fs
 	cp -a $install/sbin	$fs
-	cp -a $install/usr/sbin	$fs/usr
+	#~ cp -a $install/usr/sbin	$fs/usr
 }
 
 post_install()

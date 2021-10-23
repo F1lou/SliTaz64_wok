@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="autofs"
-VERSION="5.1.7"
+VERSION="5.1.8"
 CATEGORY="system-tools"
 TAGS="filesystem"
 SHORT_DESC="Linux automounter."
@@ -13,7 +13,8 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="$WEB_SITE/$TARBALL"
 
 DEPENDS="linux-autofs"
-BUILD_DEPENDS="cyrus-sasl-dev flex krb5-dev libxml2-dev openldap-dev openssl-dev"
+BUILD_DEPENDS="cyrus-sasl-dev flex krb5-dev libxml2-dev openldap-dev
+	openssl-dev libtirpc-dev"
 
 TAZPANEL_DAEMON="man|help::automount|edit::/etc/auto.misc|options::AUTOMOUNT_OPTIONS|web::$WEB_SITE"
 
@@ -24,12 +25,14 @@ compile_rules()
 		-e 's|install -v|install|' \
 		*/Makefile*
 
+	export LDFLAGS="$LDFLAGS -ltirpc -lrt"
+	export CFLAGS="$CFLAGS -I/usr/include/tirpc"
 	./configure				\
 		--prefix=/usr			\
 		--infodir=/usr/share/info	\
 		--mandir=/usr/share/man		\
 		$CONFIGURE_ARGS &&
-	make LDFLAGS="-lrt" &&
+	make &&
 	make DESTDIR=$DESTDIR install
 }
 
