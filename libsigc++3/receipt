@@ -1,18 +1,18 @@
 # SliTaz package receipt.
 
 PACKAGE="libsigc++3"
-VERSION="3.0.6"
+SOURCE="libsigc++"
+VERSION="3.0.7"
 CATEGORY="system-tools"
 SHORT_DESC="Callback Framework for C++"
 MAINTAINER="pankso@slitaz.org"
 LICENSE="LGPL2.1"
-SOURCE="libsigc++"
 TARBALL="$SOURCE-$VERSION.tar.xz"
-WEB_SITE="https://developer.gnome.org/libsigc++/"
-WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION%.*}/$TARBALL"
+WEB_SITE="https://developer.gnome.org/$SOURCE/"
+WGET_URL="$GNOME_MIRROR/$SOURCE/${VERSION%.*}/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
-BUILD_DEPENDS="m4"
+BUILD_DEPENDS="m4 libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -20,13 +20,11 @@ compile_rules()
 	#~ ./configure \
 		#~ $CONFIGURE_ARGS &&
 	#~ make && make install
-	
-	 mkdir bld && cd bld
-
-	 meson --prefix=/usr .. &&
-	 ninja
-
-	 ninja install
+	export LDFLAGS="$LDFLAGS -liconv"
+	mkdir bld && cd bld
+	meson --prefix=/usr .. &&
+	ninja &&
+	ninja install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

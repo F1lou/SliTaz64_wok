@@ -11,7 +11,7 @@ WEB_SITE="https://www.gnome.org/"
 
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION%.*}/$TARBALL"
-http://ftp.gnome.org/pub/GNOME/sources/atk/2.36/atk-2.36.0.tar.xz
+
 DEPENDS="glib"
 BUILD_DEPENDS="glib-dev libgio-dev meson ninja"
 

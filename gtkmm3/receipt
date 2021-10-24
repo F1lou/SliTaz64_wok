@@ -2,7 +2,7 @@
 
 PACKAGE="gtkmm3"
 SOURCE="gtkmm"
-VERSION="3.24.5"
+VERSION="3.22.3"
 CATEGORY="x-window"
 SHORT_DESC="C++ interface for the popular GUI library GTK+."
 MAINTAINER="pankso@slitaz.org"
@@ -25,20 +25,21 @@ BUILD_DEPENDS="atkmm-dev cairomm-dev doxygen glibmm-dev gtk+3-dev libgiomm-dev \
 # Rules to configure and make the package.
 compile_rules()
 {
-	mkdir bld && cd bld
+	#~ mkdir bld && cd bld
 	export LDFLAGS="$LDFLAGS -liconv -lGL" # -lgio-2.0"
-	meson --prefix=/usr \
-		-D build-documentation=false \
-		-D maintainer-mode=false \
-		-D build-demos=false \
-		-D build-tests=false .. &&
-	ninja && ninja install
+	#~ export GIT_SSL_NO_VERIFY=true
+	#~ meson --prefix=/usr \
+		#~ -D build-documentation=false \
+		#~ -D maintainer-mode=false \
+		#~ -D build-demos=false \
+		#~ -D build-tests=false .. &&
+	#~ ninja && ninja install
 	
-	#~ ./configure			\
-		#~ --disable-documentation	\
-		#~ $CONFIGURE_ARGS &&
-	#~ make -j 1 &&
-	#~ make install
+	./configure			\
+		--disable-documentation	\
+		$CONFIGURE_ARGS &&
+	make -j 1 &&
+	make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
