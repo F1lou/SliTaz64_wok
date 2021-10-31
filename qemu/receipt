@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="qemu"
-VERSION="2.0.2"
+VERSION="6.1.0"
 CATEGORY="misc"
 SHORT_DESC="General-purpose full virtualizer for x86 hardware."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -13,33 +13,36 @@ UEFIZIP="OVMF-IA32-r15214.zip OVMF-X64-r15214.zip"
 EXTRA_SOURCE_FILES="$UEFIZIP"
 TAGS="virtualization emulator"
 
-DEPENDS="alsa-lib gnutls libsdl bluez libtasn1 libsasl vde2 libcurl ncurses \
-attr util-linux-uuid libgio glib libusb zlib liblzma"
-BUILD_DEPENDS="gettext perl alsa-lib-dev gnutls-dev libsdl-dev bluez-dev \
-libtasn1-dev vde2-dev curl-dev attr-dev util-linux-uuid-dev libgio-dev \
-glib-dev autoconf automake libtool bison flex libusb-dev ncurses-dev xz-dev file"
+DEPENDS="alsa-lib gnutls libsdl2 bluez libtasn1 libsasl vde2 libcurl
+	ncurses attr util-linux-uuid libgio glib libusb zlib liblzma"
+BUILD_DEPENDS="pixman-dev zlib-dev alsa-lib-dev libsdl2-dev ncurses-dev
+	libiconv-dev curl-dev eudev-dev gettext perl gnutls-dev bluez-dev
+	libtasn1-dev attr-dev util-linux-uuid-dev libgio-dev glib-dev
+	autoconf automake libtool bison flex libusb-dev xz-dev file
+	xorg-libX11-dev" # vde2-dev 
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i 's|uname -m|echo i486|' roms/openbios/utils/devbios/Makefile*
-	mkdir -p $DESTDIR/usr/share/qemu/ia32 $DESTDIR/usr/share/qemu/x64
+	mkdir build && cd build
+	#~ sed -i 's|uname -m|echo i486|' roms/openbios/utils/devbios/Makefile*
+	#~ mkdir -p $DESTDIR/usr/share/qemu/ia32 $DESTDIR/usr/share/qemu/x64
 
-	for i in $UEFIZIP ; do
-		[ -s $SOURCES_REPOSITORY/$i ] || wget -P $SOURCES_REPOSITORY \
-			$SF_MIRROR/project/edk2/OVMF/$i
-		unzip $SOURCES_REPOSITORY/$i OVMF.fd -d \
-		  $DESTDIR/usr/share/qemu/$(echo $i | sed 's|OVMF-\(.*\)-.*|\1|;y|AIX|aix|')
-	done
+	#~ for i in $UEFIZIP ; do
+		#~ [ -s $SOURCES_REPOSITORY/$i ] || wget -P $SOURCES_REPOSITORY \
+			#~ $SF_MIRROR/project/edk2/OVMF/$i
+		#~ unzip $SOURCES_REPOSITORY/$i OVMF.fd -d \
+		  #~ $DESTDIR/usr/share/qemu/$(echo $i | sed 's|OVMF-\(.*\)-.*|\1|;y|AIX|aix|')
+	#~ done
 
-	patch -p0 < $stuff/cloop.u
+	#~ patch -p0 < $stuff/cloop.u
 
 	TARGET="i386-softmmu, x86_64-softmmu, \
 	arm-softmmu, ppc-softmmu, mips-softmmu, mipsel-softmmu"
 
-	export LDFLAGS="$LDFLAGS -Wl,--copy-dt-needed-entries"
-	#--cross-prefix= --host-cc=
-	./configure \
+	export LDFLAGS="$LDFLAGS -liconv" #-Wl,--copy-dt-needed-entries"
+	#~ #--cross-prefix= --host-cc=
+	../configure \
 		--prefix=/usr \
 		--sysconfdir=/etc \
 		--enable-sdl \
@@ -59,6 +62,7 @@ genpkg_rules()
 	# /etc/qemu is for x86_64
 	#cp -a $install/etc $fs
 
+	cp -a $install/usr/bin/qemu*-x86_64 $fs/usr/bin
 	cp -a $install/usr/bin/qemu-*-i386 $fs/usr/bin
 	cp -a $install/usr/bin/qemu-ga $fs/usr/bin
 	cp -a $install/usr/bin/qemu-io $fs/usr/bin
