@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/$PACKAGE/$PACKAGE/releases/download/$VERSION/$TARBALL"
 
 DEPENDS="libevent ncursesw"
-BUILD_DEPENDS="libevent-dev ncursesw-dev"
+BUILD_DEPENDS="libevent-dev ncursesw-dev ncursesw-extra"
 
 HOST_ARCH="x86_64 i486 arm"
 
@@ -39,8 +39,7 @@ genpkg_rules()
 	cp -a $install/usr/share/tmux	$fs/usr/share
 
 	# Get screen terminfo data
-	tazpkg get-install ncursesw-extra --root=$src/ncursesw-extra > /dev/null 2>&1
-	cp -a $src/ncursesw-extra/usr/share/terminfo/s/screen \
-					$fs/usr/share/terminfo/s
-	rm -r $src/ncursesw-extra
+	#~ tazpkg -gi ncursesw-extra --root=$src/ncursesw-extra > /dev/null 2>&1
+	cp -a /usr/share/terminfo/s/screen $fs/usr/share/terminfo/s
+	#~ rm -r $src/ncursesw-extra
 }

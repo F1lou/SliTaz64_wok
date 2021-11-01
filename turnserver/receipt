@@ -11,7 +11,7 @@ WEB_SITE="http://turnserver.sourceforge.net/"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
 DEPENDS="openssl"
-BUILD_DEPENDS="libconfuse openssl-dev"
+BUILD_DEPENDS="libconfuse openssl-dev libcrypto-dev"
 
 # Rules to configure and make the package.
 compile_rules()

@@ -16,14 +16,14 @@ TAGS="desktop panel taskbar"
 
 DEPENDS="gtk+ imlib2 librsvg startup-notification"
 BUILD_DEPENDS="cmake pango-dev imlib2-dev gtk+-dev startup-notification-dev \
-librsvg-dev"
+librsvg-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	cp -af $stuff/get_version.sh $src
 	export VERSION
-
+	export LDFLAGS="$LDFLAGS -liconv"
 	mkdir build && cd build &&
 	cmake \
 		-DCMAKE_INSTALL_PREFIX=/usr \

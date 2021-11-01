@@ -12,11 +12,13 @@ WGET_URL="http://$PACKAGE.googlecode.com/files/$TARBALL"
 
 DEPENDS="leptonica libpng jpeg tiff giflib"
 BUILD_DEPENDS="libtool autoconf automake libpng-dev jpeg-dev tiff-dev \
-giflib-dev zlib-dev icu-dev pango-dev cairo-dev leptonica-dev"
+giflib-dev zlib-dev icu-dev pango-dev cairo-dev leptonica-dev
+libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	./autogen.sh
 	./configure \
 		--prefix=/usr \

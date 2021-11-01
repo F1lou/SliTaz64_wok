@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="transmission"
-VERSION="2.94"
+VERSION="3.00"
 CATEGORY="network"
 TAGS="torrent"
 SHORT_DESC="Light and easy to use BitTorrent client."
@@ -10,29 +10,33 @@ LICENSE="GPL2"
 WEB_SITE="https://web.archive.org/web/20200122162854/https://transmissionbt.com/"
 
 TARBALL="$PACKAGE-$VERSION.tar.xz"
-WGET_URL="https://github.com/$PACKAGE/$PACKAGE/archive/$VERSION.tar.gz"
+WGET_URL="https://github.com/$PACKAGE/$PACKAGE/releases/download/3.00/$TARBALL"
 
 SUGGESTED="transmission-cli transmission-daemon transmission-web"
 DEPENDS="dbus dbus-glib gtk+3 libcurl libevent libgio \
 	libnotify libssl xorg-libXdamage"
 BUILD_DEPENDS="libtool curl curl-dev dbus-dev dbus-glib-dev expat-dev 
-	gettext gtk+3-dev intltool libevent-dev openssl-dev tar"
+	gettext gtk+3-dev intltool libevent-dev openssl-dev tar libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	touch third-party/miniupnp/VERSION
-	CFLAGS="$CFLAGS -fdata-sections -ffunction-sections \
-	-Wl,--gc-sections"
+	#~ touch third-party/miniupnp/VERSION
+	#~ CFLAGS="$CFLAGS -fdata-sections -ffunction-sections -Wl,--gc-sections"
 
-	./autogen.sh &&
-	./configure			\
-		--prefix=/usr		\
-		--enable-cli		\
-		--enable-lightweight	\
-		$CONFIGURE_ARGS &&
-	make &&
-	make install &&
+	export LDFLAGS="$LDFLAGS -liconv"
+	mkdir build && cd build
+    cmake .. &&
+    make && make install
+    
+    #~ ./autogen.sh &&
+	#~ ./configure			\
+		#~ --prefix=/usr		\
+		#~ --enable-cli		\
+		#~ --enable-lightweight	\
+		#~ $CONFIGURE_ARGS &&
+	#~ make &&
+	#~ make install &&
 
 	rm -rf $install/usr/share/applications $src/macosx
 

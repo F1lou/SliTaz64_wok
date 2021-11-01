@@ -13,6 +13,7 @@ TARBALL="$SOURCE-$VERSION.tar.gz"
 WGET_URL="$SF_MIRROR/$SOURCE/$TARBALL"
 
 DEPENDS="pcre"
+BUILD_DEPENDS="zlib-dev"
 
 # Rules to configure and make the package.
 compile_rules()

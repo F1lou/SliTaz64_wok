@@ -11,11 +11,12 @@ WEB_SITE="https://tmate.io/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/$PACKAGE/$PACKAGE-c/archive/cpp-$VERSION.tar.gz"
 
-BUILD_DEPENDS="cmake zlib"
+BUILD_DEPENDS="cmake zlib libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	cmake -DCMAKE_INSTALL_PREFIX=/usr . &&
 	make &&
 	make DESTDIR=$DESTDIR install

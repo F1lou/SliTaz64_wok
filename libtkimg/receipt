@@ -12,7 +12,7 @@ WEB_SITE="http://tkimg.sourceforge.net/"
 WGET_URL="$SF_MIRROR/$SOURCE/$TARBALL"
 
 DEPENDS="tk"
-BUILD_DEPENDS="tcllib tcl-dev tk-dev xorg-dev"
+BUILD_DEPENDS="tcllib tcl-dev tk-dev xorg-dev tiff-dev"
 
 # Rules to configure and make the package.
 compile_rules()

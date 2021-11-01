@@ -13,7 +13,7 @@ WGET_URL="$WEB_SITE/$TARBALL"
 # Rules to configure and make the package.
 compile_rules()
 {
-	make
+	CFLAGS="$CFLAGS -Wno-implicit-function-declaration" make
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

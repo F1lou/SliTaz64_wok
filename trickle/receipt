@@ -12,11 +12,12 @@ WEB_SITE="https://github.com/mariusae/trickle/"
 WGET_URL="https://github.com/mariusae/trickle/archive/$HASH.zip"
 
 DEPENDS="libevent"
-BUILD_DEPENDS="libevent-dev wget automake autoconf libtool"
+BUILD_DEPENDS="libevent-dev wget automake autoconf libtool libtirpc-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export CFLAGS="$CFLAGS -I/usr/include/tirpc/"
 	touch libtrickle.so
 	libtoolize -f
 	aclocal

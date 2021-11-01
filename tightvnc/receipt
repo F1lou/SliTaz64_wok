@@ -14,7 +14,7 @@ BUILD_DEPENDS="xorg-imake xorg-gccmakedep xorg-cf-files xorg-libXp \
 xorg-libXaw-dev xorg-libXt-dev xorg-xproto xorg-libXau-dev xorg-libXdmcp-dev \
 xorg-libXmu-dev xorg-xextproto xorg-printproto xorg-kbproto xorg-inputproto \
 xorg-scrnsaverproto xorg-xauth jpeg-dev zlib-dev xorg-libXrandr-dev
-xorg-libXaw-dev xorg-libXmu-dev xorg-gccmakedep xorg-imake"
+xorg-libXaw-dev xorg-libXmu-dev xorg-gccmakedep xorg-imake libbsd-dev"
 TAGS="remote-desktop vnc"
 
 # Rules to configure and make the package.
@@ -25,6 +25,7 @@ compile_rules()
 	#~ sed -i	-e "s| FONTDIR =.*$| FONTDIR = /usr/share/fonts/X11|" \
 		#~ -e 's|\(define DefaultRGBDatabase\) .*|\1 /usr/share/X11/rgb|' \
 			#~ Xvnc/config/cf/X11.tmpl
+	export CFLAGS="$CFLAGS -fcommon"
 	xmkmf &&
 	make World &&
 	cd Xvnc &&

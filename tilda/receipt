@@ -12,7 +12,8 @@ WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 TAGS="terminal"
 
 DEPENDS="vte libconfuse libglade"
-BUILD_DEPENDS="flex vte-dev libglade-dev libconfuse"
+BUILD_DEPENDS="flex vte-dev libglade-dev libconfuse xorg-randrproto
+	xorg-libXrandr-dev libbsd-dev"
 
 # Rules to configure and make the package.
 compile_rules()

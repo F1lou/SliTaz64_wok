@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="virtualbox-ose"
-VERSION="4.2.6"
+VERSION="6.1.28"
 CATEGORY="misc"
 SHORT_DESC="Powerful x86 virtualization for enterprise as well as home use (Open Source Edition)"
 MAINTAINER="slaxemulator@gmail.com"
