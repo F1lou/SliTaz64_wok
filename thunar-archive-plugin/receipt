@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="thunar-archive-plugin"
-VERSION="0.3.0"
+VERSION="0.4.0"
 CATEGORY="x-window"
 SHORT_DESC="Thunar Archive Manager plugin"
 MAINTAINER="erjo@slitaz.org"
@@ -12,7 +12,8 @@ WGET_URL="http://archive.xfce.org/src/thunar-plugins/$PACKAGE/${VERSION%.*}/$TAR
 
 DEPENDS="thunar"
 BUILD_DEPENDS="intltool thunar-dev libexo-dev libxfce4ui-dev \
- xfconf-dev startup-notification-dev"
+ xfconf-dev startup-notification-dev xcb-util-dev libiconv-dev \
+ liblzma-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -27,9 +28,9 @@ compile_rules()
 genpkg_rules()
 {
 	mkdir -p $fs/usr/share/locale \
-		$fs/usr/lib/thunarx-2
+		$fs/usr/lib/thunarx-3
 	
-	cp -a $install/usr/lib/thunarx-2/*.so* $fs/usr/lib/thunarx-2
+	cp -a $install/usr/lib/thunarx-3/*.so* $fs/usr/lib/thunarx-3
 	cp -a $install/usr/share/icons $fs/usr/share
 	cp -a $install/usr/share/locale/fr $fs/usr/share/locale
 	cp -a $install/usr/lib/$PACKAGE $fs/usr/lib
@@ -38,6 +39,6 @@ genpkg_rules()
 	chmod 755 $fs/usr/lib/thunar-archive-plugin/*
 	
 	# Cleanup
-	rm -f $fs/usr/lib/thunarx-2/*.*a
+	rm -f $fs/usr/lib/thunarx-3/*.*a
 }
 

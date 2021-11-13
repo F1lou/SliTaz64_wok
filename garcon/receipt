@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="garcon"
-VERSION="0.4.0"
+VERSION="0.8.0"
 CATEGORY="misc"
 SHORT_DESC="Xfce menu library"
 MAINTAINER="erjo@slitaz.org"
@@ -10,9 +10,9 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WEB_SITE="https://www.xfce.org"
 WGET_URL="http://archive.xfce.org/src/xfce/garcon/${VERSION%.*}/$TARBALL"
 
-DEPENDS="libgio glib gtk+ libxfce4ui libxfce4util util-linux-uuid startup-notification"
+DEPENDS="libgio glib gtk+3 libxfce4ui libxfce4util util-linux-uuid startup-notification"
 BUILD_DEPENDS="intltool libgio libgio-dev glib-dev libxfce4ui-dev libxfce4util-dev \
-		util-linux-uuid-dev gtk+-dev startup-notification-dev xcb-util-dev"
+		util-linux-uuid-dev gtk+3-dev startup-notification-dev xcb-util-dev"
 
 # Rules to configure and make the package.
 compile_rules()

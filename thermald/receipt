@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/intel/thermal_daemon/archive/v$VERSION.tar.gz"
 
 DEPENDS="dbus dbus-glib"
-BUILD_DEPENDS="automake dbus-dev dbus-glib-dev libxml2"
+BUILD_DEPENDS="automake dbus-dev dbus-glib-dev libxml2 zlib-dev"
 
 # Rules to configure and make the package.
 compile_rules()

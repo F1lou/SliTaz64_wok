@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libexo-dev"
-VERSION="0.10.3"
+VERSION="4.16.0"
 CATEGORY="development"
 SHORT_DESC="Xfce extension library dev files"
 MAINTAINER="erjo@slitaz.org"
@@ -9,7 +9,7 @@ LICENSE="GPL2"
 WANTED="exo"
 WEB_SITE="https://www.xfce.org"
 
-DEPENDS="libexo gtk+-dev libxfce4util-dev hal-dev pkg-config"
+DEPENDS="libexo gtk+3-dev libxfce4util-dev hal-dev pkg-config"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

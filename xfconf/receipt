@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xfconf"
-VERSION="4.12.0"
+VERSION="4.16.0"
 CATEGORY="x-window"
 SHORT_DESC="Xfce Copnfiguration Utility"
 MAINTAINER="erjo@slitaz.org"
@@ -10,8 +10,8 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WEB_SITE="https://www.xfce.org"
 WGET_URL="http://archive.xfce.org/src/xfce/$PACKAGE/${VERSION%.*}/$TARBALL"
 
-DEPENDS="gtk+ libxfce4util dbus-glib"
-BUILD_DEPENDS="gtk+-dev libxfce4util-dev dbus-dev dbus-glib-dev intltool"
+DEPENDS="gtk+3 libxfce4util dbus-glib"
+BUILD_DEPENDS="gtk+3-dev libxfce4util-dev dbus-dev dbus-glib-dev intltool"
 
 # Rules to configure and make the package.
 compile_rules()

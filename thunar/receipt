@@ -1,22 +1,22 @@
 # SliTaz package receipt. 
 
 PACKAGE="thunar"
-VERSION="4.17.6"
+VERSION="4.16.10"
 CATEGORY="x-window"
 SHORT_DESC="Thunar File Manager"
 MAINTAINER="erjo@slitaz.org"
 LICENSE="GPL2"
-SOURCE="Thunar"
-TARBALL="$SOURCE-$VERSION.tar.bz2"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WEB_SITE="https://www.xfce.org"
-WGET_URL="http://archive.xfce.org/src/xfce/$PACKAGE/${VERSION%.*}/$TARBALL"
+WGET_URL="https://archive.xfce.org/src/xfce/$PACKAGE/${VERSION%.*}/$TARBALL"
 TAGS="file-manager"
 
-DEPENDS="libpng jpeg gtk+ libxfce4util dbus-glib libexo pcre libexif libgudev \
+DEPENDS="libpng jpeg gtk+3 libxfce4util dbus-glib libexo pcre libexif libgudev \
 gamin libxfce4ui startup-notification util-linux-uuid libnotify libxfconf"
-BUILD_DEPENDS="libpng-dev jpeg-dev gtk+-dev libxml2-dev dbus-glib-dev \
+BUILD_DEPENDS="libpng-dev jpeg-dev gtk+3-dev libxml2-dev dbus-glib-dev \
 libexo-dev zlib-dev intltool libgudev-dev libxfce4ui-dev libxfce4util-dev xcb-util-dev \
-startup-notification-dev util-linux-uuid-dev libnotify-dev libxfconf-dev"
+startup-notification-dev util-linux-uuid-dev libnotify-dev libxfconf libxfconf-dev \
+libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -40,19 +40,19 @@ genpkg_rules()
 {
 	mkdir -p \
 		$fs/usr/share \
-		$fs/usr/lib/thunarx-2
+		$fs/usr/lib/thunarx-3
 
 	cp -a $install/etc $fs
 	cp -a $install/usr/bin $fs/usr
 
 	cp -a $install/usr/lib/Thunar $fs/usr/lib
 	cp -a $install/usr/lib/*.so* $fs/usr/lib
-	cp -a $install/usr/lib/thunarx-2/*.so* $fs/usr/lib/thunarx-2
+	cp -a $install/usr/lib/thunarx-3/*.so* $fs/usr/lib/thunarx-3
 	cp -a $install/usr/share/dbus-1 $fs/usr/share
 
 	cp -a $install/usr/share/applications $fs/usr/share
 	cp -a $install/usr/share/icons $fs/usr/share
-	cp -a $install/usr/share/pixmaps $fs/usr/share
+	#~ cp -a $install/usr/share/pixmaps $fs/usr/share
 	cp -a $install/usr/share/Thunar $fs/usr/share
 }
 
