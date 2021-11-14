@@ -12,7 +12,8 @@ WGET_URL="https://telepathy.freedesktop.org/releases/$PACKAGE/$TARBALL"
 
 DEPENDS="glib gobject-introspection libgio dbus dbus-glib libffi"
 BUILD_DEPENDS="glib-dev gobject-introspection-dev libgio-dev \
-dbus-dev dbus-glib-dev intltool diffutils libffi libxslt gtk-doc"
+dbus-dev dbus-glib-dev intltool diffutils libffi libxslt gtk-doc \
+zlib-dev"
 
 # Rules to configure and make the package.
 compile_rules()

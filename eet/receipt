@@ -13,7 +13,7 @@ TAGS="e enlightenment efl"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="eina libjpeg libssl"
-BUILD_DEPENDS="eina-dev jpeg-dev openssl-dev"
+BUILD_DEPENDS="eina-dev jpeg-dev openssl-dev zlib-dev"
 
 # Handle cross compilation
 case "$ARCH" in
