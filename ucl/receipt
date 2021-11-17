@@ -14,7 +14,7 @@ WGET_URL="$WEB_SITE/download/$TARBALL"
 compile_rules()
 {
 	cd $src
-	CFLAGS="$CFLAGS -fcommon" ./configure --enable-shared $CONFIGURE_ARGS && 
+	CPPFLAGS="$CPPFLAGS -std=c90 -fPIC" ./configure --enable-shared $CONFIGURE_ARGS && 
 	make && make install
 }
 

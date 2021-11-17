@@ -21,7 +21,7 @@ BUILD_DEPENDS="autoconf automake gtk+3-dev libart_lgpl-dev
 # Rules to configure and make the package.
 compile_rules()
 {
-	#~ CFLAGS="$CFLAGS `pkg-config --cflags --libs gtk+-2.0` `pkg-config --libs x11` -lm -lz"
+	CFLAGS="$CFLAGS `pkg-config --cflags --libs gtk+-3.0` `pkg-config --libs x11` -lm -lz"
 	#~ wget --no-check-certificate http://people.slitaz.org/~naitsirhc/xournal.patch && \
 	#~ patch -p1 -i xournal.patch && 
 

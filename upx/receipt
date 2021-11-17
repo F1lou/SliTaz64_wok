@@ -7,13 +7,13 @@ SHORT_DESC="Ultimate Packer for eXecutables (free version using UCL compression)
 MAINTAINER="devl547@gmail.com"
 LICENSE="GPL2"
 WEB_SITE="https://upx.github.io/"
-TARBALL="$PACKAGE-$VERSION.tar.gz"
-WGET_URL="https://github.com/upx/upx/archive/v$VERSION.tar.gz"
+TARBALL="v$VERSION.tar.gz"
+WGET_URL="https://github.com/upx/upx/archive/refs/tags/$TARBALL"
 PATCH="https://github.com/upx/upx-lzma-sdk/archive/v$VERSION.tar.gz"
 EXTRA_SOURCE_FILES="lzma-$TARBALL"
 
 DEPENDS="ucl zlib"
-BUILD_DEPENDS="ucl-dev zlib-dev perl"
+BUILD_DEPENDS="ucl-dev zlib-dev perl libiconv-dev"
 
 current_version()
 {
@@ -24,8 +24,9 @@ current_version()
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	[ -s $SOURCES_REPOSITORY/lzma-$TARBALL ] ||
-		wget -O $SOURCES_REPOSITORY/lzma-$TARBALL $PATCH
+		wget -O $SOURCES_REPOSITORY/lzma-$TARBALL $PATCH --no-check-certificate
 	tar -xf $SOURCES_REPOSITORY/lzma-$TARBALL
 	sed -i 's|c_len >= u_len)|c_len < u_len) return true; else|' \
 		$src/src/packer.cpp

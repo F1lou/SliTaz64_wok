@@ -12,11 +12,13 @@ WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 TAGS="emulator zx81"
 
 DEPENDS="libsdl"
-BUILD_DEPENDS="libsdl-dev"
+BUILD_DEPENDS="libsdl-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
+	export CFLAGS="$CFLAGS -fcommon"
 	make clean &&
 	make &&
 	make PREFIX=$DESTDIR/usr BINDIR=$DESTDIR/usr/bin \

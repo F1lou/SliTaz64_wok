@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="sysbench"
-VERSION="20150930"
+VERSION="1.0.20"
 CATEGORY="misc"
 SHORT_DESC="A modular, cross-platform and multi-threaded benchmark tool."
 MAINTAINER="pascal.bellard@slitaz.org"

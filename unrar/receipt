@@ -17,7 +17,9 @@ BUILD_DEPENDS="libiconv-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
-	LDFLAGS="$LDFLAGS -liconv" make
+	export LDFLAGS="$LDFLAGS -pthread -liconv" 
+	sed -i 's|LDFLAGS=-pthread||' makefile
+	make
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

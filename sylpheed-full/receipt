@@ -16,11 +16,12 @@ WGET_URL="https://dotsrc.dl.osdn.net/osdn/sylpheed/68999/$TARBALL"
 PROVIDE="sylpheed"
 DEPENDS="enchant gnupg gpgme gtk+ gtkspell libgpg-error libldap libssl"
 BUILD_DEPENDS="enchant-dev gpgme-dev gtk+-dev gtkspell-dev libgpg-error-dev \
-	openldap-dev openssl-dev"
+	openldap-dev openssl-dev libiconv-dev pango-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	./configure			\
 		--enable-ldap		\
 		--disable-updatecheck	\
