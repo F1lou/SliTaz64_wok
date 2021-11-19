@@ -13,7 +13,8 @@ CONFIG_FILES="/etc/pango/pango.modules"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="cairo xorg-libXft slitaz-base-files gcc-lib-base util-linux-uuid"
-BUILD_DEPENDS="cairo-dev libxml2-dev xorg-libXft-dev fribidi-dev libiconv-dev"
+BUILD_DEPENDS="cairo-dev libxml2-dev xorg-libXft-dev fribidi-dev libiconv-dev
+	xorg-randrproto libbsd-dev"
 
 # Handle cross compilation
 case "$ARCH" in

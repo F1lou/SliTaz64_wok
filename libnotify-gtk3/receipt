@@ -15,7 +15,7 @@ TAGS="gtk3"
 
 DEPENDS="gdk-pixbuf dbus"
 BUILD_DEPENDS="gtk+3-dev gobject-introspection-dev glib-dev libxml2-dev \
-dbus-dev"
+dbus-dev liblzma-dev"
 
 # Rules to configure and make the package.
 compile_rules()

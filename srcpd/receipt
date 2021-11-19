@@ -19,6 +19,7 @@ CONFIG_FILES="/etc/srcpd.conf"
 # Rules to configure and make the package.
 compile_rules()
 {
+	export CFLAGS="$CFLAGS -fcommon"
 	./configure			\
 		--sysconfdir=/etc	\
 		$CONFIGURE_ARGS &&

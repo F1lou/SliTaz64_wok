@@ -11,7 +11,8 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$WEB_SITE/archive/v$VERSION.tar.gz"
 
 DEPENDS="giflib imlib2 libexif xdg-utils"
-BUILD_DEPENDS="bzip2 giflib-dev imlib2-dev libexif-dev xorg-dev"
+BUILD_DEPENDS="bzip2 giflib-dev imlib2-dev libexif-dev xorg-dev
+	libbsd-dev"
 
 # Rules to configure and make the package.
 compile_rules()

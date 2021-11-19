@@ -14,7 +14,8 @@ TARBALL="$SOURCE-$VERSION.tar.gz"
 WGET_URL="$WEB_SITE/archive/v$VERSION.tar.gz"
 
 DEPENDS="vte"
-BUILD_DEPENDS="automake glib-dev gtk+-dev vte-dev"
+BUILD_DEPENDS="automake glib-dev gtk+-dev vte-dev xorg-randrproto
+	xorg-libXinerama-dev libbsd-dev"
 
 # Rules to configure and make the package.
 compile_rules()

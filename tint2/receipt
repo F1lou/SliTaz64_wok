@@ -16,7 +16,8 @@ TAGS="desktop panel taskbar"
 
 DEPENDS="gtk+ imlib2 librsvg startup-notification"
 BUILD_DEPENDS="cmake pango-dev imlib2-dev gtk+-dev startup-notification-dev \
-librsvg-dev libiconv-dev"
+librsvg-dev libiconv-dev xorg-libXcomposite-dev xorg-libXinerama-dev \
+xorg-libXrandr-dev"
 
 # Rules to configure and make the package.
 compile_rules()

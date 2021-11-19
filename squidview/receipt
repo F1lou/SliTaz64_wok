@@ -12,12 +12,12 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$WEB_SITE$TARBALL"
 
 DEPENDS="gcc-lib-base ncurses"
-BUILD_DEPENDS="ncurses-dev"
+BUILD_DEPENDS="ncurses-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -ltinfo"
+	export LDFLAGS="$LDFLAGS -ltinfo -liconv"
 
 	./configure			\
 		--prefix=/usr		\

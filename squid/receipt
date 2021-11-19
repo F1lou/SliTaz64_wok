@@ -1,23 +1,25 @@
 # SliTaz package receipt.
 
 PACKAGE="squid"
-VERSION="3.4.2"
+VERSION="5.2"
 CATEGORY="network"
 SHORT_DESC="Web/ftp proxy."
 MAINTAINER="pascal.bellard@slitaz.org"
 LICENSE="GPL2"
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
 WEB_SITE="http://www.squid-cache.org/"
-WGET_URL="${WEB_SITE}Versions/v3/${VERSION%.*}/$TARBALL"
+WGET_URL="${WEB_SITE}Versions/v5/$TARBALL"
 CONFIG_FILES="/etc/squid"
 
 DEPENDS="libsasl libldap libssl libltdl"
-BUILD_DEPENDS="perl openssl-dev openldap-dev cyrus-sasl-dev libcap-dev libdb"
+BUILD_DEPENDS="perl openssl-dev openldap-dev cyrus-sasl-dev libcap-dev
+	libdb libiconv-dev"
 SUGGESTED="iptables"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	./configure \
 		--prefix=/usr \
 		--sysconfdir=/etc/squid \
@@ -31,6 +33,7 @@ compile_rules()
 		--enable-http-violations \
 		--disable-ident-lookups \
 		--enable-storeio="aufs,diskd,ufs" \
+		--with-openssl \
 		--enable-ssl \
 		--enable-ssl-crtd \
 		--enable-underscores \

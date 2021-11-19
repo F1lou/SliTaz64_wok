@@ -12,7 +12,7 @@ WGET_URL="http://$PACKAGE.googlecode.com/files/$TARBALL"
 
 DEPENDS="gtk+ libwnck GConf"
 BUILD_DEPENDS="perl-xml-parser intltool glib-dev gtk+-dev libwnck-dev \
-autoconf automake"
+autoconf automake xorg-randrproto"
 
 # Rules to configure and make the package.
 compile_rules()

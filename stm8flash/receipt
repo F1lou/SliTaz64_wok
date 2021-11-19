@@ -18,6 +18,7 @@ BUILD_DEPENDS="libusb-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
+	export CFLAGS="$CFLAGS -fcommon"
 	make
 	make DESTDIR=$DESTDIR install
 }

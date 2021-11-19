@@ -11,11 +11,12 @@ WEB_SITE="https://grayskygames.com/sokoban.html"
 WGET_URL="https://grayskygames.com/sokoban/$TARBALL"
 
 DEPENDS="libsdl gcc-lib-base glibc-base"
-BUILD_DEPENDS="libsdl-dev"
+BUILD_DEPENDS="libsdl-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	cd $src
 	if [ ! -f gcc44.u.done ]; then
 		patch -p0 < $stuff/gcc44.u

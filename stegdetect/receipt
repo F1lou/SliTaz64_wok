@@ -15,7 +15,7 @@ TAGS="stenography"
 compile_rules()
 {
 	sed -i '/static int debug/d' stegdetect.c
-	./configure --prefix=/usr \
+	CC=gcc ./configure --prefix=/usr \
 		$CONFIGURE_ARGS &&
 	make
 }

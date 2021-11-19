@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="squashfs"
-VERSION="4.4"
+VERSION="4.5"
 CATEGORY="base-system"
 SHORT_DESC="Linux squashfs userland tools."
 MAINTAINER="pascal.bellard@slitaz.org"

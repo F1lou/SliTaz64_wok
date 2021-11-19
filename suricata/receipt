@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="suricata"
-VERSION="5.0.2"
+VERSION="6.0.4"
 CATEGORY="security"
 SHORT_DESC="Next Generation Intrusion Detection and Prevention Engine."
 MAINTAINER="erjo@slitaz.org"
@@ -15,13 +15,13 @@ DEPENDS="jansson libcap-ng libhtp libnetfilter_queue libnfnetlink
 	libpcap pcre yaml"
 BUILD_DEPENDS="jansson-dev libcap-ng-dev libhtp-dev libmnl libnet-dev 
 	libnfnetlink-dev libnetfilter_queue libnetfilter_queue-dev 
-	libpcap-dev rust-cargo yaml-dev zlib-dev"
+	libpcap-dev rust-cargo yaml-dev zlib-dev lz4-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	rm -f config.h
-
+	export LDFLAGS="$LDFLAGS -liconv"
 	./configure $CONFIGURE_ARGS		\
 		--enable-non-bundled-htp	\
 		--enable-nfqueue		\

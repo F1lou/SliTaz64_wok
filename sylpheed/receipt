@@ -13,7 +13,7 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="https://dotsrc.dl.osdn.net/osdn/sylpheed/68999/$TARBALL"
 
 DEPENDS="gtk+ libffi libssl"
-BUILD_DEPENDS="gtk+-dev openssl-dev libiconv-dev"
+BUILD_DEPENDS="gtk+-dev openssl-dev libiconv-dev libbsd-dev xorg-randrproto"
 
 # Rules to configure and make the package.
 compile_rules()

@@ -13,7 +13,8 @@ WGET_URL="http://stardict-3.googlecode.com/files/$TARBALL"
 
 DEPENDS="enchant gtk+ libsigc++ xorg-libSM"
 BUILD_DEPENDS="bzip2 enchant-dev gtk+-dev intltool libffi libsigc++-dev \
-	popt util-linux-uuid-dev xorg-libSM-dev zlib-dev"
+	popt util-linux-uuid-dev xorg-libSM-dev zlib-dev libiconv-dev
+	xorg-randrproto libbsd-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -22,7 +23,8 @@ compile_rules()
 		stardict-plugins/stardict-wordnet-plugin/scene.hpp
 	patch -p1 < $stuff/sigc++.patch || return 1
 	patch -p1 < $stuff/stardict_gcc43.patch || return 1
-
+	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./configure				\
 		--prefix=/usr			\
 		--disable-man			\

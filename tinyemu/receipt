@@ -18,6 +18,7 @@ SUGGESTED="linux-kvm"
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -lpthread"
 	sed -i 's|^CONFIG_INT128|#&|;s|/usr/local|/usr|' Makefile
 	mkdir -p $DESTDIR/usr/bin
 	make &&

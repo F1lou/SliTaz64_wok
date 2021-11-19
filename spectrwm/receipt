@@ -15,7 +15,7 @@ WGET_URL="$WEB_SITE/archive/SPECTRWM_${VERSION//./_}.tar.gz"
 DEPENDS="xcb-util xcb-util-keysyms xcb-util-wm xorg-libXcursor xorg-libXft"
 BUILD_DEPENDS="cacerts xcb-util-dev xcb-util-keysyms-dev xcb-util-wm-dev 
 	xorg-libX11-dev xorg-libXcursor-dev xorg-libXft-dev 
-	xorg-libXrandr-dev xorg-libXt-dev"
+	xorg-libXrandr-dev xorg-libXt-dev libbsd-dev"
 
 CONFIG_FILES="/etc/spectrwm.conf"
 
