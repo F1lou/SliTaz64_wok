@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libsoup-gnome"
-VERSION="2.48.0"
+VERSION="2.74.1"
 CATEGORY="x-window"
 SHORT_DESC="GNOME Soup Library."
 MAINTAINER="al.bobylev@gmail.com"
@@ -15,7 +15,7 @@ WANTED="libsoup"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/lib64
 
-	cp -a $install/usr/lib/libsoup-gnome*.so* $fs/usr/lib
+	cp -a $install/usr/lib64/libsoup-gnome*.so* $fs/usr/lib64
 }

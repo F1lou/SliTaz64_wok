@@ -1,0 +1,11 @@
+--- icd-main.orig	2021-11-22 17:51:08.786616915 +0000
++++ icd-main.cpp	2021-11-22 17:51:30.269537019 +0000
+@@ -28,7 +28,7 @@
+ #include <sys/stat.h>
+ #include <cstdio>
+ #include <cstring>
+-
++#include <unistd.h>
+ #include "inotify-cxx.h"
+ #include "appinst.h"
+ #include "appargs.h"

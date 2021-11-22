@@ -16,6 +16,8 @@ DEPENDS="gcc-lib-base"
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
+	patch icd-main.cpp < $stuff/icd-main.cpp.patch
 	sed -i 's|/usr/local|/usr|' Makefile
 	make &&
 	make DESTDIR=$DESTDIR install

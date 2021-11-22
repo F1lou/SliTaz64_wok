@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gvfs"
-VERSION="1.22.1"
+VERSION="1.39.4"
 CATEGORY="system-tools"
 SHORT_DESC="Userspace virtual filesystem designed to work with gio"
 MAINTAINER="pankso@slitaz.org"
@@ -14,25 +14,33 @@ gvfs-libmtp gvfs-obexftp gvfs-smb gvfs-udisks2"
 
 DEPENDS="dbus glib glibc-base libffi libgio pcre eudev zlib"
 BUILD_DEPENDS="dbus-dev glib-dev eudev-dev libgudev-dev fuse-dev \
-udisks2-dev samba-dev smbclient expat-dev libarchive-dev libgcrypt-dev \
+udisks2-dev expat-dev libarchive-dev libgcrypt-dev \
 libsoup-dev libxml2-dev libcdio-dev dbus-glib-dev bluez-dev expat-dev \
 libgphoto2-dev libmtp-dev gtk+3-dev glibc-dev sqlite-dev \
-libcdio-paranoia-dev libtool liblzma-dev"
+libcdio-paranoia-dev libtool liblzma-dev" # samba-dev smbclient 
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	patch -p0 -i $stuff/allow-dropbear-ssh.patch
+	#~ patch -p0 -i $stuff/allow-dropbear-ssh.patch
 
-	./configure \
-		--prefix=/usr \
-		--libexecdir=/usr/lib/$PACKAGE \
-		--sysconfdir=/etc \
-		--disable-documentation \
-		--disable-bash-completion \
-		$CONFIGURE_ARGS && \
-		make && make install
+	#~ ./configure \
+		#~ --prefix=/usr \
+		#~ --libexecdir=/usr/lib/$PACKAGE \
+		#~ --sysconfdir=/etc \
+		#~ --disable-documentation \
+		#~ --disable-bash-completion \
+		#~ $CONFIGURE_ARGS && \
+		#~ make && make install
+	mkdir build && cd build
+	meson setup --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --libexecdir=/usr/libexec \
+    -Dsystemduserunitdir=no &&
+	ninja && ninja install
 }
+
+
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
