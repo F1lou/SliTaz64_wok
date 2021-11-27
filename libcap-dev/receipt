@@ -17,10 +17,10 @@ HOST_ARCH="x86_64 i486 arm"
 genpkg_rules()
 {
 	mkdir -p $fs/usr
-	mkdir -p $fs/lib $fs/lib64
+	mkdir -p $fs/usr/lib $fs/usr/lib64
 
 	cp -a $install/usr/include	$fs/usr
-	cp -a $src/libcap/*.*a		$fs/lib64
-	cp -a $install/lib64/pkgconfig		$fs/lib
+	cp -a $src/libcap/*.*a		$fs/usr/lib64
+	cp -a $install/lib64/pkgconfig		$fs/usr/lib
 }
 

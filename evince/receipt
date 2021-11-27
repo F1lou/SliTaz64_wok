@@ -15,14 +15,21 @@ DEPENDS="lcms poppler tiff dbus-glib glib util-linux-uuid"
 BUILD_DEPENDS="gnome-doc-utils-dev docbook-xml libxml2-dev \
 gnome-icon-theme gtk+3-dev intltool lcms-dev util-linux-uuid-dev \
 poppler-dev tiff-dev dbus-glib-dev xorg-dev pixman-dev \
-libepoxy-dev mesa-dev adwaita-icon-theme libhandy-dev libiconv-dev"
+libepoxy-dev mesa-dev adwaita-icon-theme libhandy-dev libiconv-dev \
+gobject-introspection-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	mkdir build && cd build
 	CXXFLAGS="$CXXFLAGS -liconv"
-	meson --prefix=/usr -Dgtk_doc=false -Dsystemduserunitdir=no .. &&
+	meson --prefix=/usr		\
+	--libexecdir=/usr/lib/$PACKAGE \
+	-Dgtk_doc=false 		\
+	-Dsystemduserunitdir=no \
+	-Dnautilus=false		\
+	-Dcomics=disabled		\
+	-Dkeyring=disabled .. &&
 	ninja && ninja install
 
 	#~ ./configure --prefix=/usr \
@@ -43,10 +50,10 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/share/glib-2.0 $fs/usr/lib $fs/usr/share/applications
+	mkdir -p $fs/usr/share/glib-2.0 $fs/usr/lib64 $fs/usr/share/applications
 	cp -a $install/usr/bin $fs/usr
-	cp -a $install/usr/lib/*.so* $fs/usr/lib
-	cp -a $install/usr/lib/evince $fs/usr/lib
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
+	cp -a $install/usr/lib64/evince $fs/usr/lib64
 
 	cp -a $install/usr/share/dbus-1 $fs/usr/share
 	cp -a $install/usr/share/icons $fs/usr/share
@@ -55,5 +62,5 @@ genpkg_rules()
 	cp -a $stuff/evince.desktop $fs/usr/share/applications
 
 	# Removing unwanted files
-	find $fs/usr/lib -name "*.*a" -exec rm -rf {} \;
+	# find $fs/usr/lib -name "*.*a" -exec rm -rf {} \;
 }

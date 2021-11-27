@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gvfs-udisks2"
-VERSION="1.22.1"
+VERSION="1.45.3"
 CATEGORY="system-tools"
 SHORT_DESC="Udisks2 volume monitor for gvfs"
 MAINTAINER="pankso@slitaz.org"

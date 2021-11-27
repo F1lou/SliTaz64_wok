@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gsettings-desktop-schemas"
-VERSION="3.34.0"
+VERSION="3.38.0"
 CATEGORY="x-window"
 SHORT_DESC="Collection of GSettings schemas for settings shared by various components of a GNOME Desktop."
 MAINTAINER="al.bobylev@gmail.com"
