@@ -15,7 +15,7 @@ SUGGESTED="gvfs"
 DEPENDS="glib glibc-base libffi libgio menu-cache pcre zlib"
 BUILD_DEPENDS="automake dbus-dev dbus-glib-dev expat-dev gtk-doc gtk+-dev 
 	libgio-dev libtool libxcb-dev menu-cache-dev shared-mime-info-dev 
-	startup-notification-dev xcb-util-dev" # git-version deps: gtk-doc libtool automake
+	startup-notification-dev xcb-util-dev libbsd-dev" # git-version deps: gtk-doc libtool automake
 
 GENERIC_MENUS="no"
 

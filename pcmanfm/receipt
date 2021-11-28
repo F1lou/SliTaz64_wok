@@ -9,7 +9,9 @@ LICENSE="GPL2"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WEB_SITE="http://pcmanfm.sourceforge.net/"
 #WGET_URL="$SF_MIRROR/$PACKAGE/files/$TARBALL"
-WGET_URL="http://git.lxde.org/gitweb/?p=lxde/pcmanfm.git;a=snapshot;h=$VERSION;sf=txz"
+#WGET_URL="http://git.lxde.org/gitweb/?p=lxde/pcmanfm.git;a=snapshot;h=$VERSION;sf=txz"
+WGET_URL="https://sourceforge.net/projects/$PACKAGE/files/PCManFM%20%2B%20Libfm%20%28tarball%20release%29/PCManFM/$TARBALL/download"
+
 TAGS="file-manager"
 HOST_ARCH="x86_64 i486 arm"
 
@@ -17,7 +19,8 @@ SUGGESTED="gvfs"
 DEPENDS="glibc-base glib libgio util-linux-uuid libxcb xcb-util expat \
 zlib fontconfig freetype gtk+ startup-notification dbus dbus-glib libfm-gtk"
 BUILD_DEPENDS="gtk+-dev dbus-glib-dev dbus-dev startup-notification-dev \
-libxcb-dev xcb-util-dev libfm-dev menu-cache-dev expat-dev libfm-gtk gtk-doc libtool"
+libxcb-dev xcb-util-dev libfm-dev menu-cache-dev expat-dev libfm-gtk \
+gtk-doc libtool libbsd-dev"
 
 # Handle cross compilation.
 case "$ARCH" in
@@ -52,6 +55,6 @@ genpkg_rules()
 	# Add custom actions
 	mkdir -p $fs/usr/share/file-manager
 	cp -a $stuff/actions $fs/usr/share/file-manager
-	cp -a $stuff/gvfs-mount-archive.sh $fs/usr/bin
-	chmod +x $fs/usr/bin/gvfs-mount-archive.sh
+	#~ cp -a $stuff/gvfs-mount-archive.sh $fs/usr/bin
+	#~ chmod +x $fs/usr/bin/gvfs-mount-archive.sh
 }
