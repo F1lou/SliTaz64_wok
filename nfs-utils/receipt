@@ -34,13 +34,13 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure		\
-		--prefix=/usr          \
-		--sysconfdir=/etc      \
-		--sbindir=/sbin        \
-		--disable-nfsv4	\
-		--disable-gss	\
-		$CONFIGURE_ARGS	\
+	./configure				\
+		--prefix=/usr       \
+		--sysconfdir=/etc   \
+		--sbindir=/usr/sbin \
+		--disable-nfsv4		\
+		--disable-gss		\
+		$CONFIGURE_ARGS		\
 		${ARCH_ARGS} &&
 	make &&
 	make install
@@ -54,7 +54,7 @@ genpkg_rules()
 	cp -a stuff/*		$fs
 	cp -a $install/var	$fs
 	cp -a $install/sbin	$fs
-	#~ cp -a $install/usr/sbin	$fs/usr
+	cp -a $install/usr/sbin	$fs/usr
 }
 
 post_install()
