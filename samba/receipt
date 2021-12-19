@@ -21,7 +21,7 @@ BUILD_DEPENDS="openldap openldap-dev libcomerr-dev cups-dev talloc-dev \
 	pkg-config libldap krb5-dev lmdb zlib-dev lmdb-dev gnutls-dev py3k-dev \
 	perl-parse-yapp jansson-dev libarchive-dev dbus-dev icu-dev \
 	rpcsvc-proto libiconv-dev talloc-python libtirpc-dev libxslt-dev \
-	python3-markdown python3-dnspython"
+	python3-markdown python3-dnspython gpgme-dev"
 
 # Rules to configure and make the package.
 compile_rules()

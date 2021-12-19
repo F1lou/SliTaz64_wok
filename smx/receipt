@@ -12,11 +12,13 @@ WGET_URL="http://$PACKAGE.googlecode.com/files/$TARBALL"
 
 DEPENDS="unixODBC sqlite libgd libcrypto gcc-lib-base zlib"
 BUILD_DEPENDS="apache-dev apr-dev apr-util-dev unixODBC-dev \
-sqlite libgd-dev openssl-dev perl libtool"
+sqlite libgd-dev openssl-dev perl libtool libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
+	export CFLAGS="$CFLAGS -fpermissive"
 	cd $src
 	sed -i	-e 's/ap_get_server_version/ap_get_server_banner/' \
 		-e 's/remote_ip/client_ip/' modsmx/modsmx.h
