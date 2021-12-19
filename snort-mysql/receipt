@@ -11,11 +11,13 @@ WEB_SITE="https://www.snort.org/"
 WGET_URL="https://www.snort.org/downloads/1207"
 DEPENDS="pcre libdnet libdaq libmysqlclient"
 BUILD_DEPENDS="pcre-dev libpcap-dev libdaq-dev libdnet-dev wget zlib-dev \
-mysql-dev flex"
+mysql-dev flex libtirpc-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export CFLAGS="$CFLAGS -I/usr/include/tirpc/ -fcommon"
+	export LDFLAGS="$LDFLAGS -liconv"
 	./configure \
 		--prefix=/usr \
 		--with-mysql \

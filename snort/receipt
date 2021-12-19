@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="snort"
-VERSION="2.9.16"
+VERSION="2.9.19"
 CATEGORY="network"
 SHORT_DESC="Network intrusion prevention and detection system (IDS/IPS)."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -13,11 +13,12 @@ WGET_URL="${WEB_SITE}downloads/$PACKAGE/$TARBALL"
 
 DEPENDS="libdaq libdnet openssl pcre"
 BUILD_DEPENDS="flex libdaq-dev libdnet-dev libpcap-dev luajit-dev 
-	openssl-dev pcre-dev"
+	openssl-dev pcre-dev libtirpc-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export CFLAGS="$CFLAGS -I/usr/include/tirpc/"
 	./configure		\
 		$CONFIGURE_ARGS &&
 	make &&
