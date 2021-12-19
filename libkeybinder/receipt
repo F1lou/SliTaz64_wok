@@ -11,9 +11,10 @@ SOURCE="keybinder"
 TARBALL="$SOURCE-3.0-$VERSION.tar.gz"
 WGET_URL="https://github.com/kupferlauncher/$SOURCE/releases/download/$SOURCE-3.0-v$VERSION/$TARBALL"
 
-DEPENDS="gtk+"
-BUILD_DEPENDS="gtk+-dev gobject-introspection-dev xorg-libXext-dev python-dev \
-pygtk-dev pygobject-dev automake autoconf libtool lua-dev"
+DEPENDS="gtk+3"
+BUILD_DEPENDS="gtk+3-dev gobject-introspection-dev xorg-libXext-dev python-dev \
+pygtk-dev pygobject-dev automake autoconf libtool lua-dev liblzma-dev \
+libbsd-dev"
 
 # Rules to configure and make the package.
 compile_rules()
