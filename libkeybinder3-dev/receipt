@@ -1,15 +1,15 @@
 # SliTaz package receipt.
 
-PACKAGE="libkeybinder-dev"
-VERSION="0.3.1"
+PACKAGE="libkeybinder3-dev"
+VERSION="0.3.2"
 CATEGORY="development"
 SHORT_DESC="Library for registering global keyboard shortcuts"
 MAINTAINER="al.bobylev@gmail.com"
 LICENSE="GPL2"
 WEB_SITE="https://github.com/kupferlauncher/keybinder"
 
-WANTED="libkeybinder"
-DEPENDS="libkeybinder gtk+-dev gobject-introspection-dev xorg-libXext-dev \
+WANTED="libkeybinder3"
+DEPENDS="libkeybinder3 gtk+3-dev gobject-introspection-dev xorg-libXext-dev \
 python-dev pygtk-dev pygobject-dev pkg-config"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
