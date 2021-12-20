@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="gnumeric-de"
+VERSION="1.12.50"
+CATEGORY="office"
+SHORT_DESC="Office Spreadsheet application - German locales"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL"
+WEB_SITE="http://www.gnumeric.org/"
+
+WANTED="gnumeric"
+DEPENDS="gnumeric"
+
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/locale
+
+	cp -a $install/usr/share/locale/de $fs/usr/share/locale
+}
