@@ -13,8 +13,9 @@ WGET_URL="$SF_MIRROR/timidity/$TARBALL"
 
 DEPENDS="alsa-lib flac gtk+ jack-audio-connection-kit libao libdb libogg \
 	libvorbis portaudio xorg-libXaw3d"
-BUILD_DEPENDS="alsa-lib-dev flac-dev gtk+-dev jack-audio-connection-kit-dev \
-	libao-dev libogg-dev libvorbis-dev portaudio-dev xorg-libXaw3d-dev"
+BUILD_DEPENDS="alsa-lib-dev flac-dev gtk+-dev jack-audio-connection-kit \
+	libao-dev libogg-dev libvorbis-dev portaudio-dev xorg-libXaw3d-dev \
+	jack-audio-connection-kit-dev xorg-randrproto"
 
 # Rules to configure and make the package.
 compile_rules()

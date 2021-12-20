@@ -11,7 +11,7 @@ TARBALL="$VERSION.tar.gz"
 WGET_URL="https://github.com/kismetwireless/$PACKAGE/archive/refs/tags/$TARBALL"
 BRANCH="$VERSION"
 
-BUILD_DEPENDS="subversion"
+BUILD_DEPENDS="subversion libpcap-dev"
 
 # Rules to configure and make the package.
 compile_rules()

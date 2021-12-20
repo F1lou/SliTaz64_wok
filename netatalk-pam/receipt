@@ -15,11 +15,12 @@ PROVIDE="netatalk:pam"
 
 DEPENDS="perl libdb libcrypto cups gnutls libgcrypt libgpg-error  \
 libwrap zlib pam libcomerr3"
-BUILD_DEPENDS="db-dev libcrypto-dev pam pam-dev file"
+BUILD_DEPENDS="db-dev libcrypto-dev pam pam-dev file openldap-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export CFLAGS="$CFLAGS -fcommon"
 	cd $src
 	./configure --with-pam --prefix=/usr --sysconfdir=/etc \
 	--libexecdir=/usr/lib/netatalk \

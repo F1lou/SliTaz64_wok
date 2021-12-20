@@ -14,10 +14,10 @@ TAGS="LXDE gtk2 panel"
 HOST_ARCH="x86_64 i486 arm"
 
 SUGGESTED="lxde lxsession slitaz-icon"
-DEPENDS="alsa-lib gtk+3 menu-cache wireless_tools libxml2 slitaz-menus libkeybinder libwnck"
+DEPENDS="alsa-lib gtk+ menu-cache wireless_tools libxml2 slitaz-menus libkeybinder libwnck"
 BUILD_DEPENDS="intltool libfm-dev libkeybinder-dev curl-dev libkeybinder-dev \
-gtk+3-dev menu-cache-dev alsa-lib-dev wireless_tools-dev libxml2-dev lxmenu-data \
-xorg-libSM-dev liblzma-dev"
+gtk+-dev menu-cache-dev alsa-lib-dev wireless_tools-dev libxml2-dev lxmenu-data \
+xorg-libSM-dev liblzma-dev xorg-randrproto"
 
 # Handle cross compilation
 case "$ARCH" in
