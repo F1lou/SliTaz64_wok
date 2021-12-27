@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="isl-dev"
+VERSION="0.24"
+CATEGORY="development"
+SHORT_DESC="isl is a library for manipulating sets and relations of integer points bounded by linear constraints."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="MIT"
+WEB_SITE="http://freshmeat.sourceforge.net/projects/isl"
+
+WANTED="isl"
+
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+}

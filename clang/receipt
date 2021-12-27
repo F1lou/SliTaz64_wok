@@ -1,6 +1,6 @@
 # SliTaz package receipt.
 
-PACKAGE="llvm"
+PACKAGE="clang"
 VERSION="13.0.0"
 CATEGORY="development"
 SHORT_DESC="Modular compiler toolchain collection."
@@ -8,21 +8,19 @@ MAINTAINER="nhc1@gmx.net"
 LICENSE="MIT"
 WEB_SITE="http://llvm.org/"
 TARBALL="$PACKAGE-$VERSION.src.tar.xz"
-WGET_URL="https://github.com/$PACKAGE/$PACKAGE-project/releases/download/llvmorg-$VERSION/$TARBALL"
+WGET_URL="https://github.com/llvm/llvm-project/releases/download/llvmorg-$VERSION/$TARBALL"
 
-DEPENDS="libffi gcc-lib-base"
-BUILD_DEPENDS="libffi-dev libffi perl gcc libiconv-dev"
+DEPENDS=""
+BUILD_DEPENDS=""
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	cd tools && \
-	wget -c https://github.com/$PACKAGE/$PACKAGE-project/releases/download/llvmorg-$VERSION/clang-$VERSION.src.tar.xz --no-check-certificate && \
-	tar xf clang-$VERSION.src.tar.xz && mv clang-$VERSION.src clang && cd $src
 	mkdir build && cd build
-	export LDFLAGS="$LDFLAGS -liconv"
+	#export LDFLAGS="$LDFLAGS -liconv"
 	CC=gcc CXX=g++ cmake \
 		-DCMAKE_INSTALL_PREFIX=/usr		\
+		-DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra" \
 		-DLLVM_ENABLE_FFI=ON			\
 		-DCMAKE_BUILD_TYPE=Release		\
 		-DLLVM_BUILD_LLVM_DYLIB=ON                \
@@ -35,7 +33,6 @@ compile_rules()
 	ninja	&&
 	
 		#~ --sysconfdir=/etc \
-		#-DLLVM_ENABLE_PROJECTS="clang"	\
 		
 	DESTDIR=$DESTDIR ninja install
 }

@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="xvidcap"
+VERSION="1.1.7"
+CATEGORY="multimedia"
+SHORT_DESC="xvidcap is a screen capture enabling you to capture videos off your X-Window desktop for illustration or documentation purposes."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="GPL2"
+WEB_SITE="http://xvidcap.sourceforge.net/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://sourceforge.net/projects/xvidcap/files/latest/download/$TARBALL"
+
+BUILD_DEPENDS="gtk+-dev libglade-dev xorg-libXmu-dev libbsd-dev xorg-randrproto
+	xorg-libXfixes-dev xorg-libXdamage-dev"
+
+HOST_ARCH="x86_64"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	LIBS="-lX11 -ldl -lXext -lz" ./configure			\
+		--prefix=/usr		\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+	cd	$fs/usr/lib
+	_mylib=$(basename libxvidcore.so.*)
+	ln -sf ${_mylib} libxvidcore.so.4
+	ln -sf ${_mylib} libxvidcore.so
+}
