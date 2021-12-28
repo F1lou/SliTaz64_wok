@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="plib"
+VERSION="1.8.5"
+CATEGORY="games"
+SHORT_DESC="A Suite of Portable Game Libraries."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="LGPL"
+WEB_SITE="http://plib.sourceforge.net/index.html"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="http://plib.sourceforge.net/dist/$TARBALL"
+
+DEPENDS="mesa"
+BUILD_DEPENDS="mesa-dev xorg-randrproto libbsd-dev xorg-libXmu-dev
+	xorg-libXshmfence-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure	--prefix=/usr $CONFIGURE_ARGS &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs
+
+	cp -a $install/usr	$fs
+}

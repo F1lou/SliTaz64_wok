@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="openal"
-VERSION="1.20.1"
+VERSION="1.21.1"
 CATEGORY="multimedia"
 TAGS="multimedia audio sound 3D"
 SHORT_DESC="cross-platform 3D audio API."
@@ -14,12 +14,12 @@ TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="${WEB_SITE}$PACKAGE-releases/$TARBALL"
 
 DEPENDS="gcc-lib-base libatomic"
-BUILD_DEPENDS="cmake gcc libatomic"
+BUILD_DEPENDS="cmake gcc libatomic libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export	LDFLAGS="$LDFLAGS -latomic"
+	export	LDFLAGS="$LDFLAGS -latomic -liconv"
 
 	cmake -DCMAKE_INSTALL_PREFIX=/usr &&
 	make &&

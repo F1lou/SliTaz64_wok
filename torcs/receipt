@@ -1,0 +1,42 @@
+# SliTaz package receipt.
+
+PACKAGE="torcs"
+VERSION="1.3.7"
+CATEGORY="games"
+TAGS="racing"
+SHORT_DESC="The Open Racing Car Simulator."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="GPL"
+WEB_SITE="http://torcs.sourceforge.net/index.php"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="http://sourceforge.net/projects/$PACKAGE/files/all-in-one/$VERSION/$TARBALL/download"
+
+DEPENDS="mesa freeglut freealut libogg libvorbis xorg-libXmu"
+BUILD_DEPENDS="mesa-dev freeglut-dev xorg-randrproto libiconv-dev libbsd-dev
+	plib freealut-dev libogg-dev libvorbis-dev xorg-libXmu-dev 
+	xorg-libXshmfence-dev zlib-dev libpng-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export LDFLAGS="$LDFLAGS -liconv"
+	export CFLAGS="$CFLAGS -I$src/export/include/"
+	./configure --prefix=/usr &&
+	make && make install && make datainstall
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	# programs
+	mkdir -p $fs/usr/bin
+	cp $install/usr/bin/wesnoth		$fs/usr/bin/
+
+	# data
+	mkdir -p $fs/usr/share/wesnoth/
+	cp -a $install/usr/share/wesnoth/data	$fs/usr/share/wesnoth/
+	cp -a $install/usr/share/wesnoth/fonts	$fs/usr/share/wesnoth/
+	cp -a $install/usr/share/wesnoth/images	$fs/usr/share/wesnoth/
+	cp -a $install/usr/share/wesnoth/sounds	$fs/usr/share/wesnoth/
+}
