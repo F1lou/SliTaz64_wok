@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="protobuf-dev"
-VERSION="3.11.4"
+VERSION="3.17.3"
 CATEGORY="development"
 SHORT_DESC="Protocol buffers - Google's data interchange format, development files."
 MAINTAINER="pankso@slitaz.org"

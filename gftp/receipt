@@ -1,24 +1,24 @@
 # SliTaz package receipt.
 
 PACKAGE="gftp"
-VERSION="2.0.19"
+VERSION="2.8.0b"
 CATEGORY="network"
 SHORT_DESC="Small and fast FTP client."
 MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL2"
-TARBALL="$PACKAGE-$VERSION.tar.gz"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
 WEB_SITE="http://www.gftp.org/"
-WGET_URL="http://www.gftp.org/$TARBALL"
+WGET_URL="https://github.com/masneyb/$PACKAGE/releases/download/$VERSION/$TARBALL"
 
-DEPENDS="gtk+ xorg-libXdamage"
-BUILD_DEPENDS="pkg-config gtk+-dev gtk+"
+DEPENDS="gtk+ xorg-libXdamage openssl"
+BUILD_DEPENDS="pkg-config gtk+-dev gtk+ openssl-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	cd $src
 	./configure --prefix=/usr --mandir=/usr/share/man \
-	--disable-ssl --disable-textport \
+	--disable-textport \
 	$CONFIGURE_ARGS &&
 	make &&
 	make DESTDIR=$DESTDIR install

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libav"
-VERSION="0.6.6"
+VERSION="12.3"
 CATEGORY="multimedia"
 SHORT_DESC="Audio and video conversion library."
 MAINTAINER="al.bobylev@gmail.com"
@@ -11,7 +11,7 @@ WEB_SITE="https://www.libav.org/"
 #TARBALL="$PACKAGE-$VERSION.tar.bz2"
 #WGET_URL="git|git://github.com/andoma/libav.git"
 #BRANCH="v$VERSION"
-TARBALL="$PACKAGE-$VERSION.tar.gz"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="${WEB_SITE}releases/$TARBALL"
 
 DEPENDS="libsdl xorg-libXfixes zlib"
@@ -26,18 +26,15 @@ compile_rules()
 	./configure				\
 		--prefix=/usr			\
 		 --enable-avfilter		\
-		 --enable-avfilter-lavf		\
 		--disable-debug			\
 		--disable-doc			\
 		 --enable-gpl			\
 		 --enable-nonfree		\
-		 --enable-postproc		\
 		 --enable-pthreads		\
 		 --enable-runtime-cpudetect	\
 		 --enable-shared		\
-		 --enable-x11grab		\
-		--arch=i486			\
-		--cpu=i486 &&
+		--arch=x86_64			\
+		--cpu=x86_64 &&
 	make &&
 	make install
 }

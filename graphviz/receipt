@@ -12,10 +12,10 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="https://gitlab.com/$PACKAGE/$PACKAGE/-/archive/$VERSION/$TARBALL"
 
 DEPENDS="expat gcc-lib-base jpeg libpng librsvg libxml2 pcre 
-	util-linux-uuid zlib"
+	util-linux-uuid zlib libnsl"
 BUILD_DEPENDS="py3k py3k-dev gcc expat-dev gdk-pixbuf-dev guile-dev jpeg-dev 
 	libcroco-dev libgd-dev libpng-dev librsvg-dev libxml2-dev 
-	ocaml pango-dev pcre-dev pkg-config libiconv-dev
+	ocaml pango-dev pcre-dev pkg-config libiconv-dev libnsl-dev
 	python-dev ruby-dev swig tcl-dev tk-dev util-linux-uuid-dev 
 	xorg-dev zlib-dev automake sed liblzma-dev libbsd-dev" # php-cli php-dev lua-dev
 

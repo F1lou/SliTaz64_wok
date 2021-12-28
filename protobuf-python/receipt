@@ -13,7 +13,7 @@ TARBALL="$SOURCE-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}archive/v$VERSION.tar.gz"
 
 DEPENDS="protobuf py3k"
-BUILD_DEPENDS="libatomic protobuf-dev py3k-dev python3-setuptools \
+BUILD_DEPENDS="$DEPENDS libatomic protobuf-dev py3k-dev python3-setuptools \
 	python3-pip"
 
 # Rules to configure and make the package.
