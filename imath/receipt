@@ -1,18 +1,18 @@
 # SliTaz package receipt.
 
-PACKAGE="openexr"
+PACKAGE="imath"
 VERSION="3.1.3"
 CATEGORY="x-window"
-SHORT_DESC="Openexr library for EXR images."
-MAINTAINER="slaxemulator@gmail.com"
+SHORT_DESC="Imath is a basic, light-weight, and efficient C++ representation of 2D and 3D vectors and matrices."
+MAINTAINER="nhc1@gmx.net"
 LICENSE="BSD"
 WEB_SITE="https://www.openexr.com/"
 
-TARBALL="$PACKAGE-$VERSION.tar.gz"
-WGET_URL="https://github.com/$PACKAGE/$PACKAGE/archive/v$VERSION/$TARBALL"
+TARBALL="v$VERSION.tar.gz"
+WGET_URL="https://github.com/AcademySoftwareFoundation/Imath/archive/refs/tags/$TARBALL"
 
-DEPENDS="gcc-lib-base zlib imath"
-BUILD_DEPENDS="cmake gcc zlib-dev imath-dev"
+DEPENDS=""
+BUILD_DEPENDS=""
 
 # Rules to configure and make the package.
 compile_rules()
@@ -30,6 +30,5 @@ genpkg_rules()
 {
 	mkdir -p $fs/usr/lib64
 
-	cp -a $install/usr/bin		$fs/usr
 	cp -a $install/usr/lib64/*.so*	$fs/usr/lib64
 }

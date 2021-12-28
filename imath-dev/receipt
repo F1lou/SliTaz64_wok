@@ -1,15 +1,15 @@
 # SliTaz package receipt.
 
-PACKAGE="openexr-dev"
+PACKAGE="imath-dev"
 VERSION="3.1.3"
 CATEGORY="development"
-SHORT_DESC="Development files for openexr."
-MAINTAINER="slaxemulator@gmail.com"
+SHORT_DESC="Development files for imath."
+MAINTAINER="nhc1@gmx.net"
 LICENSE="BSD"
-WEB_SITE="https://www.openexr.com/"
+WEB_SITE="https://github.com/AcademySoftwareFoundation/Imath/"
 
-DEPENDS="gcc openexr pkg-config"
-WANTED="openexr"
+DEPENDS="imath"
+WANTED="imath"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

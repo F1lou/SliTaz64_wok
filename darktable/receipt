@@ -12,9 +12,9 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://github.com/$PACKAGE-org/$PACKAGE/releases/download/release-$VERSION/$TARBALL"
 DEPENDS="gtk+3 zlib openjpeg exiftool pugixml libgphoto2 libwebp-dev openexr sqlite
 	librsvg curl lcms2 json-glib exiv2"
-BUILD_DEPENDS="$DEPENDS libiconv-dev zlib-dev gtk+3-dev openjpeg-dev libxml2-dev pugixml
-	libgphoto2-dev libwebp-dev openexr sqlite-dev librsvg-dev curl-dev
-	lcms2-dev json-glib-dev exiv2-dev" # llvm
+BUILD_DEPENDS="libiconv-dev zlib-dev gtk+3-dev openjpeg-dev libxml2-dev pugixml
+	libgphoto2-dev libwebp-dev openexr-dev sqlite-dev librsvg-dev curl-dev
+	lcms2-dev json-glib-dev exiv2-dev imath-dev" # llvm
 
 ARCH="x86_64"
 
@@ -23,14 +23,10 @@ compile_rules()
 {
 	export LDFLAGS="$LDFLAGS -liconv"
 	export CFLAGS="$CFLAGS -fPIC"
-	# ccmake -DCMAKE_BUILD_TYPE=Release -DUSE_OPENEXR=OFF &&
 	./build.sh \
 		--prefix /usr			\
 		--build-type Release	\
-		--disable-openexr		\
 		--install
-	
-	# OPENEXR_INCLUDE_DIR="/usr/include/OpenEXR/"	./build.sh
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

@@ -21,16 +21,16 @@ compile_rules()
 	tar xf clang-$VERSION.src.tar.xz && mv clang-$VERSION.src clang && cd $src
 	mkdir build && cd build
 	export LDFLAGS="$LDFLAGS -liconv"
-	CC=gcc CXX=g++ cmake \
+	cmake \
 		-DCMAKE_INSTALL_PREFIX=/usr		\
 		-DLLVM_ENABLE_FFI=ON			\
 		-DCMAKE_BUILD_TYPE=Release		\
-		-DLLVM_BUILD_LLVM_DYLIB=ON                \
-		-DLLVM_LINK_LLVM_DYLIB=ON                 \
-		-DLLVM_ENABLE_RTTI=ON                     \
+		-DLLVM_BUILD_LLVM_DYLIB=ON      \
+		-DLLVM_LINK_LLVM_DYLIB=ON       \
+		-DLLVM_ENABLE_RTTI=ON           \
 		-DLLVM_TARGETS_TO_BUILD="all"	\
-		-DLLVM_BUILD_TESTS=ON                     \
-		-Wno-dev -G Ninja ..                      &&
+		-DLLVM_BUILD_TESTS=ON           \
+		-Wno-dev -G Ninja ..            &&
 	
 	ninja	&&
 	
