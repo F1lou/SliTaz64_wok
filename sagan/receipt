@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="sagan"
-VERSION="0.2.0"
+VERSION="2.0.1"
 CATEGORY="security"
 SHORT_DESC="Multi-threaded, real time system and event log monitoring system"
 MAINTAINER="erjo@slitaz.org"
@@ -11,18 +11,16 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="http://sagan.softwink.com/download/$TARBALL"
 
 DEPENDS="libesmtp libpcap libdnet liblognorm sagan-rules pcre"
-BUILD_DEPENDS="libesmtp-dev libpcap-dev libdnet-dev liblognorm-dev"
+BUILD_DEPENDS="libesmtp-dev libpcap-dev libdnet-dev liblognorm-dev
+	yaml-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	cd $src
+	export CFLAGS="$CFLAGS -Wno-format"
 	./configure $CONFIGURE_ARGS \
 		--sysconfdir=/etc/sagan \
-		--disable-mysql \
-		--disable-postgresql \
-		--disable-prelude \
-		--disable-lognorm \
+		--disable-lognorm 		\
 	&& make && make install
 }
 

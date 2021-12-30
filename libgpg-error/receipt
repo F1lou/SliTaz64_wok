@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libgpg-error"
-VERSION="1.42"
+VERSION="1.43"
 CATEGORY="security"
 SHORT_DESC="Common error messages for GnuPG."
 MAINTAINER="erjo@slitaz.org"

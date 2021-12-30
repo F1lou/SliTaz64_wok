@@ -15,7 +15,7 @@ gdk-pixbuf glib glibc-base gtk+ libffi libgio libpng libxcb pango \
 pixman xorg-libX11 xorg-libXau xorg-libXcomposite xorg-libXcursor \
 xorg-libXdamage xorg-libXdmcp xorg-libXext xorg-libXfixes \
 xorg-libXinerama xorg-libXrandr xorg-libXrender zlib"
-BUILD_DEPENDS="gtk+-dev"
+BUILD_DEPENDS="gtk+-dev gdk-pixbuf-dev"
 
 # Rules to configure and make the package.
 compile_rules()

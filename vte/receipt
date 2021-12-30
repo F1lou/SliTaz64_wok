@@ -1,18 +1,19 @@
 # SliTaz package receipt.
 
 PACKAGE="vte"
-VERSION="0.28.2" # Also --> python-vte
+VERSION="0.66.2" # Also --> python-vte
 CATEGORY="utilities"
 SHORT_DESC="Terminal capabilities for GTK+ widgets."
 MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL2"
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
 WEB_SITE="https://www.gnome.org/"
 WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION%.*}/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
-DEPENDS="gtk+ ncurses xorg-libXdamage"
-BUILD_DEPENDS="gtk+-dev ncurses-dev"
+DEPENDS="gtk+3 ncurses xorg-libXdamage pcre2"
+BUILD_DEPENDS="gtk+3-dev ncurses-dev libiconv-dev pcre2-dev
+	gnutls-dev icu-dev"
 
 # Handle cross compilation.
 case "$ARCH" in
@@ -27,14 +28,19 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	patch -p1 -i $stuff/AltKey.patch
-	./configure \
-		--libexecdir=/usr/lib/vte \
-		--with-html-dir=/usr/share/doc \
-		--with-pcre \
-		--disable-static \
-		$CONFIGURE_ARGS &&
-	make && make install
+	export LDFLAGS="$LDFLAGS -liconv"
+	mkdir build && cd build
+	meson --prefix=/usr -D_systemd=false -Dvapi=false .. &&
+	ninja && ninja install
+	
+	#~ patch -p1 -i $stuff/AltKey.patch
+	#~ ./configure \
+		#~ --libexecdir=/usr/lib/vte \
+		#~ --with-html-dir=/usr/share/doc \
+		#~ --with-pcre \
+		#~ --disable-static \
+		#~ $CONFIGURE_ARGS &&
+	#~ make && make install
 	# add 'Home' and 'End' keys
 	#sed -i '9i\ \ \ \ :kh=\\E[H:@7=\\E[F:\\' $install/usr/share/vte/termcap-0.0/xterm
 }
@@ -42,8 +48,8 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib $fs/usr/share
-	cp -a $install/usr/lib/*.so* $fs/usr/lib
-	cp -a $install/usr/lib/vte $fs/usr/lib
-	cp -a $install/usr/share/vte $fs/usr/share
+	mkdir -p $fs/usr/lib64 $fs/usr/share
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
+	cp -a $install/usr/libexec $fs/usr
+	#~ cp -a $install/usr/share/vte $fs/usr/share
 }

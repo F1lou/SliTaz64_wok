@@ -15,7 +15,8 @@ WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 compile_rules()
 {
 	sed -i 's/@mkdir_p@/mkdir -p/' po/Makefile*
-
+	export CFLAGS="$CFLAGS -Wno-format-truncation -Wno-format-overflow -fcommon"
+	
 	./configure						\
 		--sysconfdir=/etc/sarg				\
 		--bindir=/usr/bin				\

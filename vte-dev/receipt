@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="vte-dev"
-VERSION="0.28.2"
+VERSION="0.66.2"
 CATEGORY="development"
 SHORT_DESC="Terminal capabilities for GTK+ widgets devel files."
 WANTED="vte"
@@ -16,10 +16,10 @@ DEPENDS="vte pkg-config"
 genpkg_rules()
 {
 	mkdir -p $fs/usr/lib
-	cp -a $install/usr/lib/*.*a $fs/usr/lib
-	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
-	[ -d "$install/usr/lib/girepository-1.0" ] && 
-		cp -a $install/usr/lib/girepository-1.0 $fs/usr/lib
+	#~ cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib
+	[ -d "$install/usr/lib64/girepository-1.0" ] && 
+		cp -a $install/usr/lib64/girepository-1.0 $fs/usr/lib
 	[ -d "$install/usr/share/gir-1.0" ] && \
 		cp -a $install/usr/share/gir-1.0 $fs/usr/share
 	cp -a $install/usr/include $fs/usr

@@ -1,8 +1,8 @@
 # SliTaz package receipt.
 
 PACKAGE="libsecret"
-VERSION="0.18.5"
-SERIES="0.18"
+VERSION="0.20.4"
+SERIES="0.20"
 SHORT_DESC="GObject based library for accessing the Secret Service API"
 MAINTAINER="devl547@gmail.com"
 LICENSE="LGPL2.1"

@@ -6,14 +6,14 @@ CATEGORY="system-tools"
 SHORT_DESC="Frugal, high performance file carver."
 MAINTAINER="pascal.bellard@slitaz.org"
 LICENSE="GPL2"
-TARBALL="$PACKAGE-$VERSION.tar.gz"
-WEB_SITE="http://www.digitalforensicssolutions.com/Scalpel"
-WGET_URL="$WEB_SITE/$TARBALL"
+TARBALL="master.zip"
+WEB_SITE="https://github.com/sleuthkit/scalpel"
+WGET_URL="$WEB_SITE/archive/refs/heads/$TARBALL"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	cd $src && make
+	./bootstrap && ./configure && make
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
