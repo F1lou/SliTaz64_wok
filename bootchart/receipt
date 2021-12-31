@@ -1,24 +1,35 @@
 # SliTaz package receipt.
 
 PACKAGE="bootchart"
-VERSION="0.9"
+VERSION="1.20"
 CATEGORY="misc"
 SHORT_DESC="boot process performance analyzer (add init=/sbin/bootchartd to boot options)"
 MAINTAINER="jozee@slitaz.org"
 LICENSE="GPL2"
 WEB_SITE="http://github.com/sofar/bootchart"
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
-WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+TARBALL="v$VERSION.tar.gz"
+WGET_URL="https://github.com/ahkok/bootchart/archive/refs/tags/$TARBALL"
 TAGS="boot performance profile analysis"
 
 SUGGESTED="pybootchartgui"
+BUILD_DEPENDS="libiconv-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export LDFLAGS="$LDFLAGS -liconv"
+	cd $src
+	./autogen.sh
+	./configure && make &&
+	make DESTDIR=$DESTDIR install
+}
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
 	mkdir -p $fs/sbin $fs/etc 
-	cp -a $src/script/bootchartd $fs/sbin/bootchartd
-	cp -a $src/script/bootchartd.conf $fs/etc
+	cp -a $install/usr/sbin/bootchartd $fs/sbin
+	cp -a $install//usr/share/doc/bootchart/bootchartd.conf.example $fs/etc/bootchartd.conf
 	sed -i "s/SAMPLE_PERIOD=0.2/SAMPLE_PERIOD=1/" $fs/etc/bootchartd.conf
 	sed -i "s/kdm_greet/kdm_greet slim /" $fs/sbin/bootchartd
 	sed -i 's|/usr/bin/bootchart|/usr/bin/pybootchartgui|g' $fs/sbin/bootchartd

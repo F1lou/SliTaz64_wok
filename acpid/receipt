@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="acpid"
-VERSION="2.0.32"
+VERSION="2.0.33"
 CATEGORY="system-tools"
 TAGS="power-management"
 SHORT_DESC="The ACPI event daemon with netlink."

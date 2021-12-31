@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="android-platform-tools"
-VERSION="r19.0.1"
+VERSION="r31.0.3"
 CATEGORY="development"
 SHORT_DESC="Platform-Tools for Google Android SDK (adb and fastboot)."
 MAINTAINER="pankso@slitaz.org"

@@ -1,12 +1,12 @@
 # SliTaz package receipt.
 
 PACKAGE="asciidoc"
-VERSION="9.1.0"
+VERSION="9.1.1"
 CATEGORY="system-tools"
 SHORT_DESC="Text based document generation"
 MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL2"
-WEB_SITE="http://www.methods.co.nz/asciidoc/"
+WEB_SITE="https://asciidoc-py.github.io/index.html"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 #~ WGET_URL="$SF_MIRROR/project/asciidoc/asciidoc/$VERSION/$TARBALL"
 WGET_URL="https://github.com/asciidoc-py/asciidoc-py/archive/refs/tags/$VERSION.tar.gz"
@@ -20,7 +20,7 @@ compile_rules()
 	./configure \
 		--sysconfdir=/etc \
 		$CONFIGURE_ARGS &&
-	make install
+	DESTDIR=$DESTDIR make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

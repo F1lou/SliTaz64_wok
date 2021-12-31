@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="android-build-tools"
-VERSION="r19.0.3"
+VERSION="r29.0.3"
 CATEGORY="development"
 SHORT_DESC="Build-Tools for Google Android SDK (aapt, aidl, dexdump, etc)."
 MAINTAINER="pankso@slitaz.org"

@@ -22,7 +22,7 @@ compile_rules()
 {
 	[ -s "$SOURCES_REPOSITORY/vvb.ini" ] ||
 		wget -O "$SOURCES_REPOSITORY/vvb.ini" \
-			https://sebsauvage.net/streisand.me/sebsauvage/vvb.ini
+			https://sebsauvage.net/streisand.me/sebsauvage/vvb.ini --no-check-certificate
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
