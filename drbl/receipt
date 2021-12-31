@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="drbl"
-VERSION="2.25.10"
+VERSION="2.30.5"
 CATEGORY="misc"
 SHORT_DESC="Diskless Remote Boot in Linux"
 MAINTAINER="shann@slitaz.org"

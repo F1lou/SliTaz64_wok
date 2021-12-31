@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="ecj"
-VERSION="4.14"
+VERSION="4.22"
 CATEGORY="development"
 TAGS="compiler java"
 SHORT_DESC="The Eclipse standalone batch Java compiler and Ant compiler adapter."
@@ -17,6 +17,8 @@ TARBALL="$PACKAGE-$VERSION.jar"
 WGET_URL="http://download.eclipse.org/eclipse/downloads/drops4/R-$VERSION-201812060815/$TARBALL"
 # 4.14:
 WGET_URL="http://download.eclipse.org/eclipse/downloads/drops4/R-$VERSION-201912100610/$TARBALL"
+# 4.22
+WGET_URL="https://download.eclipse.org/eclipse/downloads/drops4/R-$VERSION-202111241800/$TARBALL"
 
 SUGGESTED="java-jre"
 DEPENDS=""

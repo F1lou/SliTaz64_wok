@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="clamtk"
-VERSION="5.27"
+VERSION="6.09"
 CATEGORY="network"
 SHORT_DESC="ClamTk is a GUI front-end for ClamAV using gtk2-perl."
 MAINTAINER="slaxemulator@gmail.com"

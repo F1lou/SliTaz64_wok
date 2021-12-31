@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="dnsmasq"
-VERSION="2.81"
+VERSION="2.86"
 CATEGORY="network"
 SHORT_DESC="Lightweight, DNS forwarder and DHCP server."
 MAINTAINER="pascal.bellard@slitaz.org"

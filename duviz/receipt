@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="duviz"
-VERSION="1.1.1"
+VERSION="3.0.0"
 CATEGORY="utilities"
 SHORT_DESC="Disk space usage visualization utility."
 MAINTAINER="paul@slitaz.org"
@@ -9,9 +9,9 @@ LICENSE="GPL3"
 WEB_SITE="https://github.com/soxofaan/duviz/"
 
 TARBALL="$PACKAGE-$VERSION.tar.gz"
-WGET_URL="${WEB_SITE}archive/$VERSION.tar.gz"
+WGET_URL="https://files.pythonhosted.org/packages/b1/37/488128868cdb563343884704a851383659b47a19ee0986e5b5a9b8acf281/$TARBALL"
 
-DEPENDS="python"
+DEPENDS="py3k"
 BUILD_DEPENDS=""
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

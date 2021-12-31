@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="dokuwiki"
-VERSION="20180422b"
+VERSION="20200729"
 CATEGORY="development"
 SHORT_DESC="DokuWiki is a simple to use Wiki aimed at the documentation needs of a smail company."
 MAINTAINER="slaxemulator@gmail.com"

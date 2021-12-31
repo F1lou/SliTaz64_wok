@@ -12,6 +12,8 @@ WEB_SITE="http://www.deater.net/weave/vmwprod/apple/dos33fs.html"
 #WGET_URL="https://github.com/peterferrie/dos33fsprogs/archive/$VERSION.tar.gz"
 WGET_URL="https://github.com/deater/dos33fsprogs/archive/ootw-v2.8.tar.gz"
 
+BUILD_DEPENDS="libpng-dev"
+
 # Rules to configure and make the package.
 compile_rules()
 {

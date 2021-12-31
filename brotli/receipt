@@ -12,20 +12,21 @@ WGET_URL="$WEB_SITE/archive/v$VERSION.tar.gz"
 TAGS="compression"
 
 DEPENDS="gcc-lib-base"
-BUILD_DEPENDS="python-dev python-setuptools cmake"
+BUILD_DEPENDS="cmake"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	cmake .
-	make
+	mkdir build && cd build
+	cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr ..
+	cmake --build . --config Release --target install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/bin $fs/usr/lib
-	cp -a $src/brotli $fs/usr/bin/
-	ln -s brotli $fs/usr/bin/bro
-	cp -a $src/*.so* $fs/usr/lib
+	mkdir -p $fs/usr/lib64
+	cp -a $install/usr/bin $fs/usr
+	#~ ln -s brotli $fs/usr/bin/bro
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
 }

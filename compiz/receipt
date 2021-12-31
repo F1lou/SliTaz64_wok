@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="compiz"
-VERSION="0.8.14"
+VERSION="0.9.13.0"
 CATEGORY="meta"
 TAGS="window-manager"
 SHORT_DESC="Compiz 3D effect support on SliTaz."

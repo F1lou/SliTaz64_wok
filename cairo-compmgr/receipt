@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="cairo-compmgr"
-VERSION="0.3.0"
+VERSION="0.3.4"
 CATEGORY="meta"
 SHORT_DESC="Cairo composite manager"
 MAINTAINER="al.bobylev@gmail.com"
