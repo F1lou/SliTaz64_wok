@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="f3"
-VERSION="7.2"
+VERSION="8.0"
 CATEGORY="utilities"
 SHORT_DESC="An alternative to h2testw."
 MAINTAINER="paul@slitaz.org"

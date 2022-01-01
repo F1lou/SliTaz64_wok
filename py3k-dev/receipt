@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="py3k-dev"
-VERSION="3.9.4"
+VERSION="3.10.1"
 CATEGORY="development"
 SHORT_DESC="The Python programming language devel files."
 MAINTAINER="pankso@slitaz.org"
@@ -20,6 +20,6 @@ genpkg_rules()
 	cp -a $install/usr/bin/*-config $fs/usr/bin
 	chmod 755 $fs/usr/bin/*-config
 	# in py3k package now
-	#~ python_version=${VERSION:0:3}
-	#~ rm $fs/usr/include/python${python_version}m/pyconfig.h
+	python_version=${VERSION:0:4}
+	rm $fs/usr/include/python${python_version}/pyconfig.h
 }

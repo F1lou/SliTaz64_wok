@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gc"
-VERSION="8.0.4"
+VERSION="8.0.6"
 CATEGORY="development"
 SHORT_DESC="A garbage collector for C and C++."
 MAINTAINER="pankso@slitaz.org"
@@ -33,6 +33,6 @@ compile_rules()
 genpkg_rules()
 {
 	mkdir -p $fs/usr/lib $fs/usr/share
-	cp -a $install/usr/share/gc $fs/usr/share
+	#~ cp -a $install/usr/share/gc $fs/usr/share
 	cp -a $install/usr/lib/*.so* $fs/usr/lib
 }

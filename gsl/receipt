@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gsl"
-VERSION="2.6"
+VERSION="2.7"
 CATEGORY="development"
 SHORT_DESC="Numerical library for C and C++ programmers."
 MAINTAINER="pankso@slitaz.org"

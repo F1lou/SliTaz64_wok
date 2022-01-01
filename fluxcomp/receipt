@@ -11,8 +11,11 @@ WEB_SITE="https://github.com/Distrotech/flux"
 TARBALL="distrotech-flux-$VERSION.tar.gz"
 WGET_URL="https://github.com/Distrotech/flux/archive/$TARBALL"
 
+BUILD_DEPENDS="libiconv-dev"
+
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	./configure $CONFIGURE_ARGS &&
 #	fix libtool &&
 	make &&

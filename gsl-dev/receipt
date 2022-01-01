@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gsl-dev"
-VERSION="2.6"
+VERSION="2.7"
 CATEGORY="development"
 SHORT_DESC="Gsl development files (libraries and headers)."
 MAINTAINER="pankso@slitaz.org"

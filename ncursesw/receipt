@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="ncursesw"
-VERSION="6.2"
+VERSION="6.3"
 CATEGORY="base-system"
 SHORT_DESC="Library of functions to manage display on terminals."
 MAINTAINER="pankso@slitaz.org"
@@ -25,6 +25,7 @@ esac
 compile_rules()
 {
 	export LDFLAGS="$LDFLAGS -liconv"
+	export CFLAGS="$CLFAGS -fPIC"
 	
 	# Ncurses need an installed /usr/bin/tic which is in ncursesw-extra. And
 	# when cross compiling we can't use the freshly cooked binary. See cook log:

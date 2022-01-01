@@ -12,11 +12,12 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/ninja-build/$PACKAGE/archive/v$VERSION.tar.gz"
 
 DEPENDS="gcc-lib-base"
-BUILD_DEPENDS="python"
+BUILD_DEPENDS="py3k libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	./configure.py --bootstrap
 }
 

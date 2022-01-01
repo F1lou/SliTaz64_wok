@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="fbvnc"
-VERSION="20130314"
+VERSION="20211019"
 CATEGORY="network"
 SHORT_DESC="VNC client in frame buffer."
 MAINTAINER="pascal.bellard@slitaz.org"

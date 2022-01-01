@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gc-dev"
-VERSION="8.0.4"
+VERSION="8.0.6"
 CATEGORY="development"
 SHORT_DESC="A garbage collector for C and C++ devel files (with libatomic_ops)."
 MAINTAINER="pankso@slitaz.org"

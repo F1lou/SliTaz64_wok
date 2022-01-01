@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="fop"
-VERSION="2.4"
+VERSION="2.6"
 CATEGORY="development"
 SHORT_DESC="Open source XSL-FO implementation."
 MAINTAINER="paul@slitaz.org"

@@ -1,22 +1,24 @@
 # SliTaz package receipt.
 
 PACKAGE="faad2"
-VERSION="2.7"
+VERSION="2.10"
 CATEGORY="multimedia"
 SHORT_DESC="FAAD2 is an open source MPEG-4 and MPEG-2 AAC decoder."
 MAINTAINER="slitaz@kacper.se"
 LICENSE="GPL2"
-TARBALL="$PACKAGE-$VERSION.tar.gz"
+TARBALL="2_10_0.tar.gz"
 WEB_SITE="https://github.com/knik0/faad2"
-WGET_URL="$SF_MIRROR/faac/$TARBALL"
+WGET_URL="$WEB_SITE/archive/refs/tags/$TARBALL"
 TAGS="decoder mp4 mpeg"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	cd $src
+	./bootstrap
 	./configure \
 		--prefix=/usr \
+		--with-mp4v2	\
 		--infodir=/usr/share/info \
 		--mandir=/usr/share/man \
 		$CONFIGURE_ARGS &&

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="faad2-dev"
-VERSION="2.7"
+VERSION="2.10"
 CATEGORY="development"
 SHORT_DESC="FAAD2 is an open source MPEG-4 and MPEG-2 AAC decoder devel files."
 MAINTAINER="slitaz@kacper.se"

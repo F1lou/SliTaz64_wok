@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="fasm"
-VERSION="1.73.21"
+VERSION="1.73.29"
 CATEGORY="development"
 SHORT_DESC="Assembly language programming for x86, x86-64 and ARM systems."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -20,7 +20,7 @@ compile_rules()
 {
 	[ -s $SOURCES_REPOSITORY/FASMARM_small.ZIP ] ||
 		wget -P $SOURCES_REPOSITORY \
-		http://arm.flatassembler.net/FASMARM_small.ZIP
+		http://arm.flatassembler.net/FASMARM_small.ZIP --no-check-certificate
 	unzip $SOURCES_REPOSITORY/FASMARM_small.ZIP
 
 	mv ReadMe.txt fasmarm.txt
