@@ -1,8 +1,8 @@
 # SliTaz package receipt.
 
 PACKAGE="imapbackup"
-VERSION="20181228"
-GITHASH=c0328cb4d6f854e61222510bec70fa44c95d6982
+VERSION="20211222"
+GITHASH=0cc27cd570f624e013705a26a66b64340cab74fb
 CATEGORY="network"
 SHORT_DESC="Incremental backups of IMAP mailboxes"
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -12,7 +12,7 @@ WEB_SITE="https://taoofmac.com/space/projects/imapbackup"
 WGET_URL="https://github.com/rcarmo/imapbackup/archive/$GITHASH.zip"
 TAGS="imap backup"
 
-DEPENDS="python"
+DEPENDS="py3k"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

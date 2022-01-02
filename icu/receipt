@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="icu"
-VERSION="69.1"
+VERSION="70.1"
 CATEGORY="system-tools"
 SHORT_DESC="C/C++ and Java libraries providing Unicode and Globalization."
 MAINTAINER="pankso@slitaz.org"
@@ -9,12 +9,15 @@ LICENSE="MIT"
 SOURCE="icu4c"
 TARBALL="$SOURCE-${VERSION//./_}-src.tgz"
 WEB_SITE="https://www.icu-project.org/"
-WGET_URL="https://github.com/unicode-org/icu/releases/download/release-69-1/$TARBALL"
+WGET_URL="https://github.com/unicode-org/icu/releases/download/release-${VERSION//./-}/$TARBALL"
 #WGET_URL="http://www.sfr-fresh.com/unix/misc/$TARBALL"
+
+BUILD_DEPENDS="libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	cd $src/source
 	#sed -i 's/dirname -- /dirname/' configure
 	#{

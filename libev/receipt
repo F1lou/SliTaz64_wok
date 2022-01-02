@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libev"
-VERSION="4.31"
+VERSION="4.33"
 CATEGORY="system-tools"
 SHORT_DESC="A full-featured and high-performance event loop."
 MAINTAINER="mallory@sweetpeople.org"

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="jsmin"
-COMMIT="1bf6ce5f74a9f8752ac7f5d115b8d7ccb31cfe1b"
+COMMIT="7d7aea259acaa8fe61d09d168a004ed9a8dd072a"
 VERSION="${COMMIT:0:10}"
 CATEGORY="development"
 SHORT_DESC="JavaScript minification filter"

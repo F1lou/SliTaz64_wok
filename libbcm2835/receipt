@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libbcm2835"
-VERSION="1.36"
+VERSION="1.71"
 CATEGORY="system-tools"
 SHORT_DESC="C library for Broadcom BCM 2835 as used in Raspberry Pi."
 MAINTAINER="pankso@slitaz.org"

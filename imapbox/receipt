@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="imapbox"
-GITHASH="c7265e34b03ee41963aad243055a5508c9e88fc9"
+GITHASH="301ab43bb3e6a1e47044b12513238f733adac048"
 VERSION=${GITHASH:0:7}
 CATEGORY="network"
 SHORT_DESC="Dump imap inbox in a backupable format: html, json and attachements"

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="inxi"
-VERSION="3.0.37"
+VERSION="3.3.11"
 CATEGORY="utilities"
 TAGS="system-information"
 SHORT_DESC="Full featured CLI system information tool."

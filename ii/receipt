@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="ii"
-VERSION="1.6"
+VERSION="1.8"
 CATEGORY="network"
 SHORT_DESC="Minimalist IRC client."
 MAINTAINER="pascal.bellard@slitaz.org"

@@ -1,18 +1,15 @@
 # SliTaz package receipt.
 
-PACKAGE="libbsd"
-VERSION="0.11.3"
+PACKAGE="libmd"
+VERSION="1.0.4"
 CATEGORY="development"
-SHORT_DESC="Provides useful functions commonly found on BSD systems."
-MAINTAINER="claudinei@slitaz.org"
+SHORT_DESC="Provides message digest functions found on BSD systems either on their libc or libmd libraries and lacking on others like GNU systems."
+MAINTAINER="nhc1@gmx.net"
 LICENSE="BSD MIT"
-WEB_SITE="https://libbsd.freedesktop.org/wiki/"
+WEB_SITE="https://www.hadrons.org/software/libmd"
 
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://libbsd.freedesktop.org/releases/$TARBALL"
-
-DEPENDS="libmd"
-BUILD_DEPENDS="libmd-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 

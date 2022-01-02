@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libev-dev"
-VERSION="4.31"
+VERSION="4.33"
 CATEGORY="development"
 SHORT_DESC="Libev development files."
 MAINTAINER="mallory@sweetpeople.org"

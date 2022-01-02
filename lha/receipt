@@ -1,19 +1,22 @@
 # SliTaz package receipt.
 
 PACKAGE="lha"
-VERSION="1.14i-ac20050924p1"
+VERSION="1.14i-ac20211125"
 CATEGORY="system-tools"
 SHORT_DESC="File archiver."
 MAINTAINER="pascal.bellard@slitaz.org"
 LICENSE="CC-SA"
-TARBALL="$PACKAGE-$VERSION.tar.gz"
+TARBALL="release-20211125.tar.gz"
 WEB_SITE="http://$PACKAGE.sourceforge.jp/"
-WGET_URL="http://osdn.dl.sourceforge.jp/$PACKAGE/22231/$TARBALL"
+WGET_URL="https://github.com/jca02266/lha/archive/refs/tags/$TARBALL"
+
+BUILD_DEPENDS="libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	cd $src
+	aclocal && autoheader && automake -a &&  autoconf &&
 	./configure --prefix=/usr --infodir=/usr/share/info \
 	--mandir=/usr/share/man $CONFIGURE_ARGS &&
 	make &&

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="ladspa"
-VERSION="1.15"
+VERSION="1.17"
 CATEGORY="multimedia"
 TAGS="audio multimedia"
 MAINTAINER="jozee@slitaz.org"
@@ -13,7 +13,7 @@ TARBALL="${PACKAGE}_sdk_$VERSION.tgz"
 WGET_URL="${WEB_SITE}download/$TARBALL"
 
 DEPENDS="gcc-lib-base"
-BUILD_DEPENDS=""
+BUILD_DEPENDS="libsndfile-dev"
 
 # Rules to configure and make the package.
 compile_rules()

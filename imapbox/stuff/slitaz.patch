@@ -9,29 +9,6 @@
  
  
  
-@@ -16,10 +18,22 @@
-     """Operations on a mailbox"""
- 
-     def __init__(self, host, port, username, password, remote_folder):
-+        if port == '143':
-+	    self.mailbox = imaplib.IMAP4(host, port)                                                                                      
-+        elif port == '993':                                                                                                                 
-         self.mailbox = imaplib.IMAP4_SSL(host, port)
-         self.mailbox.login(username, password)
-         self.mailbox.select(remote_folder, readonly=True)
- 
-+        if remote_folder=='INBOX':
-+            self.remote_folder=''
-+        else
-+            r_f=re.sub('INBOX','',remote_folder)
-+            if re.findall('^\.',r_f):
-+                self.remote_folder=re.sub('\.','/',rf)
-+            else:
-+                self.remote_folder='/'+r_f
-+
-     def copy_emails(self, days, local_folder, wkhtmltopdf):
- 
-         n_saved = 0
 @@ -50,9 +64,19 @@
  
  
@@ -54,42 +31,6 @@
              foldername = hashlib.sha224(data).hexdigest()
  
          year = 'None'
-@@ -62,20 +86,33 @@
-                 year = match.group(1)
- 
- 
--        return os.path.join(self.local_folder, year, foldername)
-+        return os.path.join(self.local_folder+self.remote_folder, self.normalizeDate(msg['Date'])+'_'+foldername)
- 
-+    def normalizeDate(self, datestr):
-+        t = email.utils.parsedate_tz(datestr)
-+        timeval = time.mktime(t[:-1])
-+        date = email.utils.formatdate(timeval, True)
-+        utc = time.gmtime(email.utils.mktime_tz(t))
-+#        rfc2822 = '{} {:+03d}00'.format(date[:-6], t[9]//3600)
-+        iso8601 = time.strftime('%Y%m%dT%H%M%SZ', utc)
- 
-+        return (iso8601)
- 
-+
-     def saveEmail(self, data):
-         for response_part in data:
-             if isinstance(response_part, tuple):
--                msg = email.message_from_string(response_part[1].decode("utf-8"))
-+                try:
-+                    msg = email.message_from_string(re.sub('^>', '', response_part[1]).decode("utf-8")) # supprime '>' dans l'email
-+                except UnicodeError:
-+                    msg = email.message_from_string(re.sub('^>', '', response_part[1]).decode('latin1').encode('utf-8'))  # supprime '>' dans l'email
-                 directory = self.getEmailFolder(msg, data[0][1])
- 
-                 if os.path.exists(directory):
-                     return False
- 
-                 os.makedirs(directory)
-+                os.utime(directory,(time.mktime(rfc822.parsedate(msg['Date'])), time.mktime(rfc822.parsedate(msg['Date']))))
- 
-                 try:
-                     message = Message(directory, msg)
 @@ -86,9 +123,12 @@
                      if self.wkhtmltopdf:
                          message.createPdfFile(self.wkhtmltopdf)
@@ -133,40 +74,6 @@
              return u"".join(headers)
  
  
-@@ -102,21 +105,27 @@
-                 # use the same for both and see later
-                 name=addr
- 
-+            headers=decode_header(name)
-             try:
--                # address must be ascii only
--                addr=addr.encode('ascii')
-+                addr = addr.encode("ascii")
-             except UnicodeError:
--                addr=''
-+                addr = ''
-             else:
-                 # address must match adress regex
-                 if not email_address_re.match(addr.decode("utf-8")):
-                     addr=''
--            addrs[i]=(self.getmailheader(name), addr.decode("utf-8"))
-+            addrs[i]=(self.getmailheader(name), "utf-8")
-         return addrs
- 
-     def getSubject(self):
--        if not hasattr(self, 'subject'):
--            self.subject = self.getmailheader(self.msg.get('Subject', ''))
-+#        if not hasattr(self, 'subject'):
-+#            self.subject = self.getmailheader(self.msg.get('Subject'),'')
-+        headers=decode_header(self.msg.get('Subject'))
-+        for i, (text, charset) in enumerate(headers):
-+            if charset:
-+                self.subject = unicode(text,charset)
-+            else:
-+                self.subject=text.decode('utf-8')
-         return self.subject
- 
-     def getFrom(self):
 @@ -172,6 +181,7 @@
              json_file.write(data)
  

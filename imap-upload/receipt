@@ -10,14 +10,14 @@ LICENSE="MIT"
 WEB_SITE="http://imap-upload.sourceforge.net/"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
-DEPENDS="python"
+DEPENDS="py3k"
 BUILD_DEPENDS=""
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
 	mkdir -p $fs/usr/bin
-	echo -e "#!/usr/bin/env python\n" | cat - $src/imap_upload.py \
+	echo -e "#!/usr/bin/env python3\n" | cat - $src/imap_upload.py \
 		> $fs/usr/bin/imap_upload
 	chmod 755 $fs/usr/bin/imap_upload
 }
