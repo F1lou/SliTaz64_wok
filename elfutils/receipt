@@ -12,7 +12,8 @@ WGET_URL="https://fedorahosted.org/releases/e/l/$PACKAGE/$VERSION/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="glibc-base"
-BUILD_DEPENDS="wget bzip2-dev liblzma-dev sqlite-dev libarchive-dev libiconv-dev"
+BUILD_DEPENDS="wget bzip2-dev liblzma-dev sqlite-dev libarchive-dev 
+	libiconv-dev zstd-dev"
 
 # Handle multiarch compilation
 case "$ARCH" in
@@ -26,8 +27,8 @@ compile_rules()
 	#~ CFLAGS="$CFLAGS -Wno-error"
 	export LDFLAGS="$LDFLAGS -liconv"
 	./configure \
-	--enable-thread-safety \
-	$CONFIGURE_ARGS &&
+		--enable-thread-safety \
+		$CONFIGURE_ARGS &&
 	touch src/.deps/none_ld.Po &&
 	make -s && make install
 }
