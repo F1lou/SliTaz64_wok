@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="less"
-VERSION="581"
+VERSION="590"
 CATEGORY="base-system"
 SHORT_DESC="A terminal based program for viewing text files."
 MAINTAINER="slaxemulator@gmail.com"

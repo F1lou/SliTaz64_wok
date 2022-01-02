@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="pcre-dev"
-VERSION="8.44"
+VERSION="8.45"
 CATEGORY="development"
 SHORT_DESC="Perl Compatible Regular Expressions, development files."
 MAINTAINER="pankso@slitaz.org"

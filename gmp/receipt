@@ -11,14 +11,14 @@ WEB_SITE="https://gmplib.org/"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
 
-BUILD_DEPENDS="binutils m4"
+BUILD_DEPENDS="binutils m4 libiconv-dev libbsd-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	ABI=64 ./configure --prefix=/usr    \
+	LDFLAGS="$LDFLAGS -liconv" ABI=64 ./configure --prefix=/usr    \
             --enable-cxx     \
             --disable-static &&
             	# make -j > 1 install fails.

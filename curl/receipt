@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="curl"
-VERSION="7.76.1"
+VERSION="7.80.0"
 CATEGORY="network"
 SHORT_DESC="Tool and librariess for transferring files with URL syntax."
 MAINTAINER="pankso@slitaz.org"
@@ -27,6 +27,7 @@ compile_rules()
 {
 	./configure		\
 		--disable-ldap	\
+		--with-openssl	\
 		$CONFIGURE_ARGS &&
 	make &&
 	make install

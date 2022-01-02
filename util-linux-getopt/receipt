@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="util-linux-getopt"
-VERSION="2.36.2"
+VERSION="2.37.2"
 CATEGORY="base-system"
 SHORT_DESC="The getopt utility from Util Linux."
 MAINTAINER="pankso@slitaz.org"

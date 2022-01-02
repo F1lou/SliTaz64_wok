@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="file"
-VERSION="5.40"
+VERSION="5.41"
 CATEGORY="system-tools"
 SHORT_DESC="Determines file type using 'magic' numbers."
 MAINTAINER="erjo@slitaz.org"
@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="ftp://ftp.astron.com/pub/file/$TARBALL"
 
 DEPENDS="libmagic zlib"
-BUILD_DEPENDS="python python-setuptools zlib-dev"
+BUILD_DEPENDS="py3k zlib-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 
@@ -35,8 +35,8 @@ compile_rules()
 	make -j 1 &&
 	make install &&
 	cd python &&
-	python setup.py build &&
-	python setup.py install --root=$DESTDIR
+	python3 setup.py build &&
+	python3 setup.py install --root=$DESTDIR
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

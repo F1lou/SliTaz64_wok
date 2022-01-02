@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libcap-ng"
-VERSION="0.7.9"
+VERSION="0.8.2"
 CATEGORY="security"
 SHORT_DESC="New generation libcap library."
 MAINTAINER="erjo@slitaz.org"
@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}$TARBALL"
 
 DEPENDS=""
-BUILD_DEPENDS="python"
+BUILD_DEPENDS="py3k"
 PROVIDE="libcap"
 
 # Rules to configure and make the package.

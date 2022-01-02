@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="elfutils"
-VERSION="0.183"
+VERSION="0.186"
 CATEGORY="development"
 SHORT_DESC="ELF object file access library."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -12,7 +12,7 @@ WGET_URL="https://fedorahosted.org/releases/e/l/$PACKAGE/$VERSION/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="glibc-base"
-BUILD_DEPENDS="wget bzip2-dev liblzma-dev sqlite-dev libarchive-dev "
+BUILD_DEPENDS="wget bzip2-dev liblzma-dev sqlite-dev libarchive-dev libiconv-dev"
 
 # Handle multiarch compilation
 case "$ARCH" in
@@ -23,7 +23,8 @@ esac
 compile_rules()
 {
 	cd $src
-	CFLAGS="$CFLAGS -Wno-error"
+	#~ CFLAGS="$CFLAGS -Wno-error"
+	export LDFLAGS="$LDFLAGS -liconv"
 	./configure \
 	--enable-thread-safety \
 	$CONFIGURE_ARGS &&
