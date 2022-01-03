@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="rust"
-VERSION="1.51.0"
+VERSION="1.57.0"
 CATEGORY="development"
 SHORT_DESC="The Rust programming language."
 MAINTAINER="al.bobylev@gmail.com"
@@ -12,7 +12,7 @@ TARBALL="rust-$VERSION-x86_64-unknown-linux-gnu.tar.gz"
 WGET_URL="https://static.rust-lang.org/dist/$TARBALL"
 
 SIBLINGS="rust-cargo"
-BUILD_DEPENDS="cacerts"
+BUILD_DEPENDS="bash cacerts"
 
 # Rules to configure and make the package.
 compile_rules()

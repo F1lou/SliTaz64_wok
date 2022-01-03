@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="pngquant"
-VERSION="2.12.5"
+VERSION="2.17.0"
 CATEGORY="graphics"
 SHORT_DESC="Command-line utility and a library for lossy compression of PNG images."
 MAINTAINER="al.bobylev@gmail.com"
@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION-src.tar.gz"
 WGET_URL="${WEB_SITE}$TARBALL"
 
 DEPENDS="lcms2 libpng"
-BUILD_DEPENDS="lcms2-dev libpng-dev rust"
+BUILD_DEPENDS="bash lcms2-dev libpng-dev rust zlib-dev"
 
 # Rules to configure and make the package.
 compile_rules()
