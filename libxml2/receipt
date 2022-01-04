@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libxml2"
-VERSION="2.9.10"
+VERSION="2.9.12"
 CATEGORY="system-tools"
 SHORT_DESC="XML C parser and toolkit."
 MAINTAINER="pankso@slitaz.org"
@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="ftp://xmlsoft.org/libxml2/$TARBALL"
 
 DEPENDS="zlib"
-BUILD_DEPENDS="autoconf automake libtool python-dev zlib-dev"
+BUILD_DEPENDS="autoconf automake libtool py3k-dev zlib-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 
@@ -40,7 +40,7 @@ compile_rules()
 		--with-threads			\
 		--with-history			\
 	$CONFIGURE_ARGS $ARCH_ARGS &&
-	make -j 1 &&
+	make &&
 	make DESTDIR=$DESTDIR install 2>&1 | grep -v "can't stat './..html':"
 }
 

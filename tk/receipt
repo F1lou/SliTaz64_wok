@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="tk"
-VERSION="8.6.10"
+VERSION="8.6.12"
 CATEGORY="development"
 TAGS="programming language"
 SHORT_DESC="The TCL gui toolkit."
@@ -14,7 +14,7 @@ WGET_URL="$SF_MIRROR/tcl/$TARBALL"
 
 DEPENDS="expat fontconfig freetype tcl xorg-libX11 xorg-libXau xorg-libXdmcp \
 	xorg-libXft xorg-libXrender xorg-libXss zlib"
-BUILD_DEPENDS="tcl-dev xorg-libX11-dev"
+BUILD_DEPENDS="tcl-dev xorg-libX11-dev libbsd-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 

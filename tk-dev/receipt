@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="tk-dev"
-VERSION="8.6.10"
+VERSION="8.6.12"
 CATEGORY="development"
 SHORT_DESC="The TCL gui toolkit - development files."
 MAINTAINER="erjo@slitaz.org"

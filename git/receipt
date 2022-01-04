@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="git"
-VERSION="2.31.0"
+VERSION="2.34.1"
 CATEGORY="development"
 SHORT_DESC="Fast version control system."
 MAINTAINER="b1+slitaz@nagel.org"
@@ -11,8 +11,9 @@ WEB_SITE="https://git-scm.com/"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://www.kernel.org/pub/software/scm/git/$TARBALL"
 
-DEPENDS="cacerts curl expat openssl zlib"
-BUILD_DEPENDS="curl-dev expat-dev openssl-dev perl python-dev zlib-dev"
+DEPENDS="cacerts curl expat openssl zlib libidn2"
+BUILD_DEPENDS="curl-dev expat-dev openssl-dev perl py3k-dev zlib-dev
+	libidn2 libcrypto-dev"
 
 # NO_NSEC=1
 CROSS_BUGS="bug: can't run test and make package."
@@ -21,12 +22,13 @@ CROSS_BUGS="bug: can't run test and make package."
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -ldl"
 	./configure			\
 		--prefix=/usr		\
 		--libexecdir=/usr/lib	\
 		--without-tcltk		\
 		$CONFIGURE_ARGS &&
-	make -j 1 THREADED_DELTA_SEARCH=1 &&
+	make THREADED_DELTA_SEARCH=1 &&
 	make THREADED_DELTA_SEARCH=1 DESTDIR=$DESTDIR install
 }
 

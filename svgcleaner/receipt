@@ -18,7 +18,7 @@ compile_rules()
 {
 	# to build from crates: no source needed, but no version control
 	#cargo install svgcleaner --root=$install/usr
-	export GIT_SSL_NO_VERIFY=true
+	export ENV SSL_CERT_FILE=/etc/ssl/ca-bundle.crt
 	cargo build --release
 
 	mkdir -p $install/usr/bin

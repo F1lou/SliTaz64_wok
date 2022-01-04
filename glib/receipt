@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="glib"
-VERSION="2.64.4"
+VERSION="2.71.0"
 CATEGORY="x-window"
 SHORT_DESC="C routines."
 MAINTAINER="pankso@slitaz.org"
@@ -12,7 +12,7 @@ WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION:0:4}/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="pcre libffi libxml2 elfutils libiconv"
-BUILD_DEPENDS="pcre-dev libffi-dev zlib-dev perl python-dev \
+BUILD_DEPENDS="pcre-dev libffi-dev zlib-dev perl py3k-dev \
 elfutils-dev libxml2-dev libxml2-tools automake libiconv-dev"
 
 # Handle cross comilation. Use host Perl, Python, etc

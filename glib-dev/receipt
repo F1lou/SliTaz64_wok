@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="glib-dev"
-VERSION="2.64.4"
+VERSION="2.71.0"
 CATEGORY="development"
 SHORT_DESC="C routines devel files and utilities (with Python codegen)."
 MAINTAINER="pankso@slitaz.org"
@@ -10,7 +10,7 @@ WANTED="glib"
 WEB_SITE="https://www.gtk.org/"
 HOST_ARCH="x86_64 i486 arm"
 
-DEPENDS="glib perl python libffi-dev libgio libgio-dev pcre-dev pkg-config"
+DEPENDS="glib perl py3k libffi-dev libgio libgio-dev pcre-dev pkg-config"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

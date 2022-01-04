@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="kmod-dev"
-VERSION="23"
+VERSION="29"
 CATEGORY="development"
 SHORT_DESC="Kmod devel files."
 MAINTAINER="pankso@slitaz.org"

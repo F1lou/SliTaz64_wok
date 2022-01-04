@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="kmod"
-VERSION="28"
+VERSION="29"
 CATEGORY="base-system"
 SHORT_DESC="Linux kernel modules tools."
 MAINTAINER="pankso@slitaz.org"
@@ -24,7 +24,7 @@ esac
 compile_rules()
 {
 	# link dynamically with libkmod
-	sed -i 's|\(.libkmod/libkmod\)-internal\.la|\1.la|' Makefile*
+	#~ sed -i 's|\(.libkmod/libkmod\)-internal\.la|\1.la|' Makefile*
 
 	# Add lzma support
 	#~ sed -i -e 's/stream_decoder/auto_decoder/' \

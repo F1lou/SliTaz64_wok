@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libgio"
-VERSION="2.64.4"
+VERSION="2.71.0"
 CATEGORY="x-window"
 SHORT_DESC="Glib libgio shared library."
 MAINTAINER="pankso@slitaz.org"

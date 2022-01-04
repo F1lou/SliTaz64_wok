@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="pcre2"
-VERSION="10.36"
+VERSION="10.39"
 CATEGORY="system-tools"
 SHORT_DESC="Perl 5 Compatible Regular Expression 2, library."
 MAINTAINER="al.bobylev@gmail.com"
@@ -9,7 +9,7 @@ LICENSE="BSD"
 WEB_SITE="https://www.pcre.org/"
 
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
-WGET_URL="$SF_MIRROR/pcre/$TARBALL"
+WGET_URL="https://github.com/PhilipHazel/$PACKAGE/releases/download/$PACKAGE-$VERSION/$TARBALL"
 
 HOST_ARCH="x86_64 i486 arm"
 
