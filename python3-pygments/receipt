@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="python3-pygments"
-VERSION="2.8.1"
+VERSION="2.11.1"
 CATEGORY="development"
 SHORT_DESC="Generic syntax highlighter."
 MAINTAINER="claudinei@slitaz.org"
@@ -12,13 +12,14 @@ SOURCE="Pygments"
 TARBALL="$SOURCE-$VERSION.tar.gz"
 WGET_URL="https://files.pythonhosted.org/packages/source/P/$SOURCE/$TARBALL"
 
-DEPENDS="python"
-BUILD_DEPENDS="python python-setuptools"
+DEPENDS="py3k"
+BUILD_DEPENDS="py3k python3-pip"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	python3 setup.py install --no-compile --root=$install
+	#~ python3 setup.py install --no-compile --root=$install
+	pip install Pygments
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

@@ -13,8 +13,8 @@ WGET_URL="https://www.python.org/ftp/python/$VERSION/$TARBALL"
 
 DEPENDS="openssl bzlib readline sqlite zlib xorg-libXss ncursesw gdbm \
 tk xorg-libXext expat"
-BUILD_DEPENDS="readline-dev gdbm-dev openssl-dev sqlite-dev zlib-dev tk-dev \
-ncursesw-dev liblzma-dev wget libunistring-dev pcre2-dev bzip2-dev expat-dev"
+BUILD_DEPENDS="readline-dev gdbm-dev openssl-dev libcrypto-dev sqlite-dev zlib-dev tk-dev \
+ncursesw-dev liblzma-dev xz-dev wget libunistring-dev pcre2-dev bzip2-dev expat-dev"
 
 # Rules to configure and make the package.
 compile_rules()

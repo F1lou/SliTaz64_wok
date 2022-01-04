@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="harfbuzz-dev"
-VERSION="2.8.0"
+VERSION="3.2.0"
 CATEGORY="development"
 SHORT_DESC="Harfbuzz development files."
 MAINTAINER="pankso@slitaz.org"
@@ -17,9 +17,9 @@ HOST_ARCH="x86_64 i486 arm"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/share $fs/usr/lib
+	mkdir -p $fs/usr/lib
 	cp -a $install/usr/include $fs/usr
-	cp -a $install/usr/share/gir-1.0 $fs/usr/share
+	#~ cp -a $install/usr/share/gir-1.0 $fs/usr/share
 	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib/
-	
+	cp -a $install/usr/lib64/cmake $fs/usr/lib/
 }
