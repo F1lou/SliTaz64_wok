@@ -14,11 +14,6 @@ WGET_URL="https://codeload.github.com/polo2ro/imapbox/zip/$GITHASH"
 DEPENDS="python-chardet python-six"
 SUGGESTED="python-pdfkit"
 
-# Rules to configure and make the package.
-compile_rules()
-{
-	patch -p1 < $stuff/slitaz.patch
-}
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

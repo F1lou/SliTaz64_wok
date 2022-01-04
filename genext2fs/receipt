@@ -10,6 +10,8 @@ TARBALL="v$VERSION.tar.gz"
 WEB_SITE="http://genext2fs.sourceforge.net/"
 WGET_URL="https://github.com/bestouff/$PACKAGE/archive/refs/tags/$TARBALL"
 
+BUILD_DEPENDS="bash"
+
 # Rules to configure and make the package.
 compile_rules()
 {

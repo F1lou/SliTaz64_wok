@@ -14,7 +14,7 @@ WGET_URL="http://free.nchc.org.tw/$PACKAGE-core/src/stable/$TARBALL"
 DEPENDS="bash bc binutils dialog disktype dmidecode e2fsprogs ethtool expect \
 file gnu-netcat lzop memtest mtools openssh parted partimage perl pigz procps \
 reiserfsprogs rsync strace tcpdump syslinux systemd udpcast"
-BUILD_DEPENDS=""
+BUILD_DEPENDS="bash"
 
 # Rules to configure and make the package.
 compile_rules()

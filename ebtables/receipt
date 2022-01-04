@@ -11,6 +11,8 @@ WEB_SITE="https://netfilter.org/"
 WGET_URL="$WEB_SITE/pub/$PACKAGE/$TARBALL"
 TAGS="firewall"
 
+BUILD_DEPENDS="file libtool"
+
 # Rules to configure and make the package.
 compile_rules()
 {
@@ -18,6 +20,8 @@ compile_rules()
 	#~ sed -i 's/), ret = 0/), ret = ret - ret/' communication.c
 	#~ mkdir -p $DESTDIR/etc/rc.d/init.d/ $DESTDIR/etc/sysconfig/
 	#~ make && make DESTDIR=$DESTDIR -j1 install
+	autoreconf
+	autoupdate
 	./autogen.sh
 	./configure && make && make install
 }

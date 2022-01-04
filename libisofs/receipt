@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libisofs"
-VERSION="1.5.2"
+VERSION="1.5.4"
 CATEGORY="utilities"
 SHORT_DESC="Libburnia is a project for reading, mastering and writing optical disks."
 MAINTAINER="devl547@gmail.com"
@@ -10,6 +10,8 @@ WEB_SITE="https://dev.lovelyhq.com/libburnia/libisofs"
 
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="http://files.libburnia-project.org/releases/$TARBALL"
+
+BUILD_DEPENDS="libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()

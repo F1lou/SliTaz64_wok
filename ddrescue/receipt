@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="ddrescue"
-VERSION="1.24"
+VERSION="1.25"
 CATEGORY="system-tools"
 TAGS="recovery toolkit tools"
 SHORT_DESC="Data recovery tool."
@@ -13,15 +13,16 @@ TARBALL="$PACKAGE-$VERSION.tar.lz"
 WGET_URL="http://ftp.gnu.org/gnu/ddrescue/$TARBALL"
 
 DEPENDS="gcc-lib-base"
-BUILD_DEPENDS="lzip"
+BUILD_DEPENDS="lzip libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure				\
-		--prefix=/usr			\
+	./configure						\
+		--prefix=/usr				\
 		--infodir=/usr/share/info	\
 		--mandir=/usr/share/man		\
+		LDFLAGS="$LDFLAGS -liconv"	\
 		$CONFIGURE_ARGS &&
 	make &&
 	make DESTDIR=$DESTDIR install

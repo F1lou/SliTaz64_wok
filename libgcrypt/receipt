@@ -20,7 +20,7 @@ HOST_ARCH="x86_64 i486 arm"
 compile_rules()
 {
 	# Integrity check: https://www.gnupg.org/download/integrity_check.html
-	echo "1bccc8393482fa1953323ff429c6b5ba5676eb1a $SRC/$TARBALL" | sha1sum -c || exit 1
+	echo "1bccc8393482fa1953323ff429c6b5ba5676eb1a  $SRC/$TARBALL" | sha1sum -c || exit 1
 
 	case "$ARCH" in
 		arm)

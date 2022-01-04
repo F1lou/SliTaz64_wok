@@ -13,6 +13,7 @@ WGET_URL="$WEB_SITE/archive/v$VERSION.tar.gz"
 
 SUGGESTED="gcc"
 DEPENDS="perl"
+BUILD_DEPENDS="bash"
 
 # Rules to configure and make the package.
 compile_rules()
