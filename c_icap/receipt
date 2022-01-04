@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$SF_MIRROR/c-icap/$TARBALL"
 
 DEPENDS=""
-BUILD_DEPENDS="zlib-dev bzip2-dev brotli-dev openldap-dev"
+BUILD_DEPENDS="zlib-dev bzip2-dev brotli-dev openldap-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
