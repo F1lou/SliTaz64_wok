@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://mj.ucw.cz/download/linux/pci/$TARBALL"
 
 DEPENDS="glibc-base pciids zlib"
-BUILD_DEPENDS=""
+BUILD_DEPENDS="zlib-dev"
 
 # Rules to configure and make the package.
 compile_rules()

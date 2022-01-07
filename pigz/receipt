@@ -11,7 +11,7 @@ WEB_SITE="http://www.zlib.net/pigz"
 WGET_URL="$WEB_SITE/$TARBALL"
 
 DEPENDS=""
-BUILD_DEPENDS=""
+BUILD_DEPENDS="zlib-dev"
 
 # Rules to configure and make the package.
 compile_rules()

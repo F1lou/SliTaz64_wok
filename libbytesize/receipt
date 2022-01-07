@@ -12,7 +12,7 @@ WGET_URL="$WEB_SITE/releases/download/$VERSION/$TARBALL"
 #HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS=""
-BUILD_DEPENDS="pcre2-dev"
+BUILD_DEPENDS="pcre2-dev gmp-dev mpfr-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -26,6 +26,6 @@ genpkg_rules()
 {
 	mkdir -p $fs/usr/lib
 	cp -a $install/usr/bin $fs/usr/
-	cp -a $install/usr/lib/python3.9 $fs/usr/lib/
+	cp -a $install/usr/lib/python3.10 $fs/usr/lib/
 	cp -a $install/usr/lib/*.so* $fs/usr/lib/
 }

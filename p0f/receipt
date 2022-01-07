@@ -11,7 +11,7 @@ WEB_SITE="https://lcamtuf.coredump.cx/p0f.shtml"
 TARBALL="$PACKAGE-$VERSION.tgz"
 WGET_URL="http://lcamtuf.coredump.cx/p0f${VERSION%.*}/releases/$TARBALL"
 
-BUILD_DEPENDS="libpcap-dev"
+BUILD_DEPENDS="bash libpcap-dev"
 
 # Rules to configure and make the package.
 compile_rules()

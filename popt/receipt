@@ -11,6 +11,8 @@ WEB_SITE="https://directory.fsf.org/project/popt/"
 WGET_URL="ftp://ftp.rpm.org/pub/rpm/popt/releases/popt-1.x/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
+BUILD_DEPENDS="libiconv-dev"
+
 # Rules to configure and make the package.
 compile_rules()
 {
