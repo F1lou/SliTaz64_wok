@@ -10,11 +10,12 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="https://sourceforge.net/projects/fatback/"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
-BUILD_DEPENDS="flex autoconf automake libtool"
+BUILD_DEPENDS="flex autoconf automake libtool libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	autoreconf -i
 	./configure --prefix=/usr \
 		$CONFIGURE_ARGS &&

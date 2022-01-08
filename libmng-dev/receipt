@@ -9,7 +9,7 @@ LICENSE="BSD"
 WEB_SITE="http://libmng.sourceforge.net"
 WANTED="libmng"
 
-DEPENDS="libmng lcms-dev jpeg-dev zlib-dev"
+DEPENDS="libmng lcms-dev libjpeg-turbo-dev zlib-dev"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

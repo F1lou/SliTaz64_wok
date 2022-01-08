@@ -11,7 +11,7 @@ WEB_SITE="http://id3lib.sourceforge.net/"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
 DEPENDS="zlib gcc-lib-base"
-BUILD_DEPENDS="zlib-dev"
+BUILD_DEPENDS="zlib-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()

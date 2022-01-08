@@ -12,13 +12,14 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://download.osgeo.org/libtiff/$TARBALL"
 
 DEPENDS="gcc-lib-base jpeg zlib"
-BUILD_DEPENDS="jbigkit jpeg-dev zlib-dev"
+BUILD_DEPENDS="jbigkit jpeg-dev zlib-dev libiconv-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	mkdir -p libtiff-build &&
 	cd       libtiff-build &&
 

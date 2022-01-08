@@ -12,9 +12,9 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="http://www.apache.org/dist/apr/$TARBALL"
 
 DEPENDS="apr expat ncurses readline zlib"
-BUILD_DEPENDS="apr-dev expat-dev gawk db-dev
-	libpostgresqlclient libtool postgresql-dev 
-	sqlite-dev unixODBC-dev util-linux-uuid-dev" # libmysqlclient mysql-dev
+BUILD_DEPENDS="apr-dev expat-dev gawk db-dev libpostgresqlclient
+	libtool postgresql-dev sqlite-dev unixODBC-dev util-linux-uuid-dev
+	libiconv-dev" # libmysqlclient mysql-dev
 
 # Rules to configure and make the package.
 compile_rules()

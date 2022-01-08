@@ -11,11 +11,12 @@ WEB_SITE="http://freshmeat.sourceforge.net/projects/isl"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://libisl.sourceforge.io/$TARBALL"
 
-BUILD_DEPENDS="gmp-dev"
+BUILD_DEPENDS="gmp-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	./configure --prefix=/usr && \
 	make && make install
 }

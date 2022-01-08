@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="minicom-lang"
-VERSION="2.7.1"
+VERSION="2.8"
 CATEGORY="development"
 TAGS="modem serial"
 SHORT_DESC="Menu driven communications program - localised messages."

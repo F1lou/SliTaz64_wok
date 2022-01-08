@@ -17,7 +17,7 @@ PATCH="$SOURCE-$VERSION-apng.patch.gz"
 PATCH_URL="$SF_MIRROR/apng/$SOURCE/$SERIES/$PATCH"
 
 DEPENDS="zlib"
-BUILD_DEPENDS="gawk zlib-dev"
+BUILD_DEPENDS="gawk zlib-dev file"
 
 HOST_ARCH="x86_64 i486 arm"
 

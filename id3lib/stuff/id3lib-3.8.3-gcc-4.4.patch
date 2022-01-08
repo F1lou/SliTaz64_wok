@@ -1,6 +1,6 @@
---- id3lib-3.8.3/configure      2008-05-24 23:39:36.000000000 -0400
-+++ id3lib-3.8.3/configure   2008-05-24 23:39:57.000000000 -0400
-@@ -10296,8 +10296,7 @@
+--- id3lib-3.8.3/configure
++++ id3lib-3.8.3/configure
+@@ -10296,7 +10296,6 @@
  
  for ac_header in \
    string                        \
@@ -9,8 +9,8 @@
  do
  as_ac_Header=`echo "ac_cv_header_$ac_header" | $as_tr_sh`
  
---- id3lib-3.8.3/include/id3/id3lib_strings.h	2008-03-05 18:19:46.000000000 -0600
-+++ id3lib-3.8.3/include/id3/id3lib_strings.h	2008-03-05 18:19:38.000000000 -0600
+--- id3lib-3.8.3/include/id3/id3lib_strings.h
++++ id3lib-3.8.3/include/id3/id3lib_strings.h
 @@ -30,6 +30,7 @@
  #define _ID3LIB_STRINGS_H_
  
@@ -19,8 +19,9 @@
  
  #if (defined(__GNUC__) && (__GNUC__ >= 3) || (defined(_MSC_VER) && _MSC_VER > 1000))
  namespace std
---- id3lib-3.8.3/include/id3/writers.h	2003-03-01 18:23:00.000000000 -0600
-+++ id3lib-3.8.3/include/id3/writers.h	2008-03-05 18:23:05.000000000 -0600
+
+--- id3lib-3.8.3/include/id3/writers.h
++++ id3lib-3.8.3/include/id3/writers.h
 @@ -30,7 +30,7 @@
  
  #include "id3/writer.h"
@@ -30,8 +31,9 @@
  
  class ID3_CPP_EXPORT ID3_OStreamWriter : public ID3_Writer
  {
---- id3lib-3.8.3/examples/demo_convert.cpp	2003-03-01 18:23:00.000000000 -0600
-+++ id3lib-3.8.3/examples/demo_convert.cpp	2008-03-05 18:26:50.000000000 -0600
+
+--- id3lib-3.8.3/examples/demo_convert.cpp
++++ id3lib-3.8.3/examples/demo_convert.cpp
 @@ -84,7 +84,7 @@
    }
  }
@@ -41,8 +43,9 @@
  {
    flags_t ulFlag = ID3TT_ALL;
    gengetopt_args_info args;
---- id3lib-3.8.3/examples/demo_info.cpp	2003-03-01 18:23:00.000000000 -0600
-+++ id3lib-3.8.3/examples/demo_info.cpp	2008-03-05 18:27:40.000000000 -0600
+
+--- id3lib-3.8.3/examples/demo_info.cpp
++++ id3lib-3.8.3/examples/demo_info.cpp
 @@ -309,7 +309,7 @@
  
  #define DEBUG
@@ -52,8 +55,9 @@
  {
    ID3D_INIT_DOUT();
  
---- id3lib-3.8.3/examples/demo_tag.cpp	2003-03-01 18:23:00.000000000 -0600
-+++ id3lib-3.8.3/examples/demo_tag.cpp	2008-03-05 18:31:20.000000000 -0600
+
+--- id3lib-3.8.3/examples/demo_tag.cpp
++++ id3lib-3.8.3/examples/demo_tag.cpp
 @@ -46,7 +46,7 @@
      os << "v2";
  }
@@ -63,8 +67,9 @@
  {
    int ulFlag = ID3TT_ID3;
    ID3D_INIT_DOUT();
---- id3lib-3.8.3/examples/demo_copy.cpp	2003-03-01 18:23:00.000000000 -0600
-+++ id3lib-3.8.3/examples/demo_copy.cpp	2008-03-05 18:32:44.000000000 -0600
+
+--- id3lib-3.8.3/examples/demo_copy.cpp
++++ id3lib-3.8.3/examples/demo_copy.cpp
 @@ -81,7 +81,7 @@
    }
  }

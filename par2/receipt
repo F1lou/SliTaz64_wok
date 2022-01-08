@@ -14,11 +14,12 @@ WGET_URL="$WEB_SITE/archive/v$VERSION.tar.gz"
 
 PROVIDE="par2cmdline"
 DEPENDS="gcc-lib-base"
-BUILD_DEPENDS="automake gcc"
+BUILD_DEPENDS="automake gcc libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	./automake.sh &&
 	./configure			\
 		--prefix=/usr		\

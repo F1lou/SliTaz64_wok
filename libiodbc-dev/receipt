@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libiodbc-dev"
-VERSION="3.52.13"
+VERSION="3.52.15"
 CATEGORY="development"
 SHORT_DESC="The libiodbc development files."
 MAINTAINER="pankso@slitaz.org"

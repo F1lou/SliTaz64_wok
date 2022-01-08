@@ -14,7 +14,7 @@ CONFIG_FILES="/etc/ppp/options"
 SECRET_FILES="/etc/ppp/*secrets"
 
 DEPENDS="pam"
-BUILD_DEPENDS="wget pam pam-dev"
+BUILD_DEPENDS="wget pam pam-dev libpcap-dev"
 PROVIDE="ppp:pam"
 
 # Rules to configure and make the package.

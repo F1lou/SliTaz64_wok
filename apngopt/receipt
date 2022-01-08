@@ -12,11 +12,12 @@ TARBALL="$PACKAGE-$VERSION-src.zip"
 WGET_URL="$SF_MIRROR/apng/APNG_Optimizer/$VERSION/$TARBALL"
 
 DEPENDS="zlib"
-BUILD_DEPENDS="zlib-dev"
+BUILD_DEPENDS="zlib-dev libpng-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	sed -i 's|^LIBS.*|& -liconv|' Makefile
 	make
 }
 

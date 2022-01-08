@@ -13,7 +13,7 @@ CONFIG_FILES="/etc/ppp/options"
 SECRET_FILES="/etc/ppp/*secrets"
 HOST_ARCH="x86_64 i486 arm"
 
-BUILD_DEPENDS="wget"
+BUILD_DEPENDS="wget libpcap-dev openssl-dev"
 SUGGESTED="tazpanel"
 
 # Rules to configure and make the package.

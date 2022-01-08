@@ -12,11 +12,12 @@ WEB_SITE="https://www.openzim.org/wiki/Zimlib"
 WGET_URL="http://download.openzim.org/archive/$TARBALL"
 
 DEPENDS="liblzma"
-BUILD_DEPENDS="xz-dev autoconf automake libtool"
+BUILD_DEPENDS="xz-dev autoconf automake libtool libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	./configure --prefix=/usr \
 		$CONFIGURE_ARGS &&
 	make &&

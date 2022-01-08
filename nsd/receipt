@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="nsd"
-VERSION="4.3.0"
+VERSION="4.3.9"
 CATEGORY="network"
 SHORT_DESC="An authoritative only, high performance, and simple name server."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://www.nlnetlabs.nl/downloads/$PACKAGE/$TARBALL"
 
 DEPENDS="libcrypto libssl"
-BUILD_DEPENDS="libevent-dev openssl-dev"
+BUILD_DEPENDS="libevent-dev openssl-dev libcrypto-dev"
 
 CONFIG_FILES="/etc/nsd"
 

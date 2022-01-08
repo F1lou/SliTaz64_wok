@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="minicom"
-VERSION="2.7.1"
+VERSION="2.8"
 CATEGORY="development"
 SHORT_DESC="Menu driven communications program."
 MAINTAINER="f.lombard@free.fr"
@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="${WEB_SITE}/-/archive/master/v$VERSION.tar.bz2"
 
 DEPENDS="ncurses"
-BUILD_DEPENDS="automake ncurses-dev"
+BUILD_DEPENDS="automake ncurses-dev libiconv-dev"
 CONFIG_FILES="/etc/minirc.dfl"
 
 # Rules to configure and make the package.

@@ -16,7 +16,8 @@ TAGS="compiler C"
 # for cookutils that are not used by tazwok/cook-toolchain since it installs
 # and uses its own copy.
 DEPENDS="binutils libgomp libobjc gcc-lib-base mpc-library elfutils"
-BUILD_DEPENDS="mpc-library mpfr-dev gmp-dev elfutils-dev gc-dev libiconv-dev"
+BUILD_DEPENDS="mpc-library mpfr-dev gmp-dev elfutils-dev gc-dev
+	zlib-dev libiconv-dev"
 
 # Handle cross compilation (native i486/ARM gcc)
 case "$ARCH" in

@@ -12,13 +12,14 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/libcheck/$PACKAGE/archive/$VERSION.tar.gz"
 
 DEPENDS=""
-BUILD_DEPENDS="autoconf automake libtool"
+BUILD_DEPENDS="autoconf automake libtool file texinfo"
 
 HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	autoupdate
 	autoreconf --install &&
 	./configure $CONFIGURE_ARGS &&
 	make &&

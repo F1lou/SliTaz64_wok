@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="tmux"
-VERSION="3.0a"
+VERSION="3.2a"
 CATEGORY="utilities"
 SHORT_DESC="Terminal multiplexer."
 MAINTAINER="paul@slitaz.org"
@@ -31,7 +31,7 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/share/terminfo/s
+	mkdir -p $fs/usr/share/terminfo/s $src/ncursesw-extra
 
 	cp -a $install/usr/bin		$fs/usr
 
@@ -39,7 +39,7 @@ genpkg_rules()
 	cp -a $install/usr/share/tmux	$fs/usr/share
 
 	# Get screen terminfo data
-	#~ tazpkg -gi ncursesw-extra --root=$src/ncursesw-extra > /dev/null 2>&1
+	tazpkg -gi ncursesw-extra --root=$src/ncursesw-extra > /dev/null 2>&1
 	cp -a /usr/share/terminfo/s/screen $fs/usr/share/terminfo/s
-	#~ rm -r $src/ncursesw-extra
+	rm -r $src/ncursesw-extra
 }

@@ -10,8 +10,8 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://libmng.sourceforge.net"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
-DEPENDS="lcms jpeg zlib"
-BUILD_DEPENDS="autoconf automake lcms-dev jpeg-dev libtool"
+DEPENDS="lcms libjpeg-turbo zlib"
+BUILD_DEPENDS="autoconf automake file lcms-dev libjpeg-turbo-dev libtool zlib-dev"
 
 # Rules to configure and make the package.
 compile_rules()

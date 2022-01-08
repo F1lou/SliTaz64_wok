@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="soundtouch-dev"
-VERSION="2.1.2"
+VERSION="2.3.1"
 CATEGORY="development"
 SHORT_DESC="Development files for soundtouch."
 MAINTAINER="slaxemulator@gmail.com"

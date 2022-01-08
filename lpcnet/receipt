@@ -10,12 +10,11 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="https://people.xiph.org/~jm/demo/lpcnet_codec/"
 WGET_URL="https://github.com/mozilla/LPCNet/archive/v$VERSION.tar.gz"
 
-BUILD_DEPENDS="automake libtool gcc63"
+BUILD_DEPENDS="automake libtool gcc"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export CC=gcc-63 CXX=g++-63
 	./autogen.sh
 	./configure --prefix=/usr \
 		$CONFIGURE_ARGS &&

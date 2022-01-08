@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="bozohttpd"
-VERSION="20190228"
+VERSION="20210227"
 CATEGORY="network"
 TAGS="http server lightweight CGI ipv6 ssl"
 SHORT_DESC="Small and secure http version 1.1 server."
@@ -20,7 +20,7 @@ BUILD_DEPENDS="openssl-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
-	export	LDFLAGS="$LDFLAGS -lrt"	# to resolve clock_...
+	#~ export	LDFLAGS="$LDFLAGS -lrt"	# to resolve clock_...
 
 	make -f Makefile.boot all &&
 	cook_pick_manpages bozohttpd.8

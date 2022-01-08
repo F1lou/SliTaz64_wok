@@ -12,7 +12,7 @@ WGET_URL="http://ftp.debian.org/debian/pool/main/s/ssmtp/$TARBALL"
 CONFIG_FILES="/etc/ssmtp/ssmtp.conf /etc/ssmtp/revaliases"
 
 DEPENDS="openssl"
-BUILD_DEPENDS="openssl-dev"
+BUILD_DEPENDS="openssl-dev libcrypto-dev"
 
 # Rules to configure and make the package.
 compile_rules()
