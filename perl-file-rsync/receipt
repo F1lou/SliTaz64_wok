@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="perl-file-rsync"
-VERSION="0.74"
+VERSION="0.76"
 CATEGORY="development"
 SHORT_DESC="Perl Rsync client"
 MAINTAINER="slaxemulator@gmail.com"

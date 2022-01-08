@@ -14,6 +14,8 @@ TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="$XORG_MIRROR/app/$TARBALL"
 
 DEPENDS="xorg-libX11 xorg-libXaw xorg-libXmu xorg-libXt"
+BUILD_DEPENDS="xorg-libXaw-dev xorg-libXmu-dev xorg-libXt-dev
+	xorg-libX11-dev libbsd-dev"
 
 # Rules to configure and make the package.
 compile_rules()

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="perl-smtp-ssl"
-VERSION="1.01"
+VERSION="1.04"
 CATEGORY="development"
 SHORT_DESC="SSL support for Net::SMTP."
 MAINTAINER="rocky@slitaz.org"

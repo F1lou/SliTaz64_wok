@@ -13,7 +13,8 @@ TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="$XORG_MIRROR/lib/$TARBALL"
 
 DEPENDS="xorg-libXext"
-BUILD_DEPENDS="xorg-scrnsaverproto"
+BUILD_DEPENDS="xorg-scrnsaverproto xorg-xextproto xorg-libXext-dev
+	xorg-libX11-dev libbsd-dev libmd-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 

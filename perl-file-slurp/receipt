@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="perl-file-slurp"
-VERSION="9999.30"
+VERSION="9999.32"
 CATEGORY="development"
 SHORT_DESC="Perl extension File::Slurp."
 MAINTAINER="slaxemulator@gmail.com"

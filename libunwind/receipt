@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libunwind"
-VERSION="1.5.0"
+VERSION="1.6.2"
 CATEGORY="development"
 SHORT_DESC="C programming interface (API) to determine the call-chain of a program."
 MAINTAINER="pankso@slitaz.org"
@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="http://download.savannah.gnu.org/releases/libunwind/$TARBALL"
 
 DEPENDS="liblzma"
-BUILD_DEPENDS="liblzma-dev"
+BUILD_DEPENDS="liblzma-dev zlib-dev"
 
 # Rules to configure and make the package.
 compile_rules()

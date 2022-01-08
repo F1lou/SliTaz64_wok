@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="perl-config-tiny"
-VERSION="2.24"
+VERSION="2.28"
 CATEGORY="development"
 SHORT_DESC="Perl extension Config::Tiny."
 MAINTAINER="pascal.bellard@slitaz.org"

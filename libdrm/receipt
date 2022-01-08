@@ -11,7 +11,7 @@ WEB_SITE="https://dri.freedesktop.org"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="$WEB_SITE/$PACKAGE/$TARBALL"
 
-DEPENDS="glibc-base linux-drm udev xorg-libpciaccess"
+DEPENDS="glibc-base linux-drm eudev xorg-libpciaccess"
 BUILD_DEPENDS="gc-dev libpthread-stubs-dev pkg-config \
 	eudev-dev xorg-libpciaccess-dev xorg-dev xorg-dev-proto"
 

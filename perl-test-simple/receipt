@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="perl-test-simple"
-VERSION="1.302172"
+VERSION="1.302188"
 CATEGORY="development"
 SHORT_DESC="Perl extension Test::Simple."
 MAINTAINER="nneul@neulinger.org"

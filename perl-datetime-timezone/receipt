@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="perl-datetime-timezone"
-VERSION="2.38"
+VERSION="2.51"
 CATEGORY="development"
 SHORT_DESC="Perl extension DateTime::Format::TimeZone."
 MAINTAINER="pascal.bellard@slitaz.org"

@@ -13,7 +13,7 @@ TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="http://ftp.videolan.org/pub/videolan/x264/snapshots/$TARBALL"
 
 DEPENDS="glibc-base"
-BUILD_DEPENDS="nasm"
+BUILD_DEPENDS="nasm bash"
 
 #HOST_ARCH="x86_64 i486 arm"
 

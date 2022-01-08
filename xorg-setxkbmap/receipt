@@ -13,6 +13,7 @@ TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="$XORG_MIRROR/app/$TARBALL"
 
 DEPENDS="xorg-xkeyboard-config"
+BUILD_DEPENDS="xorg-libxkbfile-dev xorg-libX11-dev xorg-util-macros libbsd-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 

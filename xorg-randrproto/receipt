@@ -37,7 +37,7 @@ genpkg_rules()
 {
 	mkdir -p $fs/usr/share/licenses
 
-	cp -a $src/COPYING	$fs/usr/share/licenses/$PACKAGE.txt
+	cp -a $src/COPYING-$SOURCE	$fs/usr/share/licenses/$PACKAGE.txt
 	cp -a $install/*	$fs
 
 	rm -rf $fs/usr/share/doc

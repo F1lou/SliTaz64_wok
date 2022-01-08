@@ -13,6 +13,8 @@ SOURCE="mkfontscale"
 TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="$WEB_SITE/releases/individual/app/$TARBALL"
 
+BUILD_DEPENDS="xorg-libfontenc-dev freetype-dev xorg-xproto"
+
 # Rules to configure and make the package.ls sr	
 compile_rules()
 {

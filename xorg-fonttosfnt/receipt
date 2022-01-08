@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xorg-fonttosfnt"
-VERSION="1.0.5"
+VERSION="1.2.2"
 CATEGORY="x-window"
 TAGS="utility xorg fonts"
 SHORT_DESC="Wrap a bitmap font in a sfnt (TrueType) wrapper."
@@ -13,7 +13,8 @@ SOURCE="fonttosfnt"
 TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="$WEB_SITE/releases/individual/app/$TARBALL"
 
-DEPENDS="freetype xorg-libfontenc xorg-libX11"
+DEPENDS="freetype xproto fontenc xorg-libfontenc xorg-libX11"
+BUILD_DEPENDS="xorg-libfontenc-dev freetype-dev xorg-xproto"
 
 # Rules to configure and make the package.ls sr	
 compile_rules()

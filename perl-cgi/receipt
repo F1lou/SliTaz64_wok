@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="perl-cgi"
-VERSION="4.46"
+VERSION="4.53"
 CATEGORY="development"
 SHORT_DESC="Perl extension CGI."
 MAINTAINER="pascal.bellard@slitaz.org"

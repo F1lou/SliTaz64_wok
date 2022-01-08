@@ -11,12 +11,12 @@ WEB_SITE="https://sourceforge.net/projects/stun/"
 WGET_URL="$SF_MIRROR/stun/$TARBALL"
 
 DEPENDS="gcc-lib-base"
-BUILD_DEPENDS=""
+BUILD_DEPENDS="libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	make
+	LDFLAGS="$LDFLAGS -liconv" make
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

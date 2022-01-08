@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="perl-event"
-VERSION="1.27"
+VERSION="1.28"
 CATEGORY="development"
 SHORT_DESC="Perl extension Event."
 MAINTAINER="pascal.bellard@slitaz.org"
