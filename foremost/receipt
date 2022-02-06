@@ -15,6 +15,7 @@ compile_rules()
 {
 	cd $src
 	sed -i 's/\/usr\/local\/etc/\/etc/' config.c
+	sed -i 's|^RAW_FLAGS.*|& -fcommon|' Makefile
 	make
 }
 

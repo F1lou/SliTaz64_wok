@@ -11,7 +11,7 @@ WEB_SITE="https://github.com/letoams/hash-slinger"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$WEB_SITE/archive/$VERSION.tar.gz"
 
-DEPENDS="python"
+DEPENDS="py3k"
 
 # Rules to configure and make the package.
 compile_rules()

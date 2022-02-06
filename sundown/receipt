@@ -18,8 +18,9 @@ BUILD_DEPENDS=""
 compile_rules()
 {
 	#sed -i 's|O3|Os|' $src/Makefile
+	sed -i 's|-Wl||' $src/Makefile
 	patch -p1 -i $stuff/sundown.options.patch
-	make
+	CFLAGS="-W" make
 	mkdir -p $install/usr/bin
 	cp -a $src/sundown $install/usr/bin
 }

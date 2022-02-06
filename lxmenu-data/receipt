@@ -13,7 +13,7 @@ CONFIG_FILES="/etc/xdg/menus/lxde-applications.menu"
 TAGS="LXDE"
 HOST_ARCH="x86_64 i486 arm"
 
-[ "$ARCH" = "i486" ] && BUILD_DEPENDS="gettext intltool"
+BUILD_DEPENDS="gettext intltool"
 
 # Rules to configure and make the package.
 compile_rules()

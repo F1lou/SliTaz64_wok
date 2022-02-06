@@ -19,6 +19,7 @@ CONFIG_FILES="/etc/mgetty+sendfax"
 compile_rules()
 {
 	chmod a+x mkidirs
+	export CFLAGS="$CFLAGS -fcommon"
 
 	[ -f Makefile.dist ] && mv -f Makefile.dist Makefile
 	cp Makefile Makefile.dist

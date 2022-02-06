@@ -13,7 +13,7 @@ WEB_SITE="https://www.freetype.org/"
 WGET_URL="http://download.savannah.gnu.org/releases/$SOURCE/$TARBALL"
 
 DEPENDS="slitaz-base-files zlib"
-BUILD_DEPENDS="bzip2-dev"
+BUILD_DEPENDS="bzip2-dev file libpng-dev"
 
 # Rules to configure and make the package.
 compile_rules()

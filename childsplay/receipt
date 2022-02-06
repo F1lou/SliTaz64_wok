@@ -11,7 +11,7 @@ WEB_SITE="http://www.schoolsplay.org/"
 TARBALL="$PACKAGE-$VERSION.tgz"
 WGET_URL="$SF_MIRROR/schoolsplay/$TARBALL"
 
-DEPENDS="libogg pygtk python python-pygame python-pysqlite python-sqlalchemy"
+DEPENDS="libogg pygtk py3k python-pygame python-pysqlite python-sqlalchemy"
 
 # Rules to configure and make the package.
 compile_rules()

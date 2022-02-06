@@ -15,7 +15,8 @@ BUILD_DEPENDS="libiconv-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	sed -i 's|^RELEASE_LDFLAGS.*|& -liconv|' Makefile
+	sed -i 's|^RELEASE_CFLAGS.*|& -fPIC|' Makefile
 	make &&
 	${HOST_SYSTEM}-g++ -m64 -fPIC "$CXXFLAGS" -shared \
 		-o libtinyxml.so.0.$VERSION \

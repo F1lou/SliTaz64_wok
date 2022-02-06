@@ -28,7 +28,7 @@ esac
 compile_rules()
 {
 	case "$ARCH" in
-	i?86)
+	x86_64|i?86)
 		make ${ARCH_ARGS} NOGDB=1 build
 		make -j1 NOGDB=1 PREFIX=$DESTDIR/usr install ;;
 	arm*)

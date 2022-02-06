@@ -2,7 +2,7 @@
 
 PACKAGE="thunderbird-bin-fr"
 lang="fr"
-VERSION="68.9.0"
+VERSION="91.5.0"
 CATEGORY="network"
 SHORT_DESC="Mozilla's Thunderbird email application (French language)."
 MAINTAINER="mojo@slitaz.org"
@@ -10,10 +10,10 @@ LICENSE="MPL"
 TARBALL="$SOURCE-$VERSION.tar.bz2"
 SOURCE="thunderbird"
 WEB_SITE="http://www.mozilla.org/"
-WGET_URL="https://ftp.mozilla.org/pub/thunderbird/releases/$VERSION/linux-i686/$lang/$TARBALL"
+WGET_URL="https://ftp.mozilla.org/pub/thunderbird/releases/$VERSION/linux-x86_64/$lang/$TARBALL"
 
 DEPENDS="alsa-lib dbus-glib gtk+ gtk+3 libatomic xorg-libXt"
-HOST_ARCH="x86_64 i486"
+HOST_ARCH="x86_64"
 
 # Rules to configure and make the package.
 compile_rules()

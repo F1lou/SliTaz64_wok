@@ -17,6 +17,7 @@ BUILD_DEPENDS="fuse-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -lfuse3/fuse" 
 	make
 }
 

@@ -1,18 +1,18 @@
 # SliTaz package receipt.
 
 PACKAGE="exif"
-VERSION="0.6.21"
+VERSION="0.6.22"
 CATEGORY="graphics"
 SHORT_DESC="Read exif data from images"
 MAINTAINER="sygne@ombres.eu"
 LICENSE="LGPL2.1"
 WEB_SITE="http://libexif.sourceforge.net/"
 
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
-WGET_URL="$SF_MIRROR/libexif/$TARBALL"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="https://github.com/lib$PACKAGE/$PACKAGE/releases/download/$PACKAGE-0_6_22-release/$TARBALL"
 
 DEPENDS="libexif popt"
-BUILD_DEPENDS="libexif libexif-dev popt-dev"
+BUILD_DEPENDS="libexif libexif-dev popt-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -22,7 +22,7 @@ compile_rules()
 		--infodir=/usr/share/info \
 		--mandir=/usr/share/man \
 		$CONFIGURE_ARGS &&
-	make -j 1 &&
+	make &&
 	make DESTDIR=$DESTDIR install
 }
 

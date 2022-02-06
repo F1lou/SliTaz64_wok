@@ -2,7 +2,7 @@
 
 PACKAGE="paper-icon-theme"
 VERSION="1.5.0"
-CATEGORY="customization"
+CATEGORY="x-window"
 SHORT_DESC="Simple and modern icon theme with material design influences."
 MAINTAINER="al.bobylev@gmail.com"
 LICENSE="CC-BY-SA-4"

@@ -12,6 +12,7 @@ TARBALL="${PACKAGE}_$VERSION.tar.xz"
 WGET_URL="http://ftp.de.debian.org/debian/pool/main/r/ratmenu/$TARBALL"
 
 DEPENDS="xorg-libX11"
+BUILD_DEPENDS="xorg-randrproto xorg-libX11-dev"
 
 # Rules to configure and make the package.
 compile_rules()

@@ -12,6 +12,8 @@ SOURCE="sftpserver"
 TARBALL="$SOURCE-$VERSION.tar.gz"
 WGET_URL="$WEB_SITE/$TARBALL"
 
+BUILD_DEPENDS="readline-dev"
+
 # Rules to configure and make the package.
 compile_rules()
 {

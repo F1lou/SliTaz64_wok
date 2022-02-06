@@ -10,8 +10,8 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://www.xbill.org/"
 WGET_URL="$WEB_SITE/download/$TARBALL"
 
-DEPENDS="gtk+ xorg-libXaw lesstif"
-BUILD_DEPENDS="gtk+-dev xorg-libXaw-dev lesstif-dev libiconv-dev"
+DEPENDS="gtk+3 xorg-libXaw lesstif"
+BUILD_DEPENDS="gtk+3-dev xorg-libXaw-dev lesstif-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()

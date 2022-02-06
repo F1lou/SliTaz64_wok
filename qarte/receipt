@@ -10,7 +10,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="https://launchpad.net/qarte"
 WGET_URL="http://oqapy.eu/releases/$TARBALL"
 
-DEPENDS="python PyQt-x11-gpl notify-python rtmpdump"
+DEPENDS="py3k PyQt-x11-gpl notify-python rtmpdump"
 BUILD_DEPENDS=""
 
 # Rules to configure and make the package.

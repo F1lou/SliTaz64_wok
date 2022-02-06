@@ -17,8 +17,8 @@ BUILD_DEPENDS="curl-dev libcurl libnxml-dev libmrss-dev libiconv-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
+	sed -i 's|^LDFLAGS.*|& -liconv|' Makefile
 	sed -i 's/-liconv_hook //' Makefile
-	export LDFLAGS="$LDFLAGS -liconv"	
 	make prefix=$install/usr && 
 	make install prefix=$install/usr
 }

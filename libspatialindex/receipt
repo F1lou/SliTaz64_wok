@@ -13,11 +13,12 @@ WGET_URL="http://download.osgeo.org/libspatialindex/$TARBALL"
 HOST_ARCH="x86_64 i486"
 
 DEPENDS=""
-BUILD_DEPENDS=""
+BUILD_DEPENDS="libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	./configure \
 		--prefix=/usr \
 		$CONFIGURE_ARGS &&

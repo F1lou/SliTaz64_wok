@@ -13,7 +13,7 @@ WGET_URL="http://cloud.github.com/downloads/tias/xinput_calibrator/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="xorg-libX11"
-BUILD_DEPENDS="xorg-libX11 libiconv-dev"
+BUILD_DEPENDS="xorg-libX11-dev xorg-libXext-dev xorg-libXi-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()

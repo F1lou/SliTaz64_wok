@@ -12,11 +12,12 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
 DEPENDS=""
-BUILD_DEPENDS=""
+BUILD_DEPENDS="libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	./configure			\
 		--prefix="/usr"		\
 		--disable-static	\

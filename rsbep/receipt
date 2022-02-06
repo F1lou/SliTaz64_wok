@@ -1,16 +1,16 @@
 # SliTaz package receipt.
 
 PACKAGE="rsbep"
-VERSION="0.1.0-ttsiodras"
+VERSION="0.2.0"
 CATEGORY="misc"
 SHORT_DESC="Shielding your files with Reed-Solomon codes."
 MAINTAINER="pascal.bellard@slitaz.org"
 LICENSE="GPL2"
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
+TARBALL="v$VERSION.tar.gz"
 WEB_SITE="http://users.softlab.ntua.gr/~ttsiod/rsbep.html"
-WGET_URL="http://users.softlab.ntua.gr/~ttsiod/$TARBALL"
+WGET_URL="https://github.com/ttsiodras/rsbep-backup/archive/refs/tags/$TARBALL"
 
-SUGGESTED="python"
+SUGGESTED="py3k"
 
 # Rules to configure and make the package.
 compile_rules()

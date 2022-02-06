@@ -10,7 +10,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://libraryopt.sourceforge.net/"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
-DEPENDS="python binutils"
+DEPENDS="py3k binutils"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

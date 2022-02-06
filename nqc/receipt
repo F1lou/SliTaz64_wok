@@ -14,14 +14,14 @@ WGET_URL="http://users.zoominternet.net/~rcx/$TARBALL"
 TAGS="compiler language"
 
 DEPENDS="glibc-base gcc-lib-base"
-BUILD_DEPENDS="flex"
+BUILD_DEPENDS="flex libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	ln -s $PACKAGE-$VERSION ../$PACKAGE-$VERSION-$PATCHLEVEL
 	[ -s $TARBALL ] && tar xjf $TARBALL -C ..
-	make -j1 TOOLPREFIX="$TOOLPREFIX" \
+	make -j1 LDFLAGS="$LDFLAGS -liconv" \
 		DEFAULT_SERIAL_NAME='"/dev/ttyS0"' \
 		DEFAULT_USB_NAME='"/dev/usb/legousbtower0"' \
 		DEFAULT_PORT_NAME='"usb"' &&

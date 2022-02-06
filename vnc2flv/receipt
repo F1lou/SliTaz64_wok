@@ -12,7 +12,7 @@ WGET_URL="http://pypi.python.org/packages/source/v/vnc2flv/$TARBALL"
 SUGGESTED="x11vnc"
 TAGS="vnc"
 
-DEPENDS="python"
+DEPENDS="py3k"
 
 # Rules to configure and make the package.
 compile_rules()

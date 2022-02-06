@@ -12,14 +12,15 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION:0:4}/$TARBALL"
 
 DEPENDS="py3k"
-BUILD_DEPENDS="docbook-xml docbook-xsl itstool libxslt perl py3k"
+BUILD_DEPENDS="docbook-xml docbook-xsl itstool libxslt perl py3k-dev
+	python3-pygments libxml2-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	mkdir build && cd build
 
-	meson --prefix=/usr -Dman=false .. &&
+	meson --prefix=/usr .. &&
 	ninja
 
 	DESTDIR=$DESTDIR ninja install

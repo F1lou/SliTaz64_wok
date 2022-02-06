@@ -23,7 +23,7 @@ compile_rules()
 		-e 's|@exec_prefix@|/usr/bin|' \
 		-e 's|@CREDITSFILE@|/usr/share/xgalaga/CREDITS|' \
 			Makefile.in
-	./configure $CONFIGURE_ARGS
+	./configure --host=x86_64-slitaz- --target=x86_64 $CONFIGURE_ARGS
 	sed -i	-e 's|/usr/sounds/|/usr/share/xgalaga/sounds/|' \
 		-e 's|/usr/levels/|/usr/share/xgalaga/levels/|' \
 		-e 's|/usr/CREDITS|/usr/share/xgalaga/CREDITS|' \

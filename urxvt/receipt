@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="urxvt"
-VERSION="9.22"
+VERSION="9.30"
 CATEGORY="utilities"
 TAGS="terminal"
 SHORT_DESC="Terminal with unicode support."

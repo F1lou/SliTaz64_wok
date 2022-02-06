@@ -10,7 +10,7 @@ WEB_SITE="https://asciidoc-py.github.io/index.html"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 #~ WGET_URL="$SF_MIRROR/project/asciidoc/asciidoc/$VERSION/$TARBALL"
 WGET_URL="https://github.com/asciidoc-py/asciidoc-py/archive/refs/tags/$VERSION.tar.gz"
-DEPENDS="python"
+DEPENDS="py3k"
 BUILD_DEPENDS=""
 
 # Rules to configure and make the package.

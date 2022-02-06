@@ -13,11 +13,13 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$WEB_SITE/archive/$VERSION.tar.gz"
 
 DEPENDS="gcc-lib-base"
+BUILD_DEPENDS="libiconv-dev"
 CONFIG_FILES="/etc/ndppd.conf"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	sed -i 's|/usr/local|/usr|' Makefile
 
 	make all &&

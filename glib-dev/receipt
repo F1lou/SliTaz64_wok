@@ -37,8 +37,9 @@ genpkg_rules()
 	rm $fs/usr/lib/pkgconfig/gio*.pc
 
 	# exclude from files.list (for tazpkg-find-depends)
-	#~ cd $fs/usr/share/gdb/auto-load
-	#~ for i in $(ls *.py);do mv -f $i ${i//./-.-};done
+	cd $fs/usr/share/gdb/auto-load
+	mv usr/lib64/* .
+	for i in $(ls *.py);do mv -f $i ${i//./-.-};done
 	
 	# create links for header file directories
 	cd $fs/usr/include

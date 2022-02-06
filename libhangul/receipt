@@ -11,6 +11,7 @@ WEB_SITE="https://github.com/libhangul/libhangul"
 WGET_URL="http://libhangul.googlecode.com/files/$TARBALL"
 
 DEPENDS=""
+BUILD_DEPENDS="libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()

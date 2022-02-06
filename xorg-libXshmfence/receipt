@@ -13,7 +13,7 @@ TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="https://www.x.org/archive//individual/lib/$TARBALL"
 
 DEPENDS=""
-BUILD_DEPENDS="xorg-proto"
+BUILD_DEPENDS="xorg-proto file"
 
 # Rules to configure and make the package.
 compile_rules()

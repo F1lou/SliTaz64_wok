@@ -12,7 +12,8 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}releases/download/v$VERSION/$TARBALL"
 
 DEPENDS="xorg-libX11 xorg-libXtst"
-BUILD_DEPENDS="libxkbcommon-dev xorg-libX11-dev xorg-libXtst-dev xorg-libXtst"
+BUILD_DEPENDS="libxkbcommon-dev xorg-libX11-dev xorg-libXtst-dev
+	xorg-libXtst xorg-libXinerama-dev"
 
 # Rules to configure and make the package.
 compile_rules()

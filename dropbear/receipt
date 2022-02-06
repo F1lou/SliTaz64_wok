@@ -53,7 +53,7 @@ EOT
 	# No pam support in ARM
 	case "$ARCH" in
 		arm) echo "Skipping Dropbear PAM..." ;;
-		i?86)
+		x86_64|i?86)
 			cat >> localoptions.h <<EOT
 #define DROPBEAR_SVR_PASSWORD_AUTH 0
 #define DROPBEAR_SVR_PAM_AUTH 1

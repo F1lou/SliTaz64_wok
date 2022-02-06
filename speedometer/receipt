@@ -10,7 +10,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://excess.org/speedometer/"
 WGET_URL="http://excess.org/speedometer/$TARBALL"
 
-DEPENDS="python python-urwid"
+DEPENDS="py3k python-urwid"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

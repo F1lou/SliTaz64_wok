@@ -10,7 +10,7 @@ WEB_SITE="https://store.kde.org/p/1130050/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="http://kapsi.fi/ighea/$PACKAGE/$TARBALL"
 
-DEPENDS="wbar python pygtk pygobject"
+DEPENDS="wbar py3k pygtk pygobject"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

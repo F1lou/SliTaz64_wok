@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="memtest"
-VERSION="5.01"
+VERSION="5.31b"
 CATEGORY="base-system"
 SHORT_DESC="Memory failures detection tool."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -16,10 +16,10 @@ BUILD_DEPENDS="xz"
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i '/scp memtest.bin/d' Makefile
-	for i in array-size io setup ; do
-		patch -p1 < $stuff/$SOURCE-$VERSION-$i.patch
-	done
+	#~ sed -i '/scp memtest.bin/d' Makefile
+	#~ for i in array-size io setup ; do
+		#~ patch -p1 < $stuff/$SOURCE-$VERSION-$i.patch
+	#~ done
 	make
 	cp $stuff/*.S $stuff/pack .
 	for i in bootloader unpack ; do

@@ -12,7 +12,7 @@ WEB_SITE="https://web.archive.org/web/20100227040751/http://qemulator.createweb.
 WGET_URL="http://qemulator.createweb.de/phocadownload/$TARBALL"
 TAGS="emulator virtualization"
 
-DEPENDS="python pygtk qemu"
+DEPENDS="py3k pygtk qemu"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

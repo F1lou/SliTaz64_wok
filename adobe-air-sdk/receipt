@@ -10,7 +10,7 @@ WEB_SITE="http://get.adobe.com/air"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="http://airdownload.adobe.com/air/lin/download/$VERSION/AdobeAIRSDK.tbz2"
 
-DEPENDS="nss gtk+ libxslt"
+DEPENDS="nss gtk+3 libxslt"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

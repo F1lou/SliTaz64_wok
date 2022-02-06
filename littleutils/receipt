@@ -12,6 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
 DEPENDS="bash perl"
+BUILD_DEPENDS="bash"
 
 # Rules to configure and make the package.
 compile_rules()

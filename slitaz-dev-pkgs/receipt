@@ -43,11 +43,11 @@ atk-dev
 cairo-dev
 expat-dev
 glib-dev
-gtk+-dev
+gtk+3-dev
 libIDL
 zip
 poppler-dev
-python
+py3k
 patch
 libcrypto
 openssl

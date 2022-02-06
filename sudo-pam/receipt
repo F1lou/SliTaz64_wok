@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="sudo-pam"
-VERSION="1.9.5p2"
+VERSION="1.9.8p2"
 CATEGORY="security"
 SHORT_DESC="Allows command execution as root for specified users using PAM."
 MAINTAINER="erjo@slitaz.org"

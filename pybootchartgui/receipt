@@ -10,12 +10,12 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="https://github.com/kraj/poky/tree/master/scripts/pybootchartgui"
 WGET_URL="$WEB_SITE/files/$TARBALL"
 
-DEPENDS="python pygtk bootchart"
+DEPENDS="py3k pygtk bootchart"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-    PY_VERSION=`cat /var/lib/tazpkg/installed/python/receipt | grep "VERSION="|cut -d \" -f 2 | cut -d . -f 1,2`
+    PY_VERSION=`cat /var/lib/tazpkg/installed/py3k/receipt | grep "VERSION="|cut -d \" -f 2 | cut -d . -f 1,2`
 	mkdir -p $fs/usr/lib/python$PY_VERSION $fs/usr/bin
     cp -a $src/pybootchartgui.py $fs/usr/lib/python$PY_VERSION
 	cp -a $src/pybootchartgui $fs/usr/lib/python$PY_VERSION
@@ -25,7 +25,7 @@ genpkg_rules()
 
 post_install()
 {
-	PY_VERSION=$(cat "$1/var/lib/tazpkg/installed/python/receipt" | grep "VERSION="|cut -d \" -f 2 | cut -d . -f 1,2)
+	PY_VERSION=$(cat "$1/var/lib/tazpkg/installed/py3k/receipt" | grep "VERSION="|cut -d \" -f 2 | cut -d . -f 1,2)
 	if [ -f  "$1/usr/bin/pybootchartgui" ] ; then rm "$1/usr/bin/pybootchartgui" ; fi
 	ln -s /usr/lib/python$PY_VERSION/pybootchartgui.py "$1/usr/bin/pybootchartgui"
 	if [ -f "$1/etc/bootchartd.conf" ] ; then

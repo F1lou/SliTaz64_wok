@@ -2,7 +2,7 @@
 
 PACKAGE="mate-themes"
 VERSION="1.9.0"
-CATEGORY="customization"
+CATEGORY="x-window"
 LICENSE="GPL"
 SHORT_DESC="MATE's default themes."
 MAINTAINER="yuripourre@gmail.com"

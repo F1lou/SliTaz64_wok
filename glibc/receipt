@@ -11,10 +11,10 @@ WEB_SITE="http://www.gnu.org/software/libc/"
 WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
 
 DEPENDS="glibc-base glibc-locale glibc-dev"
-BUILD_DEPENDS="linux-api-headers autoconf advancecomp"
+BUILD_DEPENDS="linux-api-headers autoconf advancecomp grep gawk"
 
 # Genpkg order for tazwok.
-COOK_OPT="genpkg=glibc-base:glib-locale:glibc-dev"
+COOK_OPT="genpkg=glibc-base:glibc-locale:glibc-dev"
 
 # Rules to compile & install the temporary toolchain.
 cook_tmp_toolchain()
@@ -77,7 +77,7 @@ compile_rules()
 	mkdir ../glibc-build && cd ../glibc-build
 	
 	# Read the INSTALL file in glibc. Also Glibc dont build with -Os flag.
-	# --enale-kernel use latest SliTaz Kernel version. From Glibc INSTALL:
+	# --enable-kernel use latest SliTaz Kernel version. From Glibc INSTALL:
 	# "The higher the VERSION number is, the less compatibility code is
 	# added, and the faster the code gets."
 	unset CFLAGS CXXFLAGS

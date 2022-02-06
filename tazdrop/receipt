@@ -11,7 +11,7 @@ SOURCE="slitaz-tools"
 TARBALL="$SOURCE-$VERSION.tar.gz"
 WGET_URL="http://hg.slitaz.org/$SOURCE/archive/$VERSION.tar.gz"
 
-DEPENDS="gtk+ yad"
+DEPENDS="gtk+3 yad"
 SIBLINGS="slitaz-tools slitaz-tools-boxes"
 
 # Rules to configure and make the package.

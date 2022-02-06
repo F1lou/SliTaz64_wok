@@ -11,8 +11,8 @@ WEB_SITE="https://sourceforge.net/projects/gmrun"
 WGET_URL="$SF_MIRROR/gmrun/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
-DEPENDS="gtk+ gcc-lib-base popt"
-BUILD_DEPENDS="gtk+-dev popt-dev"
+DEPENDS="gtk+3 gcc-lib-base popt"
+BUILD_DEPENDS="gtk+3-dev popt-dev"
 
 # Rules to configure and make the package.
 compile_rules()

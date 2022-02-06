@@ -12,7 +12,8 @@ WGET_URL="http://ftp.de.debian.org/debian/pool/main/v/vnc4/$TARBALL"
 DEPENDS="gcc-lib-base xorg-libXdmcp xorg-libXau xorg-libX11 xorg-libXext \
 xorg-libICE xorg-libSM util-linux-uuid"
 BUILD_DEPENDS="xorg-libXaw-dev xorg-libXt-dev xorg-xproto xorg-libXau-dev \
-xorg-libXdmcp-dev xorg-libXmu-dev xorg-xextproto xorg-libXtst-dev"
+xorg-libXdmcp-dev xorg-libXmu-dev xorg-xextproto xorg-libXtst-dev \
+libiconv-dev"
 PROVIDE="vncviewer"
 TAGS="remote-desktop vnc"
 HOST_ARCH="x86_64 i486 arm"
@@ -20,8 +21,8 @@ HOST_ARCH="x86_64 i486 arm"
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	mv vnc4* $src 2> /dev/null
-	find $src -name Makefile.linux \; | xargs sed -i 's|uname -m|echo i486|'
 	cd $src
 	case "$ARCH" in
 	arm*) sed -i 's/(AR)/& rc/' common/zlib/Makefile.in ;;

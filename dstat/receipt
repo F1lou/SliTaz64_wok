@@ -12,7 +12,7 @@ WEB_SITE="http://dag.wieers.com/home-made/dstat/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/dagwieers/dstat/archive/v$VERSION.tar.gz"
 
-DEPENDS="python"
+DEPENDS="py3k"
 
 # Rules to configure and make the package.
 compile_rules()

@@ -14,7 +14,7 @@ TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="$XORG_MIRROR/app/$TARBALL"
 
 DEPENDS="xorg-libX11"
-BUILD_DEPENDS="xorg-libX11-dev"
+BUILD_DEPENDS="xorg-libX11-dev xorg-libXrandr-dev libbsd-dev"
 
 # Rules to configure and make the package.ls sr	
 compile_rules()

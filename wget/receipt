@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="wget"
-VERSION="1.21.1"
+VERSION="1.21.2"
 CATEGORY="network"
 SHORT_DESC="An utility for retrieving files using HTTP, HTTPS or FTP."
 MAINTAINER="sygne@ombres.eu"
@@ -12,7 +12,8 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
 
 DEPENDS="libidn libssl pcre util-linux-uuid zlib"
-BUILD_DEPENDS="flex libidn-dev openssl-dev util-linux-uuid-dev"
+BUILD_DEPENDS="flex libidn-dev openssl-dev util-linux-uuid-dev bzip2-dev
+	zlib-dev"
 
 CONFIG_FILES="/etc/wgetrc"
 

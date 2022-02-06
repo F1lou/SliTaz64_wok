@@ -16,6 +16,7 @@ BUILD_DEPENDS="fuse-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
+	export CFLAGS="$CFLAGS -I/usr/include/fuse3/"
 	make &&
 	make DESTDIR=$DESTDIR install
 }

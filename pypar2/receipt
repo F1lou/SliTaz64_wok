@@ -7,7 +7,7 @@ SHORT_DESC="A graphical frontend for the par2 utility"
 MAINTAINER="pascal.bellard@slitaz.org"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://pypar2.silent-blade.org/"
-WGET_URL="$WEB_SITE/uploads/Main/$TARBALL"
+WGET_URL="https://pypar2.fingelrest.net/uploads/Main/$TARBALL"
 
 DEPENDS="pygtk par2 python-pyxml python-vte"
 BUILD_DEPENDS="findutils"

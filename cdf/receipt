@@ -21,6 +21,7 @@ compile_rules()
 	# Fix typos
 	sed -i 's/filesyitems/filesystems/' src/main.c
 
+	export CFLAGS="$CFLAGS -fcommon"
 	./configure \
 		--prefix=/usr \
 		--infodir=/usr/share/info \

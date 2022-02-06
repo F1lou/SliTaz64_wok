@@ -13,6 +13,7 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="http://download.savannah.gnu.org/releases/$PACKAGE/$TARBALL"
 
 DEPENDS="microperl xorg-libXinerama xorg-libXtst"
+BUILD_DEPENDS="xorg-dev"
 
 # Rules to configure and make the package.
 compile_rules()

@@ -9,11 +9,11 @@ LICENSE="GPL2"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WEB_SITE="https://www.kernel.org/"
 WGET_URL="https://cdn.kernel.org/pub/linux/kernel/v${VERSION%%.*}.x/$TARBALL"
-HOST_ARCH="x86_64 i486 arm x86_64"
+HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="kmod"
-BUILD_DEPENDS="perl git xz lzma patch kmod uclibc-cross-compiler-x86_64 bc \
-sysfsutils-dev libtool glib-dev libwrap libwrap-dev udev-dev"
+BUILD_DEPENDS="perl git xz lzma patch kmod bc \
+sysfsutils-dev libtool glib-dev libwrap libwrap-dev eudev-dev"
 
 #
 # The Linux receipt handle cross compilation. For x86_64 we actually use
@@ -25,9 +25,6 @@ sysfsutils-dev libtool glib-dev libwrap libwrap-dev udev-dev"
 # --nox64    : Skip the x86_64 cross compilation
 # --nonomods : Skip bzImage without modules build
 #
-
-# Aufs enable chroot
-AUFS_NOT_RAMFS="uclibc-cross-compiler-x86_64 is not compatible with aufs+tmpfs 8("
 
 # Handle multiarch compilation. Less bdeps when cross-compiling for ARM
 case "$ARCH" in
@@ -74,7 +71,7 @@ install_module_headers()
 
 	mkdir -p $1/$path/arch/x86/kernel
 	cp -a $src/arch/x86/Makefile $1/$path/arch/x86/
-	cp -a $src/arch/x86/Makefile_32.cpu $1/$path/arch/x86/
+	#~ cp -a $src/arch/x86/Makefile_32.cpu $1/$path/arch/x86/
 	cp -a $src/arch/x86/kernel/asm-offsets.s $1/$path/arch/x86/kernel/
 
 	# add headers for lirc package
@@ -171,10 +168,6 @@ compile_rules()
 				$DESTDIR/boot/linux-$VERSION-slitaz-$ARCH
 			#$stuff/gztazmod.sh $DESTDIR/lib/modules/$VERSION-slitaz
 			return 0 ;;
-		x86_64)
-			echo "TODO: Maybe use default ? But cross compile in x86_64 chroot"
-			echo "so we can remove the 64 build by uclibc-cross-compiler-x86_64"
-			return 0 ;;
 	esac
 
 	# Check for Aufs and get source/patches if needed
@@ -196,7 +189,7 @@ compile_rules()
 	cp -a $AUFSDIR/Documentation $AUFSDIR/fs $AUFSDIR/include $src
 
 	# Use fixed patchs from stuff
-	cp -a $AUFSDIR/aufs3-*.patch $stuff
+	#~ cp -a $AUFSDIR/aufs3-*.patch $stuff
 
 	# SliTaz db stuff
 	[ -d $WOK/$PACKAGE/source/slitaz ] && rm -rf $WOK/$PACKAGE/source/slitaz
@@ -205,29 +198,29 @@ compile_rules()
 	cp $stuff/gztazmod.sh $stuff/list_modules.sh $WOK/$PACKAGE/source/slitaz
 	cp $stuff/bootloader.sh $WOK/$PACKAGE/source/slitaz
 
-	# Apply patches
-	echo "Applying patches..."
-	while read patch_file; do
-		echo "$patch_file" >> $WOK/$PACKAGE/source/slitaz/patches
-		cp $stuff/$patch_file $WOK/$PACKAGE/source/slitaz
-		if [ -f done.$patch_file ]; then
-			echo "Skipping $patch_file" && continue
-		fi
-		echo "Apply $patch_file"
-		patch -p1 < $WOK/$PACKAGE/source/slitaz/$patch_file || return 1
-		touch done.$patch_file
-	done <<EOT
-$PACKAGE-diff.u
-$PACKAGE-freeinitrd.u
-$PACKAGE-subroot.u
-$PACKAGE-romfs.u
-$PACKAGE-tcp_stealth.u
-$PACKAGE-efi.u
-aufs3-base.patch
-aufs3-standalone.patch
-aufs3-loopback.patch
-aufs3-mmap.patch
-EOT
+	#~ # Apply patches
+	#~ echo "Applying patches..."
+	#~ while read patch_file; do
+		#~ echo "$patch_file" >> $WOK/$PACKAGE/source/slitaz/patches
+		#~ cp $stuff/$patch_file $WOK/$PACKAGE/source/slitaz
+		#~ if [ -f done.$patch_file ]; then
+			#~ echo "Skipping $patch_file" && continue
+		#~ fi
+		#~ echo "Apply $patch_file"
+		#~ patch -p1 < $WOK/$PACKAGE/source/slitaz/$patch_file || return 1
+		#~ touch done.$patch_file
+	#~ done <<EOT
+#~ $PACKAGE-diff.u
+#~ $PACKAGE-freeinitrd.u
+#~ $PACKAGE-subroot.u
+#~ $PACKAGE-romfs.u
+#~ $PACKAGE-tcp_stealth.u
+#~ $PACKAGE-efi.u
+#~ aufs3-base.patch
+#~ aufs3-standalone.patch
+#~ aufs3-loopback.patch
+#~ aufs3-mmap.patch
+#~ EOT
 	
 	# Mrproper and lguest
 	echo "Make kernel proper and then build lguest..."
@@ -260,7 +253,7 @@ EOT
 			echo -e "\n* Configure bzImage64 without modules...\n"
 			yes '' | make ARCH=x86_64 oldconfig
 			echo -e "\n* Building bzImage64 without modules...\n"
-			make -j 4 ARCH=x86_64 CROSS_COMPILE=uclibc-x86_64- bzImage || exit 1
+			make ARCH=x86_64 bzImage || exit 1
 			mv arch/x86/boot/bzImage $DESTDIR/linux64
 			mv System.map System.map-without-modules64
 			mv vmlinux vmlinux-without-modules64
@@ -272,8 +265,8 @@ EOT
 		echo -e "\n* Configure bzImage64 with modules...\n"
 		yes '' | make ARCH=x86_64 oldconfig
 		echo -e "\n* Building bzImage64 with modules...\n"
-		make -j 4 ARCH=x86_64 CROSS_COMPILE=uclibc-x86_64- bzImage &&
-		make -j 4 ARCH=x86_64 CROSS_COMPILE=uclibc-x86_64- modules &&
+		make ARCH=x86_64 bzImage &&
+		make ARCH=x86_64 modules &&
 		make ARCH=x86_64 INSTALL_MOD_PATH=$DESTDIR/linux64 modules_install &&
 		make ARCH=x86_64 INSTALL_HDR_PATH=$DESTDIR/linux64/usr headers_install &&
 		ln .config $WOK/$PACKAGE/source/slitaz/config64

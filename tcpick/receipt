@@ -17,6 +17,7 @@ BUILD_DEPENDS="libpcap-dev"
 compile_rules()
 {
 	cd $src
+	export CFLAGS="$CFLAGS -fcommon"
 	./configure --mandir=/usr/share/man && make && make install
 }
 

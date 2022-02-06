@@ -14,7 +14,7 @@ WGET_URL="${WEB_SITE}dist/$TARBALL"
 
 DEPENDS="glibc-base xorg-libXau xorg-libXdmcp"
 BUILD_DEPENDS="autoconf automake libtool libxslt-dev xcb-proto xorg-libXau-dev 
-	xorg-libXdmcp-dev"
+	xorg-libXdmcp-dev sed"
 
 HOST_ARCH="x86_64 i486 arm"
 
@@ -37,11 +37,10 @@ compile_rules()
 {
 	# http://www.linuxfromscratch.org/blfs/view/svn/x/libxcb.html
 	sed -i "s|pthread-stubs||" $src/configure.ac &&
-	autoreconf -fi &&
+	autoupdate && autoreconf -fi &&
 	./configure			\
 		--enable-xinput		\
 		--enable-xkb		\
-		--disable-build-docs	\
 		--disable-static	\
 		$CONFIGURE_ARGS &&
 	make &&

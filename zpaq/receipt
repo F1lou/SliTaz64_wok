@@ -11,11 +11,12 @@ WEB_SITE="http://mattmahoney.net/dc/zpaq.html"
 WGET_URL="http://mattmahoney.net/dc/$TARBALL"
 
 DEPENDS=""
-BUILD_DEPENDS=""
+BUILD_DEPENDS="libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	make &&
 	mkdir -p $install/usr/bin &&
 	cp zpaq $install/usr/bin/zpaq

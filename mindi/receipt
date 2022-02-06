@@ -11,7 +11,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="ftp://ftp.mondorescue.org/src/$TARBALL"
 
 DEPENDS="syslinux syslinux-extra"
-BUILD_DEPENDS=""
+BUILD_DEPENDS="bash"
 
 # Rules to configure and make the package.
 compile_rules()

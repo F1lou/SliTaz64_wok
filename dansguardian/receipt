@@ -13,11 +13,12 @@ WGET_URL="$SF_MIRROR/$PACKAGE/files/$TARBALL"
 
 SUGGESTED="clamav"
 DEPENDS="squid"
-BUILD_DEPENDS="pcre-dev"
+BUILD_DEPENDS="pcre-dev zlib-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	./configure				\
 		--prefix=/usr			\
 		--localstatedir=/var		\

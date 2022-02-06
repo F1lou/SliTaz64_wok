@@ -11,7 +11,7 @@ WEB_SITE="https://mirrors.edge.kernel.org/pub/linux/utils/kernel/pcmcia/"
 #WGET_URL="https://www.kernel.org/pub/linux/utils/kernel/pcmcia/$TARBALL"
 WGET_URL="http://sourceware.mirrors.tds.net/pub/kernel.org/linux/utils/kernel/pcmcia/$TARBALL"
 
-DEPENDS="linux sysfsutils udev"
+DEPENDS="linux sysfsutils eudev"
 BUILD_DEPENDS="sysfsutils-dev bison flex"
 
 # Rules to configure and make the package.
@@ -41,6 +41,6 @@ genpkg_rules()
 post_install()
 {
 	echo
-	tazpkg reconfigure udev --root="$1"
+	tazpkg reconfigure eudev --root="$1"
 	echo
 }

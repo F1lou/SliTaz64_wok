@@ -21,7 +21,6 @@ compile_rules()
 	patch --input $stuff/remove-target-lircd.conf.patch GNUmakefile
 
 	export	prefix="/usr"
-	export	CFLAGS="$CFLAGS -O3 -march=$ARCH"
 
 	make -j 1 &&
 	make DESTDIR=$DESTDIR install

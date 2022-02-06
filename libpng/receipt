@@ -32,7 +32,7 @@ compile_rules()
 	make DESTDIR=$DESTDIR install
 
 	cd contrib/pngminus
-	make PNGLIB="-L$DESTDIR/usr/lib -lpng" -f makefile.std png2pnm pnm2png
+	make PNGLIB="-L$DESTDIR/usr/lib -lpng" png2pnm pnm2png
 	mkdir -p $DESTDIR/usr/bin
 	cp -a png2pnm pnm2png $DESTDIR/usr/bin
 }

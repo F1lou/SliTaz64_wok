@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="mdadm"
-VERSION="4.1"
+VERSION="4.2"
 CATEGORY="system-tools"
 SHORT_DESC="Software RAID tools"
 MAINTAINER="b1+slitaz@nagel.org"
@@ -11,7 +11,7 @@ WEB_SITE="https://www.kernel.org/pub/linux/utils/raid/mdadm/ANNOUNCE"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://www.kernel.org/pub/linux/utils/raid/mdadm/$TARBALL"
 
-BUILD_DEPENDS=""
+BUILD_DEPENDS="eudev-dev"
 
 # Rules to configure and make the package.
 compile_rules()

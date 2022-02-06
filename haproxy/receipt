@@ -19,8 +19,8 @@ compile_rules()
 {
 	sed -i 's|/doc|/share&|' Makefile*
 
-	make TARGET=linux26 USE_PCRE=1 PREFIX=/usr DESTDIR=$DESTDIR &&
-	make TARGET=linux26 USE_PCRE=1 PREFIX=/usr DESTDIR=$DESTDIR install
+	make CFLAGS+="-fcommon" TARGET=linux26 USE_PCRE=1 PREFIX=/usr DESTDIR=$DESTDIR &&
+	make CFLAGS+="-fcommon" TARGET=linux26 USE_PCRE=1 PREFIX=/usr DESTDIR=$DESTDIR install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

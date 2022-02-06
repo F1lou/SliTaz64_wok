@@ -10,12 +10,12 @@ WEB_SITE="https://pypi.org/project/OdooRPC/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/OCA/odoorpc/archive/v$VERSION.tar.gz"
 
-DEPENDS="python"
+DEPENDS="py3k"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	python setup.py install --prefix=/usr --root=$DESTDIR
+	python3 setup.py install --prefix=/usr --root=$DESTDIR
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

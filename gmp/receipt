@@ -18,7 +18,7 @@ HOST_ARCH="x86_64 i486 arm"
 # Rules to configure and make the package.
 compile_rules()
 {
-	LDFLAGS="$LDFLAGS -liconv" ABI=64 ./configure --prefix=/usr    \
+	./configure LDFLAGS="$LDFLAGS -liconv" ABI=64 --prefix=/usr    \
             --enable-cxx     \
             --disable-static &&
             	# make -j > 1 install fails.

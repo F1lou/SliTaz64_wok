@@ -22,6 +22,7 @@ compile_rules()
 	arm*)
 		export PATH=/cross/arm/tools/arm-slitaz-linux-gnueabi/bin:$PATH
 	esac
+	sed -i '/stropts.h/d' src/command.c
 	./configure $CONFIGURE_ARGS &&
 	make && make install
 }

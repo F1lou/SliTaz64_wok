@@ -12,11 +12,12 @@ TARBALL="${PACKAGE/+/}-F$VERSION.tar.gz"
 WGET_URL="ftp://ftp.shrubbery.net/pub/tac_plus/$TARBALL"
 
 DEPENDS="libwrap pam"
-BUILD_DEPENDS="libwrap-dev pam-dev"
+BUILD_DEPENDS="libwrap-dev pam-dev libtirpc-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export CFLAGS="$CFLAGS -Itirpc/"
 	./configure				\
 		--prefix=/usr			\
 		--infodir=/usr/share/info	\

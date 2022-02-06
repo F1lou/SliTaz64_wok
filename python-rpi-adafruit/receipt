@@ -14,12 +14,12 @@ WGET_URL="https://codeload.github.com/adafruit/Adafruit-Raspberry-Pi-Python-Code
 HOST_ARCH="x86_64 arm"
 
 # Leds support for now
-DEPENDS="python python-smbus i2c-tools slitaz-arm-rpi"
+DEPENDS="py3k python-smbus i2c-tools slitaz-arm-rpi"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	python="$fs/usr/lib/python2.7"
+	python="$fs/usr/lib/python3.10"
 	mkdir -p ${python} ${fs}/usr/share/adafruit
 	cp -a ${src}/Adafruit_LEDBackpack ${fs}/usr/share/adafruit/LEDBackpack
 	# Can be imported to write custom code

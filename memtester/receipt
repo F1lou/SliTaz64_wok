@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="memtester"
-VERSION="4.3.0"
+VERSION="4.5.1"
 CATEGORY="misc"
 SHORT_DESC="A userspace utility for testing the memory subsystem for faults."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -18,7 +18,7 @@ BUILD_DEPENDS=""
 # Rules to configure and make the package.
 compile_rules()
 {
-	make 
+	make
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

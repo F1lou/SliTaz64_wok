@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="seamonkey-official"
-VERSION="2.53.1"
+VERSION="2.53.9"
 CATEGORY="network"
 TAGS="web-browser"
 SHORT_DESC="Official Seamonkey build by the seamonkey-project (English language)."
@@ -9,13 +9,13 @@ MAINTAINER="mojo@slitaz.org"
 LICENSE="MPL2"
 WEB_SITE="https://www.seamonkey-project.org"
 
-TARBALL="seamonkey-$VERSION.en-GB.linux-i686.tar.bz2"
-WGET_URL="https://archive.mozilla.org/pub/seamonkey/releases/$VERSION/linux-i686/en-GB/$TARBALL"
+TARBALL="seamonkey-$VERSION.en-GB.linux-x86_64.tar.bz2"
+WGET_URL="https://archive.mozilla.org/pub/seamonkey/releases/$VERSION/linux-x86_64/en-GB/$TARBALL"
 
-DEPENDS="alsa-lib curl glib gtk+ jpeg libevent libIDL libnotify 
+DEPENDS="alsa-lib curl glib gtk+3 jpeg libevent libIDL libnotify 
 	libvpx xorg-libX11 xorg-libXt"
 
-HOST_ARCH="x86_64 i486"
+HOST_ARCH="x86_64"
 
 # Rules to configure and make the package.
 compile_rules()

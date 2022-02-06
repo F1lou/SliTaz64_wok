@@ -12,14 +12,16 @@ WGET_URL="http://download.savannah.gnu.org/releases/lzip/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="gcc-lib-base"
+BUILD_DEPENDS="libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	mkdir -p $DESTDIR/usr/share/doc
 	cp README $DESTDIR/usr/share/doc
 	./configure --prefix=/usr $CONFIGURE_ARGS &&
-	make &&
+	make LDFLAGS="$LDFLAGS -liconv" &&
 	make DESTDIR=$DESTDIR install
 }
 

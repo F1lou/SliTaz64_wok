@@ -18,7 +18,7 @@ BUILD_DEPENDS="flex libtirpc-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -ltirpc"
+	export CFLAGS="$CFLAGS -I/usr/include/tirpc/"
 	./configure --prefix=/usr --infodir=/usr/share/info \
 	--sysconfdir=/etc \
 	--mandir=/usr/share/man $CONFIGURE_ARGS &&

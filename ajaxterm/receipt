@@ -12,7 +12,7 @@ TARBALL="$SOURCE-$VERSION.tar.gz"
 WGET_URL="http://antony.lesuisse.org/ajaxterm/files/$TARBALL"
 TAGS="web application"
 
-DEPENDS="python"
+DEPENDS="py3k"
 SUGGESTED="apache lighttpd-ssl lighttpd-modules"
 
 # Rules to configure and make the package.

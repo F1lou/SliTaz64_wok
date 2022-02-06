@@ -1,9 +1,9 @@
 # SliTaz package receipt.
 
 PACKAGE="aufs"
-VERSION="20150928"
+VERSION="5.10"
 CATEGORY="base-system"
-SHORT_DESC="aufs3 kernel module"
+SHORT_DESC="aufs5 kernel module"
 MAINTAINER="godane@slitaz.org"
 LICENSE="GPL2"
 WEB_SITE="http://aufs.sf.net/"

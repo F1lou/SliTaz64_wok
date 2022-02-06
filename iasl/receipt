@@ -18,6 +18,7 @@ BUILD_DEPENDS="bison flex"
 compile_rules()
 {
 	# Fix building.
+	export CFLAGS="$CLFAGS -fcommon"
 	sed -i -e 's/-Werror//g' \
 		generate/unix/Makefile.config \
 		generate/unix/iasl/Makefile

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libdshconfig-dev"
-VERSION="0.20.9"
+VERSION="0.20.13"
 CATEGORY="development"
 SHORT_DESC="Config file parser used by dsh, development files"
 MAINTAINER="pascal.bellard@slitaz.org"

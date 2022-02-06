@@ -12,11 +12,13 @@ WGET_URL="http://www.freedesktop.org/software/fontconfig/release/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="bzlib expat freetype libxml2"
-BUILD_DEPENDS="libxml2-dev freetype-dev liblzma-dev util-linux-uuid-dev gperf"
+BUILD_DEPENDS="libxml2-dev freetype-dev liblzma-dev util-linux-uuid-dev
+	gperf libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	./configure \
 		--sysconfdir=/etc \
 		--localstatedir=/var \

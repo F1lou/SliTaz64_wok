@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="ftp://xmlsoft.org/libxml2/$TARBALL"
 
 DEPENDS="zlib"
-BUILD_DEPENDS="autoconf automake libtool py3k-dev zlib-dev"
+BUILD_DEPENDS="autoconf automake libtool py3k-dev zlib-dev sed"
 
 HOST_ARCH="x86_64 i486 arm"
 

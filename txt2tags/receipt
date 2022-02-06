@@ -9,7 +9,7 @@ LICENSE="GPL2"
 TARBALL="$PACKAGE-$VERSION.tgz"
 WEB_SITE="https://txt2tags.org/"
 WGET_URL="http://$PACKAGE.googlecode.com/files/$TARBALL"
-DEPENDS="python"
+DEPENDS="py3k"
 
 # Rules to configure and make the package.
 compile_rules()

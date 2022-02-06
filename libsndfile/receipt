@@ -18,12 +18,12 @@ HOST_ARCH="x86_64 i486 arm"
 
 # Handle slitaz arch
 case "$SLITAZ_ARCH" in
-	i?86) DEPENDS="$DEPENDS flac" ;;
+	x86_64|i?86) DEPENDS="$DEPENDS flac" ;;
 esac
 
 # Handle cross compilation.
 case "$ARCH" in
-	i?86) BUILD_DEPENDS="$BUILD_DEPENDS flac-dev" ;;
+	x86_64|i?86) BUILD_DEPENDS="$BUILD_DEPENDS flac-dev" ;;
 esac
 
 # Rules to configure and make the package.
@@ -33,7 +33,7 @@ compile_rules()
 		--prefix=/usr		\
 		--disable-sqlite	\
 		$CONFIGURE_ARGS &&
-	make -j 1 &&
+	make &&
 	make DESTDIR=$DESTDIR install
 }
 

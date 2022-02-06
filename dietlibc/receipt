@@ -14,8 +14,8 @@ WGET_URL="${WEB_SITE}$TARBALL"
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i 's|uname -m|echo i486|' libpthread/Makefile Makefile
-	sed -i 's|.*/nice.S.*|// &|' i386/dyn_syscalls.S
+	#~ sed -i 's|uname -m|echo i486|' libpthread/Makefile Makefile
+	#~ sed -i 's|.*/nice.S.*|// &|' i386/dyn_syscalls.S
 
 	make prefix=/usr/lib/diet && 
 	#make dyn prefix=/usr/lib/diet && 

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="lzlib-dev"
-VERSION="4.57"
+VERSION="5.2.5"
 CATEGORY="development"
 SHORT_DESC="Compressor with a high compression ratio devel files."
 MAINTAINER="pascal.bellard@slitaz.org"

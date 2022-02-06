@@ -10,7 +10,7 @@ TARBALL="$PACKAGE-$VERSION-src.tar.gz"
 WEB_SITE="http://emhsoft.com/singularity/index.html"
 WGET_URL="http://endgame-singularity.googlecode.com/files/$TARBALL"
 
-DEPENDS="python python-pygame libsdl-image libsdl-mixer python-numpy"
+DEPENDS="py3k python-pygame libsdl-image libsdl-mixer python-numpy"
 BUILD_DEPENDS="patch"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
@@ -21,7 +21,7 @@ genpkg_rules()
 	cat >> $fs/usr/bin/singularity <<EOT
 #!/bin/sh
 cd /usr/games/singularity
-exec python singularity.py "$@"
+exec python3 singularity.py "$@"
 EOT
 	chmod +x $fs/usr/bin/singularity
 	cp -a $src/code $src/data $fs/usr/games/singularity

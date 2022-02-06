@@ -2,7 +2,7 @@
 
 PACKAGE="gtk-theme-vertex"
 VERSION="20170128"
-CATEGORY="customization"
+CATEGORY="x-window"
 SHORT_DESC="Aa theme for GTK 3, GTK 2, Gnome-Shell and Cinnamon."
 MAINTAINER="al.bobylev@gmail.com"
 LICENSE="GPL3"

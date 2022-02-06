@@ -45,6 +45,7 @@ compile_rules()
 {
 	export BUILD_ZLIB=False
 	export BUILD_BZIP2=0
+	patch -p0 -i $stuff/perl-5.34.0-upstream_fixes-1.patch
 	sh Configure -des -Dprefix=/usr \
 		-Darchname="$ARCH-linux" 	\
 		-Dmyarchname="$ARCH-linux" 	\
@@ -61,13 +62,13 @@ compile_rules()
 	# make microperl here
 	# patch to fix compiling microperl
 	#~ patch -p0 -i $stuff/miniperlmain.patch
-	#~ # Install in /usr (default is /usr/local).
-	#~ sed -i s/'usr\/local'/'usr'/ uconfig.sh
-	# Sed to search mods in /usr/lib/perl5.
-	#~ sed -i s/'perl5\/'${VERSION%.*}/'perl5'/ uconfig.sh
-	# Optimisation.
-	#~ sed -i s/'unknown'/'$HOST_SYSTEM'/ uconfig.sh
-	# Make it!
+	# Install in /usr (default is /usr/local).
+	#~ sed -i s/'usr\/local'/'usr'/ uconfig64.sh
+	#~ # Sed to search mods in /usr/lib/perl5.
+	#~ sed -i s/'perl5\/'${VERSION%.*}/'perl5'/ uconfig64.sh
+	#~ # Optimisation.
+	#~ sed -i s/'unknown'/'$HOST_SYSTEM'/ uconfig64.sh
+	#~ # Make it!
 	#~ make -f Makefile.micro regen_uconfig64 &&
 	#~ make -f Makefile.micro &&
 	#~ strip microperl
