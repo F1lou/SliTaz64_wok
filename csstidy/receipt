@@ -11,11 +11,12 @@ TARBALL="$PACKAGE-source-$VERSION.zip"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
 DEPENDS=""
-BUILD_DEPENDS="scons"
+BUILD_DEPENDS="scons libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	patch -p1 -i $stuff/csstidy-1.4-fix-misc.cpp.patch
 	scons
 	mkdir -p $install/usr/bin

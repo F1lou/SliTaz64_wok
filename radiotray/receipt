@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
 DEPENDS="gst-python python python-lxml"
-BUILD_DEPENDS="gst-python-dev python python-dev python-xdg"
+BUILD_DEPENDS="python python-dev python-xdg"
 
 # Rules to configure and make the package.
 compile_rules()

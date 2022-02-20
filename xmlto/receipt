@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="https://releases.pagure.org/$PACKAGE/$TARBALL"
 
 DEPENDS="bash libxslt perl-test-pod perl-yaml-syck"
-BUILD_DEPENDS="docbook-xsl flex util-linux-getopt"
+BUILD_DEPENDS="docbook-xsl flex util-linux-getopt bash"
 
 # Rules to configure and make the package.
 compile_rules()

@@ -8,7 +8,7 @@ MAINTAINER="slaxemulator@gmail.com"
 LICENSE="MIT"
 WEB_SITE="http://xmlsoft.org/"
 
-DEPENDS="libxslt python"
+DEPENDS="libxslt py3k"
 WANTED="libxslt"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

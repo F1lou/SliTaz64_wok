@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="nss"
-VERSION="3.64"
+VERSION="3.69"
 CATEGORY="utilities"
 SHORT_DESC="Mozilla Network Security Services (NSS)."
 MAINTAINER="rocky@slitaz.org"
@@ -11,13 +11,14 @@ WEB_SITE="http://www.mozilla.org/projects/security/pki/nss/"
 WGET_URL="http://ftp.mozilla.org/pub/security/nss/releases/NSS_${VERSION//./_}_RTM/src/${TARBALL}"
 
 DEPENDS="nspr sqlite zlib"
-BUILD_DEPENDS="nspr-dev sqlite-dev zlib-dev perl pkg-config"
+BUILD_DEPENDS="nspr-dev sqlite-dev zlib-dev perl pkg-config libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	#~ sed -i 's|uname -m|echo x86_64|' nss/coreconf/arch.mk nss/tests/run_niscc.sh
-	patch -Np1 -i $stuff/nss-3.64-standalone-1.patch &&
+	export LDFLAGS="$LDFLAGS -liconv"
+	patch -Np1 -i $stuff/nss-$VERSION-standalone-1.patch &&
 	cd nss &&
 	make BUILD_OPT=1 \
 		NSPR_INCLUDE_DIR=/usr/include/nspr \

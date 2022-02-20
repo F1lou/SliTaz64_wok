@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="nss-dev"
-VERSION="3.64"
+VERSION="3.69"
 CATEGORY="development"
 SHORT_DESC="nss devel library."
 MAINTAINER="rocky@slitaz.org"

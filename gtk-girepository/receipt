@@ -1,16 +1,16 @@
 # SliTaz package receipt.
 
 PACKAGE="gtk-girepository"
-VERSION="2.24.33"
+VERSION="3.24.25"
 SHORT_DESC="Required to run pygobject3 applications."
 CATEGORY="development"
 MAINTAINER="psychomaniak@xakep.ru"
 LICENSE="GPL2"
 WEB_SITE="https://www.gtk.org/"
 
-DEPENDS="gobject-introspection gtk+"
-BUILD_DEPENDS="atk-dev gdk-pixbuf-dev gtk+-dev pango-dev"
-WANTED="gtk+"
+DEPENDS="gobject-introspection gtk+3"
+BUILD_DEPENDS="atk-dev gdk-pixbuf-dev gtk+3-dev pango-dev"
+WANTED="gtk+3"
 
 compile_rules()
 {

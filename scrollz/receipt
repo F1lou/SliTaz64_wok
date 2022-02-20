@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="scrollz"
-VERSION="2.3"
+VERSION="2.3.1"
 CATEGORY="network"
 SHORT_DESC="IRC client based on IRCII."
 MAINTAINER="paul@slitaz.org"
@@ -12,11 +12,13 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}download/ScrollZ-$VERSION.tar.gz"
 
 DEPENDS=""
-BUILD_DEPENDS="ncursesw-dev"
+BUILD_DEPENDS="ncursesw-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export CFLAGS="$CFLAGS -fcommon"
+	export LDFLAGS="$LDFLAGS -liconv"
 	./configure --prefix=/usr &&
 	make &&
 	make DESTDIR=$DESTDIR install

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libegl-mesa"
-VERSION="9.2.5"
+VERSION="21.3.6"
 CATEGORY="development"
 SHORT_DESC="OpenGL utility library."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -15,6 +15,6 @@ WANTED="mesa"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib
-	cp -a $install/usr/lib/libEGL*	$fs/usr/lib
+	mkdir -p $fs/usr/lib64
+	cp -a $install/usr/lib64/libEGL*	$fs/usr/lib64
 }

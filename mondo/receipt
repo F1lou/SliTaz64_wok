@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="mondo"
-VERSION="3.2.2"
+VERSION="3.3.0"
 CATEGORY="system-tools"
 SHORT_DESC="GPL disaster recovery solution."
 MAINTAINER="erjo@slitaz.org"
@@ -17,6 +17,7 @@ BUILD_DEPENDS="newt-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
+	export CFLAGS="$CFLAGS -fcommon"
 	./configure $CONFIGURE_ARGS &&
 	make &&
 	make install

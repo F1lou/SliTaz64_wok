@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="avrdude"
-VERSION="6.3"
+VERSION="6.4"
 CATEGORY="electronics"
 SHORT_DESC="Download/upload/manipulate the ROM and EEPROM contents of AVR microcontrollers"
 MAINTAINER="psychomaniak@xakep.ru"
@@ -11,8 +11,8 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="http://download.savannah.gnu.org/releases/$PACKAGE/$TARBALL"
 
 DEPENDS="libftdi libusb-compat libusb readline elfutils"
-BUILD_DEPENDS="$DEPENDS libusb-compat-dev libusb-dev libftdi-dev elfutils-dev \
-file"
+BUILD_DEPENDS="$DEPENDS libusb-compat-dev libusb-dev libftdi-dev 
+	elfutils-dev readline-dev file"
 
 # Rules to configure and make the package.
 compile_rules()

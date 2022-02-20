@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://releases.pagure.org/$PACKAGE/$TARBALL"
 
 DEPENDS="popt slang tcl"
-BUILD_DEPENDS="popt-dev python-dev slang-dev tcl"
+BUILD_DEPENDS="popt-dev py3k-dev slang-dev tcl"
 
 # Rules to configure and make the package.
 compile_rules()

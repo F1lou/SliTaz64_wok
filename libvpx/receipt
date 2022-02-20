@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libvpx"
-VERSION="1.10.0"
+VERSION="1.11.0"
 CATEGORY="multimedia"
 SHORT_DESC="The VP8 Codec SDK."
 MAINTAINER="slaxemulator@gmail.com"
@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-v$VERSION.tar.gz"
 WGET_URL="https://github.com/webmproject/$PACKAGE/archive/v$VERSION.tar.gz"
 
 DEPENDS="glibc-base"
-BUILD_DEPENDS="coreutils-file-format diffutils yasm"
+BUILD_DEPENDS="coreutils-file-format diffutils yasm libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -21,7 +21,7 @@ compile_rules()
 	#~ mkdir libvpx-build && cd libvpx-build
 	unset CFLAGS
 	unset CXXFLAGS
-	export LDFLAGS="-lpthread"
+	export LDFLAGS="-lpthread -liconv"
 	./configure --prefix=/usr  \
 		--enable-shared			\
         --disable-static 		\

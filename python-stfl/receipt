@@ -9,7 +9,7 @@ LICENSE="LGPL3"
 WEB_SITE="http://www.clifford.at/stfl/"
 WANTED="stfl"
 
-DEPENDS="python stfl"
+DEPENDS="py3k stfl"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

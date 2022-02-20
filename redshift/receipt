@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://github.com/jonls/$PACKAGE/releases/download/v$VERSION/$TARBALL"
 
 DEPENDS="python"
-BUILD_DEPENDS="python"
+BUILD_DEPENDS="python intltool"
 
 # Rules to configure and make the package.
 compile_rules()

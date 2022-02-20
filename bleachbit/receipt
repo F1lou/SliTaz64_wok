@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="bleachbit"
-VERSION="3.0"
+VERSION="4.4.2"
 CATEGORY="system-tools"
 SHORT_DESC="Deletes unneeded files to free disk space and maintain privacy."
 MAINTAINER="devl547@gmail.com"
@@ -11,8 +11,8 @@ WEB_SITE="https://www.bleachbit.org/"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="https://download.bleachbit.org/$TARBALL"
 
-DEPENDS="pygtk python"
-BUILD_DEPENDS="python"
+DEPENDS="pygtk py3k"
+BUILD_DEPENDS="py3k bash"
 
 # Rules to configure and make the package.
 compile_rules()

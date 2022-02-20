@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="talloc-python"
-VERSION="2.3.2"
+VERSION="2.3.3"
 CATEGORY="development"
 SHORT_DESC="Python bindings for talloc"
 MAINTAINER="slaxemulator@gmail.com"
@@ -9,7 +9,7 @@ LICENSE="LGPL"
 WEB_SITE="https://talloc.samba.org/talloc/doc/html/index.html"
 WANTED="talloc"
 
-DEPENDS="talloc python"
+DEPENDS="talloc py3k"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

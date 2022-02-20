@@ -1,13 +1,13 @@
 # SliTaz package receipt.
 
 PACKAGE="xorg-server"
-VERSION="1.20.10"
+VERSION="1.20.14"
 CATEGORY="x-window"
 SHORT_DESC="Xorg core server."
 MAINTAINER="pankso@slitaz.org"
 LICENSE="MIT"
 SUGGESTED="xorg-xf86-input-evdev xorg-xf86-video-vesa"
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
 WEB_SITE="https://www.x.org/"
 WGET_URL="http://xorg.freedesktop.org/releases/individual/xserver/$TARBALL"
 
@@ -19,10 +19,10 @@ BUILD_DEPENDS="xorg-libxkbfile-dev xorg-libpciaccess-dev xorg-libXxf86vm-dev \
 xorg-libXfont-dev libgcrypt-dev pixman-dev eudev-dev pkg-config perl \
 flex xorg-xf86driproto xorg-xcmiscproto xorg-bigreqsproto xorg-randrproto \
 xorg-dri2proto xorg-libXau-dev xorg-dev-proto libdrm-dev xorg-glproto \
-xorg-libXv-dev mesa-dev libepoxy-dev xorg-proto xorg-libXfont2-dev \
+mesa-dev xorg-libXv-dev xorg-proto xorg-glproto xorg-libXfont2-dev \
 xcb-util-renderutil-dev xorg-xkbcomp xcb-util-dev xcb-util-image-dev \
 xcb-util-wm-dev xcb-util-keysyms-dev libbsd-dev nettle-dev \
-xorg-libXshmfence xorg-xkbcomp"
+xorg-libXshmfence-dev xorg-xkbcomp libepoxy-dev libmd-dev"
 
 # Rules to configure and make the package.
 compile_rules()

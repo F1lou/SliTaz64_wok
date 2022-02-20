@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="python3-markdown"
-VERSION="3.3.4"
+VERSION="3.3.6"
 CATEGORY="development"
 TAGS="python"
 SHORT_DESC="Python implementation of John Gruber's Markdown."
@@ -12,7 +12,7 @@ WEB_SITE="https://github.com/Python-Markdown/markdown"
 TARBALL="$VERSION.tar.gz"
 WGET_URL="https://github.com/Python-Markdown/markdown/archive/refs/tags/$TARBALL"
 DEPENDS="py3k"
-BUILD_DEPENDS="py3k py3k-dev python-setuptools"
+BUILD_DEPENDS="py3k py3k-dev python3-setuptools"
 
 # Rules to configure and make the package.
 compile_rules()

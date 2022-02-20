@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="librsvg-apps"
-VERSION="2.51.0"
+VERSION="2.52.6"
 CATEGORY="graphics"
 SHORT_DESC="Tiny libRSVG utilities (rsvg-convert, rsvg-view-3)"
 MAINTAINER="erjo@slitaz.org"

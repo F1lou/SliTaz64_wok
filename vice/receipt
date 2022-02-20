@@ -11,8 +11,8 @@ WEB_SITE="http://www.viceteam.org/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$SF_MIRROR/vice-emu/files/releases/$TARBALL"
 
-DEPENDS="gtk+ libsdl2 readline"
-BUILD_DEPENDS="gtk+-dev libsdl2-dev readline-dev xa xorg-bdftopcf xorg-mkfontdir"
+DEPENDS="gtk+3 libsdl2 readline"
+BUILD_DEPENDS="gtk+3-dev libsdl2-dev readline-dev xa xorg-bdftopcf xorg-mkfontdir"
 
 # Rules to configure and make the package.
 compile_rules()

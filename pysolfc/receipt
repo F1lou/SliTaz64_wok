@@ -2,22 +2,22 @@
 
 PACKAGE="pysolfc"
 SOURCE="PySolFC"
-VERSION="2.0"
+VERSION="2.14.1"
 CATEGORY="games"
 SHORT_DESC="PySolFC is an extended version of PySol (a solitaire card game)"
 MAINTAINER="claudinei@slitaz.org"
 LICENSE="GPL3"
 WEB_SITE="https://sourceforge.net/projects/pysolfc"
-TARBALL="$SOURCE-$VERSION.tar.bz2"
-WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WGET_URL="https://sourceforge.net/projects/$PACKAGE/files/latest/download"
 
-DEPENDS="python tk"
+DEPENDS="py3k tk"
 BUILD_DEPENDS="$DEPENDS"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	python setup.py install --prefix=$install/usr
+	python3 setup.py install --prefix=$install/usr
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

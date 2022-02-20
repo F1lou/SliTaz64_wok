@@ -21,7 +21,6 @@ compile_rules()
 {
 	./autogen.sh &&
 	./configure		\
-		--enable-alsa09	\
 		--disable-arts	\
 		$CONFIGURE_ARGS &&
 	make &&

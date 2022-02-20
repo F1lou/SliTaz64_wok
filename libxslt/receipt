@@ -28,7 +28,7 @@ compile_rules()
 	export LDFLAGS="$LDFLAGS -liconv"
 	PYTHON_LIB=python$(grep ^VERSION= $WOK/python/receipt | sed 's/.*"\(...\).*/\1/')
 	./configure $CONFIGURE_ARGS &&
-	make -j 1 &&
+	make &&
 	make install 2>&1 | grep -v 'html/index.sgml'
 }
 

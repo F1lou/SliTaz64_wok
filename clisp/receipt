@@ -11,14 +11,14 @@ WEB_SITE="http://clisp.sourceforge.net/"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
 DEPENDS="readline ncurses libffcall"
-BUILD_DEPENDS="readline-dev libsigsegv libffcall file"
+BUILD_DEPENDS="readline-dev libsigsegv libffcall file libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i 's|(uname -m)|(echo i686)|' modules/*/configure \
-		src/build-aux/config.guess src/configure
-	sed -i 's|uname -m|echo i686|' src/makemake.in
+	#~ sed -i 's|(uname -m)|(echo i686)|' modules/*/configure \
+		#~ src/build-aux/config.guess src/configure
+	#~ sed -i 's|uname -m|echo i686|' src/makemake.in
 
 	# Temporarily (?) disabling one failed test
 	patch -p1 -i $stuff/streams.tst.patch

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="wicd"
-VERSION="1.7.2.4"
+VERSION="1.7.4"
 CATEGORY="network"
 SHORT_DESC="Network connection manager"
 MAINTAINER="jozee@slitaz.org"
@@ -12,7 +12,7 @@ WGET_URL="https://launchpad.net/wicd/${VERSION:0:3}/$VERSION/+download/$TARBALL"
 TAGS="wireless ethernet"
 
 DEPENDS="python dbus-python ethtool wpa_supplicant pygtk"
-BUILD_DEPENDS="python-distribute python-babel python-dev dbus-python-dev"
+BUILD_DEPENDS="python-distribute python-babel python-dev dbus-python-dev pm-utils-dev"
 
 # Rules to configure and make the package.
 compile_rules()

@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="gi-docgen"
+VERSION="2022.1"
+CATEGORY="development"
+SHORT_DESC="A documentation generator for GObject-based libraries"
+MAINTAINER="nhc1@gmx.net"
+LICENSE="GPL3.0"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://gitlab.gnome.org/GNOME/gi-docgen"
+WGET_URL="https://gitlab.gnome.org/GNOME/$PACKAGE/-/archive/$VERSION/$TARBALL"
+
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="python3-jinja2	python3-markdown python3-markupsafe python3-pygments
+	python3-toml python3-typogrify"
+BUILD_DEPENDS="py3k py3k-dev python3-setuptools python3-jinja2
+	python3-markdown python3-markupsafe python3-pygments
+	python3-toml python3-typogrify"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	#~ python3 setup.py install --root=$DESTDIR
+	mkdir build && cd build
+	meson --prefix=/usr .. &&
+	ninja && ninja install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr	$fs
+}

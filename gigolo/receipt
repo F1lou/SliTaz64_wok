@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="https://archive.xfce.org/src/apps/$PACKAGE/${VERSION%.*}/$TARBALL"
 
 DEPENDS="gtk+"
-BUILD_DEPENDS="gtk+-dev python-dev"
+BUILD_DEPENDS="gtk+-dev python-dev intltool fribidi"
 
 # Rules to configure and make the package.
 compile_rules()

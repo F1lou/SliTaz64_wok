@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="qpdf"
-VERSION="10.5.0"
+VERSION="10.6.1"
 CATEGORY="system-tools"
 SHORT_DESC="A Content-Preserving PDF Transformation System."
 MAINTAINER="mojo@slitaz.org"
@@ -12,13 +12,13 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}/archive/release-$TARBALL"
 
 DEPENDS="libjpeg pcre zlib openssl"
-BUILD_DEPENDS="bash jpeg-dev pcre-dev zlib-dev openssl-dev libiconv-dev"
+BUILD_DEPENDS="bash jpeg-dev pcre-dev zlib-dev openssl-dev libiconv-dev
+	libbsd-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
-	./configure $CONFIGURE_ARGS &&
+	./configure LDFLAGS="$LDFLAGS -liconv" $CONFIGURE_ARGS &&
 	make &&
 	make install
 }

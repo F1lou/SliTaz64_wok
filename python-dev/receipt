@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="python-dev"
-VERSION="2.7.17"
+VERSION="2.7.18"
 CATEGORY="development"
 SHORT_DESC="The Python programming language - development files."
 MAINTAINER="pankso@slitaz.org"

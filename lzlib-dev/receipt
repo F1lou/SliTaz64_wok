@@ -1,19 +1,19 @@
 # SliTaz package receipt.
 
 PACKAGE="lzlib-dev"
-VERSION="5.2.5"
+VERSION="1.13"
 CATEGORY="development"
 SHORT_DESC="Compressor with a high compression ratio devel files."
 MAINTAINER="pascal.bellard@slitaz.org"
 LICENSE="LGPL2.1"
 WEB_SITE="https://sourceforge.net/projects/sevenzip/"
-WANTED="lzma"
+WANTED="lzlib"
 HOST_ARCH="x86_64 i486 arm"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/include
-	cp -a $src/CPP/7zip/Compress/LZMA_Alone/lzlib.h $fs/usr/include
+	mkdir -p $fs/usr
+	cp -a $install/usr/include $fs/usr/
 }
 

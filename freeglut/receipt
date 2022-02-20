@@ -26,7 +26,8 @@ compile_rules()
 {
 	# Binutils 2.22 break many packages build without LDFLAGS set correctly.
 	export LDFLAGS="$LDFLAGS -liconv -Wl,--copy-dt-needed-entries"
-	
+	export CFLAGS="$CFLAGS -fcommon"
+
 	# patching for gcc10 compatibility
 	patch -p0 -i $stuff/freeglut-3.2.1-gcc10-fno-common.patch
 	
@@ -37,7 +38,7 @@ compile_rules()
 
 	cmake . -DCMAKE_INSTALL_PREFIX=/usr &&
 #	sed -i '/XF86VMODE/d' config.status
-	make -j 1 &&
+	make &&
 	make DESTDIR=$DESTDIR install
 }
 

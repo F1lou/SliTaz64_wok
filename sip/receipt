@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="sip"
-VERSION="4.19.19"
+VERSION="4.19.25"
 CATEGORY="development"
 SHORT_DESC="C/C++ Bindings Generator for Python v2 and v3."
 MAINTAINER="allan316@gmail.com"
@@ -12,13 +12,15 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 #WGET_URL="$SF_MIRROR/pyqt/$TARBALL"
 WGET_URL="https://www.riverbankcomputing.com/static/Downloads/$PACKAGE/$VERSION/$TARBALL"
 
-DEPENDS="gcc-lib-base python"
-BUILD_DEPENDS="python-dev"
+DEPENDS="gcc-lib-base py3k"
+BUILD_DEPENDS="py3k-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	python configure.py &&
+	python3 configure.py &&
+	sed -i 's|^LFLAGS.*|& -liconv|' $src/siplib/Makefile
+	sed -i 's|^LFLAGS.*|& -liconv|' $src/sipgen/Makefile
 	make &&
 	make DESTDIR=$DESTDIR install
 }

@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$SF_MIRROR/modplug-xmms/$TARBALL"
 
 DEPENDS="gcc-lib-base"
-BUILD_DEPENDS="gcc-lib-base"
+BUILD_DEPENDS="gcc-lib-base file"
 
 HOST_ARCH="x86_64 i486 arm"
 

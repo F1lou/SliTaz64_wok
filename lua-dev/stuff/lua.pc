@@ -1,17 +1,20 @@
-prefix=/usr
-major_version=5.2
-version=5.2.1
+V=5.4
+R=5.4.4
 
+prefix=/usr
+INSTALL_BIN=${prefix}/bin
+INSTALL_INC=${prefix}/include
+INSTALL_LIB=${prefix}/lib
+INSTALL_MAN=${prefix}/share/man/man1
+INSTALL_LMOD=${prefix}/share/lua/${V}
+INSTALL_CMOD=${prefix}/lib/lua/${V}
 exec_prefix=${prefix}
-#lib_name=lua${major_version}
-lib_name=lua
-libdir=${prefix}/lib
+libdir=${exec_prefix}/lib
 includedir=${prefix}/include
 
 Name: Lua
-Description: Lua language engine
-Version: ${version}
+Description: An Extensible Extension Language
+Version: ${R}
 Requires:
-Libs: -L${libdir} -l${lib_name} -lm -ldl
-Libs.private: -lm -ldl
+Libs: -L${libdir} -llua -lm -ldl
 Cflags: -I${includedir}

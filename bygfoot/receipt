@@ -11,8 +11,8 @@ WEB_SITE="http://www.bygfoot.com/"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
-DEPENDS="acl atk freetype glib gtk+ pango"
-BUILD_DEPENDS="atk-dev freetype-dev glib-dev gtk+-dev pango-dev"
+DEPENDS="acl atk freetype glib gtk+3 pango"
+BUILD_DEPENDS="atk-dev freetype-dev glib-dev gtk+3-dev pango-dev"
 
 compile_rules()
 {

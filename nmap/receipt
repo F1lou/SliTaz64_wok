@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="nmap"
-VERSION="7.80"
+VERSION="7.90"
 CATEGORY="security"
 TAGS="network"
 SHORT_DESC="The Network Mapper."
@@ -13,14 +13,14 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="${WEB_SITE}dist/$TARBALL"
 
 DEPENDS="gcc-lib-base libpcap openssl pcre"
-BUILD_DEPENDS="libpcap-dev openssl-dev pcre-dev python-dev"
+BUILD_DEPENDS="libpcap-dev openssl-dev pcre-dev py3k-dev libiconv-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-#	patch -p1 < $stuff/$PACKAGE-$VERSION-nolua.patch
+	export LDFLAGS="$LDFLAGS -liconv"
 
 	./configure				\
 		--cache-file=$PWD/config.cache	\

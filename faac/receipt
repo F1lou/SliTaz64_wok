@@ -13,7 +13,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$SF_MIRROR/faac/$TARBALL"
 
 DEPENDS="gcc-lib-base"
-BUILD_DEPENDS="gcc"
+BUILD_DEPENDS="gcc file"
 
 # Rules to configure and make the package.
 compile_rules()

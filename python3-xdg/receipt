@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="python3-xdg"
+VERSION="0.27"
+CATEGORY="development"
+SHORT_DESC="Python library to access freedesktop.org standards."
+MAINTAINER="paul@slitaz.org"
+LICENSE="LGPL2"
+WEB_SITE="https://www.freedesktop.org/wiki/Software/pyxdg/"
+
+SOURCE="pyxdg"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://files.pythonhosted.org/packages/source/${SOURCE:0:1}/$SOURCE/$TARBALL"
+
+DEPENDS="py3k"
+BUILD_DEPENDS="py3k py3k-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python3 setup.py build &&
+	python3 setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr	$fs
+}

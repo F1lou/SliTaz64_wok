@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="gtksourceview-4-dev"
+VERSION="4.8.2"
+CATEGORY="development"
+SHORT_DESC="The gtksourceview library devel files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WANTED="gtksourceview-4"
+WEB_SITE="http://projects.gnome.org/gtksourceview/"
+
+DEPENDS="gtksourceview-4 pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/lib64 $fs/usr/share
+	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib
+	cp -a $install/usr/lib64/girepository* $fs/usr/lib64
+	cp -a $install/usr/include $fs/usr
+}
+

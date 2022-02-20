@@ -1,0 +1,69 @@
+# SliTaz package receipt.
+
+PACKAGE="gtk+4"
+VERSION="4.6.1"
+CATEGORY="x-window"
+SHORT_DESC="The GIMP Toolkit 3.x"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2"
+WEB_SITE="https://www.gtk.org/"
+
+SOURCE="gtk"
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WGET_URL="$GNOME_MIRROR/$SOURCE/${VERSION%.*}/$TARBALL"
+
+SUGGESTED="cups"
+DEPENDS="at-spi2-atk atk gdk-pixbuf pango slitaz-icon util-linux-uuid 
+	xorg-libXcomposite xorg-libXcursor xorg-libXi xorg-libXinerama 
+	xorg-libXrandr libepoxy libbsd"
+BUILD_DEPENDS="glib-dev pango-dev gdk-pixbuf-dev atk-dev expat-dev
+	gobject-introspection-dev libepoxy-dev libxkbcommon-dev
+	gi-docgen wayland-dev wayland-protocols"
+
+# at-spi2-atk autoconf automake bash cairo-dev 
+#	cups-dev dbus-dev 
+#	indent libffi-dev libxml2-dev perl pkg-config 
+#	util-linux-uuid-dev xorg-dev liblzma-dev libbsd-dev
+#	libiconv-dev libxkbcommon-dev expat-dev wayland-protocols
+#	wayland-dev
+
+CONFIG_FILES="/etc/gtk-4.0/settings.ini"
+
+
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export LDFLAGS="$LDFLAGS -liconv"
+	meson setup --prefix=/usr --buildtype=release builddir
+	cd builddir
+	ninja && ninja install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/etc/gtk-4.0
+	mkdir -p $fs/usr/bin
+	mkdir -p $fs/usr/lib/gtk-4.0
+	mkdir -p $fs/usr/share
+
+	# Configuration file.
+	cp -a $install/etc		$fs
+	cp -f $stuff/settings.ini	$fs/etc/gtk-3.0
+
+	# Applications.
+	cp $install/usr/bin/gtk-query-immodules-3.0	$fs/usr/bin
+	cp $install/usr/bin/gtk-update-icon-cache	$fs/usr/bin
+	# gtk3-demo & gtk3-demo-application -> gtk+3-demo
+	# gtk3-widget-factory -> gtk+3-widget-factory
+
+	# Libraries.
+	cp -a $install/usr/lib/*.so*		$fs/usr/lib
+	cp -a $install/usr/lib/gtk-4.0/4.0.0	$fs/usr/lib/gtk-3.0
+	rm -rf					$fs/usr/lib/gtk-4.0/4.0.0/*/*.la
+
+	# Themes.
+	cp -a $install/usr/share/themes		$fs/usr/share
+	cp -a $install/usr/share/glib-2.0	$fs/usr/share
+}

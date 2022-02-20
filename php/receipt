@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="php"
-VERSION="8.0.3"
+VERSION="8.1.3"
 CATEGORY="development"
 SHORT_DESC="PHP web programming language."
 MAINTAINER="pankso@slitaz.org"
@@ -16,10 +16,10 @@ DEPENDS="libssl libzip libxml2 lighttpd php-common sqlite"
 BUILD_DEPENDS="apache apache-dev apr-dev apr-util-dev 
 	coreutils-conditions curl-dev cyrus-sasl-dev gettext 
 	jpeg-dev libldap libmcrypt-dev libmysqlclient libpng-dev 
-	libtool libunixODBC libxml2-dev libzip-dev 
+	libtool libunixODBC libxml2-dev libzip-dev libvpx-dev
 	mhash-dev mysql-dev net-snmp-dev openldap-dev openssl-dev 
 	perl pkg-config postgresql-dev re2c sed sqlite-dev 
-	unixODBC-dev c-client"	# libvpx-dev
+	unixODBC-dev c-client"
 
 #HOST_ARCH="x86_64 i486 arm"
 

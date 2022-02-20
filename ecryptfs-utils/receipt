@@ -12,7 +12,7 @@ WGET_URL="$WEB_SITE/trunk/$VERSION/+download/$TARBALL"
 TAGS="cryptography"
 
 DEPENDS="keyutils nss python"
-BUILD_DEPENDS="keyutils-dev nss-dev python-dev"
+BUILD_DEPENDS="keyutils-dev nss-dev python-dev intltool"
 
 # Rules to configure and make the package.
 compile_rules()

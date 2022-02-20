@@ -11,15 +11,15 @@ TARBALL="$SOURCE-$VERSION.tar.gz"
 WEB_SITE="http://www.lesfleursdunormal.fr/static/informatique/songwrite/index_en.html"
 WGET_URL="http://download.gna.org/songwrite/$TARBALL"
 
-DEPENDS="python editobj gtk+ pycairo"
-BUILD_DEPENDS="python"
+DEPENDS="py3k editobj gtk+3 pycairo"
+BUILD_DEPENDS="py3k"
 SUGGESTED="TiMidity++ evince"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	cd $src
-	python ./setup.py install --root=$DESTDIR
+	python3 ./setup.py install --root=$DESTDIR
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.   

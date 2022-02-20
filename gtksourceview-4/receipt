@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="gtksourceview-4"
+VERSION="4.8.2"
+SOURCE="gtksourceview"
+CATEGORY="x-window"
+SHORT_DESC="Extends GTK+ framework for multiline text editing."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WEB_SITE="http://projects.gnome.org/gtksourceview/"
+WGET_URL="https://download.gnome.org/sources/$SOURCE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="expat gtk+3 libxml2 xorg-libX11 xorg-libXau xorg-libXcomposite \
+xorg-libXcursor xorg-libXdmcp xorg-libXext xorg-libXfixes xorg-libXinerama \
+xorg-libXrandr xorg-libXrender xorg-libXdamage"
+BUILD_DEPENDS="intltool pkg-config gtk+3-dev libxml2-dev expat-dev glib-dev
+	libiconv-dev gobject-introspection-dev vala liblzma-dev libbsd-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir build && cd build
+	LDFLAGS="$LDFLAGS -liconv" meson --prefix=/usr &&
+	ninja && ninja install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib64 $fs/usr/share
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
+	cp -a $install/usr/share/gtksourceview* $fs/usr/share
+}
+

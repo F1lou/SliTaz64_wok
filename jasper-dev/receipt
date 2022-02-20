@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="jasper-dev"
-VERSION="2.0.28"
+VERSION="3.0.2"
 CATEGORY="development"
 SHORT_DESC="Jasper development files."
 MAINTAINER="jozee@slitaz.org"

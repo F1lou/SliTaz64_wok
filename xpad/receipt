@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xpad"
-VERSION="4.1"
+VERSION="5.5.0"
 CATEGORY="utilities"
 SHORT_DESC="Sticky note application for X"
 MAINTAINER="pankso@slitaz.org"
@@ -11,14 +11,14 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="https://launchpad.net/xpad/trunk/$VERSION/+download/$TARBALL"
 HANDBOOK_URL="http://www.slitaz.org/doc/handbook/utilities.html#xpad"
 
-DEPENDS="gtk+ util-linux-uuid xorg-libICE xorg-libSM"
-BUILD_DEPENDS="gtk+-dev xorg-libSM-dev wget"
+DEPENDS="gtk+3 util-linux-uuid xorg-libICE xorg-libSM"
+BUILD_DEPENDS="gtk+3-dev xorg-libSM-dev wget gtksourceview-4-dev"
 GENERIC_PIXMAPS="no"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i '/#include <glib\/glist.h>/d' src/xpad-undo.c
+	./autogen.sh
 	./configure $CONFIGURE_ARGS &&
 	make && make install
 }

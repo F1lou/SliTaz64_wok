@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="guile-dev"
-VERSION="3.0.7"
+VERSION="3.0.8"
 CATEGORY="development"
 SHORT_DESC="devel files for guile"
 MAINTAINER="pankso@slitaz.org"

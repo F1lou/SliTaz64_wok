@@ -1,5 +1,5 @@
 --- Makefile
-+++ stuff/Makefile
++++ Makefile
 @@ -9,15 +9,15 @@
  
  # Where to install. The installation starts in the src and doc directories,

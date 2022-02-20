@@ -1,0 +1,26 @@
+# SliTaz package receipt.
+
+PACKAGE="ruby3-dev"
+VERSION="3.1.0"
+CATEGORY="development"
+SHORT_DESC="Development files for Ruby (to compile ruby-modules)."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="GPL2"
+WEB_SITE="https://www.ruby-lang.org/"
+
+DEPENDS="ruby3"
+WANTED="ruby3"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib/
+
+#	cp -a $install/usr/lib/*.a		$fs/usr/lib
+	cp -a $install/usr/include		$fs/usr
+	cp -a $install/usr/lib/ruby		$fs/usr/lib
+	cp -a $install/usr/lib/libruby.so*	$fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig	$fs/usr/lib
+}

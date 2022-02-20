@@ -12,7 +12,7 @@ WGET_URL="git|git://anongit.freedesktop.org/mesa/glu.git"
 PROVIDE="libglu"
 
 DEPENDS="glibc-base gcc-lib-base mesa"
-BUILD_DEPENDS="automake autoconf libtool file"
+BUILD_DEPENDS="automake autoconf libtool file mesa-dev"
 
 # Rules to configure and make the package.
 compile_rules()

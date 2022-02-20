@@ -1,8 +1,8 @@
 # SliTaz package receipt.
 
 PACKAGE="gst-plugins-base-dev"
-VERSION="0.10.36"
-SERIES="0.10"
+VERSION="1.20.0"
+SERIES="1.0"
 CATEGORY="development"
 SHORT_DESC="gst-plugins-base devel files"
 MAINTAINER="jozee@slitaz.org"
@@ -17,10 +17,10 @@ xorg-dev xorg-libXv-dev xorg-libXvMC-dev cdparanoia-III-dev orc-dev pkg-config"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib/gstreamer-$SERIES $fs/usr/share
+	mkdir -p $fs/usr/lib64/gstreamer-$SERIES $fs/usr/share $fs/usr/lib
 	cp -a $install/usr/include $fs/usr
-	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
-	cp -a $install/usr/lib/*.*a $fs/usr/lib/
-	cp -a $install/usr/lib/gstreamer-$SERIES/*.*a $fs/usr/lib/gstreamer-$SERIES
+	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib
+	#~ cp -a $install/usr/lib64/*.*a $fs/usr/lib/
+	#~ cp -a $install/usr/lib64/gstreamer-$SERIES/*.*a $fs/usr/lib/gstreamer-$SERIES
 	cp -a $install/usr/share/gir-1.0 $fs/usr/share
 }

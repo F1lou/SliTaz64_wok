@@ -10,11 +10,12 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://www.clifford.at/stfl/"
 WGET_URL="$WEB_SITE$TARBALL"
 
-BUILD_DEPENDS="ncursesw-dev swig python-dev"
+BUILD_DEPENDS="ncursesw-dev swig python-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	sed -i 's|/usr/local|/usr|' Makefile.cfg
 	sed -i 's|ncursesw/ncurses.h|ncurses.h|' stfl_internals.h
 	sed -i 's|^include Makefile.deps|-&|' Makefile

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gst-plugins-base-1.0"
-VERSION="1.19.1"
+VERSION="1.20.0"
 SERIES="1.0"
 CATEGORY="multimedia"
 SHORT_DESC="GStreamer Base Plugins."
@@ -19,7 +19,7 @@ DEPENDS="alsa-lib gstreamer libogg libtheora libtheora-enc
 BUILD_DEPENDS="alsa-lib-dev automake gstreamer-dev libogg-dev libtheora-dev 
 	libtheora-enc libvorbis-dev opus-dev orc-dev pango-dev eudev-dev 
 	util-linux-uuid-dev xorg-libXv-dev xorg-libXvMC-dev
-	gobject-introspection-dev xorg-dev libbsd-dev"
+	gobject-introspection-dev xorg-dev libbsd-dev libiconv-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 
@@ -36,32 +36,10 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	export GIT_SSL_NO_VERIFY=true
+	export LDFLAGS="$LDFLAGS -liconv"
 	mkdir build && cd build
 	meson --prefix=/usr .. &&
 	ninja && ninja install
-
-	#~ sysroot="/cross/arm/sysroot"
-	#~ libs="/usr/lib"
-	#~ incl="/usr/include"
-	#~ sed -i '/set ERROR_C/d'	configure
-
-	#~ ./configure							\
-		#~ --prefix=/usr						\
-		#~ --sysconfdir=/etc					\
-		#~ --localstatedir=/var					\
-		#~ --enable-experimental					\
-		#~ --disable-static					\
-		#~ --disable-debug						\
-		#~ --disable-gnome-vfs					\
-		#~ --disable-libvisual					\
-		#~ --disable-vorbisidec					\
-		#~ --enable-introspection=no				\
-		#~ --with-package-name="GStreamer Base Plugins ($SERIES)"	\
-		#~ --with-package-origin="http://www.slitaz.org/"		\
-		#~ $CONFIGURE_ARGS | grep -v 'vorbisidec' &&
-	#~ make $MAKEFLAGS &&
-	#~ make install 2>/dev/null
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

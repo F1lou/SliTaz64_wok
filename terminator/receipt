@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="terminator"
-VERSION="1.92"
+VERSION="2.1.1"
 CATEGORY="x-window"
 SHORT_DESC="Tool for arranging terminals."
 MAINTAINER="pankso@slitaz.org"
@@ -11,13 +11,13 @@ WEB_SITE="https://gnometerminator.blogspot.com/p/introduction.html"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/gnome-terminator/$PACKAGE/archive/v$VERSION.tar.gz"
 
-DEPENDS="notify-python pygtk python python-vte"
-BUILD_DEPENDS="python-dev"
+DEPENDS="notify-python pygtk py3l python-vte"
+BUILD_DEPENDS="py3k-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	python setup.py install --root=$DESTDIR 2>&1 | grep -v "GTK icon cache"
+	python3 setup.py install --root=$DESTDIR 2>&1 | grep -v "GTK icon cache"
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

@@ -13,13 +13,13 @@ TARBALL="$SOURCE-$VERSION.tar.gz"
 WGET_URL="https://files.pythonhosted.org/packages/source/P/$SOURCE/$TARBALL"
 
 DEPENDS="py3k"
-BUILD_DEPENDS="py3k"
+BUILD_DEPENDS="py3k python3-setuptools"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	python3 setup.py install --no-compile --root=$install
-	#~ pip3 install Pygments
+	#~ python3 setup.py install --no-compile --root=$install
+	pip3 install Pygments
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

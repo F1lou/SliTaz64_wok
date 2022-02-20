@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="graphviz"
-VERSION="2.48.0"
+VERSION="2.50.0"
 CATEGORY="x-window"
 SHORT_DESC="Automatic graph drawing."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -17,7 +17,7 @@ BUILD_DEPENDS="py3k py3k-dev gcc expat-dev gdk-pixbuf-dev guile-dev jpeg-dev
 	libcroco-dev libgd-dev libpng-dev librsvg-dev libxml2-dev 
 	ocaml pango-dev pcre-dev pkg-config libiconv-dev libnsl-dev
 	python-dev ruby-dev swig tcl-dev tk-dev util-linux-uuid-dev 
-	xorg-dev zlib-dev automake sed liblzma-dev libbsd-dev" # php-cli php-dev lua-dev
+	xorg-dev zlib-dev automake sed liblzma-dev libbsd-dev lua-dev" # php-cli php-dev
 
 # Rules to configure and make the package.
 compile_rules()
@@ -27,19 +27,20 @@ compile_rules()
 	#~ sed -i 's/.*PHPWRITE.*/    TSRMLS_FETCH();\n&/' \
 		#~ tclpkg/gv/gv_php_init.c
 
-	CFLAGS="$CFLAGS -fPIC -liconv"
+	CFLAGS="$CFLAGS -liconv"
 	./autogen.sh
-	./configure				\
+	./configure					\
 		--prefix=/usr			\
 		--infodir=/usr/share/info	\
 		--disable-static		\
+		--enable-shared			\
 		--disable-gtk			\
 		--disable-gtkgl			\
 		--disable-gtkglext		\
 		--with-pangocairo		\
-		--with-x			\
+		--with-x				\
 		--with-gdk-pixbuf		\
-		--with-ghostscript=no		\
+		--with-ghostscript=no	\
 		--without-gtk			\
 		--without-gtkgl			\
 		--without-gtkglext		\
@@ -61,8 +62,8 @@ compile_rules()
 		--disable-python24		\
 		--disable-python25		\
 		--disable-python26		\
-		--disable-r			\
-		--mandir=/usr/share/man		\
+		--disable-r				\
+		--mandir=/usr/share/man	\
 		$CONFIGURE_ARGS &&
 	make &&
 	make DESTDIR=$DESTDIR install
@@ -78,7 +79,7 @@ genpkg_rules()
 	cp -a $install/usr/lib/pkgconfig		$fs/usr/lib/
 	cp -a $install/usr/lib/graphviz			$fs/usr/lib/
 	rm -f $fs/usr/lib/graphviz/*.la
-	cp -a $install/usr/share/graphviz/lefty		$fs/usr/share/graphviz
+	#~ cp -a $install/usr/share/graphviz/lefty		$fs/usr/share/graphviz
 	cp -a $install/usr/share/graphviz/gvpr		$fs/usr/share/graphviz
 	cp -a $install/usr/share/graphviz/graphs	$fs/usr/share/graphviz
 	cp -a $install/usr/bin				$fs/usr

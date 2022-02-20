@@ -15,7 +15,7 @@ PROVIDE="py3k"
 DEPENDS="openssl bzlib readline sqlite zlib xorg-libXss ncursesw gdbm tk \
 xorg-libXext"
 BUILD_DEPENDS="readline-dev gdbm-dev openssl-dev sqlite-dev zlib-dev tk-dev \
-ncursesw-dev liblzma-dev"
+ncursesw-dev liblzma-dev bzip2-dev libcrypto-dev"
 
 # Rules to configure and make the package.
 compile_rules()

@@ -12,13 +12,13 @@ WEB_SITE="https://ranger.github.io/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/$PACKAGE/$PACKAGE/archive/v$VERSION.tar.gz"
 
-DEPENDS="python"
-BUILD_DEPENDS="python python-dev"
+DEPENDS="py3k"
+BUILD_DEPENDS="py3k py3k-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	python setup.py install --root=$DESTDIR
+	python3 setup.py install --root=$DESTDIR
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

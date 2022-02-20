@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="exiv2"
-VERSION="0.27.3"
+VERSION="0.27.5"
 CATEGORY="graphics"
 SHORT_DESC="Exif and Iptc metadata manipulation library and tools."
 MAINTAINER="jozee@slitaz.org"
@@ -9,18 +9,18 @@ LICENSE="GPL2"
 WEB_SITE="https://www.exiv2.org/"
 
 TARBALL="$PACKAGE-$VERSION-Source.tar.gz"
-WGET_URL="${WEB_SITE}builds/$TARBALL"
+WGET_URL="https://github.com/Exiv2/exiv2/releases/download/v$VERSION/$TARBALL"
 
 DEPENDS="expat gcc-lib-base zlib"
-BUILD_DEPENDS="cmake expat-dev gcc-lib-base zlib-dev"
+BUILD_DEPENDS="cmake expat-dev gcc-lib-base zlib-dev libiconv-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	mkdir build
-	cd build
+	export LDFLAGS="$LDFLAGS -liconv"
+	mkdir build && cd build
 	cmake ..				\
 		-G "Unix Makefiles"		\
 		-DCMAKE_INSTALL_PREFIX=/usr &&

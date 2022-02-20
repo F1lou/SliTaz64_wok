@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="python3-docutils"
+VERSION="0.18.1"
+CATEGORY="development"
+SHORT_DESC="Text processing system."
+MAINTAINER="claudinei@slitaz.org"
+LICENSE="PublicDomain GPL3 BSD"
+WEB_SITE="https://pypi.org/project/docutils"
+
+SOURCE="docutils"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://files.pythonhosted.org/packages/source/d/$SOURCE/$TARBALL"
+
+SUGGESTED="python-pil"
+DEPENDS="py3k"
+BUILD_DEPENDS="py3k py3k-dev python3-setuptools"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python3 setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr	$fs
+}
+
+# Remove old package.
+post_install()
+{
+	[ ! -d "$1/var/lib/tazpkg/installed/docutils" ] ||
+	rm -rf "$1/var/lib/tazpkg/installed/docutils"
+}

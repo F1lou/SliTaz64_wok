@@ -9,7 +9,7 @@ LICENSE="GPL2"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="https://www.xiph.org/vorbis/"
 WGET_URL="https://downloads.xiph.org/releases/vorbis/$TARBALL"
-# https://github.com/xiph/vorbis-tools/archive/refs/tags/v1.4.2.tar.gz
+
 TAGS="multimedia ogg"
 HOST_ARCH="x86_64 i486 arm"
 

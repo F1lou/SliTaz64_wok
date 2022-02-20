@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="buildbot"
-VERSION="2.5.1"
+VERSION="3.4.1"
 CATEGORY="development"
 TAGS="python buildtools"
 SHORT_DESC="Tool to automate the compile and test cycle of source code."
@@ -13,7 +13,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/$PACKAGE/$PACKAGE/releases/download/v$VERSION/$TARBALL"
 
 DEPENDS="py3k twisted"
-BUILD_DEPENDS="py3k py3k-dev python-setuptools"
+BUILD_DEPENDS="py3k py3k-dev python3-setuptools"
 
 # Rules to configure and make the package.
 compile_rules()

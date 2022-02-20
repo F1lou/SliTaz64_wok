@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="ufw"
-VERSION="0.36"
+VERSION="0.36.1"
 CATEGORY="security"
 TAGS="firewall"
 SHORT_DESC="Uncomplicated Firewall, a cli for managing netfilter."
@@ -12,14 +12,14 @@ WEB_SITE="https://launchpad.net/ufw"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$WEB_SITE/$VERSION/$VERSION/+download/$TARBALL"
 
-DEPENDS="python iptables"
-BUILD_DEPENDS="python iptables"
+DEPENDS="py3k iptables"
+BUILD_DEPENDS="py3k iptables"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	python setup.py build
-	python setup.py install --root=$DESTDIR
+	python3 setup.py build
+	python3 setup.py install --root=$DESTDIR
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

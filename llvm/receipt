@@ -17,8 +17,9 @@ BUILD_DEPENDS="libffi-dev libffi perl gcc libiconv-dev"
 compile_rules()
 {
 	cd tools && \
-	wget -c https://github.com/$PACKAGE/$PACKAGE-project/releases/download/llvmorg-$VERSION/clang-$VERSION.src.tar.xz --no-check-certificate && \
+	wget -c https://github.com/$PACKAGE/$PACKAGE-project/releases/download/llvmorg-$VERSION/clang-$VERSION.src.tar.xz && \
 	tar xf clang-$VERSION.src.tar.xz && mv clang-$VERSION.src clang && cd $src
+	grep -rl '#!.*python' | xargs sed -i '1s/python$/python3/'
 	mkdir build && cd build
 	export LDFLAGS="$LDFLAGS -liconv"
 	cmake \
@@ -28,15 +29,13 @@ compile_rules()
 		-DLLVM_BUILD_LLVM_DYLIB=ON      \
 		-DLLVM_LINK_LLVM_DYLIB=ON       \
 		-DLLVM_ENABLE_RTTI=ON           \
+		-DLLVM_ENABLE_PROJECTS="clang"	\
 		-DLLVM_TARGETS_TO_BUILD="all"	\
-		-DLLVM_BUILD_TESTS=ON           \
+		-DLLVM_BUILD_TESTS=OFF          \
+		-DLLVM_BINUTILS_INCDIR=/usr/include \
 		-Wno-dev -G Ninja ..            &&
 	
 	ninja	&&
-	
-		#~ --sysconfdir=/etc \
-		#-DLLVM_ENABLE_PROJECTS="clang"	\
-		
 	DESTDIR=$DESTDIR ninja install
 }
 
