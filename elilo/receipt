@@ -28,9 +28,9 @@ compile_rules()
 	cp README*		$install/usr/share/doc
 #	rm -rf			$install/usr/share/doc/CVS
 	grep -rl 'StrnCpy(' * | xargs sed -i 's|StrnCpy(|StrnCpyElilo(|'
-	sed -i 's|dpkg-architecture.*)|echo ia32)|' \
+	sed -i 's|dpkg-architecture.*)|echo x86_64)|' \
 		Make.defaults
-	make ARCH=ia32 -j 1 &&
+	make -j 1 &&
 	cp elilo.efi		$install/boot/efi/boot/elilo &&
 	cp tools/eliloalt	$install/usr/sbin
 }

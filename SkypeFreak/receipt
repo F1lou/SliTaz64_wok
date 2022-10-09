@@ -11,7 +11,7 @@ WEB_SITE="http://osandamalith.github.io/SkypeFreak/"
 TARBALL="$PACKAGE-$VERSION.zip"
 WGET_URL="https://github.com/OsandaMalith/$PACKAGE/archive/$GITHASH.zip"
 
-DEPENDS="python"
+DEPENDS="py3k"
 BUILD_DEPENDS="wget"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

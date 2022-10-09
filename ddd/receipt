@@ -14,18 +14,20 @@ TAGS="debugger"
 DEPENDS="glibc-base gcc-lib-base ncurses freetype zlib util-linux-uuid \
 xorg-libICE xorg-libSM xorg-libX11 xorg-libXau xorg-libXaw \
 xorg-libXdmcp xorg-libXext xorg-libXmu xorg-libXpm xorg-libXt lesstif elfutils"
-BUILD_DEPENDS="gawk lesstif-dev"
+BUILD_DEPENDS="gawk lesstif-dev xorg-libX11-dev xorg-libXt-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	export LDFLAGS="$LDFLAGS -ltinfo"
+	export CFLAGS="$CFLAGS -Wno-non-template-friend"
 	
 	# Need to include an additional header in a file to build with gcc 4.4.0
-	DDD_FILE_TO_PATCH="ddd/strclass.C"
-	cp -f $DDD_FILE_TO_PATCH $DDD_FILE_TO_PATCH.orig  &&
-	echo "#include <stdio.h>" > $DDD_FILE_TO_PATCH  &&
-	cat $DDD_FILE_TO_PATCH.orig >> $DDD_FILE_TO_PATCH  &&
+	#~ DDD_FILE_TO_PATCH="ddd/strclass.C"
+	#~ cp -f $DDD_FILE_TO_PATCH $DDD_FILE_TO_PATCH.orig  &&
+	#~ echo "#include <stdio.h>" > $DDD_FILE_TO_PATCH  &&
+	#~ cat $DDD_FILE_TO_PATCH.orig >> $DDD_FILE_TO_PATCH  &&
+	patch -Np1 -i $stuff/complete.patch
 	
 	./configure \
 		--prefix=/usr \

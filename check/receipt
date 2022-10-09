@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/libcheck/$PACKAGE/archive/$VERSION.tar.gz"
 
 DEPENDS=""
-BUILD_DEPENDS="autoconf automake libtool file texinfo"
+BUILD_DEPENDS="autoconf automake libtool file texinfo sed"
 
 HOST_ARCH="x86_64 i486 arm"
 

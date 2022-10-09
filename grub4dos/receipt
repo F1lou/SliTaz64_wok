@@ -10,7 +10,7 @@ TARBALL="$PACKAGE-$VERSION-src.zip"
 WEB_SITE="http://grub4dos.sourceforge.net/"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
-BUILD_DEPENDS="lzma gcc3 binutils"
+BUILD_DEPENDS="lzma gcc binutils"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -24,7 +24,7 @@ compile_rules()
 		util/grub-install.in
 	sed -i 's|-O binary conftest|--only-section=.text &|' acinclude.m4 configure
 	sed -i 's|-O binary |&-R .note -R .comment -R .note.gnu.build-id |' stage?/Makefile*
-	sh ./configure CC=gcc-3 \
+	sh ./configure \
 		--enable-preset-menu=$stuff/menu.lst \
 		--without-curses \
 	$CONFIGURE_ARGS &&

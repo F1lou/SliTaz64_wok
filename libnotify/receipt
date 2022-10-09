@@ -13,7 +13,7 @@ HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="dbus gtk+3 dbus-glib xorg-libXdamage"
 BUILD_DEPENDS="dbus-dev gtk+-dev dbus-glib dbus-glib-dev expat-dev \
-gtk+3-dev libepoxy-dev mesa-dev"
+gtk+3-dev libepoxy-dev mesa-dev gobject-introspection-dev bash"
 
 # Handle cross compilation
 case "$ARCH" in

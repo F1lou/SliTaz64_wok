@@ -16,7 +16,7 @@ DEPENDS="atk cairo expat fontconfig freetype gdk-pixbuf glib glibc-base
 	harfbuzz jpeg libgio libpng libxcb pango pixman tiff xcb-util 
 	xorg-libX11 xorg-libXau xorg-libXcomposite xorg-libXcursor 
 	xorg-libXdamage xorg-libXdmcp xorg-libXext xorg-libXfixes 
-	xorg-libXinerama xorg-libXrandr xorg-libXrender zlib"
+	xorg-libXinerama xorg-libXrandr xorg-libXrender zlib fribidi"
 
 BUILD_DEPENDS="atk-dev automake dbus-dev dbus-glib-dev faenza-icon-theme 
 	fontconfig-dev freetype-dev gdk-pixbuf-dev harfbuzz-dev libffi-dev 

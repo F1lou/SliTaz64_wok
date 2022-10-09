@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="vim-tiny"
-VERSION="8.2.2604"
+VERSION="9.0.0228"
 CATEGORY="editors"
 TAGS="text-editor"
 SHORT_DESC="Advanced text editor without GUI."
@@ -21,8 +21,6 @@ CONFIG_FILES="/etc/vim/vimrc"
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -ltinfo"
-
 	# define the place for the global vimrc file (set to /etc/vim/vimrc)
 	# (patch from Arch Linux PKGBUILD)
 	sed -i 's|^.*\(#define SYS_VIMRC_FILE\).*$|\1 "/etc/vim/vimrc"|' \

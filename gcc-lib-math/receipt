@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gcc-lib-math"
-VERSION="10.2.0"
+VERSION="12.2.0"
 CATEGORY="development"
 SHORT_DESC="GCC math libraries, libquadmath."
 WEB_SITE="http://gcc.gnu.org/"

@@ -14,7 +14,7 @@ WGET_URL="http://www.libsdl.org/release/$TARBALL"
 
 DEPENDS="xorg-libX11 xorg-libXext xorg-libXrender"
 BUILD_DEPENDS="alsa-lib-dev libglu-mesa mesa-dev xorg-libX11-dev xorg-libXext-dev \
-	xorg-libXrender-dev xorg-libXt-dev"
+	xorg-libXrender-dev xorg-libXt-dev xorg-proto libiconv-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 
@@ -27,12 +27,14 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 #	patch -Np1 -i $stuff/sdl-$VERSION-joystick-crash.diff
 #	patch -Np1 -i $stuff/sdl-$VERSION-fix-mouse-clicking.patch
 #	patch -Np1 -i $stuff/sdl-$VERSION-fix-disappearing-cursor.patch
 #	patch -Np1 -i $stuff/sdl-1.2.14-add-XGetRequest-symbol.patch
+	patch -Np1 -i $stuff/sdl-$VERSION-const_XData32.patch
 	./configure $CONFIGURE_ARGS &&
-	make -j 1 &&
+	make &&
 	make install
 }
 

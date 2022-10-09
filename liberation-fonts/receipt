@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="liberation-fonts"
-VERSION="2.00.1"
+VERSION="2.1.5"
 CATEGORY="fonts"
 SHORT_DESC="Liberation fonts"
 MAINTAINER="al.bobylev@gmail.com"

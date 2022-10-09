@@ -1,7 +1,7 @@
 # SliTaz package receipt."
 
 PACKAGE="gdb-dev"
-VERSION="7.7"
+VERSION="11.2"
 CATEGORY="development"
 SHORT_DESC="The GNU Project Debugger dev files."
 MAINTAINER="erjo@slitaz.org"

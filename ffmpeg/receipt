@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="ffmpeg"
-VERSION="4.4"
+VERSION="4.4.1"
 CATEGORY="multimedia"
 TAGS="audio video convert stream"
 SHORT_DESC="Record, convert and stream audio and video."

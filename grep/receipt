@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="grep"
-VERSION="3.6"
+VERSION="3.7"
 CATEGORY="development"
 SHORT_DESC="GNU Global Regular Expression Print."
 MAINTAINER="paul@slitaz.org"

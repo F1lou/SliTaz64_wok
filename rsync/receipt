@@ -14,8 +14,9 @@ SECRET_FILES="/etc/rsyncd.secrets"
 TAGS="sync copy secure"
 HOST_ARCH="x86_64 i486 arm"
 
-DEPENDS="popt attr acl"
-BUILD_DEPENDS="popt-dev attr-dev acl-dev"
+DEPENDS="popt attr acl openssl lz4 zstd xxhash"
+BUILD_DEPENDS="popt-dev attr-dev acl-dev openssl-dev lz4-dev zstd-dev
+	xxhash-dev"
 
 # TazPanel
 TAZPANEL_DAEMON="man::rsync|help::rsync|edit|options|web::$WEB_SITE"

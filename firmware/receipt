@@ -1,15 +1,15 @@
 # SliTaz package receipt.
 
 PACKAGE="firmware"
-VERSION="20200515"
+VERSION="20220209"
 CATEGORY="meta"
 SHORT_DESC="Firmware files for Linux"
 MAINTAINER="mojo@slitaz.org"
 LICENSE="other"
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
+TARBALL="linux-$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://git.kernel.org/cgit/linux/kernel/git/firmware/linux-firmware.git"
-WGET_URL="git|git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
-BUILD_DEPENDS="git"
+WGET_URL="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/$TARBALL"
+BUILD_DEPENDS=""
 
 # Rules to configure and make the package.
 compile_rules()

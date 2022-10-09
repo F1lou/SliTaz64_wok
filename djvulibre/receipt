@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="djvulibre"
-VERSION="3.5.27"
+VERSION="3.5.28"
 CATEGORY="office"
 SHORT_DESC="A web-centric format and software platform for distributing documents and images."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -13,7 +13,8 @@ WGET_URL="$SF_MIRROR/djvu/$TARBALL"
 #HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="gcc-lib-base tiff jpeg"
-BUILD_DEPENDS="tiff-dev jpeg-dev xdg-utils bash librsvg-apps wget"
+BUILD_DEPENDS="tiff-dev jpeg-dev xdg-utils bash librsvg-apps wget
+	libiconv-dev"
 
 # Handle cross compilation. Build host must have: xdg-utils bash librsvg-apps
 case "$ARCH" in
@@ -23,6 +24,7 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv -lpthread"
 	./configure \
 		--sysconfdir=/etc \
 		$CONFIGURE_ARGS &&

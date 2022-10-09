@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="rtaudio"
-VERSION="5.1.0"
+VERSION="5.2.0"
 CATEGORY="multimedia"
 SHORT_DESC="Common API for realtime audio input and output (C++ classes)."
 MAINTAINER="pankso@slitaz.org"
@@ -12,23 +12,25 @@ TARBALL="${PACKAGE}-${VERSION}.tar.gz"
 WGET_URL="${WEB_SITE}release/$TARBALL"
 
 DEPENDS="alsa-lib jack-audio-connection-kit"
-BUILD_DEPENDS="alsa-lib-dev jack-audio-connection-kit-dev"
+BUILD_DEPENDS="alsa-lib-dev jack-audio-connection-kit-dev libiconv-dev
+	py3k-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	./configure		\
 		--prefix=/usr	\
 		--with-alsa	\
 		--with-jack	\
 		$CONFIGURE_ARGS &&
-	make -j 1
+	make
 
 	# Python bindings --> rtaudio-python ??
-	#cd $src/contrib/python/pyrtaudio
-	#CFLAGS="$CFLAGS -I../../../include" \
-	#python setup.py build
-	#python setup.py install --root="$DESTDIR"
+	cd $src/contrib/python/pyrtaudio
+	CFLAGS="$CFLAGS -I../../../include" \
+	python3 setup.py build
+	python3 setup.py install --root="$DESTDIR"
 	echo "Continuing, any error will remine in pkg build..."
 }
 

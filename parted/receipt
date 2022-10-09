@@ -12,7 +12,8 @@ WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="util-linux-uuid util-linux-blkid"
-BUILD_DEPENDS="e2fsprogs-dev util-linux-uuid-dev util-linux-blkid-dev"
+BUILD_DEPENDS="e2fsprogs-dev util-linux-uuid-dev util-linux-blkid-dev
+	libiconv-dev"
 SUGGESTED="btrfs-progs e2fsprogs f2fs-tools dosfstools mtools hfsutils \
 hfsprogs jfsutils util-linux lvm2 nilfs-utils ntfsprogs reiser4progs \
 reiserfsprogs xfsprogs"

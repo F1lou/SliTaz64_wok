@@ -13,7 +13,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="http://trac.emma-soft.com/epdfview/chrome/site/releases/$TARBALL"
 
 DEPENDS="gtk+ poppler glib libpng xorg-libXdamage gcc-lib-base openjpeg2"
-BUILD_DEPENDS="gtk+-dev poppler-dev poppler cairo-dev"
+BUILD_DEPENDS="gtk+-dev poppler-dev poppler cairo-dev nss-dev"
 
 # Rules to configure and make the package.
 compile_rules()

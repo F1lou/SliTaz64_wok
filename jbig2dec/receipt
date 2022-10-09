@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="jbig2dec"
-VERSION="0.18"
+VERSION="0.19"
 CATEGORY="development"
 SHORT_DESC="Decoder implementation of the JBIG2 image compressiong format."
 MAINTAINER="slaxemulator@gmail.com"
@@ -11,7 +11,7 @@ WEB_SITE="https://github.com/ArtifexSoftware/jbig2dec"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$WEB_SITE/archive/$VERSION/$TARBALL"
 
-BUILD_DEPENDS="autoconf automake libpng-dev libtool"
+BUILD_DEPENDS="autoconf automake libpng-dev libtool sed"
 
 HOST_ARCH="x86_64 i486 arm"
 

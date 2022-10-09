@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="tls"
-VERSION="1.6"
+VERSION="1.6.7"
 CATEGORY="network"
 SHORT_DESC="OpenSSL Tcl extension."
 MAINTAINER="erjo@slitaz.org"

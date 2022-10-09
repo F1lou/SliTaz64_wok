@@ -17,7 +17,7 @@ DEPENDS="attr dbus flac gcc-lib-base gdbm jack-audio-connection-kit \
 BUILD_DEPENDS="alsa-lib-dev autoconf automake dbus-dev file flac-dev \
 	gcc intltool jack-audio-connection-kit-dev libcap-dev \
 	libjson-c-dev libsamplerate-dev libsndfile-dev libtool libvorbis-dev \
-	m4 pkg-config speex-dev eudev-dev util-linux-uuid-dev"
+	m4 pkg-config speex-dev eudev-dev util-linux-uuid-dev bash"
 SPLIT="pulseaudio-locale pulseaudio-man pulseaudio-vala pulseaudio-dev"
 
 CONFIG_FILES="/etc/pulse/client.conf /etc/pulse/daemon.conf \

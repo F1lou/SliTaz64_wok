@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="glib"
-VERSION="2.71.0"
+VERSION="2.74.0"
 CATEGORY="x-window"
 SHORT_DESC="C routines."
 MAINTAINER="pankso@slitaz.org"
@@ -11,14 +11,15 @@ WEB_SITE="https://www.gtk.org/"
 WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION:0:4}/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
-DEPENDS="pcre libffi libxml2 elfutils libiconv"
-BUILD_DEPENDS="pcre-dev libffi-dev zlib-dev perl py3k-dev \
-elfutils-dev libxml2-dev libxml2-tools automake libiconv-dev"
+DEPENDS="pcre2 libffi libxml2 elfutils libiconv"
+BUILD_DEPENDS="pcre2-dev libffi-dev zlib-dev perl py3k-dev \
+elfutils-dev libxml2-dev libxml2-tools automake"
+BUILD_DEPENDS=""
 
 # Handle cross comilation. Use host Perl, Python, etc
 case "$ARCH" in
 	arm*)
-		BUILD_DEPENDS="pcre-dev libffi-dev zlib-dev elfutils-dev libxml2-dev" ;;
+		BUILD_DEPENDS="pcre2-dev libffi-dev zlib-dev elfutils-dev libxml2-dev" ;;
 esac
 
 # Rules to configure and make the package.
@@ -26,7 +27,6 @@ compile_rules()
 {
 	case "$ARCH" in
 		x86_64|i?86)
-			export LDFLAGS="$LDFLAGS -liconv"
 			mkdir build && cd build
 			meson --prefix=/usr \
 				-Dselinux=disabled \
@@ -61,12 +61,12 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib64
+	mkdir -p $fs/usr/lib
 	cp -a $install/usr/bin $fs/usr
-	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
 	
 	# Split gio --> libgio
-	rm $fs/usr/lib64/libgio*
+	rm $fs/usr/lib/libgio*
 	
 	# Python codegen, tester, Perl mkenums --> glib-dev
 	for bin in gdbus-codegen gtester* glib-mkenums

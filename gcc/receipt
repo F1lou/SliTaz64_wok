@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gcc"
-VERSION="10.2.0"
+VERSION="12.2.0"
 CATEGORY="development"
 SHORT_DESC="The GNU Compiler Collection."
 MAINTAINER="pankso@slitaz.org"
@@ -17,7 +17,7 @@ TAGS="compiler C"
 # and uses its own copy.
 DEPENDS="binutils libgomp libobjc gcc-lib-base mpc-library elfutils"
 BUILD_DEPENDS="mpc-library mpfr-dev gmp-dev elfutils-dev gc-dev
-	zlib-dev libiconv-dev"
+	zlib-dev texinfo"
 
 # Handle cross compilation (native i486/ARM gcc)
 case "$ARCH" in
@@ -26,7 +26,7 @@ case "$ARCH" in
 		pkgversion="SliTaz"
 		languages="c,c++,objc,fortran" ;;
 	x86_64)
-		pkgversion="SliTaz"
+		pkgversion="slitazta"
 		languages="c,c++,objc,fortran" ;;
 	arm*)
 		pkgversion="SliTaz ARM"
@@ -36,7 +36,6 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
 	# Package slitaz-toolchain use 'cook --options' when rebuilding
 	# the full SliTaz toolchain.
 	[ "$2" = "--first-pass" ] && opt=$2

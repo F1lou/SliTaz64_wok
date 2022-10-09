@@ -11,7 +11,8 @@ WEB_SITE="https://developer.gnome.org/libbonobo/"
 WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION:0:4}/$TARBALL"
 
 DEPENDS="glib ORBit2 libxml2 libglade"
-BUILD_DEPENDS="glib-dev libgio-dev libglade-dev ORBit2-dev libxml2-dev popt-dev bison flex intltool pkg-config"
+BUILD_DEPENDS="glib-dev libgio-dev libglade-dev ORBit2-dev libxml2-dev
+	popt-dev bison flex intltool pkg-config libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()

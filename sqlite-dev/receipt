@@ -2,7 +2,7 @@
 
 PACKAGE="sqlite-dev"
 _realver="3370100"
-VERSION="$(printf "%d.%d.%d" ${_realver:0:1} ${_realver:1:2} ${_realver:3:2})"
+VERSION="3.39.4"
 CATEGORY="development"
 SHORT_DESC="Small SQL database engine - development files."
 MAINTAINER="pankso@slitaz.org"

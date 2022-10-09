@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="go-sources"
-VERSION="1.2.1"
+VERSION="1.17.4"
 CATEGORY="development"
 SHORT_DESC="The Go programming language - Sources files."
 MAINTAINER="domcox@slitaz.org"

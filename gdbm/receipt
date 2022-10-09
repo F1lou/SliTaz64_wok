@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gdbm"
-VERSION="1.22"
+VERSION="1.23"
 CATEGORY="misc"
 SHORT_DESC="GNU database indexing library."
 MAINTAINER="pascal.bellard@slitaz.org"

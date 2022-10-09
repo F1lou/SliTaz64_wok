@@ -6,8 +6,8 @@ CATEGORY="utilities"
 SHORT_DESC="Fullscreen console binary clock."
 MAINTAINER="paul@slitaz.org"
 LICENSE="GPL2"
-DEPENDS="ncurses python"
-BUILD_DEPENDS="ncurses-dev python-dev"
+DEPENDS="ncurses py3k"
+BUILD_DEPENDS="ncurses-dev py3k-dev"
 TARBALL="${PACKAGE}_${VERSION}.tar.gz"
 WEB_SITE="http://binclock.sourceforge.net/"
 WGET_URL="http://prdownloads.sourceforge.net/binclock/$TARBALL"
@@ -19,7 +19,7 @@ genpkg_rules()
 {
 	mkdir -p $fs/usr/bin
 	# hack for /usr/bin/python
-	sed -i 's/python2/python/g' $src/binclock.py
+	sed -i 's/python2/python3/g' $src/binclock.py
 	cp -a $src/binclock.py $fs/usr/bin/binclock
 	chown root:root $fs/usr/bin/binclock
 }

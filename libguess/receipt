@@ -17,6 +17,7 @@ BUILD_DEPENDS="git"
 compile_rules()
 {
 	cd Release
+	export CFLAGS="$CFLAGS -fPIC" 
 	make
 }
 

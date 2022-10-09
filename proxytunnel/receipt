@@ -17,6 +17,7 @@ BUILD_DEPENDS="openssl-dev"
 compile_rules()
 {
 	export LDFLAGS="$LDFLAGS -Wl,--copy-dt-needed-entries"
+	export CFLAGS="$CFLAGS -fcommon"
 	sed -i 's|/local||' Makefile
 	make &&
 	make DESTDIR=$DESTDIR install

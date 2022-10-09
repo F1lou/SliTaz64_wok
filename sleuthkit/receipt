@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="sleuthkit"
-VERSION="4.9.0"
+VERSION="4.11.1"
 CATEGORY="misc"
 SHORT_DESC="File system and media management forensic analysis tools (supports NTFS, FAT, UFS1/2, FFS, Ext2 and Ext3)."
 MAINTAINER="slaxemulator@gmail.com"
@@ -12,11 +12,12 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/$PACKAGE/$PACKAGE/releases/download/$PACKAGE-$VERSION/$TARBALL"
 
 DEPENDS="gcc-lib-base perl"
-BUILD_DEPENDS="gcc libpthread-stubs perl sqlite-dev"
+BUILD_DEPENDS="gcc libpthread-stubs perl sqlite-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	./configure				\
 		--prefix=/usr			\
 		--infodir=/usr/share/info	\

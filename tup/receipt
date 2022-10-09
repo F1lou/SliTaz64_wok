@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="tup"
-VERSION="0.7.3"
+VERSION="0.7.11"
 CATEGORY="utilities"
 SHORT_DESC="Tup is a file-based build system for Linux, OSX, and Windows."
 MAINTAINER="necrophcodr@necrophcodr.me"

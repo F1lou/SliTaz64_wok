@@ -13,7 +13,7 @@ WGET_URL="ftp://xmlsoft.org/libxslt/$TARBALL"
 
 DEPENDS="libgcrypt libgpg-error libxml2 zlib"
 BUILD_DEPENDS="libgcrypt-dev libgpg-error-dev libxml2-dev \
-	libxml2-python zlib-dev libiconv-dev python-dev"
+	libxml2-python zlib-dev python-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 
@@ -25,7 +25,6 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
 	PYTHON_LIB=python$(grep ^VERSION= $WOK/python/receipt | sed 's/.*"\(...\).*/\1/')
 	./configure $CONFIGURE_ARGS &&
 	make &&

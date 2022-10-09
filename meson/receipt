@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="meson"
-VERSION="0.60.3"
+VERSION="0.63.1"
 CATEGORY="development"
 SHORT_DESC="The Meson Build System."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/mesonbuild/$PACKAGE/releases/download/$VERSION/$TARBALL"
 
 DEPENDS="ninja py3k"
-BUILD_DEPENDS="py3k"
+BUILD_DEPENDS="py3k python3-setuptools"
 
 # Rules to configure and make the package.
 compile_rules()

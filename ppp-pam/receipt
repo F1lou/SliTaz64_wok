@@ -13,8 +13,8 @@ WGET_URL="https://github.com/paulusmack/ppp/archive/$TARBALL"
 CONFIG_FILES="/etc/ppp/options"
 SECRET_FILES="/etc/ppp/*secrets"
 
-DEPENDS="pam"
-BUILD_DEPENDS="wget pam pam-dev libpcap-dev"
+DEPENDS="pam openssl"
+BUILD_DEPENDS="wget pam pam-dev libpcap-dev openssl-dev"
 PROVIDE="ppp:pam"
 
 # Rules to configure and make the package.

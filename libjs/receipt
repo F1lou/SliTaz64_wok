@@ -17,8 +17,8 @@ BUILD_DEPENDS="autoconf213 icu rust which"
 # Rules to configure and make the package.
 compile_rules()
 {
-	mountpoint -q /dev/shm || mount -t tmpfs devshm /dev/shm
-	export SHELL=/bin/sh
+	#~ mountpoint -q /dev/shm || mount -t tmpfs devshm /dev/shm
+	#~ export SHELL=/bin/sh
 	mkdir obj && cd obj
 	../js/src/configure --prefix=/usr            \
                     --with-intl-api          \

@@ -16,6 +16,7 @@ BUILD_DEPENDS="libgcrypt-dev readline-dev gmp-dev fuse-dev automake"
 # Rules to configure and make the package.
 compile_rules()
 {
+	ln -s /usr/lib/pkgconfig/fuse3.pc /usr/lib/pkgconfig/fuse.pc
 	./configure $CONFIGURE_ARGS &&
 	make && make install
 }

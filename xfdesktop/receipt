@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xfdesktop"
-VERSION="4.12.0"
+VERSION="4.16.0"
 CATEGORY="x-window"
 SHORT_DESC="Xfce Desktop"
 MAINTAINER="erjo@slitaz.org"
@@ -10,10 +10,10 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WEB_SITE="https://www.xfce.org/"
 WGET_URL="http://archive.xfce.org/src/xfce/$PACKAGE/${VERSION%.*}/$TARBALL"
 
-DEPENDS="libxfce4util libxfcegui4 thunar libexo libglade gamin libnotify"
-BUILD_DEPENDS="libxfce4util-dev thunar-dev libexo-dev libwnck-dev \
-xfconf-dev libglade-dev gamin-dev hal-dev xfce4-panel-dev libnotify-dev intltool \
-util-linux-uuid-dev dbus-glib libxfce4ui-dev xcb-util-dev"
+DEPENDS="libxfce4util libxfcegui4 thunar libexo libglade gamin libnotify-gtk3"
+BUILD_DEPENDS="libxfce4util-dev thunar-dev libexo-dev libwnck3-dev \
+xfconf-dev libglade-dev gamin-dev xfce4-panel-dev libnotify-gtk3-dev intltool \
+util-linux-uuid-dev dbus-glib libxfce4ui-dev xcb-util-dev" # hal-dev 
 
 # Rules to configure and make the package.
 compile_rules()

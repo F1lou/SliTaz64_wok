@@ -13,7 +13,7 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="$SF_MIRROR/lxde/$TARBALL"
 
 DEPENDS="gtk+ xorg-xset"
-BUILD_DEPENDS="gtk+-dev"
+BUILD_DEPENDS="gtk+-dev intltool"
 GENERIC_MENUS="no"
 
 HOST_ARCH="x86_64 i486 arm"

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="rtaudio-dev"
-VERSION="5.1.0"
+VERSION="5.2.0"
 CATEGORY="development"
 SHORT_DESC="Rtaudio C++ classes - development files."
 MAINTAINER="pankso@slitaz.org"

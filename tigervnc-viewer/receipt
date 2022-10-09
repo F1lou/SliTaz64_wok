@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="tigervnc-viewer"
+VERSION="1.12.0"
+CATEGORY="x-window"
+SHORT_DESC="VNC client for X."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="GPL2"
+TARBALL="v${VERSION}.tar.gz"
+WEB_SITE="https://tigervnc.org/"
+WGET_URL="https://github.com/TigerVNC/tigervnc/archive/refs/tags/$TARBALL"
+TAGS="vnc remote-desktop"
+
+DEPENDS="zlib pixman gnutls libjpeg-turbo libiconv fltk"
+BUILD_DEPENDS="zlib-dev pixman-dev gnutls-dev jpeg-dev
+	libjpeg-turbo-dev libiconv-dev xorg-dev fltk-dev pam-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export LDFLAGS="$LDFLAGS -liconv"
+	mkdir build && cd build
+	cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr .. &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin
+	cp -a $install/usr/bin/vncviewer $fs/usr/bin
+}

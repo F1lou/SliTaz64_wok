@@ -1,17 +1,23 @@
 # SliTaz package receipt.
 
 PACKAGE="xflux"
-VERSION="1.1.8"
+VERSION="1.2.0"
 CATEGORY="x-window"
 SHORT_DESC="f.lux for X."
 MAINTAINER="paul@slitaz.org"
 LICENSE="MIT"
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
-WEB_SITE="http://stereopsis.com/flux/linux.html"
-WGET_URL="git|git://github.com/Kilian/f.lux-indicator-applet.git"
+TARBALL="v$VERSION.tar.gz"
+WEB_SITE="https://github.com/xflux-gui/fluxgui"
+WGET_URL="https://github.com/xflux-gui/fluxgui/archive/refs/tags/$TARBALL"
 
 DEPENDS=""
 BUILD_DEPENDS="git bzip2"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./setup.py install --record installed.txt
+}
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

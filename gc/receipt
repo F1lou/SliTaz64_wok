@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gc"
-VERSION="8.0.6"
+VERSION="8.2.2"
 CATEGORY="development"
 SHORT_DESC="A garbage collector for C and C++."
 MAINTAINER="pankso@slitaz.org"

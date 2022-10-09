@@ -12,7 +12,8 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$WEB_SITE/download/$TARBALL"
 
 DEPENDS="cairo enchant gtk+"
-BUILD_DEPENDS="enchant-dev expat-dev gtk+-dev pkg-config"
+BUILD_DEPENDS="enchant-dev expat-dev gtk+-dev pkg-config intltool
+	libiconv-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 

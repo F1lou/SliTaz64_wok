@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="audit"
-VERSION="2.8.5"
+VERSION="3.0.8"
 CATEGORY="misc"
 SHORT_DESC="System call auditing."
 MAINTAINER="pascal.bellard@slitaz.org"

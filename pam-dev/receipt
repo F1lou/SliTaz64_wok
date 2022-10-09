@@ -18,5 +18,6 @@ genpkg_rules()
 {
 	mkdir -p $fs/lib $fs/usr
 	cp -a $install/usr/include $fs/usr
+	cp -a $install/lib64/pkgconfig $fs/lib
 	ln -s security $fs/usr/include/pam
 }

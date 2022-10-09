@@ -13,13 +13,14 @@ TARBALL="$SOURCE-$VERSION.tar.gz"
 WGET_URL="http://www.libsdl.org/projects/SDL_net/release/$TARBALL"
 
 DEPENDS="libsdl"
-BUILD_DEPENDS="libsdl-dev"
+BUILD_DEPENDS="libsdl-dev libiconv-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -lSDL"
 	./configure $CONFIGURE_ARGS &&
 	make -j 1 &&
 	make install

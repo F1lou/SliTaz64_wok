@@ -28,6 +28,7 @@ compile_rules()
 		sed 's/lpthread/& -ldl -lrt/' static_uclibc/make_httpfs | sh
 		cp -a httpfs $DESTDIR/usr/share/boot/httpfs-static
 	fi
+	export LDFLAGS="$LDFLAGS -lfuse3"
 	. ./make_httpfs && cp -a httpfs $DESTDIR/usr/bin
 	install -m 755 static_uclibc/fusermount $DESTDIR/usr/share/boot/fusermount-static
 	upx -d $DESTDIR/usr/share/boot/fusermount-static

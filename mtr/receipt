@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="mtr"
-VERSION="0.93"
+VERSION="0.95"
 CATEGORY="network"
 SHORT_DESC="My traceroute."
 MAINTAINER="paul@slitaz.org"
@@ -17,7 +17,7 @@ BUILD_DEPENDS="autoconf automake linux-api-headers ncurses-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
-#	./bootstrap.sh
+	./bootstrap.sh
 
 	export LDFLAGS="$LDFLAGS -ltinfo"
 

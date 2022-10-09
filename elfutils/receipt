@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="elfutils"
-VERSION="0.186"
+VERSION="0.187"
 CATEGORY="development"
 SHORT_DESC="ELF object file access library."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -13,7 +13,7 @@ HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="glibc-base"
 BUILD_DEPENDS="wget bzip2-dev liblzma-dev sqlite-dev libarchive-dev 
-	libiconv-dev zstd-dev zlib-dev xz-dev"
+	zstd-dev zlib-dev xz-dev"
 
 # Handle multiarch compilation
 case "$ARCH" in
@@ -24,8 +24,7 @@ esac
 compile_rules()
 {
 	cd $src
-	#~ CFLAGS="$CFLAGS -Wno-error"
-	export LDFLAGS="$LDFLAGS -liconv"
+	CFLAGS="$CFLAGS -Wno-error"
 	./configure \
 		--enable-thread-safety \
 		--disable-debuginfod \

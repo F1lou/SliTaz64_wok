@@ -23,7 +23,7 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i 's|uname -m|echo i686|' configure
+	#~ sed -i 's|uname -m|echo i686|' configure
 	case "$ARCH" in
 		arm)
 			./configure \

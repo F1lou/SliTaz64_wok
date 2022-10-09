@@ -11,7 +11,8 @@ WEB_SITE="http://gaim-libnotify.sourceforge.net/"
 WGET_URL="http://downloads.sourceforge.net/project/gaim-libnotify/$PACKAGE/$PACKAGE-$VERSION/$TARBALL"
 
 DEPENDS="pidgin libnotify"
-BUILD_DEPENDS="intltool libpurple-dev libnotify-dev pidgin-dev libffi gtk+-dev"
+BUILD_DEPENDS="intltool libpurple-dev libnotify-dev pidgin-dev libffi
+	gtk+-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()

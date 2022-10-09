@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="bash"
-VERSION="5.0.11"
+VERSION="5.1.16"
 BASEVERSION="${VERSION%.*}"
 CATEGORY="system-tools"
 TAGS="shell"

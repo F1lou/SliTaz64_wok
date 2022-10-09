@@ -11,7 +11,8 @@ WEB_SITE="http://www.partimage.org/"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
 DEPENDS="newt bzip2 openssl slitaz-base-files zlib gcc-lib-base"
-BUILD_DEPENDS="newt newt-dev slang-dev bzip2-dev openssl-dev zlib-dev"
+BUILD_DEPENDS="newt newt-dev slang-dev bzip2-dev openssl-dev zlib-dev
+	libcrypto libcrypto-dev"
 
 # Rules to configure and make the package.
 compile_rules()

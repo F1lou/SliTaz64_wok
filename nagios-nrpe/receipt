@@ -13,21 +13,21 @@ TARBALL="$SOURCE-$VERSION.tar.gz"
 WGET_URL="https://github.com/NagiosEnterprises/$SOURCE/releases/download/$SOURCE-$VERSION/$TARBALL"
 
 BUILD_DEPENDS="libcrypto-dev libwrap-dev openssl openssl-dev"
-DEPENDS="libcrypto libssl nagios-plugins"
+DEPENDS="libcrypto libssl nagios-plugins krb5-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	while read patch_file
-	  do
-		if [ ! -f done.$patch_file ]
-		  then
-			patch -p1 < $stuff/$patch_file || return 1
-			touch done.$patch_file
-		fi
-	  done <<EOT
-$PACKAGE-$VERSION-Makefile.u
-EOT
+	#~ while read patch_file
+	  #~ do
+		#~ if [ ! -f done.$patch_file ]
+		  #~ then
+			#~ patch -p1 < $stuff/$patch_file || return 1
+			#~ touch done.$patch_file
+		#~ fi
+	  #~ done <<EOT
+#~ $PACKAGE-$VERSION-Makefile.u
+#~ EOT
 
 	addgroup nagios
 	adduser -D -G nagios nagios

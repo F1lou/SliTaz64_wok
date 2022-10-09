@@ -10,13 +10,12 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://curlftpfs.sourceforge.net/"
 WGET_URL="http://downloads.sourceforge.net/curlftpfs/$TARBALL"
 
-DEPENDS="fuse curl glib zlib"
-BUILD_DEPENDS="fuse fuse-dev curl curl-dev glib-dev"
+DEPENDS="fuse2 curl glib zlib"
+BUILD_DEPENDS="fuse2 fuse2-dev curl curl-dev glib-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	cd $src
 	./configure --prefix=/usr $CONFIGURE_ARGS &&
 	make &&
 	make DESTDIR=$DESTDIR install

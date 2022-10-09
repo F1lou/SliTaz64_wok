@@ -1,9 +1,9 @@
 # SliTaz package receipt.
 
 PACKAGE="qemu-light"
-VERSION="1.2.0"
+VERSION="7.0.0"
 CATEGORY="misc"
-SHORT_DESC="Light Qemu i386-softmmu target (without xen, vde, bluez, blobs, tls)."
+SHORT_DESC="Light Qemu x86_64-softmmu target (without xen, vde, bluez, blobs, tls)."
 MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL2"
 SOURCE="qemu"
@@ -14,27 +14,24 @@ TAGS="virtualization"
 CONFLICT="qemu"
 
 DEPENDS="alsa-lib libsdl util-linux-uuid"
-BUILD_DEPENDS="perl alsa-lib-dev libsdl-dev util-linux-uuid-dev python \
-libgio-dev glib-dev"
+BUILD_DEPENDS="perl alsa-lib-dev libsdl-dev util-linux-uuid-dev py3k \
+libgio-dev glib-dev bash"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	TARGET="i386-softmmu"
-	sed -i 's|uname -m|echo i486|' roms/openbios/utils/devbios/Makefile*
+	TARGET="x86_64-softmmu"
+#	sed -i 's|uname -m|echo i486|' roms/openbios/utils/devbios/Makefile*
 	./configure \
 		--prefix=/usr \
 		--disable-xen \
 		--disable-vnc-sasl \
-		--disable-vnc-tls \
 		--disable-curl \
-		--disable-bluez \
 		--disable-curses \
 		--disable-vde \
 		--disable-attr \
 		--audio-drv-list=alsa \
-		--target-list="$TARGET" \
-		--cc=$BUILD_SYSTEM-gcc &&
+		--target-list="$TARGET" &&
 	make && make DESTDIR=$DESTDIR install
 }
 
@@ -49,5 +46,5 @@ genpkg_rules()
 		cp -a $install/usr/share/qemu/$bin $fs/usr/share/qemu
 	done
 	# Create qemu symlink
-	cd $fs/usr/bin && ln -s qemu-system-i386 qemu
+	cd $fs/usr/bin && ln -s qemu-system-x86_64 qemu
 }

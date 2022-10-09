@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="cocoalib"
-VERSION="0.99650"
+VERSION="0.99718"
 CATEGORY="misc"
 SHORT_DESC="C++ library for computations in commutative algebra"
 MAINTAINER="al.bobylev@gmail.com"
@@ -22,7 +22,7 @@ compile_rules()
 {
 #	find | grep Makefile | sed 's/Makefile.*/Makefile_dependencies/' | \
 #		xargs touch -d 197001010000
-	export CXX=""
+	export CXX="x86_64-slitaz-linux-g++"
 	
 	./configure &&
 	make library

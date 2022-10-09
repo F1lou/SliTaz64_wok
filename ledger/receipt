@@ -11,12 +11,13 @@ WEB_SITE="https://ledger-cli.org/"
 WGET_URL="http://ftp.newartisans.com/pub/ledger/$TARBALL"
 
 DEPENDS="pcre gmp"
-BUILD_DEPENDS="pcre-dev gmp-dev"
+BUILD_DEPENDS="pcre-dev gmp-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	cd $src
+	export LDFLAGS="$LDFLAGS -liconv"
+
 	./configure --prefix=/usr \
 		$CONFIGURE_ARGS &&
 	make &&

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="re2c"
-VERSION="2.2"
+VERSION="3.0"
 CATEGORY="system-tools"
 TAGS="scanner"
 SHORT_DESC="A tool for generating C-based recognisers from regular expressions."
@@ -12,7 +12,7 @@ WEB_SITE="https://re2c.org/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/skvadrik/re2c/archive/$VERSION.tar.gz"
 
-BUILD_DEPENDS="automake libtool libiconv-dev"
+BUILD_DEPENDS="automake libtool libiconv-dev sed"
 
 # Rules to configure and make the package.
 compile_rules()

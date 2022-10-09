@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="privoxy"
-VERSION="3.0.28"
+VERSION="3.0.33"
 CATEGORY="network"
 SHORT_DESC="Non-caching web privacy proxy."
 MAINTAINER="paul@slitaz.org"
@@ -23,6 +23,7 @@ compile_rules()
 	addgroup -g 42 privoxy
 	
 	# Needs autoconf
+	autoupdate
 	autoheader
 	autoconf
 

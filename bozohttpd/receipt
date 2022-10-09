@@ -20,7 +20,7 @@ BUILD_DEPENDS="openssl-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
-	#~ export	LDFLAGS="$LDFLAGS -lrt"	# to resolve clock_...
+	export	LDFLAGS="$LDFLAGS -lrt"	# to resolve clock_...
 
 	make -f Makefile.boot all &&
 	cook_pick_manpages bozohttpd.8

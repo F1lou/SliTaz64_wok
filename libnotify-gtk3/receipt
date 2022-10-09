@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libnotify-gtk3"
-VERSION="0.7.6"
+VERSION="0.7.9"
 CATEGORY="utilities"
 SHORT_DESC="Sends desktop notifications to a notification daemon (GTK+3)"
 MAINTAINER="al.bobylev@gmail.com"
@@ -14,25 +14,25 @@ WGET_URL="$GNOME_MIRROR/$SOURCE/$SERIES/$TARBALL"
 TAGS="gtk3"
 
 DEPENDS="gdk-pixbuf dbus"
-BUILD_DEPENDS="gtk+3-dev gobject-introspection-dev glib-dev libxml2-dev \
-dbus-dev liblzma-dev"
+BUILD_DEPENDS="gtk+3-dev gobject-introspection-dev glib-dev libxml2-dev
+	dbus-dev liblzma-dev libiconv-dev bash"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure \
-		--disable-static \
-		--enable-introspection \
-		--disable-gtk-doc \
-		$CONFIGURE_ARGS &&
-	make &&
-	make DESTDIR=$install install
+	mkdir build && cd build
+	meson	--prefix=/usr 	\
+			-Dtests=false 	\
+			-Dman=false		\
+			-Dgtk_doc=false \
+			-Ddocbook_docs=disabled .. &&
+	ninja && ninja install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/lib64
 	cp -a $install/usr/bin $fs/usr
-	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
 }

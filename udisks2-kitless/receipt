@@ -12,7 +12,7 @@ WGET_URL="${WEB_SITE}archive/v${TARBALL/*-/}"
 
 DEPENDS="libatasmart libgudev"
 BUILD_DEPENDS="docbook-xsl gtk-doc libgudev-dev libatasmart-dev \
-gobject-introspection-dev intltool"
+gobject-introspection-dev intltool libxslt zlib-dev"
 
 # Rules to configure and make the package.
 compile_rules()

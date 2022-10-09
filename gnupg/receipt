@@ -15,7 +15,8 @@ DEPENDS="bzlib gnutls libassuan libcurl libgcrypt libksba libusb
 	libusb-compat ncurses npth openldap pinentry pth readline sqlite"
 BUILD_DEPENDS="curl-dev gnutls-dev libassuan-dev libgcrypt-dev libgnutls 
 	libgpg-error-dev libksba-dev libusb-compat-dev libusb-dev 
-	npth-dev openldap-dev pth-dev readline-dev sqlite-dev zlib-dev"
+	npth-dev openldap-dev pth-dev readline-dev sqlite-dev zlib-dev
+	libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()

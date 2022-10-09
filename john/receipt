@@ -29,7 +29,7 @@ compile_rules()
 	cd $src/src
 	patch -Np0 -i $stuff/params.h.patch
 #	sed -i 's|LIBS = -ldes|LIBS = -ldes -Ldes|' Makefile
-	sed -i "s|CFLAGS = -c -Wall -O2|CFLAGS = -c -Wall -O2 -march=$ARCH -DJOHN_SYSTEMWIDE=1|" Makefile
+	#~ sed -i "s|CFLAGS = -c -Wall -O2|CFLAGS = -c -Wall -O2 -march=$ARCH -DJOHN_SYSTEMWIDE=1|" Makefile
 
 	make clean generic
 }

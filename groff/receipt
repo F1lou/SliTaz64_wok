@@ -12,14 +12,13 @@ WEB_SITE="https://www.gnu.org/software/groff/groff.html"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
 
-BUILD_DEPENDS="texinfo libiconv-dev" # ghostscript?
+BUILD_DEPENDS="texinfo" # ghostscript?
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	touch doc/gnu.eps
 
-	export LDFLAGS="$LDFLAGS -liconv"
 	./configure		\
 		--without-x	\
 		$CONFIGURE_ARGS &&

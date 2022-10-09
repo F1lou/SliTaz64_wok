@@ -19,8 +19,10 @@ HOST_ARCH="x86_64 i486 arm"
 compile_rules()
 {
 	cd bindings/cpp
-	LDFLAGS="$LDFLAGS -liconv" ./configure				\
+	LDFLAGS="$LDFLAGS -liconv -I/home/slitaz/wok/portaudio/install/usr/lib/" ./configure \
 		--prefix=/usr			\
+		--disable-static		\
+		--enable-shared			\
 		$CONFIGURE_ARGS &&
 	make &&
 	make DESTDIR=$DESTDIR install

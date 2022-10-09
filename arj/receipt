@@ -20,7 +20,7 @@ compile_rules()
 	autoheader
 	autoconf
 	./configure --prefix=/usr --infodir=/usr/share/info \
-	--mandir=/usr/share/man $CONFIGURE_ARGS
+	--build=x86_64-linux --mandir=/usr/share/man $CONFIGURE_ARGS
 	cd ..
 	busybox patch -p0 < $stuff/fardata.u
 	# Ugly hack...

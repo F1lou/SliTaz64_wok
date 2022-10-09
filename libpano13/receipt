@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libpano13"
-VERSION="2.9.19"
+VERSION="2.9.20"
 CATEGORY="development"
 SHORT_DESC="Panorama tools library."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -17,6 +17,7 @@ BUILD_DEPENDS="bash jpeg-dev libpng-dev tiff-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
+	export CFLAGS="-march=nocona -O2 -pipe"
 	./configure			\
 		--prefix=/usr		\
 		--build=$HOST_SYSTEM	\

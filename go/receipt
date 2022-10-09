@@ -1,14 +1,14 @@
 # SliTaz package receipt.
 
 PACKAGE="go"
-VERSION="1.2.1"
+VERSION="1.17.7"
 CATEGORY="development"
 SHORT_DESC="The Go programming language (R.Griesemer R.Pike K.Thompson)"
 MAINTAINER="domcox@slitaz.org"
 LICENSE="BSD"
 WEB_SITE="http://www.golang.org"
 TARBALL="$PACKAGE$VERSION.src.tar.gz"
-WGET_URL="https://go.googlecode.com/files/$TARBALL"
+WGET_URL="https://go.dev/dl/$TARBALL"
 TAGS="go"
 
 DEPENDS=""
@@ -17,7 +17,7 @@ BUILD_DEPENDS="bash bison make ed wget"
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i 's|gohostarch = "amd64"|gohostarch = "386"|' src/cmd/dist/unix.c
+	#~ sed -i 's|gohostarch = "amd64"|gohostarch = "386"|' src/cmd/dist/unix.c
 	cd $src/src
 
 	# Setting up environnment before building go.
@@ -28,7 +28,7 @@ compile_rules()
 
 	# Support all x86 chips (Pentium MMX or later)
 	# or optionaly only Pentium 4/Opteron/Athlon 64 or later.
-	export GO386=387	# Pentium MMX or later
+	#~ export GO386=387	# Pentium MMX or later
 	# export GO386=sse2	# Pentium 4/Opteron/Athlon 64 or later
 
 	# Target operating system (optional).

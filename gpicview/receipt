@@ -13,7 +13,8 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="$SF_MIRROR/lxde/$TARBALL"
 
 DEPENDS="gtk+ expat glib libgio libpng jpeg zlib"
-BUILD_DEPENDS="gtk+-dev expat-dev glib-dev libgio-dev libpng-dev jpeg-dev"
+BUILD_DEPENDS="gtk+-dev expat-dev glib-dev libgio-dev libpng-dev jpeg-dev
+	intltool"
 HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.

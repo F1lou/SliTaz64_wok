@@ -17,7 +17,7 @@ SUGGESTED="lxde lxsession slitaz-icon"
 DEPENDS="alsa-lib gtk+ menu-cache wireless_tools libxml2 slitaz-menus libkeybinder libwnck"
 BUILD_DEPENDS="intltool libfm-dev libkeybinder-dev curl-dev libkeybinder-dev \
 gtk+-dev menu-cache-dev alsa-lib-dev wireless_tools-dev libxml2-dev lxmenu-data \
-xorg-libSM-dev liblzma-dev xorg-randrproto"
+xorg-libSM-dev liblzma-dev xorg-randrproto intltool"
 
 # Handle cross compilation
 case "$ARCH" in

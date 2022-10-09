@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="wget"
-VERSION="1.21.2"
+VERSION="1.21.3"
 CATEGORY="network"
 SHORT_DESC="An utility for retrieving files using HTTP, HTTPS or FTP."
 MAINTAINER="sygne@ombres.eu"

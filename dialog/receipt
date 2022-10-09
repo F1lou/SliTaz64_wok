@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="dialog"
-VERSION="1.3_20210621"
+VERSION="1.3_20220117"
 CATEGORY="base-system"
 SHORT_DESC="Script-interpreter which provides a set of curses widgets."
 MAINTAINER="pankso@slitaz.org"
@@ -25,6 +25,8 @@ compile_rules()
 		--with-ncursesw \
 		--enable-nls \
 		--enable-widec \
+		--disable-static \
+		--enable-shared \
 		$CONFIGURE_ARGS &&
 	make &&
 	make DESTDIR=$DESTDIR install

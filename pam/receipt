@@ -18,8 +18,7 @@ BUILD_DEPENDS="flex db-dev libdb"
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i 's|(uname -m)|(echo i686)|;s|`uname -m`|`echo i686`|' \
-		configure build-aux/config.guess
+	# sed -i 's|(uname -m)|(echo i686)|;s|`uname -m`|`echo i686`|' configure build-aux/config.guess
 	./configure --sysconfdir=/etc \
 		$CONFIGURE_ARGS &&
 	make && make install
@@ -28,12 +27,12 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/lib
+	mkdir -p $fs/lib64
 	cp -a $install/etc $fs
 	cp -a $install/sbin $fs
-	cp -a $install/lib/*so* $fs/lib
-	cp -a $install/lib/security $fs/lib
-	rm -f $fs/lib/security/*.la
+	cp -a $install/lib64/*so* $fs/lib64
+	cp -a $install/lib64/security $fs/lib64
+	rm -f $fs/lib64/security/*.la
 	cp -a $stuff/* $fs	
 }
 

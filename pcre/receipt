@@ -11,14 +11,13 @@ WEB_SITE="https://www.pcre.org/"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
-BUILD_DEPENDS="libiconv-dev"
+BUILD_DEPENDS=""
 
 HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
 	./configure				\
 		--prefix=/usr			\
 		--enable-pcre16			\

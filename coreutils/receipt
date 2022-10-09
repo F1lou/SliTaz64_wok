@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="coreutils"
-VERSION="8.32"
+VERSION="9.1"
 CATEGORY="system-tools"
 SHORT_DESC="Utilities for using and setting the basic system."
 MAINTAINER="pankso@slitaz.org"
@@ -22,6 +22,7 @@ SPLIT="coreutils-character coreutils-command coreutils-conditions
 	coreutils-path coreutils-print coreutils-redirection"
 DEPENDS="acl attr glibc-base gmp"
 BUILD_DEPENDS="automake gmp-dev libcap-dev xz"
+BUILD_DEPENDS=""
 
 # Rules to configure and make the package.
 compile_rules()
@@ -30,7 +31,8 @@ compile_rules()
 #	patch -Np1 -i $stuff/coreutils-8.25-i18n-2.patch
 
 	# SliTaz: show extended info touching CPU via uname
-	patch  -p1 -i $stuff/uname.u
+	# patch  -p1 -i $stuff/uname.u
+	patch  -p1 -i $stuff/coreutils-9.1-i18n-1.patch
 
 	autoreconf -fi
 

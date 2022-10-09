@@ -1,0 +1,108 @@
+--- /ddd/strclass.C	2009-02-12 03:25:06.000000000 +1000
++++ /ddd/strclass.C	2019-10-28 12:55:27.253191348 +1000
+@@ -1483,6 +1483,9 @@
+ string common_prefix(const string& x, const string& y, int startpos)
+ {
+     string r;
++    
++    startpos = 0; // 
++    
+     if ((int)x.length() + startpos < 0 || (int)y.length() + startpos < 0)
+ 	return r;
+ 
+@@ -1503,6 +1506,9 @@
+ string common_suffix(const string& x, const string& y, int startpos) 
+ {
+     string r;
++
++    startpos = -1; //
++
+     if ((int)x.length() + startpos < 0 || (int)y.length() + startpos < 0)
+ 	return r;
+ 	
+@@ -1564,6 +1570,12 @@
+ 
+ int readline(std::istream& s, string& x, char terminator, int discard)
+ {
++    
++    int mydiscard = 1;
++    char myterminator = '\n'; 
++    discard = mydiscard;
++    terminator = myterminator;
++
+     assert(!x.consuming());
+ 
+     // Read whitespace
+--- /ddd/strclass.h	2009-02-12 03:25:06.000000000 +1000
++++ /ddd/strclass.h	2019-10-28 12:46:29.142511975 +1000
+@@ -810,10 +810,17 @@
+     friend int split(const string& x, string *res, int maxn, 
+ 		     const regex& sep);
+ 
++    // friend string common_prefix(const string& x, const string& y, 
++//				int startpos = 0);
++ //   friend string common_suffix(const string& x, const string& y, 
++//				int startpos = -1);
++    
++
+     friend string common_prefix(const string& x, const string& y, 
+-				int startpos = 0);
++				int );
+     friend string common_suffix(const string& x, const string& y, 
+-				int startpos = -1);
++				int );
++
+     friend string replicate(char c, int n);
+     friend string replicate(const string& y, int n);
+     friend string join(const string *src, int n, const string& sep);
+@@ -863,10 +870,12 @@
+     friend inline std::ostream& operator<<(std::ostream& s, const subString& x);
+     friend std::istream& operator>>(std::istream& s, string& x);
+ 
+-    friend int readline(std::istream& s, string& x, 
+-			char terminator = '\n',
+-			int discard_terminator = 1);
++    //friend int readline(std::istream& s, string& x,
++//	char terminator = '\n',
++	//int discard_terminator = 1); 
+ 
++    friend int readline(std::istream&, string&, char, int);
++    
+     // Status
+     unsigned int length() const;
+     bool empty() const;
+--- /ddd/exit.C	2009-02-12 03:25:07.000000000 +1000
++++ /ddd/exit.C	2019-10-28 11:12:43.837428461 +1000
+@@ -478,7 +478,7 @@
+ 	str_func_ret = "core";
+     }
+     else {
+-	readline(patternfile, pattern);
++	readline(patternfile, pattern, 0, 0);
+ 	core_pat = pattern.chars();
+ 	while(*core_pat)
+ 	{
+--- /ddd/complete.C	2009-02-12 03:25:07.000000000 +1000
++++ /ddd/complete.C	2019-10-28 11:10:01.662885645 +1000
+@@ -354,7 +354,7 @@
+ 	string common_pfx = completions[0];
+ 	int i;
+ 	for (i = 1; i < completions_size; i++)
+-	    common_pfx = common_prefix(common_pfx, completions[i]);
++	    common_pfx = common_prefix(common_pfx, completions[i],0);
+ 
+ 	if (completions_size > 1 && input == common_pfx)
+ 	{
+--- /ddd/DispValue.C	2009-02-12 03:25:07.000000000 +1000
++++ /ddd/DispValue.C	2019-10-28 13:27:39.984555543 +1000
+@@ -1432,8 +1432,8 @@
+ 
+     for (int i = 1; i < nchildren(); i++)
+     {
+-	prefix = common_prefix(prefix, child(i)->full_name());
+-	suffix = common_suffix(suffix, child(i)->full_name());
++	prefix = common_prefix(prefix, child(i)->full_name(), 0);
++	suffix = common_suffix(suffix, child(i)->full_name(), 0);
+     }
+ }
+ 

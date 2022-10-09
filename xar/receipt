@@ -12,7 +12,8 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/downloads/mackyle/xar/$TARBALL"
 
 DEPENDS="acl attr bzlib glibc-base libcrypto liblzma libxml2 zlib"
-BUILD_DEPENDS="bzip2-dev liblzma-dev openssl-dev zlib-dev libcrypto-dev"
+BUILD_DEPENDS="bzip2-dev liblzma-dev openssl-dev zlib-dev libcrypto-dev
+	libcrypto"
 
 # Rules to configure and make the package.
 compile_rules()

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libblockdev"
-VERSION="2.25"
+VERSION="2.26"
 CATEGORY="development"
 SHORT_DESC="C library supporting GObject Introspection for manipulation of block devices"
 MAINTAINER="nhc1@gmx.net"
@@ -12,17 +12,17 @@ WGET_URL="https://github.com/storaged-project/$PACKAGE/releases/download/$VERSIO
 #HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS=""
-BUILD_DEPENDS="gobject-introspection yaml-dev kmod-dev libdevmapper-dev
+BUILD_DEPENDS="gobject-introspection-dev yaml-dev kmod-dev libdevmapper-dev
 	cryptsetup-dev zlib-dev eudev-dev util-linux-mount-dev libbytesize-dev
-	parted-dev pcre2-dev"
+	parted-dev pcre2-dev nss-dev coreutils-file-special"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	./autogen.sh
 	./configure --prefix=/usr     \
             --sysconfdir=/etc \
             --with-python3    \
-            --with-python2    \
             --without-gtk-doc \
             --without-nvdimm  \
             --without-dm &&
@@ -37,5 +37,5 @@ genpkg_rules()
 	cp -a $install/usr/bin $fs/usr/
 	#~ cp -a $install/usr/share $fs/usr/
 	cp -a $install/usr/lib/*.so* $fs/usr/lib/
-	#~ cp -a $install/usr/lib/python3.9 $fs/usr/lib/
+	cp -a $install/usr/lib/python3.10 $fs/usr/lib/
 }

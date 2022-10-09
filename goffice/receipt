@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="goffice"
-VERSION="0.10.50"
+VERSION="0.10.51"
 CATEGORY="libs"
 SHORT_DESC="A library of document-centric objects and utilities."
 MAINTAINER="pankso@slitaz.org"
@@ -24,7 +24,7 @@ BUILD_DEPENDS="cairo-dev gtk-doc gtk+3-dev libcroco-dev libgsf-dev
 	xorg-libXcursor-dev xorg-libXcomposite-dev xorg-libXdamage-dev
 	mesa-dev at-spi2 at-spi2-atk xorg-libXxf86vm-dev
 	xorg-libXtst-dev libxml2-dev util-linux-uuid-dev
-	freetype-dev libpng-dev liblzma-dev"
+	freetype-dev libpng-dev liblzma-dev intltool libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()

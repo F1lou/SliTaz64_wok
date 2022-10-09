@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="kbd"
-VERSION="2.4.0"
+VERSION="2.5.1"
 CATEGORY="system-tools"
 TAGS="keyboard"
 SHORT_DESC="Keyboard mapping definitions and tools."
@@ -29,6 +29,8 @@ compile_rules()
 	sed -i 's|localedir = .*|localedir = @localedir@|' \
 		po/Makefile.in.in
 
+	patch -Np1 -i $stuff/kbd-2.5.1-backspace-1.patch
+	
 	# Handle cross compilation.
 	case "$ARCH" in
 		arm)

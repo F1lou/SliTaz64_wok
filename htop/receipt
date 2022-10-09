@@ -23,6 +23,7 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
+	export CFLAGS="$CFLAGS -fcommon"
 	./configure \
 		--enable-unicode \
 		$CONFIGURE_ARGS $CROSS_ARGS &&

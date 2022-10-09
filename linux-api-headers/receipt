@@ -13,7 +13,7 @@ WEB_SITE="https://www.kernel.org/"
 WGET_URL="https://www.kernel.org/pub/linux/kernel/v5.0/$TARBALL"
 PROVIDE="linux-headers linux64-api-headers linux64-headers"
 
-BUILD_DEPENDS="bash wget"
+BUILD_DEPENDS="bash wget rsync"
 
 [ "$KBASEVER" != "$VERSION" ] && 
 PATCH="$(dirname $WGET_URL)/patch-$VERSION.xz" &&

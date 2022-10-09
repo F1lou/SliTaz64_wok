@@ -1,9 +1,9 @@
 # SliTaz package receipt.
 
 PACKAGE="grsync"
-VERSION="1.2.6"
+VERSION="1.3.0"
 CATEGORY="network"
-SHORT_DESC="GTK+ intuitive interface to rsync."
+SHORT_DESC="GTK+3 intuitive interface to rsync."
 MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL2"
 WEB_SITE="http://www.opbyte.it/grsync/"
@@ -11,8 +11,10 @@ WEB_SITE="http://www.opbyte.it/grsync/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="http://www.opbyte.it/release/$TARBALL"
 
-DEPENDS="acl gtk+ rsync xorg-libXdamage"
-BUILD_DEPENDS="gtk+-dev intltool perl-xml-parser xorg-xproto"
+DEPENDS="acl gtk+3 rsync xorg-libXdamage"
+BUILD_DEPENDS="gtk+3-dev intltool perl-xml-parser xorg-xproto
+	xorg-proto xorg-libXcursor-dev xorg-libXdamage-dev libepoxy-dev
+	at-spi2-atk dbus-dev xorg-libXtst-dev"
 
 # Rules to configure and make the package.
 compile_rules()

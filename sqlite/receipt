@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="sqlite"
-_realver="3370100"
+_realver="3390400"
 VERSION="$(printf "%d.%d.%d" ${_realver:0:1} ${_realver:1:2} ${_realver:3:2})"
 CATEGORY="office"
 SHORT_DESC="Small SQL database engine."
@@ -10,7 +10,7 @@ LICENSE="PublicDomain"
 WEB_SITE="https://www.sqlite.org/index.html"
 
 TARBALL="$PACKAGE-src-${_realver}.zip"
-WGET_URL="https://www.sqlite.org/2021/$TARBALL"
+WGET_URL="https://www.sqlite.org/2022/$TARBALL"
 
 EXTRA_SOURCE_FILES="mysql2sqlite.sh"
 
@@ -29,7 +29,7 @@ compile_rules()
 
 	[ -s "$SOURCES_REPOSITORY/mysql2sqlite.sh" ] ||
 		wget -O "$SOURCES_REPOSITORY/mysql2sqlite.sh" \
-			https://gist.github.com/esperlu/943776/raw/dd87f4088f6d5ec7563478f7a28a37ba02cf26e2/mysql2sqlite.sh --no-check-certificate
+			https://gist.github.com/esperlu/943776/raw/dd87f4088f6d5ec7563478f7a28a37ba02cf26e2/mysql2sqlite.sh
 
 	export CFLAGS="$CFLAGS -DSQLITE_ENABLE_FTS3=1 -DSQLITE_ENABLE_COLUMN_METADATA=1 -DSQLITE_SECURE_DELETE -DSQLITE_ENABLE_UNLOCK_NOTIFY=1 -DSQLITE_ENABLE_DBSTAT_VTAB=1 -DTCLSH=1"
 
@@ -49,7 +49,7 @@ genpkg_rules()
 {
 	mkdir -p $fs/usr/bin
 	
-	cp -a $install/usr/bin				$fs/usr
+	cp -a $install/usr/bin $fs/usr
 	cp "$SOURCES_REPOSITORY/mysql2sqlite.sh"	$fs/usr/bin
 
 	chmod +x					$fs/usr/bin/mysql2sqlite.sh

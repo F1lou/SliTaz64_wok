@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gegl-dev"
-VERSION="0.4.30"
+VERSION="0.4.36"
 CATEGORY="development"
 SHORT_DESC="Generic Graphics Library dev files"
 MAINTAINER="erjo@slitaz.org"
@@ -15,10 +15,10 @@ DEPENDS="gegl libdrm-dev xorg-libXxf86vm-dev pkg-config"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib $fs/usr/share
+	mkdir -p $fs/usr/lib
 	#~ cp -a $install/usr/lib/*.*a $fs/usr/lib
 	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib
 	#~ cp -a $install/usr/lib/gegl-0.4/*.*a $fs/usr/lib/gegl-0.3
 	cp -a $install/usr/include $fs/usr
-	cp -a $install/usr/share/gir-1.0 $fs/usr/share
+	#~ cp -a $install/usr/share/gir-1.0 $fs/usr/share
 }

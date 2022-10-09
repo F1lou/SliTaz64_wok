@@ -1,7 +1,7 @@
 # Slitaz package receipt.
 
 PACKAGE="libatomic"
-VERSION="10.2.0"
+VERSION="12.2.0"
 CATEGORY="development"
 SHORT_DESC="GCC libatomic (required for firefox)."
 WEB_SITE="https://gcc.gnu.org/"

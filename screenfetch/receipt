@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="screenfetch"
-VERSION="3.5.0"
+VERSION="3.9.1"
 CATEGORY="utilities"
 SHORT_DESC="Bash screenshot information tool."
 MAINTAINER="paul@slitaz.org"

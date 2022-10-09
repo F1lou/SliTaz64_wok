@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gpgme"
-VERSION="1.16.0"
+VERSION="1.17.0"
 CATEGORY="security"
 SHORT_DESC="C language library that allows to add support for cryptography to a program."
 MAINTAINER="erjo@slitaz.org"
@@ -18,7 +18,7 @@ BUILD_DEPENDS="gcc gnupg libassuan-dev libgpg-error-dev libiconv-dev"
 compile_rules()
 {
 	# Integrity check: https://www.gnupg.org/download/integrity_check.html
-	echo "536763b24a661538a83182ff0917469d85c6173b $SRC/$TARBALL" | sha1sum -c || exit 1
+	echo "070f551664dfd4a7e4dd9cdeae3ed167c91581d5  $SRC/$TARBALL" | sha1sum -c || exit 1
 
 	LDFLAGS="$LDFLAGS -liconv" ./configure		\
 		$CONFIGURE_ARGS &&

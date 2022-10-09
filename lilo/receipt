@@ -17,7 +17,7 @@ DEPENDS="libdevmapper"
 # Rules to configure and make the package.
 compile_rules()
 {
-	make alles &&
+	make CFLAGS="$CFLAGS -fcommon" alles &&
 	make install
 }
 

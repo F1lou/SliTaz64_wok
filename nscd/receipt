@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="nscd"
-VERSION="2.32"
+VERSION="2.36"
 CATEGORY="base-system"
 SHORT_DESC="passwd, group and host lookups cache."
 WEB_SITE="http://gcc.gnu.org/"

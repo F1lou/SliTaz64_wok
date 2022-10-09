@@ -2,7 +2,7 @@
 
 PACKAGE="lemon"
 _realver="3370100"
-VERSION="$(printf "%d.%d.%d" ${_realver:0:1} ${_realver:1:2} ${_realver:3:2})"
+VERSION="3.39.4"
 CATEGORY="system-tools"
 SHORT_DESC="The LEMON Parser Generator (from the SQLite project)."
 MAINTAINER="pankso@slitaz.org"

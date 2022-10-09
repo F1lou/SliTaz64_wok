@@ -13,7 +13,7 @@ TARBALL="$PACKAGE-${VERSION%.*}-${VERSION##*.}.tar.gz"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
 DEPENDS="alsa-lib libpng libsdl libsdl-net mesa xorg-libX11 zlib"
-BUILD_DEPENDS="libsdl-dev libsdl-net-dev xorg-libX11-dev"
+BUILD_DEPENDS="libsdl-dev libsdl-net-dev xorg-libX11-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()

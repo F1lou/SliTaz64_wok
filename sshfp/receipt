@@ -11,7 +11,7 @@ WEB_SITE="https://github.com/xelerance/sshfp"
 WGET_URL="https://github.com/xelerance/sshfp/archive/$VERSION.tar.gz"
 
 DEPENDS="python-dnspython"
-BUILD_DEPENDS="wget"
+BUILD_DEPENDS="wget python"
 
 # Rules to configure and make the package.
 compile_rules()

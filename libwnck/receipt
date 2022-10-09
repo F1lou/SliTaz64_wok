@@ -15,7 +15,7 @@ DEPENDS="expat gtk+ startup-notification xorg-libICE xorg-libSM xorg-libX11 \
 	xorg-libXau xorg-libXcomposite xorg-libXcursor xorg-libXdmcp xorg-libXext \
 	xorg-libXfixes xorg-libXinerama xorg-libXrandr xorg-libXrender xorg-libXdamage"
 BUILD_DEPENDS="gettext gobject-introspection-dev gtk+-dev intltool \
-	perl-xml-parser pkg-config xorg-dev"
+	perl-xml-parser pkg-config xorg-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()

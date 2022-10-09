@@ -12,7 +12,7 @@ WGET_URL="http://cdrkit.org/releases/$TARBALL"
 EXTRA_SOURCE_FILES="cdrkit-1.1.9-efi-boot.patch"
 
 DEPENDS="libcap zlib bzlib attr"
-BUILD_DEPENDS="cmake libcap-dev zlib-dev bzip2-dev attr-dev"
+BUILD_DEPENDS="cmake libcap-dev zlib-dev bzip2-dev attr-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()

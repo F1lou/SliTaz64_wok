@@ -16,7 +16,7 @@ SUGGESTED="lame flac"
 DEPENDS="alsa-lib cdparanoia-III gtk+ libcddb vorbis-tools 
 	xorg-libXdamage"
 BUILD_DEPENDS="alsa-lib-dev cdparanoia-III-dev gtk+-dev libcddb-dev 
-	xorg-libXdamage-dev"
+	xorg-libXdamage-dev intltool"
 
 GENERIC_PIXMAPS="no"
 COOKOPTS="!pixmaps"

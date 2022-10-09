@@ -12,7 +12,7 @@ WGET_URL="https://www.gnupg.org/ftp/gcrypt/dirmngr/$TARBALL"
 
 DEPENDS="libassuan libgcrypt libksba libldap pth zlib"
 BUILD_DEPENDS="pth-dev libgpg-error-dev libgcrypt-dev libassuan-dev \
-libksba-dev openldap-dev"
+libksba-dev openldap-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -20,7 +20,7 @@ compile_rules()
 	# Integrity check: https://www.gnupg.org/download/integrity_check.html
 	echo "e708d4aa5ce852f4de3f4b58f4e4f221f5e5c690  $SRC/$TARBALL" | sha1sum -c || exit 1
 
-	./configure $CONFIGURE_ARGS && make && make install
+	CFLAGS="$CFLAGS -fcommon" ./configure $CONFIGURE_ARGS && make && make install
 
 	find $install/usr/share/man -type f -exec gzip -9 \{\} \;
 }

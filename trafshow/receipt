@@ -21,7 +21,7 @@ compile_rules()
 	# fix session.c bug
 	sed -i '43d' session.c
 
-	./configure \
+	LD=ld ./configure \
 		--prefix=/usr \
 		$CONFIGURE_ARGS && make 
 }

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="nano"
-VERSION="5.7"
+VERSION="6.4"
 CATEGORY="utilities"
 TAGS="text-editor"
 SHORT_DESC="Nano Text Editor."
@@ -9,12 +9,12 @@ MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL3"
 WEB_SITE="https://nano-editor.org/"
 
-TARBALL="$PACKAGE-$VERSION.tar.gz"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="${WEB_SITE}dist/v${VERSION%.*}/$TARBALL"
 
 SUGGESTED="gpm"
 DEPENDS="ncursesw zlib"
-BUILD_DEPENDS="groff ncursesw-dev zlib-dev"
+BUILD_DEPENDS="groff ncursesw-dev zlib-dev libmagic-dev patch"
 SPLIT="nano-doc"
 
 HOST_ARCH="x86_64 i486 arm"
@@ -53,10 +53,10 @@ genpkg_rules()
 	cp $src/doc/sample.nanorc	$fs/etc/nanorc
 
 	cd $fs
-	patch --input=$stuff/patches/nanorc.patch \
-		etc/nanorc
-	patch --input=$stuff/patches/sh.nanorc-$VERSION \
-		usr/share/nano/sh.nanorc
+	#~ patch --input=$stuff/patches/nanorc.patch \
+		#~ etc/nanorc
+	#~ patch --input=$stuff/patches/sh.nanorc-$VERSION \
+		#~ usr/share/nano/sh.nanorc
 
 	# Shrink
 	for i in $fs/usr/share/nano/*.nanorc

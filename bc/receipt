@@ -1,16 +1,16 @@
 # SliTaz package receipt.
 
 PACKAGE="bc"
-VERSION="1.07.1"
+VERSION="6.0.1"
 CATEGORY="utilities"
 TAGS="calculator"
 SHORT_DESC="A commandline calculator."
 MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL2 LGPL2.1"
-WEB_SITE="https://www.gnu.org/software/bc/"
+WEB_SITE="https://git.yzena.com/gavin/bc"
 
-TARBALL="$PACKAGE-$VERSION.tar.gz"
-WGET_URL="https://ftp.gnu.org/gnu/$PACKAGE/$TARBALL"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WGET_URL="https://github.com/gavinhoward/$PACKAGE/releases/download/$VERSION/$TARBALL"
 
 DEPENDS="flex ncurses readline"
 BUILD_DEPENDS="ed flex readline-dev texinfo"
@@ -18,9 +18,7 @@ BUILD_DEPENDS="ed flex readline-dev texinfo"
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure		\
-		--with-readline	\
-		$CONFIGURE_ARGS &&
+	./configure	$CONFIGURE_ARGS &&
 	make &&
 	make install
 }

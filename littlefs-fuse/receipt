@@ -11,13 +11,12 @@ WEB_SITE="https://github.com/ARMmbed/littlefs-fuse"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$WEB_SITE/archive/v$VERSION.tar.gz"
 
-DEPENDS="fuse"
-BUILD_DEPENDS="fuse-dev"
+DEPENDS="fuse2"
+BUILD_DEPENDS="fuse2-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -lfuse3/fuse" 
 	make
 }
 

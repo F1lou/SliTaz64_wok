@@ -11,12 +11,12 @@ WEB_SITE="https://rarian.freedesktop.org/"
 WGET_URL="http://ftp.gnome.org/pub/gnome/sources/$PACKAGE/${VERSION%.*}/$TARBALL"
 
 DEPENDS="libxslt"
-BUILD_DEPENDS="libxslt-dev"
+BUILD_DEPENDS="libxslt-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	cd $src
+	export LDFLAGS="$LDFLAGS -liconv"
 	patch -p0 -i $stuff/user-segfault.patch
 	./configure \
 		--prefix=/usr \

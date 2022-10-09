@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xfce4-panel"
-VERSION="4.12.0"
+VERSION="4.17.1"
 CATEGORY="x-window"
 SHORT_DESC="Xfce Panel"
 MAINTAINER="erjo@slitaz.org"
@@ -10,10 +10,10 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WEB_SITE="https://www.xfce.org/"
 WGET_URL="http://archive.xfce.org/src/xfce/$PACKAGE/${VERSION%.*}/$TARBALL"
 
-DEPENDS="libxfce4util libxfce4ui libexo libwnck garcon util-linux-uuid dbus-glib"
-BUILD_DEPENDS="libxfce4util-dev libxfce4ui-dev libexo-dev libwnck-dev cairo-dev garcon-dev
+DEPENDS="libxfce4util libxfce4ui libexo libwnck3 garcon util-linux-uuid dbus-glib"
+BUILD_DEPENDS="libxfce4util-dev libxfce4ui-dev libexo-dev libwnck3-dev cairo-dev garcon-dev
  xorg-libXext-dev xorg-xextproto dbus-glib-dev util-linux-uuid-dev intltool exo xfconf-dev
- libxml2-dev xcb-util-dev"
+ libxml2-dev xcb-util-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()

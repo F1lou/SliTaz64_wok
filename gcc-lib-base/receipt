@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gcc-lib-base"
-VERSION="10.2.0"
+VERSION="12.2.0"
 CATEGORY="development"
 SHORT_DESC="GCC base libraries, libgcc_s and libstdc++."
 WEB_SITE="http://gcc.gnu.org/"

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="glade3"
-VERSION="3.8.6"
+VERSION="3.38.2"
 CATEGORY="development"
 SHORT_DESC="Vector drawing application."
 MAINTAINER="pankso@slitaz.org"
@@ -11,10 +11,10 @@ WEB_SITE="https://glade.gnome.org/"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION%.*}/$TARBALL"
 
-SUGGESTED="python"
+SUGGESTED="py3k"
 DEPENDS="gtk+ libglade xorg-libXdamage"
 BUILD_DEPENDS="expat-dev gtk+-dev intltool itstool libgnome 
-	libxml2-dev python"
+	libxml2-dev py3k"
 
 # Rules to configure and make the package.
 compile_rules()

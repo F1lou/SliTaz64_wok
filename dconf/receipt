@@ -12,7 +12,8 @@ HI_VERSION=$(echo $VERSION | cut -d. -f1,2)
 WGET_URL="$GNOME_MIRROR/$PACKAGE/$HI_VERSION/$TARBALL"
 
 DEPENDS="dbus"
-BUILD_DEPENDS="vala glib-dev dbus-dev gtk+3-dev libxml2-dev"
+BUILD_DEPENDS="vala glib-dev dbus-dev gtk+3-dev libxml2-dev libxslt
+	docbook-xsl"
 GENERIC_MENUS="no"
 GENERIC_PIXMAPS="no"
 

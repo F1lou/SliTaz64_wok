@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="kbd-base"
-VERSION="2.4.0"
+VERSION="2.5.1"
 CATEGORY="base-system"
 SHORT_DESC="Keyboard mapping definitions, loadkeys and setfont utilities."
 MAINTAINER="pankso@slitaz.org"

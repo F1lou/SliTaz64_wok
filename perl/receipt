@@ -1,8 +1,8 @@
 # SliTaz package receipt.
 
 PACKAGE="perl"
-VERSION="5.34.0"
-MAINVERSION="5.32"
+VERSION="5.36.0"
+MAINVERSION=${VERSION%.*}
 CATEGORY="development"
 SHORT_DESC="Full Perl interpreter and modules."
 MAINTAINER="pankso@slitaz.org"
@@ -26,8 +26,8 @@ cook_tmp_toolchain()
 		-Darchlib="/usr/lib/perl5/$MAINVERSION/$ARCH-linux" \
 		-Darchlibexp="/usr/lib/perl5/$MAINVERSION/$ARCH-linux" \
 		-Dinstallarchlib="/usr/lib/perl5/$MAINVERSION/$ARCH-linux" \
-		-Dvendorlib="/usr/lib/perl5/5.32/vendor_perl"	\
-		-Dvendorarch="/usr/lib/perl5/5.32/vendor_perl" \
+		-Dvendorlib="/usr/lib/perl5/$MAINVERSION/vendor_perl"	\
+		-Dvendorarch="/usr/lib/perl5/$MAINVERSION/vendor_perl" \
 		-Dstatic_ext='Data/Dumper Fcntl IO'
 	
 	# Only few tools are needed in the tmp toolchain.
@@ -45,7 +45,7 @@ compile_rules()
 {
 	export BUILD_ZLIB=False
 	export BUILD_BZIP2=0
-	patch -p0 -i $stuff/perl-5.34.0-upstream_fixes-1.patch
+	# patch -p0 -i $stuff/perl-5.34.0-upstream_fixes-1.patch
 	sh Configure -des -Dprefix=/usr \
 		-Darchname="$ARCH-linux" 	\
 		-Dmyarchname="$ARCH-linux" 	\

@@ -1,20 +1,29 @@
 # SliTaz package receipt.
 
 PACKAGE="utox"
-VERSION="20140903"
+VERSION="0.18.1"
 CATEGORY="network"
 SHORT_DESC="A New Kind of Instant Messaging"
 MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL"
-TARBALL="${PACKAGE}-${VERSION}.tar.xz"
+TARBALL="v${VERSION}.tar.gz"
 WEB_SITE="https://utox.org/"
-WGET_URL="https://jenkins.libtoxcore.so/job/uTox_linux_i686/lastSuccessfulBuild/artifact/utox/utox_linux_i686.tar.xz"
+WGET_URL="https://github.com/uTox/uTox/archive/refs/tags/$TARBALL"
 
-DEPENDS="dbus bzlib xorg-libX11 gtk+"
-BUILD_DEPENDS="wget"
+DEPENDS="dbus bzlib xorg-libX11 gtk+3"
+BUILD_DEPENDS="wget libiconv-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export LDFLAGS="$LDFLAGS -liconv"
+	mkdir build && cd build
+	cmake .. &&
+	make && make install
+}
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	install -D ${src}/${TARBALL} ${fs}/usr/bin/utox
+	mkdir $fs/usr
 }

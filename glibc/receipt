@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="glibc"
-VERSION="2.32"
+VERSION="2.36"
 CATEGORY="meta"
 SHORT_DESC="The GNU C libraries. This package is used to compile the libc."
 MAINTAINER="pankso@slitaz.org"
@@ -22,26 +22,20 @@ cook_tmp_toolchain()
 	cd $src
 	
 	# Glibc Bug Fixes Patch from LFS
-	#~ patch -Np1 -i $stuff/glibc-2.14.1-fixes-1.patch
-	#~ # Glibc Bug Sort Relocatable Objects Patch
-	#~ patch -Np1 -i $stuff/glibc-2.14.1-sort-1.patch
-	#~ # Fix a bug that prevents Glibc from building with GCC-4.6.2
-	#~ patch -Np1 -i $stuff/glibc-2.14.1-gcc_fix-1.patch
-	#~ # GHOST
-	#~ patch -Np1 -i $stuff/glibc-2.14.1-CVE-2015-0235.patch
+	patch -Np1 -i $stuff/glibc-2.36-fhs-1.patch
 
 	# Build in a separate directory.
 	mkdir ../glibc-build && cd ../glibc-build
 
 	# glibc no longer support i386, so use -march=i486 for better compatibility.
 	# If i686 ???
-	unset CFLAGS CXXFLAGS
-	case $ARCH in
-		i386|i486)
-			echo "CFLAGS += -O2 -march=i486 -mtune=i486" > configparms ;;
-		*)
-			echo "CFLAGS += -O2 -march=$ARCH -mtune=$ARCH" > configparms ;;
-	esac
+	#~ unset CFLAGS CXXFLAGS
+	#~ case $ARCH in
+		#~ i386|i486)
+			#~ echo "CFLAGS += -O2 -march=i486 -mtune=i486" > configparms ;;
+		#~ *)
+			#~ echo "CFLAGS += -O2 -march=$ARCH -mtune=$ARCH" > configparms ;;
+	#~ esac
 
 	{ $src/configure \
 		--host=$HOST_SYSTEM \
@@ -64,6 +58,9 @@ cook_tmp_toolchain()
 # Rules to configure and make the package.
 compile_rules()
 {
+	# Glibc Bug Fixes Patch from LFS
+	patch -Np1 -i $stuff/glibc-2.36-fhs-1.patch
+
 	# SliTaz is a Busybox based OS, why we so small and fast. Using gawk by
 	# default to build package will not ensure package work with Busybox awk
 	# and so should NOT be use to cook.
@@ -87,7 +84,11 @@ compile_rules()
 		*)
 			echo "CFLAGS += -O2" > configparms ;;
 	esac
+
 	{ $src/configure \
+		--with-headers=/usr/include  \
+		--disable-werror \
+		--enable-stack-protector=strong \
 		--disable-profile \
 		--enable-add-ons \
 		--enable-kernel=3.2 \
@@ -97,6 +98,7 @@ compile_rules()
 	for i in $DESTDIR/usr/share/i18n/charmaps/*.gz ; do
 		advdef -z4 $i
 	done
+	sed '/RTLDLIST=/s@/usr@@g' -i $install/usr/bin/ldd
 
 	# If temporary toolchain was previously used, switch to regular toolchain.
 	[ -d /tools ] || return

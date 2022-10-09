@@ -12,7 +12,8 @@ WGET_URL="https://www.nico.schottelius.org/software/gpm/archives/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="ncurses"
-BUILD_DEPENDS="gawk bison ncurses-dev automake autoconf libtool texinfo"
+BUILD_DEPENDS="gawk bison ncurses-dev automake autoconf libtool texinfo
+	sed"
 
 # When cross compiling gawk and bison build system are used.
 case "$ARCH" in
@@ -22,10 +23,9 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	cd $src
 	./autogen.sh
 	ln -s headers/gpm.h src		# ???
-	./configure \
+	CFLAGS="$CFLAGS -fcommon" ./configure \
 		--prefix=/usr \
 		--sysconfdir=/etc \
 		$CONFIGURE_ARGS &&

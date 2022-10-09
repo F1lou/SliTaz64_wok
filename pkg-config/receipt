@@ -13,6 +13,7 @@ HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="glibc-base"
 BUILD_DEPENDS="gcc libtool"
+BUILD_DEPENDS=""
 
 # Handle cross compilation.
 case "$ARCH" in

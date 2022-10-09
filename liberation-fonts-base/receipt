@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="liberation-fonts-base"
-VERSION="2.00.1"
+VERSION="2.1.5"
 CATEGORY="fonts"
 SHORT_DESC="Liberation fonts (only regular)"
 MAINTAINER="al.bobylev@gmail.com"
@@ -9,7 +9,7 @@ LICENSE="SIL_OFL"
 WEB_SITE="https://www.redhat.com/promo/fonts/"
 SOURCE="liberation-fonts"
 TARBALL="$SOURCE-ttf-$VERSION.tar.gz"
-WGET_URL="https://fedorahosted.org/releases/l/i/$SOURCE/$TARBALL"
+WGET_URL="https://github.com/liberationfonts/$SOURCE/files/7261482/$TARBALL"
 
 BUILD_DEPENDS="wget"
 

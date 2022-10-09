@@ -12,16 +12,16 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="$SF_MIRROR/gtkspell/$TARBALL"
 
 DEPENDS="enchant gtk+3"
-BUILD_DEPENDS="enchant-dev gobject-introspection gtk+3-dev gtk-doc vala
+BUILD_DEPENDS="enchant-dev gobject-introspection-dev gtk+3-dev gtk-doc vala
 	libepoxy-dev mesa-dev xorg-dev xorg-libXxf86vm-dev enchant2-dev
-	liblzma-dev aspell-dev libbsd-dev"
+	liblzma-dev aspell-dev libbsd-dev intltool libiconv-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure $CONFIGURE_ARGS &&
+	./configure --disable-dependency-tracking $CONFIGURE_ARGS &&
 	make &&
 	make install
 }

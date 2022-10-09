@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="nethogs"
-VERSION="0.8.5"
+VERSION="0.8.6"
 CATEGORY="network"
 TAGS="network"
 SHORT_DESC="Small 'net top' tool."
@@ -13,7 +13,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}/archive/v$VERSION.tar.gz"
 
 DEPENDS="gcc-lib-base libpcap ncursesw"
-BUILD_DEPENDS="libpcap libpcap-dev ncursesw-dev"
+BUILD_DEPENDS="libpcap libpcap-dev ncursesw-dev bash"
 
 # Rules to configure and make the package.
 compile_rules()

@@ -1,22 +1,23 @@
 # SliTaz package receipt.
 
 PACKAGE="gdb"
-VERSION="7.7"
+VERSION="11.2"
 CATEGORY="development"
 SHORT_DESC="The GNU Project Debugger."
 MAINTAINER="erjo@slitaz.org"
 LICENSE="GPL2"
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
 WEB_SITE="http://www.gnu.org/software/gdb/"
 WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="ncurses expat glibc-dev"
-BUILD_DEPENDS="ncurses-dev readline-dev"
+BUILD_DEPENDS="ncurses-dev readline-dev libiconv-dev gmp-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LDFLAGS="$LDFLAGS -liconv"
 	./configure \
 		--with-python=no \
 		--disable-werror \

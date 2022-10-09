@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="babl-dev"
-VERSION="0.1.86"
+VERSION="0.1.90"
 CATEGORY="development"
 SHORT_DESC="Pixel format translation library - development files."
 MAINTAINER="erjo@slitaz.org"

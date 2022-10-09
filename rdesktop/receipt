@@ -15,7 +15,7 @@ WGET_URL="https://github.com/$PACKAGE/$PACKAGE/archive/v$VERSION.tar.gz"
 DEPENDS="alsa-lib glibc-base libgnutls libao libcrypto libsamplerate libtasn1 
 	nettle pcsc-lite xorg-libX11 xorg-libXau xorg-libXdmcp"
 BUILD_DEPENDS="autoconf automake gnutls-dev libgnutls libtasn1-dev nettle-dev
-	openssl-dev pcsc-lite-dev xorg-dev"
+	openssl-dev pcsc-lite-dev xorg-dev libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()

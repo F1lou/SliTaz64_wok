@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libxfce4util"
-VERSION="4.17.1"
+VERSION="4.17.2"
 CATEGORY="x-window"
 SHORT_DESC="Xfce Utility library"
 MAINTAINER="erjo@slitaz.org"
@@ -10,8 +10,8 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WEB_SITE="https://www.xfce.org"
 WGET_URL="http://archive.xfce.org/src/xfce/$PACKAGE/${VERSION%.*}/$TARBALL"
 
-DEPENDS="gtk+"
-BUILD_DEPENDS="gtk+-dev intltool pkg-config"
+DEPENDS="gtk+3"
+BUILD_DEPENDS="gtk+3-dev intltool pkg-config"
 
 # Rules to configure and make the package.
 compile_rules()

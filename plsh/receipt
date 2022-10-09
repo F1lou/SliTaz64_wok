@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="plsh"
-VERSION="1.20171014"
+VERSION="1.20200522"
 CATEGORY="misc"
 SHORT_DESC="A procedural language handler for PostgreSQL using any shell."
 MAINTAINER="pascal.bellard@slitaz.org"

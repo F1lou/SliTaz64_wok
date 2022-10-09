@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="pcre2"
-VERSION="10.39"
+VERSION="10.40"
 CATEGORY="system-tools"
 SHORT_DESC="Perl 5 Compatible Regular Expression 2, library."
 MAINTAINER="al.bobylev@gmail.com"

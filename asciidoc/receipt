@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="asciidoc"
-VERSION="9.1.1"
+VERSION="10.2.0"
 CATEGORY="system-tools"
 SHORT_DESC="Text based document generation"
 MAINTAINER="pankso@slitaz.org"
@@ -11,7 +11,8 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 #~ WGET_URL="$SF_MIRROR/project/asciidoc/asciidoc/$VERSION/$TARBALL"
 WGET_URL="https://github.com/asciidoc-py/asciidoc-py/archive/refs/tags/$VERSION.tar.gz"
 DEPENDS="py3k"
-BUILD_DEPENDS=""
+BUILD_DEPENDS="libxml2-tools docbook-xml docbook-xsl libxslt python3-pip
+	python3-setuptools"
 
 # Rules to configure and make the package.
 compile_rules()
