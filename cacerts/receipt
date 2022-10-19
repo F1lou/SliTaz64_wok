@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="cacerts"
-VERSION="20211220"
+VERSION="20221019"
 CATEGORY="security"
 SHORT_DESC="Certificate Authority Certificates."
 MAINTAINER="al.bobylev@gmail.com"

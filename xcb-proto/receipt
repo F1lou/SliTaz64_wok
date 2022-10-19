@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xcb-proto"
-VERSION="1.14"
+VERSION="1.15.2"
 CATEGORY="development"
 SHORT_DESC="X protocol descriptions for XCB."
 MAINTAINER="mallory@sweetpeople.org"
@@ -25,7 +25,7 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure			\
+	PYTHON=python3 ./configure			\
 		--sysconfdir=/etc	\
 		--localstatedir=/var	\
 		$CONFIGURE_ARGS &&

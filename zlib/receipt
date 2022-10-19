@@ -23,7 +23,7 @@ compile_rules()
 			# work around gcc bug; see https://bugs.archlinux.org/task/20647
 			export CFLAGS="${CFLAGS/-O2/-O3} -fno-tree-vectorize -DUNALIGNED_OK" ;;
 	esac
-	./configure --prefix=/usr --shared &&
+	CFLAGS="$CFLAGS -fPIC" ./configure --prefix=/usr &&
 	make &&	make install
 }
 

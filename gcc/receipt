@@ -26,7 +26,7 @@ case "$ARCH" in
 		pkgversion="SliTaz"
 		languages="c,c++,objc,fortran" ;;
 	x86_64)
-		pkgversion="slitazta"
+		pkgversion="SliTaz"
 		languages="c,c++,objc,fortran" ;;
 	arm*)
 		pkgversion="SliTaz ARM"

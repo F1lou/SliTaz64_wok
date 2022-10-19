@@ -2,7 +2,7 @@
 
 PACKAGE="linux64-aufs"
 SOURCE="aufs"
-VERSION="5.10"
+VERSION="5.19.2"
 CATEGORY="base-system"
 SHORT_DESC="aufs3 kernel module"
 MAINTAINER="godane@slitaz.org"

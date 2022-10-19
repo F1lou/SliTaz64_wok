@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="dbus-helper"
-VERSION="1.13.20"
+VERSION="1.15.2"
 CATEGORY="development"
 SHORT_DESC="A message bus system - development file."
 MAINTAINER="pankso@slitaz.org"

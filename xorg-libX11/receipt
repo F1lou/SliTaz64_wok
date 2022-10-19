@@ -14,8 +14,7 @@ WGET_URL="$XORG_MIRROR/lib/$TARBALL"
 
 DEPENDS="libxcb xorg-libXau xorg-libXdmcp"
 BUILD_DEPENDS="libxcb-dev xorg-inputproto xorg-kbproto xorg-libXau-dev 
-	xorg-libXdmcp-dev xorg-xextproto xorg-xf86bigfontproto xorg-xtrans
-	libbsd-dev"
+	xorg-libXdmcp-dev xorg-xextproto xorg-xf86bigfontproto xorg-xtrans"
 
 HOST_ARCH="x86_64 i486 arm"
 

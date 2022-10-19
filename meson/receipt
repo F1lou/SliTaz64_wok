@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/mesonbuild/$PACKAGE/releases/download/$VERSION/$TARBALL"
 
 DEPENDS="ninja py3k"
-BUILD_DEPENDS="py3k python3-setuptools"
+BUILD_DEPENDS="py3k"
 
 # Rules to configure and make the package.
 compile_rules()

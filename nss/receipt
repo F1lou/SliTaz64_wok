@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="nss"
-VERSION="3.69"
+VERSION="3.82"
 CATEGORY="utilities"
 SHORT_DESC="Mozilla Network Security Services (NSS)."
 MAINTAINER="rocky@slitaz.org"
@@ -11,13 +11,12 @@ WEB_SITE="http://www.mozilla.org/projects/security/pki/nss/"
 WGET_URL="http://ftp.mozilla.org/pub/security/nss/releases/NSS_${VERSION//./_}_RTM/src/${TARBALL}"
 
 DEPENDS="nspr sqlite zlib"
-BUILD_DEPENDS="nspr-dev sqlite-dev zlib-dev perl pkg-config libiconv-dev"
+BUILD_DEPENDS="nspr-dev sqlite-dev zlib-dev perl pkg-config"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	#~ sed -i 's|uname -m|echo x86_64|' nss/coreconf/arch.mk nss/tests/run_niscc.sh
-	export LDFLAGS="$LDFLAGS -liconv"
 	patch -Np1 -i $stuff/nss-$VERSION-standalone-1.patch &&
 	cd nss &&
 	make BUILD_OPT=1 \
@@ -27,20 +26,20 @@ compile_rules()
 		NSS_ENABLE_WERROR=0                 \
 		$([ $(uname -m) = x86_64 ] && echo USE_64=1) \
 		$([ -f /usr/include/sqlite3.h ] && echo NSS_USE_SYSTEM_SQLITE=1) &&
-	mkdir -p $install/usr/lib $install/usr/include/nss			&&
-	mkdir -p $install/usr/bin $install/usr/lib/pkgconfig		&&
+	mkdir -p $install/usr/lib $install/usr/include/nss		&&
+	mkdir -p $install/usr/bin $install/usr/lib/pkgconfig	&&
 	cd ../dist												&&
-	install -v -m755 Linux*/lib/*.so $install/usr/lib			&&
-	install -v -m644 Linux*/lib/*.chk $install/usr/lib			&&
-	install -v -m644 Linux*/lib/libcrmf.a $install/usr/lib		&&
-	install -v -m755 -d $install/usr/include/nss				&&
-	cp -v -RL public/nss/* $install/usr/include/nss				&&
-	cp -v -RL private/nss/* $install/usr/include/nss			&&
-	chmod 644 $install/usr/include/nss/*						&&
-	install -v -m755 Linux*/bin/certutil $install/usr/bin		&&
-	install -v -m755 Linux*/bin/nss-config $install/usr/bin		&&
-	install -v -m755 Linux*/bin/pk12util $install/usr/bin		&&
-	install -v -m644 Linux*/lib/pkgconfig/nss.pc $install/usr/lib/pkgconfig
+	install -m755 Linux*/lib/*.so $install/usr/lib			&&
+	install -m644 Linux*/lib/*.chk $install/usr/lib			&&
+	install -m644 Linux*/lib/libcrmf.a $install/usr/lib		&&
+	install -m755 -d $install/usr/include/nss				&&
+	cp -RL public/nss/* $install/usr/include/nss			&&
+	cp -RL private/nss/* $install/usr/include/nss			&&
+	chmod 644 $install/usr/include/nss/*					&&
+	install -m755 Linux*/bin/certutil $install/usr/bin		&&
+	install -m755 Linux*/bin/nss-config $install/usr/bin	&&
+	install -m755 Linux*/bin/pk12util $install/usr/bin		&&
+	install -m644 Linux*/lib/pkgconfig/nss.pc $install/usr/lib/pkgconfig
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

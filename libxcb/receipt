@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libxcb"
-VERSION="1.14"
+VERSION="1.15"
 ARM_VERSION="1.9.1"
 CATEGORY="x-window"
 SHORT_DESC="A C binding to the X11 protocol."
@@ -35,10 +35,7 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	# http://www.linuxfromscratch.org/blfs/view/svn/x/libxcb.html
-	sed -i "s|pthread-stubs||" $src/configure.ac &&
-	autoupdate && autoreconf -fi &&
-	./configure			\
+	PYTHON=python3 ./configure			\
 		--enable-xinput		\
 		--enable-xkb		\
 		--disable-static	\

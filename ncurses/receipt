@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
 
 DEPENDS="libtic libtinfo ncurses-common"
-BUILD_DEPENDS="libiconv-dev"
+BUILD_DEPENDS=""
 SPLIT="libform libmenu libpanel libtic libtinfo ncurses-common \
 	ncurses-dev ncurses-extra ncurses-man"
 
@@ -22,9 +22,7 @@ HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.
 compile_rules()
-{
-	export LDFLAGS="$LDFLAGS -liconv"
-	
+{	
 	# Ncurses need an installed /usr/bin/tic which is in ncursesw-extra. And
 	# when cross compiling we can't use the freshly cooked binary. See cook log:
 	#

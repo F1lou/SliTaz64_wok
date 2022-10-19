@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libgpg-error"
-VERSION="1.43"
+VERSION="1.46"
 CATEGORY="security"
 SHORT_DESC="Common error messages for GnuPG."
 MAINTAINER="erjo@slitaz.org"
@@ -18,13 +18,13 @@ HOST_ARCH="x86_64 i486 arm"
 compile_rules()
 {
 	# Integrity check: https://www.gnupg.org/download/integrity_check.html
-	echo "e71b77e8e32023dfd9cb06504942aa8e028c8795  $SRC/$TARBALL" | sha1sum -c || exit 1
+	echo "a6e5efdd72e848aab4064e5ef4c6835ba344bcf1  $SRC/$TARBALL" | sha1sum -c || exit 1
 
 	./configure $CONFIGURE_ARGS &&
 	make -j 1 &&
 	make DESTDIR=$DESTDIR install
 
-	find $install/usr/share/man -type f -exec gzip -9 \{\} \;
+	#~ find $install/usr/share/man -type f -exec gzip -9 \{\} \;
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="man-pages"
-VERSION="5.05"
+VERSION="5.13"
 CATEGORY="doc"
 SHORT_DESC="Linux manual pages."
 MAINTAINER="al.bobylev@gmail.com"

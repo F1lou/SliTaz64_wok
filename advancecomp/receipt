@@ -12,12 +12,11 @@ WGET_URL="https://github.com/amadvance/advancecomp/archive/v$VERSION.tar.gz"
 TAGS="compression archive"
 
 DEPENDS="gcc-lib-base zlib"
-BUILD_DEPENDS="automake zlib-dev libiconv-dev"
+BUILD_DEPENDS="automake zlib-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
 	patch -p1 -i $stuff/advancecomp.patch
 
 	./autogen.sh &&

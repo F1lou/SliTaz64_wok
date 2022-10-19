@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libgcrypt"
-VERSION="1.9.4"
+VERSION="1.10.1"
 CATEGORY="security"
 SHORT_DESC="Cryptographic library based on GnuPG."
 MAINTAINER="erjo@slitaz.org"
@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="https://www.gnupg.org/ftp/gcrypt/libgcrypt/$TARBALL"
 
 DEPENDS="libgpg-error"
-BUILD_DEPENDS="libgpg-error-dev libiconv-dev libbsd-dev"
+BUILD_DEPENDS="libgpg-error-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 
@@ -20,7 +20,7 @@ HOST_ARCH="x86_64 i486 arm"
 compile_rules()
 {
 	# Integrity check: https://www.gnupg.org/download/integrity_check.html
-	echo "1bccc8393482fa1953323ff429c6b5ba5676eb1a  $SRC/$TARBALL" | sha1sum -c || exit 1
+	echo "de2cc32e7538efa376de7bf5d3eafa85626fb95f  $SRC/$TARBALL" | sha1sum -c || exit 1
 
 	case "$ARCH" in
 		arm)
@@ -29,7 +29,7 @@ compile_rules()
 				--build=i486-slitaz-linux \
 				--host=arm-slitaz-linux-gnueabi ;;
 		*)
-			export LDFLAGS="$LDFLAGS -Wl,--copy-dt-needed-entries -lgpg-error -liconv"
+			#~ export LDFLAGS="$LDFLAGS -Wl,--copy-dt-needed-entries -lgpg-error"
 			./configure	;;
 	esac &&
 	make &&

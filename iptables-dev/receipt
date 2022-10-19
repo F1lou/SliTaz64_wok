@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="iptables-dev"
-VERSION="1.8.4"
+VERSION="1.8.8"
 CATEGORY="development"
 SHORT_DESC="Packet filtering framework (Firewall) - development files."
 MAINTAINER="pankso@slitaz.org"

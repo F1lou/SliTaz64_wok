@@ -18,11 +18,13 @@ BUILD_DEPENDS="libpng+apng-dev zlib-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
+	export CFLAGS="$CFLAGS -Wno-implicit-function-declaration"
 	sed -i 's|prefix)/man|prefix)/share/man|' configure
+	grep -rle "strcpy" src/* | while read DATEI; do sed -i 's|strcpy|strcpy_s|' $DATEI; done
 	
 	./configure		 	\
 		--prefix=/usr	\
-		--with-system-libpng &&
+		--with-system-libs &&
 	make &&
 	#~ make test &&
 	make install

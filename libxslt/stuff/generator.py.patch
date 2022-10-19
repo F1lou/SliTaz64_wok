@@ -1,0 +1,89 @@
+--- libxslt-1.1.34/python/generator.py
++++ libxslt-1.1.34/python/generator.py
+@@ -39,19 +39,19 @@
+ 
+     def close(self):
+         if debug:
+-            print "close"
++            print("close")
+ 
+     def getmethodname(self):
+         return self._methodname
+ 
+     def data(self, text):
+         if debug:
+-            print "data %s" % text
++            print("data %s" % text)
+         self._data.append(text)
+ 
+     def start(self, tag, attrs):
+         if debug:
+-            print "start %s, %s" % (tag, attrs)
++            print("start %s, %s" % (tag, attrs))
+         if tag == 'function':
+             self._data = []
+             self.in_function = 1
+@@ -95,7 +95,7 @@
+ 
+     def end(self, tag):
+         if debug:
+-            print "end %s" % tag
++            print("end %s" % tag)
+         if tag == 'function':
+             if self.function != None:
+                 function(self.function, self.function_descr,
+@@ -264,7 +264,7 @@
+     try:
+         (desc, ret, args, file) = functions[name]
+     except:
+-        print "failed to get function %s infos"
++        print("failed to get function %s infos")
+         return
+ 
+     if skipped_modules.has_key(file):
+@@ -406,10 +406,10 @@
+             parser.feed(data)
+             parser.close()
+         except IOError, msg:
+-            print "../doc/libxslt-api.xml", ":", msg
++            print("../doc/libxslt-api.xml", ":", msg)
+ 
+     n = len(functions.keys())
+-    print "Found %d functions in libxslt-api.xml" % (n)
++    print("Found %d functions in libxslt-api.xml" % (n))
+ 
+     py_types['pythonObject'] = ('O', "pythonObject", "pythonObject",
+                                 "pythonObject", "libxml_")
+@@ -420,11 +420,11 @@
+         parser.feed(data)
+         parser.close()
+     except IOError, msg:
+-        print "libxslt-python-api.xml", ":", msg
++        print("libxslt-python-api.xml", ":", msg)
+ 
+ 
+-    print "Found %d functions in libxslt-python-api.xml" % (
+-          len(functions.keys()) - n)
++    print("Found %d functions in libxslt-python-api.xml" % (
++          len(functions.keys()) - n))
+     nb_wrap = 0
+     failed = 0
+     skipped = 0
+@@ -453,12 +453,12 @@
+     export.close()
+     wrapper.close()
+ 
+-    print "Generated %d wrapper functions, %d failed, %d skipped\n" % (nb_wrap,
+-                                                              failed, skipped)
+-    print "Missing type converters:"
++    print("Generated %d wrapper functions, %d failed, %d skipped\n" % (nb_wrap,
++                                                              failed, skipped))
++    print("Missing type converters:")
+     for type in unknown_types.keys():
+-        print "%s:%d " % (type, len(unknown_types[type])),
+-    print
++        print("%s:%d " % (type, len(unknown_types[type]))),
++    print()
+ 
+ #######################################################################
+ #

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="iptables"
-VERSION="1.8.7"
+VERSION="1.8.8"
 CATEGORY="security"
 TAGS="firewall"
 SHORT_DESC="Packet filtering framework (Firewall)."

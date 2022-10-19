@@ -8,7 +8,7 @@ MAINTAINER="pankso@slitaz.org"
 LICENSE="MIT"
 WEB_SITE="https://libexpat.github.io/"
 
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
 HOST_ARCH="x86_64 i486 arm"

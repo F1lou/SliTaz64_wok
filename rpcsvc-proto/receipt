@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="rpcsvc-proto"
-VERSION="1.4.2"
+VERSION="1.4.3"
 CATEGORY="utilities"
 LICENSE="GNU C"
 SHORT_DESC="RPC protocol compiler and definitions"

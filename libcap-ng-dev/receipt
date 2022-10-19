@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libcap-ng-dev"
-VERSION="0.8.2"
+VERSION="0.8.3"
 CATEGORY="security"
 SHORT_DESC="Libcap-ng development files."
 MAINTAINER="erjo@slitaz.org"

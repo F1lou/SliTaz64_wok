@@ -16,7 +16,7 @@ WGET_URL="http://ftp.gnu.org/gnu/$PACKAGE/$TARBALL"
 
 PROVIDE="libbfd"
 DEPENDS="flex glibc zlib"
-BUILD_DEPENDS="glibc-dev texinfo zlib-dev libiconv-dev libbsd-dev"
+BUILD_DEPENDS="glibc-dev texinfo zlib-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 
@@ -34,8 +34,6 @@ compile_rules()
 		x86_64|i?86) ARCH_ARGS="--disable-werror --enable-64-bit-bfd" ;;
 	esac
 
-	export LDFLAGS="$LDFLAGS -liconv" CFLAGS="$CFLAGS -Wno-error=implicit-function-declaration"
-	patch -Np1 -i $stuff/binutils-2.37-upstream_fix-1.patch
 	mkdir -p ../binutils-build &&
 	cd ../binutils-build
 	$src/configure					\
