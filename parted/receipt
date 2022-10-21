@@ -13,7 +13,7 @@ HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="util-linux-uuid util-linux-blkid"
 BUILD_DEPENDS="e2fsprogs-dev util-linux-uuid-dev util-linux-blkid-dev
-	libiconv-dev"
+	"
 SUGGESTED="btrfs-progs e2fsprogs f2fs-tools dosfstools mtools hfsutils \
 hfsprogs jfsutils util-linux lvm2 nilfs-utils ntfsprogs reiser4progs \
 reiserfsprogs xfsprogs"
@@ -25,7 +25,7 @@ compile_rules()
 	#~ grep -qs 'define u8' libparted/arch/linux.c ||
 	#~ sed -i 's|#include <scsi/scsi.h>|#define u8 __u8\n&|' \
 		#~ libparted/arch/linux.c
-	LDFLAGS="$LDFLAGS -liconv" ./configure \
+	 ./configure \
 		--disable-debug \
 		--disable-Werror \
 		--without-readline \

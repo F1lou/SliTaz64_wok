@@ -15,7 +15,7 @@ HOST_ARCH="x86_64 i486 arm"
 SUGGESTED="alsaplayer-scopes libid3tag flac"
 DEPENDS="gtk+ alsa-lib libmad libogg libvorbis xorg-libXdamage"
 BUILD_DEPENDS="gtk+-dev alsa-lib-dev libmad-dev libogg-dev libvorbis-dev
-	liblzma-dev libiconv-dev"
+	liblzma-dev "
 
 # Handle cross compilation.
 case "$ARCH" in
@@ -29,7 +29,7 @@ compile_rules()
 	cp -f	$i/note.xpm	$i/logo.xpm
 	sed -i	's/note/logo/'	$i/logo.xpm
 
-	LDFLAGS="$LDFLAGS -liconv" ./configure \
+	 ./configure \
 		--enable-gtk2 \
 		--enable-flac \
 		--disable-jack \

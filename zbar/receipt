@@ -16,7 +16,7 @@ DEPENDS="atk cairo fontconfig freetype gcc-lib-base gtk+3
 BUILD_DEPENDS="atk-dev cairo-dev fftw-dev fontconfig-dev freetype-dev 
 	gcc gdk-pixbuf graphviz-dev gtk+3-dev ilmbase-dev imagemagick-dev 
 	jpeg-dev lcms-dev libgio-dev libtool libxml2-dev linux-api-headers 
-	openexr-dev pango-dev util-linux-uuid-dev libiconv-dev"
+	openexr-dev pango-dev util-linux-uuid-dev "
 
 # Rules to configure and make the package.
 compile_rules()
@@ -24,7 +24,7 @@ compile_rules()
 #	sed -i 's|w\(and/MagickWand\.h\)|MagickW\1|' configu* zbarimg/zbarimg.c
 
 	autoreconf -vfi &&
-	LDFLAGS="$LDFLAGS -liconv" ./configure			\
+	 ./configure			\
 		--prefix=/usr		\
 		--mandir=/usr/share/man	\
 		--localstatedir=/var	\

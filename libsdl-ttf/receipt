@@ -13,12 +13,12 @@ WGET_URL="http://www.libsdl.org/projects/SDL_ttf/release/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="libsdl freetype zlib"
-BUILD_DEPENDS="libsdl-dev freetype-dev libiconv"
+BUILD_DEPENDS="libsdl-dev freetype-dev "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	LDFLAGS="$LDFLAGS -liconv" ./configure $CONFIGURE_ARGS &&
+	 ./configure $CONFIGURE_ARGS &&
 	make && make install
 }
 

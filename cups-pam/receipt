@@ -17,14 +17,14 @@ DEPENDS="cups-doc cups-filters dbus libcomerr libcups libkrb5 libssl
 	libunistring pam"
 BUILD_DEPENDS="acl-dev dbus-dev gnutls-dev jpeg-dev libcomerr-dev 
 	libgcrypt-dev libgnutls libpng-dev libunistring-dev openssl-dev 
-	pam pam-dev tiff-dev krb5-dev libiconv-dev"
+	pam pam-dev tiff-dev krb5-dev "
 
 # Rules to configure and make the package.
 compile_rules()
 {
 #	patch -Np1 -i ${WOK}/cups/stuff/install-sh.u
 
-	export	LDFLAGS="$LDFLAGS -lrt -liconv"
+	export	LDFLAGS="$LDFLAGS -lrt "
 
 	# Set list of wanted locales in LOCALE_PACK
 	. $WOK/slitaz-i18n/stuff/locale-pack.conf

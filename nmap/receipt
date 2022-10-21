@@ -13,14 +13,14 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="${WEB_SITE}dist/$TARBALL"
 
 DEPENDS="gcc-lib-base libpcap openssl pcre"
-BUILD_DEPENDS="libpcap-dev openssl-dev pcre-dev py3k-dev libiconv-dev"
+BUILD_DEPENDS="libpcap-dev openssl-dev pcre-dev py3k-dev "
 
 HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 
 	./configure				\
 		--cache-file=$PWD/config.cache	\

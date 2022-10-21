@@ -11,7 +11,7 @@ WEB_SITE="http://curlftpfs.sourceforge.net/"
 WGET_URL="http://downloads.sourceforge.net/curlftpfs/$TARBALL"
 
 DEPENDS="fuse2 curl glib zlib"
-BUILD_DEPENDS="fuse2 fuse2-dev curl curl-dev glib-dev libiconv-dev"
+BUILD_DEPENDS="fuse2 fuse2-dev curl curl-dev glib-dev "
 
 # Rules to configure and make the package.
 compile_rules()

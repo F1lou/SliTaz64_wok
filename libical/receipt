@@ -12,12 +12,12 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/$PACKAGE/$PACKAGE/releases/download/v$VERSION/$TARBALL"
 
 DEPENDS=""
-BUILD_DEPENDS="cmake libiconv-dev"
+BUILD_DEPENDS="cmake "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	mkdir build && cd build
 	cmake	..				\
 		-DCMAKE_INSTALL_PREFIX=/usr	\

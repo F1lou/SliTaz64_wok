@@ -10,13 +10,13 @@ WEB_SITE="https://www.cryptopp.com"
 
 TARBALL="${PACKAGE}860.zip"
 WGET_URL="$WEB_SITE/$TARBALL"
-BUILD_DEPENDS="libiconv-dev"
+BUILD_DEPENDS=""
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	#~ sed -i 's|uname -m|echo i486|' GNUmakefile
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	make PREFIX=/usr
 	#~ make PREFIX=/usr libcryptopp.so &&
 	#~ make PREFIX=/usr libcryptopp.pc &&

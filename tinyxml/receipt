@@ -9,13 +9,13 @@ LICENSE="GPL2"
 TARBALL="${PACKAGE}_${VERSION//./_}.zip"
 WEB_SITE="https://wiki.lxde.org/en/LXMusic"
 WGET_URL="$SF_MIRROR/project/$PACKAGE/$PACKAGE/$VERSION/$TARBALL"
-BUILD_DEPENDS="libiconv-dev"
+BUILD_DEPENDS=""
 #HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i 's|^RELEASE_LDFLAGS.*|& -liconv|' Makefile
+	sed -i 's|^RELEASE_LDFLAGS.*|& |' Makefile
 	sed -i 's|^RELEASE_CFLAGS.*|& -fPIC|' Makefile
 	make &&
 	${HOST_SYSTEM}-g++ -m64 -fPIC "$CXXFLAGS" -shared \

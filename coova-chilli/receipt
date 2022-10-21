@@ -11,12 +11,12 @@ WEB_SITE="http://www.coova.org/CoovaChilli"
 WGET_URL="https://github.com/coova/coova-chilli/archive/refs/tags//$TARBALL"
 
 DEPENDS="libssl curl libidn"
-BUILD_DEPENDS="openssl-dev curl-dev sed libiconv-dev curl-dev"
+BUILD_DEPENDS="openssl-dev curl-dev sed  curl-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	sh bootstrap &&
 	./configure  --prefix=/usr --mandir=/usr/share/man \
 		--infodir=/usr/share/info \

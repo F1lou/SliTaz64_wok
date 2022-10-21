@@ -13,7 +13,7 @@ TAGS="compiler"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="glib"
-BUILD_DEPENDS="flex bison glib-dev pkg-config expat-dev libiconv-dev
+BUILD_DEPENDS="flex bison glib-dev pkg-config expat-dev 
 	graphviz-dev"
 
 # Rules to configure and make the package.

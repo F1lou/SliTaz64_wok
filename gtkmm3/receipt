@@ -17,7 +17,7 @@ DEPENDS="atkmm cairomm gcc-lib-base glibmm gtk+3 libgiomm libsigc++ pangomm \
 BUILD_DEPENDS="atkmm-dev cairomm-dev doxygen glibmm-dev gtk+3-dev libgiomm-dev \
 	libsigc++-dev mm-common pangomm-dev libxkbcommon-dev xorg-libXtst-dev
 	xorg-dev libgio-dev libgiomm-dev pangomm-dev libbsd-dev xorg-libXshmfence-dev
-	libiconv-dev glib-dev pango-dev libgio-dev mesa-dev libepoxy-dev
+	 glib-dev pango-dev libgio-dev mesa-dev libepoxy-dev
 	util-linux-mount-dev fribidi-dev gdk-pixbuf-dev shared-mime-info-dev
 	libxkbcommon-dev iso-codes wayland-dev gobject-introspection-dev
 	cairomm-dev pangomm-dev atkmm-dev glibmm-dev graphviz"
@@ -26,7 +26,7 @@ BUILD_DEPENDS="atkmm-dev cairomm-dev doxygen glibmm-dev gtk+3-dev libgiomm-dev \
 compile_rules()
 {
 	#~ mkdir bld && cd bld
-	export LDFLAGS="$LDFLAGS -liconv -lGL" # -lgio-2.0"
+	export LDFLAGS="$LDFLAGS  -lGL" # -lgio-2.0"
 	#~ export GIT_SSL_NO_VERIFY=true
 	#~ meson --prefix=/usr \
 		#~ -D build-documentation=false \

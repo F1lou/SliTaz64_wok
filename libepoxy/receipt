@@ -12,14 +12,14 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://github.com/anholt/$PACKAGE/releases/download/$VERSION/$TARBALL"
 
 DEPENDS="mesa"
-BUILD_DEPENDS="mesa-dev xorg-dev xorg-libXshmfence-dev libiconv-dev"
+BUILD_DEPENDS="mesa-dev xorg-dev xorg-libXshmfence-dev "
 
 HOST_ARCH="x86_64"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	mkdir build && cd build &&
 	meson --prefix=/usr -Dtests=false .. &&
 	ninja &&

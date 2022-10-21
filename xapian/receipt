@@ -12,12 +12,12 @@ TARBALL="$PACKAGE-core-$VERSION.tar.xz"
 WGET_URL="https://oligarchy.co.uk/$PACKAGE/$VERSION/$TARBALL"
 
 DEPENDS="gcc-lib-base util-linux-uuid zlib"
-BUILD_DEPENDS="gcc util-linux-uuid-dev zlib-dev libiconv-dev"
+BUILD_DEPENDS="gcc util-linux-uuid-dev zlib-dev "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./configure		\
 		--prefix=/usr	\
 		$CONFIGURE_ARGS &&

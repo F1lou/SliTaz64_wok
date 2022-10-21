@@ -12,12 +12,12 @@ TARBALL="v$VERSION.tar.gz"
 WGET_URL="https://github.com/AcademySoftwareFoundation/Imath/archive/refs/tags/$TARBALL"
 
 DEPENDS=""
-BUILD_DEPENDS="libiconv-dev"
+BUILD_DEPENDS=""
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	mkdir	build &&
 	cd	build &&
 	cmake	..			\

@@ -12,12 +12,12 @@ WGET_URL="https://github.com/ahkok/bootchart/archive/refs/tags/$TARBALL"
 TAGS="boot performance profile analysis"
 
 SUGGESTED="pybootchartgui"
-BUILD_DEPENDS="libiconv-dev"
+BUILD_DEPENDS=""
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	cd $src
 	./autogen.sh
 	./configure && make &&

@@ -15,7 +15,7 @@ WGET_URL2="http://bzr.linuxfoundation.org/loggerhead/openprinting/cups-filters/d
 DEPENDS="lcms poppler qpdf ghostscript gutenprint glib"
 BUILD_DEPENDS="ijs-dev libpng-dev lcms-dev poppler-dev qpdf-dev dbus-dev \
 cups-dev gmp-dev zlib-dev jpeg-dev tiff-dev freetype-dev fontconfig-dev \
-libiconv-dev vala"
+ vala"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -31,7 +31,7 @@ compile_rules()
 	sed -i '40i#include <cups/ppd.h>'\
 		cupsfilters/driver.h
 
-	LDFLAGS="$LDFLAGS -liconv" ./configure			\
+	 ./configure			\
 		--prefix=/usr		\
 		--sysconfdir=/etc	\
 		$CONFIGURE_ARGS &&

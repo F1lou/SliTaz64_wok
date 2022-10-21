@@ -12,13 +12,13 @@ WGET_URL="$SF_MIRROR/xplc/$TARBALL"
 TAGS=""
 
 DEPENDS="gcc-lib-base"
-BUILD_DEPENDS="libiconv-dev"
+BUILD_DEPENDS=""
 
 # Rules to configure and make the package.
 
 compile_rules() {
   cd $src
-  export LDFLAGS="$LDFLAGS -liconv"
+  
   export CFLAGS="$CFLAGS -Wno-narrowing"
   ./configure --prefix=/usr --mandir=/usr/share/man \
 			  --without-libuuid $CONFIGURE_ARGS &&

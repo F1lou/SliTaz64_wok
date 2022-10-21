@@ -13,12 +13,12 @@ WGET_URL="http://audiofile.68k.org/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="alsa-lib"
-BUILD_DEPENDS="alsa-lib-dev asciidoc libiconv-dev"
+BUILD_DEPENDS="alsa-lib-dev asciidoc "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	CXXFLAGS="$CXXFLAGS -fpermissive -liconv" \
+	CXXFLAGS="$CXXFLAGS -fpermissive " \
 	./configure \
 		$CONFIGURE_ARGS &&
 	make &&

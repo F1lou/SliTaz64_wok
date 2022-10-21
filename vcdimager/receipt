@@ -12,12 +12,12 @@ WGET_URL="ftp://ftp.gnu.org/gnu/vcdimager/$TARBALL"
 TAGS="multimedia video vcd"
 
 DEPENDS="libcdio libxml2 popt"
-BUILD_DEPENDS="libcdio libcdio-dev libxml2-dev popt-dev libiconv-dev"
+BUILD_DEPENDS="libcdio libcdio-dev libxml2-dev popt-dev "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	LDFLAGS="$LDFLAGS -liconv" ./configure $CONFIGURE_ARGS &&
+	 ./configure $CONFIGURE_ARGS &&
 	make && make install
 }
 

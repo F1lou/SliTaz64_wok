@@ -13,7 +13,7 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
 DEPENDS="gsl sqlite"
-BUILD_DEPENDS="sqlite-dev libiconv-dev"
+BUILD_DEPENDS="sqlite-dev "
 
 # Rules to configure and make the package.
 compile_rules()

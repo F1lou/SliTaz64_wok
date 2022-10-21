@@ -12,12 +12,12 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
 DEPENDS="libusb eudev"
-BUILD_DEPENDS="libusb-dev libiconv-dev"
+BUILD_DEPENDS="libusb-dev "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./configure		\
 		--disable-mtpz	\
 		$CONFIGURE_ARGS &&

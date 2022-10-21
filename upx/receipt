@@ -13,7 +13,7 @@ PATCH="https://github.com/upx/upx-lzma-sdk/archive/v$VERSION.tar.gz"
 EXTRA_SOURCE_FILES="lzma-$TARBALL"
 
 DEPENDS="ucl zlib"
-BUILD_DEPENDS="ucl-dev zlib-dev perl libiconv-dev"
+BUILD_DEPENDS="ucl-dev zlib-dev perl "
 
 current_version()
 {
@@ -24,7 +24,7 @@ current_version()
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	[ -s $SOURCES_REPOSITORY/lzma-$TARBALL ] ||
 		wget -O $SOURCES_REPOSITORY/lzma-$TARBALL $PATCH --no-check-certificate
 	tar -xf $SOURCES_REPOSITORY/lzma-$TARBALL

@@ -11,10 +11,8 @@ WEB_SITE="https://www.gnu.org/software/gettext/"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
 
-DEPENDS="acl-dev attr-dev gettext-base gettext-tools glib-dev libcroco 
-	libcroco-dev liblzma libxml2 libxml2-dev m4 ncurses pcre-dev libiconv"
-BUILD_DEPENDS="acl-dev glib-dev libcroco-dev libxml2-dev libtextstyle-dev
-	libiconv-dev liblzma-dev"
+DEPENDS="gettext-base gettext-tools libcroco libxml2 ncurses liblzma"
+BUILD_DEPENDS="acl-dev glib-dev libcroco-dev libxml2-dev liblzma-dev"
 SPLIT="gettext-base gettext-tools"
 
 HOST_ARCH="x86_64 i486 arm"

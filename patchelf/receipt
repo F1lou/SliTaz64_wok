@@ -12,12 +12,12 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/NixOS/$PACKAGE/archive/$VERSION.tar.gz"
 
 DEPENDS="gcc-lib-base"
-BUILD_DEPENDS="automake gcc libiconv-dev"
+BUILD_DEPENDS="automake gcc "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./bootstrap.sh &&
 	./configure			\
 		--prefix=/usr		\

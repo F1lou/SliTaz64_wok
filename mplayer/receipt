@@ -36,7 +36,7 @@ case "$ARCH" in
 	x86_64) 
 		ARCH_ARGS="--target=x86_64-linux --disable-sdl --enable-runtime-cpudetection" 
 		BUILD_DEPENDS="$BUILD_DEPENDS cdparanoia-III-dev x264-dev enca-dev \
-		libmng-dev libiconv-dev" ;;	# lirc-dev
+		libmng-dev " ;;	# lirc-dev
 	i?86) 
 		ARCH_ARGS="--target=i386-linux --disable-sdl --enable-runtime-cpudetection" 
 		BUILD_DEPENDS="$BUILD_DEPENDS cdparanoia-III-dev x264-dev enca-dev \
@@ -50,7 +50,7 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	LDFLAGS="$LDFLAGS -liconv" ./configure \
+	 ./configure \
 		--prefix=/usr \
 		--confdir=/etc/mplayer \
 		--libdir=/usr/lib/mplayer \

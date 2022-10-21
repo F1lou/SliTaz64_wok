@@ -14,7 +14,7 @@ HOST_ARCH="x86_64 i486 arm"
 # WARNING: wayland must be installed in chroot since build host 
 # wayland-scanner is used for cross compilation to ARM
 DEPENDS="libffi expat"
-BUILD_DEPENDS="libffi-dev expat-dev libiconv-dev"
+BUILD_DEPENDS="libffi-dev expat-dev "
 
 # Handle cross compilation
 case "$ARCH" in

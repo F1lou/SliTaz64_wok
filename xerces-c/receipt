@@ -12,12 +12,12 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="http://apache.org/dist/xerces/c/${VERSION%%.*}/sources/$TARBALL"
 
 DEPENDS="gcc-lib-base glibc-base icu libcrypto libcurl"
-BUILD_DEPENDS="libiconv-dev"
+BUILD_DEPENDS=""
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	LDFLAGS="$LDFLAGS -liconv" ./configure $CONFIGURE_ARGS &&
+	 ./configure $CONFIGURE_ARGS &&
 	make $MAKEFLAGS &&
 	make install
 }

@@ -11,14 +11,14 @@ WEB_SITE="https://web.archive.org/web/20190501185313/http://www.silcnet.org/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 #WGET_URL="$WEB_SITE/download/server/sources/$TARBALL"
 WGET_URL="$SF_MIRROR/project/silc/silc/server/sources/$TARBALL"
-BUILD_DEPENDS="libiconv-dev"
+BUILD_DEPENDS=""
 
 CONFIG_FILES="/etc/silcalgs.conf /etc/silcd.conf"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	mkdir -p $DESTDIR/etc
 	mkdir -p $DESTDIR/usr/share/man/man5
 	mkdir -p $DESTDIR/usr/share/man/man8

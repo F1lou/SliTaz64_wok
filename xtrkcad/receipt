@@ -19,13 +19,13 @@ DEPENDS="atk cairo expat fontconfig freetype glib glibc-base gtk+
 	xorg-libXinerama xorg-libXrender zlib"
 BUILD_DEPENDS="cmake doxygen gettext gtk+-dev libgtkhtml-dev libxml2-dev 
 	pkg-config xorg-kbproto xorg-libX11-dev xorg-libXau-dev 
-	xorg-libXdmcp-dev xorg-renderproto xorg-xproto zlib-dev libiconv-dev"
+	xorg-libXdmcp-dev xorg-renderproto xorg-xproto zlib-dev "
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	# Binutils 2.22 break many packages build without LDFLAGS set correctly.
-	export LDFLAGS="$LDFLAGS -Wl,--copy-dt-needed-entries -liconv"
+	export LDFLAGS="$LDFLAGS -Wl,--copy-dt-needed-entries "
 	export CFLAGS="$CFLAGS -fcommon"
 	
 	XTRKCAD_STUFF=$stuff

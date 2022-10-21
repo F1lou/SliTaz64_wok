@@ -11,12 +11,12 @@ WEB_SITE="http://marcansoft.com/blog/iphonelinux/usbmuxd/"
 WGET_URL="http://marcansoft.com/uploads/$PACKAGE/$TARBALL"
 
 DEPENDS="libusb libplist"
-BUILD_DEPENDS="cmake libusb-dev libplist-dev libiconv-dev"
+BUILD_DEPENDS="cmake libusb-dev libplist-dev "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	cd $src
 	patch -Np1 -i $stuff/usbmuxd-udevuser.patch
 	sed -i 's|/lib/udev/rules.d/|/etc/udev/rules.d/|g' udev/CMakeLists.txt

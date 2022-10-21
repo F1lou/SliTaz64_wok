@@ -12,13 +12,13 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}download/ScrollZ-$VERSION.tar.gz"
 
 DEPENDS=""
-BUILD_DEPENDS="ncursesw-dev libiconv-dev"
+BUILD_DEPENDS="ncursesw-dev "
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	export CFLAGS="$CFLAGS -fcommon"
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./configure --prefix=/usr &&
 	make &&
 	make DESTDIR=$DESTDIR install

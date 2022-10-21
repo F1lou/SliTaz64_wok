@@ -11,7 +11,7 @@ WEB_SITE="http://vde.sourceforge.net/"
 WGET_URL="$SF_MIRROR/vde/$TARBALL"
 
 DEPENDS="libcrypto"
-BUILD_DEPENDS="libcrypto-dev openssl-dev libiconv-dev py3k-dev
+BUILD_DEPENDS="libcrypto-dev openssl-dev  py3k-dev
 	libpcap-dev"
 
 # Rules to configure and make the package.
@@ -20,7 +20,7 @@ compile_rules()
 	cd $src
 	sed -i 's|sys.stdout.write(sys.version[:3]|sys.stdout.write(sys.version[:4]|' configure
 	sed -i 's|for am_cv_pathless_PYTHON in python python2 python3 python3.0|for am_cv_pathless_PYTHON in python python2 python3 python3.0 python3.10|' configure
-	LDFLAGS="$LDFLAGS -liconv" ./configure --prefix=/usr \
+	 ./configure --prefix=/usr \
 	--libexecdir=/usr/lib/$PACKAGE \
 	--sysconfdir=/etc \
 	--mandir=/usr/share/man \

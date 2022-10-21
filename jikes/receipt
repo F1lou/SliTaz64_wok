@@ -12,12 +12,12 @@ WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 TAGS="java"
 
 DEPENDS="gcc-lib-base"
-BUILD_DEPENDS="slitaz-toolchain libiconv-dev"
+BUILD_DEPENDS="slitaz-toolchain "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	cd $src
 	./configure \
 		--prefix=/usr \

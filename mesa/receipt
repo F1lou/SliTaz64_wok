@@ -20,7 +20,7 @@ BUILD_DEPENDS="autoconf automake expat-dev file lesstif-dev libdrm-dev
 	libdrm-nouveau libpthread-stubs-dev libtool libxml2-python  
 	pkg-config talloc eudev-dev xorg-dri2proto xorg-glproto xorg-imake 
 	xorg-libXdamage-dev xorg-libXt-dev xorg-libXxf86vm-dev llvm
-	xorg-makedepend libiconv-dev python3-mako xorg-libpciaccess-dev
+	xorg-makedepend  python3-mako xorg-libpciaccess-dev
 	wayland-dev wayland-protocols elfutils-dev xorg-libXshmfence-dev
 	xorg-libXrandr-dev xorg-server-dev"
 
@@ -28,7 +28,7 @@ BUILD_DEPENDS="autoconf automake expat-dev file lesstif-dev libdrm-dev
 compile_rules()
 {
 	mkdir build && cd build && 
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	meson --prefix=/usr -Dbuildtype=release -Dgallium-nine=false .. &&
 	ninja install
 }

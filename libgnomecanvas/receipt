@@ -13,7 +13,7 @@ WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION%.*}/$TARBALL"
 DEPENDS="gtk+ libglade libart_lgpl xorg-libXdamage xorg-libXcursor"
 BUILD_DEPENDS="gtk+-dev libglade-dev libart_lgpl-dev xorg-libXcursor-dev \
 intltool xorg-libXcursor-dev xorg-libXinerama-dev xorg-libXrandr-dev \
-xorg-libXcomposite-dev liblzma-dev libiconv-dev"
+xorg-libXcomposite-dev liblzma-dev "
 
 # Rules to configure and make the package.
 compile_rules()

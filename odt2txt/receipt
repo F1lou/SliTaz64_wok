@@ -14,12 +14,12 @@ WGET_URL="$WEB_SITE/archive/v$VERSION.tar.gz"
 
 #SUGGESTED="odfread"
 DEPENDS="zlib"
-BUILD_DEPENDS="zlib-dev libiconv-dev"
+BUILD_DEPENDS="zlib-dev "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	make
 	mkdir -p $DESTDIR/usr/bin
 	mv $PACKAGE $DESTDIR/usr/bin/

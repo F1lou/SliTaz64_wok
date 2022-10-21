@@ -15,7 +15,7 @@ PROVIDE="browser-html5"
 DEPENDS="gtk+3"
 BUILD_DEPENDS="autoconf213 gtk+3-dev yasm zip unzip iw dbus-dev dbus-glib-dev \
 libpng-dev gstreamer gstreamer-dev gst-plugins-base-1.0-dev gst-plugins-base-1.0 \
-libvpx-dev mesa-dev python-setuptools zlib-dev bzip2-dev python-dev libiconv-dev \
+libvpx-dev mesa-dev python-setuptools zlib-dev bzip2-dev python-dev  \
 pixman pixman-dev libffi libffi-dev sqlite sqlite-dev libevent libevent-dev" # virtualenv 
 
 # Rules to configure and make the package.
@@ -63,7 +63,7 @@ compile_rules()
 	export CPPFLAGS="$CPPFLAGS -O2"
 	export MAKEFLAGS="$MAKEFLAGS"
 	export SHELL=/bin/bash
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	#~ ./mach configure
 	#~ ./mach build || echo "Next =>"
 	./mach build

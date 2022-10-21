@@ -11,12 +11,12 @@ WEB_SITE="https://utox.org/"
 WGET_URL="https://github.com/uTox/uTox/archive/refs/tags/$TARBALL"
 
 DEPENDS="dbus bzlib xorg-libX11 gtk+3"
-BUILD_DEPENDS="wget libiconv-dev"
+BUILD_DEPENDS="wget "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	mkdir build && cd build
 	cmake .. &&
 	make && make install

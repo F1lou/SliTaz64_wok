@@ -29,13 +29,13 @@ case "$ARCH" in
 	x86_64|i?86) 
 		BUILD_DEPENDS="$BUILD_DEPENDS autoconf automake file libdrm-nouveau 
 		libpthread-stubs-dev libtool llvm talloc xorg-imake xorg-makedepend
-		libiconv-dev python3-mako wayland-protocols" ;;
+		 python3-mako wayland-protocols" ;;
 esac
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export CXXFLAGS="$CXXFLAGS -liconv"
+	export CXXFLAGS="$CXXFLAGS "
 	find . -name 'nouveau*.h' | \
 		xargs sed -i 's|libdrm/nouveau.h|libdrm/nouveau/nouveau.h|'
 

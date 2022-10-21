@@ -11,12 +11,12 @@ WEB_SITE="http://bastard.sourceforge.net/libdisasm.html"
 WGET_URL="$SF_MIRROR/bastard/$TARBALL"
 
 DEPENDS=""
-BUILD_DEPENDS="libiconv-dev"
+BUILD_DEPENDS=""
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./configure \
 		--prefix=/usr \
 		--mandir=/usr/share/man \

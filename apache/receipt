@@ -17,7 +17,7 @@ PROVIDE="lighttpd"
 DEPENDS="apr apr-util expat openssl pcre util-linux-uuid zlib"
 BUILD_DEPENDS="apr-dev apr-util-dev bash expat-dev lua-dev 
 	openldap-dev openssl-dev sed util-linux-uuid-dev zlib-dev
-	libiconv-dev"
+	"
 
 CONFIG_FILES="/etc/apache /var/www /etc/ssl/apache"
 TAZPANEL_DAEMON="edit::/etc/apache/httpd.conf|web::$WEB_SITE"

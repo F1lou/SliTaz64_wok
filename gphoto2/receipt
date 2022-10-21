@@ -14,7 +14,7 @@ WGET_URL="$SF_MIRROR/gphoto/$TARBALL"
 
 DEPENDS="jpeg libexif libgphoto2 libltdl ncurses popt readline"
 BUILD_DEPENDS="jpeg-dev libgphoto2-dev libtool popt-dev readline-dev
-	libiconv-dev"
+	"
 
 # Rules to configure and make the package.
 compile_rules()

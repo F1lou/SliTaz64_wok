@@ -20,7 +20,7 @@ compile_rules()
 	#~ ./configure $CONFIGURE_ARGS && 
 	#~ make && make install
 	mkdir bld && cd bld
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	meson --prefix=/usr .. &&
 	ninja
 

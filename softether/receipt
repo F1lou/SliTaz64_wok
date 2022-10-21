@@ -13,13 +13,13 @@ TARBALL="$PACKAGE-src-v$VERSION.tar.gz"
 WGET_URL="http://www.softether-download.com/files/softether/v$VERSION-$RELEASE-tree/Source_Code/$TARBALL"
 
 DEPENDS="libcrypto libssl ncurses readline zlib"
-BUILD_DEPENDS="ncurses-dev openssl-dev readline-dev libiconv-dev"
+BUILD_DEPENDS="ncurses-dev openssl-dev readline-dev "
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	mkdir -p $DESTDIR/usr/bin
-	LDFLAGS="$LDFLAGS -liconv" LANG=en_US ./configure $CONFIGURE_ARGS &&
+	 LANG=en_US ./configure $CONFIGURE_ARGS &&
 	sed -i "s|^INSTALL_.*DIR=|&$DESTDIR|" Makefile &&
 	make &&
 	make DESTDIR=$DESTDIR install &&

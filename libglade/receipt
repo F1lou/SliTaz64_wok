@@ -13,7 +13,7 @@ HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="gtk+ xorg-libXdamage"
 BUILD_DEPENDS="gtk+ gtk+-dev pkg-config libxml2-dev expat-dev
-	libiconv-dev"
+	"
 
 # Rules to configure and make the package.
 compile_rules()

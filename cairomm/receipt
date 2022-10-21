@@ -12,13 +12,13 @@ WGET_URL="http://cairographics.org/releases/$TARBALL"
 
 DEPENDS="pixman cairo libsigc++3 xcb-util"
 BUILD_DEPENDS="pixman-dev cairo-dev libsigc++3-dev xcb-util-dev
-	libxml2-dev libiconv-dev xorg-randrproto libbsd-dev"
+	libxml2-dev  xorg-randrproto libbsd-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	mkdir bld && cd bld &&
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	meson --prefix=/usr .. &&
 	ninja && ninja install
 	

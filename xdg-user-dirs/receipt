@@ -12,12 +12,12 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://user-dirs.freedesktop.org/releases/$TARBALL"
 
 DEPENDS=""
-BUILD_DEPENDS="libtool gawk libiconv-dev"
+BUILD_DEPENDS="libtool gawk "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./autogen.sh			\
 		--disable-documentation	\
 		$CONFIGURE_ARGS &&

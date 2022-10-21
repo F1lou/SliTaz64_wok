@@ -17,7 +17,7 @@ xorg-libXrender zlib"
 BUILD_DEPENDS="pkg-config glib-dev libpng-dev zlib-dev fontconfig-dev \
 freetype-dev xorg-libX11-dev pixman-dev xorg-libXau-dev xorg-libXdmcp-dev \
 harfbuzz-dev xorg-libXrender-dev xcb-util-dev libxcb-dev expat-dev \
-libxml2-dev util-linux-uuid-dev libiconv-dev binutils file"
+libxml2-dev util-linux-uuid-dev  binutils file"
 SPLIT="cairo-tools"
 SIBLINGS="cairo-gl"
 HOST_ARCH="x86_64 i486 arm"
@@ -30,7 +30,7 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	patch -Np1 -i $stuff/lookup-symbol.c.patch
 	sed -i '/index.sgml/d' doc/public/Makefile*
 	./configure \

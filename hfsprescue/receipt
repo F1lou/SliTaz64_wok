@@ -11,12 +11,12 @@ WEB_SITE="http://www.plop.at/en/hfsprescue.html"
 WGET_URL="http://download.plop.at/$PACKAGE/$TARBALL"
 
 DEPENDS="gcc-lib-base libcrypto zlib"
-BUILD_DEPENDS="openssl-dev zlib-dev libiconv-dev"
+BUILD_DEPENDS="openssl-dev zlib-dev "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./configure --prefix=/usr --infodir=/usr/share/info \
 	--mandir=/usr/share/man \
 	$CONFIGURE_ARGS &&

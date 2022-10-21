@@ -15,8 +15,8 @@ WGET_URL="https://github.com/hellosiyan/Viewnior/archive/$TARBALL"
 DEPENDS="atk bzlib cairo exiv2 fontconfig freetype gcc-lib-base gdk-pixbuf \
 	glib glibc-base gtk+ harfbuzz libffi libgio libpng libxcb libxml2 
 	pango pcre pixman xorg-libX11 xorg-libXau xorg-libXdmcp xorg-libXext 
-	xorg-libXrender zlib libiconv"
-BUILD_DEPENDS="exiv2-dev gtk+-dev libtool meson libiconv-dev libbsd-dev"
+	xorg-libXrender zlib "
+BUILD_DEPENDS="exiv2-dev gtk+-dev libtool meson  libbsd-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 
@@ -27,7 +27,7 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	meson --prefix=/usr builddir &&
 	cd	builddir &&
 	ninja &&

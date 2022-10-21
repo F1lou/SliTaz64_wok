@@ -13,12 +13,12 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="${WEB_SITE}files/${VERSION%.*}/$TARBALL"
 
 DEPENDS="libssl"
-BUILD_DEPENDS="cmake openssl-dev zlib-dev libiconv-dev"
+BUILD_DEPENDS="cmake openssl-dev zlib-dev "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	mkdir build
 	cd build
 	cmake ../				\

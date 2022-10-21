@@ -12,13 +12,13 @@ WGET_URL="https://webkitgtk.org/releases/$TARBALL"
 
 DEPENDS=""
 BUILD_DEPENDS="cairo-dev ruby-dev libepoxy-dev mesa-dev xorg-libXxf86vm-dev
-xorg-libXtst-dev libiconv-dev harfbuzz-dev icu-dev libwebp-dev
+xorg-libXtst-dev  harfbuzz-dev icu-dev libwebp-dev
 libsoup-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	mkdir build && cd build &&
 	cmake -DCMAKE_BUILD_TYPE=Release  \
       -DCMAKE_INSTALL_PREFIX=/usr \

@@ -14,7 +14,7 @@ WGET_URL="https://www.apache.org/dist/$PACKAGE/$TARBALL"
 DEPENDS="apr-util libsqlite libsvn lz4-lib"
 BUILD_DEPENDS="apache-dev apr-dev apr-util-dev expat-dev krb5-dev 
 	lz4-dev mysql-dev neon-dev python-dev sqlite-dev util-linux-uuid-dev
-	zlib-dev libiconv-dev"
+	zlib-dev "
 
 # Rules to configure and make the package.
 compile_rules()

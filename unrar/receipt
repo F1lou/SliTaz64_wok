@@ -12,12 +12,12 @@ TARBALL="${PACKAGE}src-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}rar/$TARBALL"
 
 DEPENDS="gcc-lib-base"
-BUILD_DEPENDS="libiconv-dev"
+BUILD_DEPENDS=""
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -pthread -liconv" 
+	export LDFLAGS="$LDFLAGS -pthread " 
 	sed -i 's|LDFLAGS=-pthread||' makefile
 	make
 }

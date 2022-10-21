@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$SF_MIRROR/$PACKAGE/$VERSION/$TARBALL"
 
 DEPENDS="gcc-lib-base ncursesw popt util-linux-uuid"
-BUILD_DEPENDS="ncursesw-dev popt-dev util-linux-uuid-dev libiconv-dev"
+BUILD_DEPENDS="ncursesw-dev popt-dev util-linux-uuid-dev "
 
 # Rules to configure and make the package.
 compile_rules()
@@ -20,7 +20,7 @@ compile_rules()
 	sed -i 's|#include <ncursesw/ncurses.h>|#include <ncurses.h>|' \
 		gptcurses.cc
 
-	make LDFLAGS="$LDFLAGS -liconv"
+	make 
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

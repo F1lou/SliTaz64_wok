@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="${WEB_SITE}/-/archive/master/v$VERSION.tar.bz2"
 
 DEPENDS="ncurses"
-BUILD_DEPENDS="automake ncurses-dev libiconv-dev"
+BUILD_DEPENDS="automake ncurses-dev "
 CONFIG_FILES="/etc/minirc.dfl"
 
 # Rules to configure and make the package.

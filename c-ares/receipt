@@ -10,12 +10,12 @@ WEB_SITE="https://c-ares.haxx.se/"
 
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}download/$TARBALL"
-BUILD_DEPENDS="libiconv-dev"
+BUILD_DEPENDS=""
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./configure \
 		--prefix=/usr \
 		--mandir=/usr/share/man \

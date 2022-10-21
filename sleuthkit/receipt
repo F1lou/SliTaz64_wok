@@ -12,12 +12,12 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/$PACKAGE/$PACKAGE/releases/download/$PACKAGE-$VERSION/$TARBALL"
 
 DEPENDS="gcc-lib-base perl"
-BUILD_DEPENDS="gcc libpthread-stubs perl sqlite-dev libiconv-dev"
+BUILD_DEPENDS="gcc libpthread-stubs perl sqlite-dev "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./configure				\
 		--prefix=/usr			\
 		--infodir=/usr/share/info	\

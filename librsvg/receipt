@@ -22,7 +22,7 @@ BUILD_DEPENDS="cairo-dev expat-dev fontconfig-dev freetype-dev gdk-pixbuf-dev
 case "$ARCH" in
 	x86_64|i?86) BUILD_DEPENDS="$BUILD_DEPENDS gtk-doc perl libgsf libcroco-dev
 	gobject-introspection-dev gtk+3-dev rust rust-cargo libbsd-dev
-	liblzma-dev python3-docutils file gi-docgen libiconv-dev
+	liblzma-dev python3-docutils file gi-docgen 
 	shared-mime-info" ;;
 esac
 

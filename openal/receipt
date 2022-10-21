@@ -14,12 +14,12 @@ TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="${WEB_SITE}$PACKAGE-releases/$TARBALL"
 
 DEPENDS="gcc-lib-base libatomic"
-BUILD_DEPENDS="cmake gcc libatomic libiconv-dev"
+BUILD_DEPENDS="cmake gcc libatomic "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export	LDFLAGS="$LDFLAGS -latomic -liconv"
+	export	LDFLAGS="$LDFLAGS -latomic "
 
 	cmake -DCMAKE_INSTALL_PREFIX=/usr &&
 	make &&

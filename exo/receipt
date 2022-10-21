@@ -14,13 +14,13 @@ COOK_OPT="!fs"
 DEPENDS="exo-tools libexo util-linux-uuid libgio"
 BUILD_DEPENDS="libxfce4util-dev perl-uri startup-notification-dev intltool \
 util-linux-uuid-dev libgio-dev glib-dev gtk+3-dev libxfce4ui-dev libxml2-dev \
-xcb-util-dev libiconv-dev libbsd-dev"
+xcb-util-dev  libbsd-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	#~ patch -p1 -i $stuff/helpers.rc.u
-	export LDFLAGS="$LDFLAGS -lxcb-util -liconv"
+	export LDFLAGS="$LDFLAGS -lxcb-util "
 	./configure \
 		--prefix=/usr \
 		--sysconfdir=/etc \

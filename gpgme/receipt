@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="https://www.gnupg.org/ftp/gcrypt/gpgme/$TARBALL"
 
 DEPENDS="gcc-lib-base gnupg libassuan"
-BUILD_DEPENDS="gcc gnupg libassuan-dev libgpg-error-dev libiconv-dev"
+BUILD_DEPENDS="gcc gnupg libassuan-dev libgpg-error-dev "
 
 # Rules to configure and make the package.
 compile_rules()
@@ -20,7 +20,7 @@ compile_rules()
 	# Integrity check: https://www.gnupg.org/download/integrity_check.html
 	echo "070f551664dfd4a7e4dd9cdeae3ed167c91581d5  $SRC/$TARBALL" | sha1sum -c || exit 1
 
-	LDFLAGS="$LDFLAGS -liconv" ./configure		\
+	 ./configure		\
 		$CONFIGURE_ARGS &&
 	make &&
 	make install

@@ -12,7 +12,7 @@ WGET_URL="http://archive.xfce.org/src/xfce/$PACKAGE/${VERSION%.*}/$TARBALL"
 
 DEPENDS="gtk+ libxfce4util xfconf startup-notification dbus-glib libglade"
 BUILD_DEPENDS="gtk+-dev libxfce4util-dev xfconf-dev startup-notification-dev 
- libglade-dev xcb-util-dev intltool util-linux-uuid-dev xorg-proto libiconv-dev"
+ libglade-dev xcb-util-dev intltool util-linux-uuid-dev xorg-proto "
 
 # Rules to configure and make the package.
 compile_rules()

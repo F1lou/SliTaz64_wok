@@ -14,7 +14,7 @@ DEPENDS="gtk+3 libxfce4util libxfconf startup-notification dbus-glib libglade \
 util-linux-uuid"
 BUILD_DEPENDS="gtk+3-dev libxfce4util-dev libxfconf-dev \
 startup-notification-dev libglade-dev xcb-util-dev util-linux-uuid-dev \
-intltool libexif-dev xorg-proto libiconv-dev"
+intltool libexif-dev xorg-proto "
 
 # Rules to configure and make the package.
 compile_rules()

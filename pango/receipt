@@ -13,7 +13,7 @@ CONFIG_FILES="/etc/pango/pango.modules"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="cairo xorg-libXft slitaz-base-files gcc-lib-base util-linux-uuid"
-BUILD_DEPENDS="cairo-dev libxml2-dev xorg-libXft-dev fribidi-dev libiconv-dev
+BUILD_DEPENDS="cairo-dev libxml2-dev xorg-libXft-dev fribidi-dev 
 	libgio-dev xorg-randrproto libbsd-dev"
 
 # Handle cross compilation
@@ -28,7 +28,7 @@ esac
 # Rules to configure and make the package. 
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	meson --buildtype=release --prefix=/usr --sysconfdir=/etc build &&
 	cd build && ninja
 	DESTDIR=$DESTDIR ninja install

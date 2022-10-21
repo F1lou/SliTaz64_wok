@@ -7,7 +7,7 @@ SHORT_DESC="An Emacs major mode for editing or modifying PO files."
 MAINTAINER="domcox@slitaz.org"
 LICENSE="GPL3"
 WEB_SITE="http://www.gnu.org/software/hello/manual/gettext/PO-Mode.html"
-WANTED="gettext"
+WANTED=""
 
 DEPENDS="emacs"
 BUILD_DEPENDS="emacs liblzma-dev"

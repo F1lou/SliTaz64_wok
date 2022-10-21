@@ -24,13 +24,13 @@ TAZPANEL_DAEMON="man::rsync|help::rsync|edit|options|web::$WEB_SITE"
 # Rules to configure and make the package.
 compile_rules()
 {
-	LDFLAGS="$LDFLAGS -liconv" ./configure \
+	 ./configure \
 		--prefix=/usr \
 		--mandir=/usr/share/man \
 		$CONFIGURE_ARGS
 	#~ sed -i  -e 's/HAVE_ICONV_H ./HAVE_ICONV_H 0/' \
 		#~ -e 's/HAVE_ICONV_OPEN ./HAVE_ICONV_OPEN 0/' config.h
-	#~ sed -i 's/-liconv//' Makefile
+	#~ sed -i 's///' Makefile
 	make &&
 	make DESTDIR=$DESTDIR install
 }

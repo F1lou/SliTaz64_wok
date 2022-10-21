@@ -19,7 +19,7 @@ BUILD_DEPENDS="apache apache-dev apr-dev apr-util-dev
 	libtool libunixODBC libxml2-dev libzip-dev libvpx-dev
 	mhash-dev mysql-dev net-snmp-dev openldap-dev openssl-dev 
 	perl pkg-config postgresql-dev re2c sed sqlite-dev 
-	unixODBC-dev c-client openssl-dev libiconv-dev"
+	unixODBC-dev c-client openssl-dev "
 
 #HOST_ARCH="x86_64 i486 arm"
 
@@ -96,7 +96,7 @@ esac
 compile_rules()
 {
 	sed -i 's/pam_start/pam_nostart/' configure
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./configure $ARCH_ARGS $CONFIGURE_ARGS &&
 	make $MAKEFLAGS &&
 	#~ make -j1 INSTALL_ROOT=$DESTDIR install &&

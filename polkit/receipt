@@ -23,7 +23,7 @@ compile_rules()
 	adduser -D -u 27 -G polkitd -s /bin/false -h /etc/polkit-1 polkitd
 
 	mkdir build && cd build
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	meson .. &&
 	ninja && 
 	ninja install

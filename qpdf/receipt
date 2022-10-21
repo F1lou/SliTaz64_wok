@@ -12,13 +12,13 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}/archive/release-$TARBALL"
 
 DEPENDS="libjpeg pcre zlib openssl"
-BUILD_DEPENDS="bash jpeg-dev pcre-dev zlib-dev openssl-dev libiconv-dev
+BUILD_DEPENDS="bash jpeg-dev pcre-dev zlib-dev openssl-dev 
 	libbsd-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure LDFLAGS="$LDFLAGS -liconv" $CONFIGURE_ARGS &&
+	./configure  $CONFIGURE_ARGS &&
 	make &&
 	make install
 }

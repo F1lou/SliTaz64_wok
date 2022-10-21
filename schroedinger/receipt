@@ -11,12 +11,12 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$WEB_SITE/download/$PACKAGE/$TARBALL"
 
 DEPENDS="orc"
-BUILD_DEPENDS="orc-dev libiconv-dev"
+BUILD_DEPENDS="orc-dev "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./configure \
 		--disable-static \
 		$CONFIGURE_ARGS && \

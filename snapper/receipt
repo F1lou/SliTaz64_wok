@@ -15,7 +15,7 @@ DEPENDS="acl attr dbus gcc-lib-base libboost-system libboost-thread libxml2 \
 	util-linux-blkid util-linux-mount util-linux-uuid zlib"
 BUILD_DEPENDS="btrfs-dev dbus-dev docbook-xsl e2fsprogs-dev gcc 
 	libboost-dev libboost-thread-dev libjson-c-dev lvm2 pkg-config 
-	util-linux-mount-dev util-linux-uuid libiconv-dev liblzma-dev
+	util-linux-mount-dev util-linux-uuid  liblzma-dev
 	ncursesw-dev"
 
 CONFIG_FILES="/etc/snapper"
@@ -23,7 +23,7 @@ CONFIG_FILES="/etc/snapper"
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -luuid -liconv"
+	export LDFLAGS="$LDFLAGS -luuid "
 
 	./configure				\
 		--prefix=/usr			\

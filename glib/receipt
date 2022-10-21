@@ -11,7 +11,7 @@ WEB_SITE="https://www.gtk.org/"
 WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION:0:4}/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
-DEPENDS="pcre2 libffi libxml2 elfutils libiconv"
+DEPENDS="pcre2 libffi libxml2 elfutils"
 BUILD_DEPENDS="pcre2-dev libffi-dev zlib-dev perl py3k-dev \
 elfutils-dev libxml2-dev libxml2-tools automake"
 

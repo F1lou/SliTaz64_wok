@@ -13,13 +13,13 @@ CONFIG_FILES="/etc/squid"
 
 DEPENDS="libsasl libldap libssl libltdl"
 BUILD_DEPENDS="perl openssl-dev openldap-dev cyrus-sasl-dev libcap-dev
-	libdb libiconv-dev"
+	libdb "
 SUGGESTED="iptables"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./configure \
 		--prefix=/usr \
 		--sysconfdir=/etc/squid \

@@ -13,12 +13,12 @@ TARBALL="$SOURCE-$VERSION.tar.gz"
 WGET_URL="https://www.libraw.org/data/$TARBALL"
 
 DEPENDS="lcms"
-BUILD_DEPENDS="lcms-dev libiconv-dev zlib-dev file"
+BUILD_DEPENDS="lcms-dev  zlib-dev file"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	autoreconf -fiv
 	./configure $CONFIGURE_ARGS &&
 	make &&

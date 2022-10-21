@@ -13,14 +13,14 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://www.riverbankcomputing.com/static/Downloads/$PACKAGE/$VERSION/$TARBALL"
 
 DEPENDS="gcc-lib-base py3k"
-BUILD_DEPENDS="py3k-dev libiconv-dev"
+BUILD_DEPENDS="py3k-dev "
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	python3 configure.py &&
-	sed -i 's|^LFLAGS.*|& -liconv|' $src/siplib/Makefile
-	sed -i 's|^LFLAGS.*|& -liconv|' $src/sipgen/Makefile
+	sed -i 's|^LFLAGS.*|& |' $src/siplib/Makefile
+	sed -i 's|^LFLAGS.*|& |' $src/sipgen/Makefile
 	make &&
 	make DESTDIR=$DESTDIR install
 }

@@ -13,7 +13,7 @@ WGET_URL="https://gitlab.freedesktop.org/xdg/$PACKAGE/-/archive/${VERSION}/$TARB
 
 DEPENDS="glib"
 BUILD_DEPENDS="autoconf automake intltool itstool xmlto zlib-dev
-	docbook-xsl libiconv-dev"
+	docbook-xsl "
 
 HOST_ARCH="x86_64 i486 arm"
 

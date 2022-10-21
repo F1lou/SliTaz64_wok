@@ -13,12 +13,12 @@ WGET_URL="$GNU_MIRROR/$SOURCE/$TARBALL"
 PROVIDE="gdb"
 
 DEPENDS="ncurses expat glibc-dev py3k"
-BUILD_DEPENDS="ncurses-dev py3k-dev readline-dev libiconv-dev gmp-dev"
+BUILD_DEPENDS="ncurses-dev py3k-dev readline-dev  gmp-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./configure \
 		--disable-werror \
 		$CONFIGURE_ARGS &&

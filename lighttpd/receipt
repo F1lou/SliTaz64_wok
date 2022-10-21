@@ -13,7 +13,7 @@ WGET_URL="https://download.lighttpd.net/$PACKAGE/releases-${VERSION%.*}.x/$TARBA
 
 SUGGESTED="lighttpd-modules perl php python"
 DEPENDS="pcre"
-BUILD_DEPENDS="bzip2-dev pcre-dev zlib-dev libiconv-dev"
+BUILD_DEPENDS="bzip2-dev pcre-dev zlib-dev "
 
 CONFIG_FILES="/etc/lighttpd/vhosts.conf /etc/lighttpd/lighttpd.conf"
 

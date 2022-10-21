@@ -13,14 +13,14 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/mrdudz/vbindiff/releases/download/$VERSION/$TARBALL"
 
 DEPENDS="libpanel ncursesw"
-BUILD_DEPENDS="libpanel ncursesw-dev libiconv-dev"
+BUILD_DEPENDS="libpanel ncursesw-dev "
 
 HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	
 	./configure				\
 		--prefix=/usr			\

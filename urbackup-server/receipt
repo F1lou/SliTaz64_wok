@@ -13,12 +13,12 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://hndl.urbackup.org/Server/$VERSION/$TARBALL"
 
 DEPENDS="cryptopp libcurl zlib"
-BUILD_DEPENDS="cryptopp curl-dev libiconv-dev zlib-dev"
+BUILD_DEPENDS="cryptopp curl-dev  zlib-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	sed -i 's/chown/echo &/;s/adduser/echo &/g' Makefile*
 
 	./configure			\

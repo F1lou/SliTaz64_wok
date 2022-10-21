@@ -20,7 +20,7 @@ DEPENDS="libldap samba-common glibc-base ncursesw popt cifs-utils acl \
 BUILD_DEPENDS="openldap openldap-dev libcomerr-dev cups-dev talloc-dev \
 	pkg-config libldap krb5-dev lmdb zlib-dev lmdb-dev gnutls-dev py3k-dev \
 	perl-parse-yapp jansson-dev libarchive-dev dbus-dev icu-dev \
-	rpcsvc-proto libiconv-dev talloc-python libtirpc-dev libxslt-dev \
+	rpcsvc-proto  talloc-python libtirpc-dev libxslt-dev \
 	python3-markdown python3-dnspython gpgme-dev"
 
 # Rules to configure and make the package.
@@ -30,7 +30,7 @@ compile_rules()
 	#~ cd $src/source3
 	ln -sf /usr/bin/python3-config /usr/bin/python-config
 	CFLAGS="$CFLAGS -fPIC -Wno-error" 
-	LDFLAGS="$LDFLAGS -ltirpc -liconv" \
+	LDFLAGS="$LDFLAGS -ltirpc " \
 	./configure --prefix=/usr \
 	--with-piddir=/var/run/samba --with-lockdir=/var/run/samba \
 	--with-winbind --with-ldap --enable-fhs \

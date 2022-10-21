@@ -15,7 +15,7 @@ xorg-libXau xorg-libXcomposite xorg-libXcursor xorg-libXdmcp xorg-libXext \
 xorg-libXfixes xorg-libXinerama xorg-libXrandr xorg-libXrender \
 xorg-libXdamage libffi python-numpy"
 BUILD_DEPENDS="python-dev pycairo-dev pygobject-dev expat-dev gtk+-dev \
-libglade-dev libxml2-dev libffi-dev python-numpy libiconv-dev"
+libglade-dev libxml2-dev libffi-dev python-numpy "
 
 # Rules to configure and make the package.
 compile_rules()

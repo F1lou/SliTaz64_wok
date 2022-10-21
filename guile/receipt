@@ -11,12 +11,12 @@ WEB_SITE="http://www.gnu.org/software/guile/"
 WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"
 
 DEPENDS="gmp readline ncurses libltdl libunistring"
-BUILD_DEPENDS="libtool gmp-dev libunistring-dev gc-dev libiconv-dev"
+BUILD_DEPENDS="libtool gmp-dev libunistring-dev gc-dev "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
     ./configure \
 		--prefix=/usr		\
 		--disable-static &&

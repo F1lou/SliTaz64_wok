@@ -12,12 +12,12 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/thewtex/$PACKAGE/archive/v$VERSION.tar.gz"
 
 DEPENDS="tmux"
-BUILD_DEPENDS="cmake python libiconv-dev"
+BUILD_DEPENDS="cmake python "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	cmake . -DCMAKE_INSTALL_PREFIX=/usr
 	make &&
 	make install

@@ -11,12 +11,12 @@ WEB_SITE="https://web.archive.org/web/20180324210720/http://compression.ca/pbzip
 WGET_URL="https://launchpad.net/pbzip2/${VERSION%.*}/$VERSION/+download/$TARBALL"
 
 DEPENDS="bzlib"
-BUILD_DEPENDS="bzip2-dev wget libiconv-dev"
+BUILD_DEPENDS="bzip2-dev wget "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i 's|^LDLIBS.*|& -liconv|' Makefile
+	sed -i 's|^LDLIBS.*|& |' Makefile
 	make
 }
 

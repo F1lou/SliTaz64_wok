@@ -11,13 +11,13 @@ WEB_SITE="http://mcrypt.sourceforge.net/"
 WGET_URL="http://downloads.sourceforge.net/project/mcrypt/Libmcrypt/$VERSION/$TARBALL"
 
 DEPENDS=""
-BUILD_DEPENDS="libiconv-dev"
+BUILD_DEPENDS=""
 
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./configure \
 		--prefix=/usr \
 		--infodir=/usr/share/info \

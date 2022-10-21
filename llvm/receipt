@@ -11,7 +11,7 @@ TARBALL="$PACKAGE-$VERSION.src.tar.xz"
 WGET_URL="https://github.com/$PACKAGE/$PACKAGE-project/releases/download/llvmorg-$VERSION/$TARBALL"
 
 DEPENDS="libffi gcc-lib-base"
-BUILD_DEPENDS="libffi-dev libffi perl gcc libiconv-dev"
+BUILD_DEPENDS="libffi-dev libffi perl gcc "
 
 # Rules to configure and make the package.
 compile_rules()
@@ -20,7 +20,7 @@ compile_rules()
 	tar xf clang-$VERSION.src.tar.xz && mv clang-$VERSION.src clang
 	cd "$src/$PACKAGE-$VERSION.src/"
 	mkdir build && cd build
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	cmake \
 		-DLLVM_ENABLE_PROJECTS=clang 		\
 		-G "Unix Makefiles" 				\

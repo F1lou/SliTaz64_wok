@@ -14,7 +14,7 @@ HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="gtk+3 vte xorg-libXdamage xorg-libXi"
 BUILD_DEPENDS="gtk+3-dev vte-dev xorg-libXdamage-dev xorg-libXi-dev
-	libiconv-dev"
+	"
 
 # Handle cross compilation.
 case "$ARCH" in
@@ -29,7 +29,7 @@ compile_rules()
 	#~ patch -p1 -i $stuff/fr.po.patch
 	#~ patch -p1 -i $stuff/login_shell.patch
 
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=RELEASE . &&
 	sed -i 's/$/ -lncurses/' CMakeFiles/sakura.dir/link.txt &&
 	sed -i 's/-u//' CMakeLists.txt &&

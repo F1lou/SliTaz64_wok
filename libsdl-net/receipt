@@ -13,7 +13,7 @@ TARBALL="$SOURCE-$VERSION.tar.gz"
 WGET_URL="http://www.libsdl.org/projects/SDL_net/release/$TARBALL"
 
 DEPENDS="libsdl"
-BUILD_DEPENDS="libsdl-dev libiconv-dev"
+BUILD_DEPENDS="libsdl-dev "
 
 HOST_ARCH="x86_64 i486 arm"
 

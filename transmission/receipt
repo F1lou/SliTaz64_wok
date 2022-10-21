@@ -16,7 +16,7 @@ SUGGESTED="transmission-cli transmission-daemon transmission-web"
 DEPENDS="dbus dbus-glib gtk+3 libcurl libevent libgio \
 	libnotify libssl xorg-libXdamage"
 BUILD_DEPENDS="libtool curl curl-dev dbus-dev dbus-glib-dev expat-dev 
-	gettext gtk+3-dev intltool libevent-dev openssl-dev tar libiconv-dev"
+	gettext gtk+3-dev intltool libevent-dev openssl-dev tar "
 
 # Rules to configure and make the package.
 compile_rules()
@@ -24,7 +24,7 @@ compile_rules()
 	#~ touch third-party/miniupnp/VERSION
 	#~ CFLAGS="$CFLAGS -fdata-sections -ffunction-sections -Wl,--gc-sections"
 
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	mkdir build && cd build
     cmake .. &&
     make && make install

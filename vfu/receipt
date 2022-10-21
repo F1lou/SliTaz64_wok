@@ -11,12 +11,12 @@ WEB_SITE="http://cade.datamax.bg/vfu/"
 WGET_URL="http://cade.datamax.bg/vfu/$TARBALL"
 
 DEPENDS="ncurses pcre"
-BUILD_DEPENDS="ncurses-dev pcre-dev libiconv-dev"
+BUILD_DEPENDS="ncurses-dev pcre-dev "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	LDFLAGS="$LDFLAGS -liconv" make LDDEF=-ltinfo
+	 make LDDEF=-ltinfo
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

@@ -14,7 +14,7 @@ WGET_URL="http://www.apache.org/dist/apr/$TARBALL"
 DEPENDS="apr expat ncurses readline zlib"
 BUILD_DEPENDS="apr-dev expat-dev gawk db-dev libpostgresqlclient
 	libtool postgresql-dev sqlite-dev unixODBC-dev util-linux-uuid-dev
-	libiconv-dev libmysqlclient mysql-dev sed"
+	 libmysqlclient mysql-dev sed"
 
 # Rules to configure and make the package.
 compile_rules()

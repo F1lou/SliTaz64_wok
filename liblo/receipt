@@ -12,13 +12,13 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
 DEPENDS="gcc-lib-base"
-BUILD_DEPENDS="gcc libiconv-dev"
+BUILD_DEPENDS="gcc "
 
 # Rules to configure and make the package.
 
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./configure		\
 		--prefix=/usr	\
 		$CONFIGURE_ARGS &&

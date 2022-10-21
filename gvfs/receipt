@@ -18,7 +18,7 @@ udisks2-dev expat-dev libarchive-dev libgcrypt-dev libcap-dev \
 libsoup-dev libpsl-dev libxml2-dev libcdio-dev dbus-glib-dev bluez-dev expat-dev \
 libgphoto2-dev libmtp-dev gtk+3-dev glibc-dev sqlite-dev \
 libcdio-paranoia-dev libtool liblzma-dev gsettings-desktop-schemas \
-polkit-dev libiconv-dev" # samba-dev smbclient 
+polkit-dev " # samba-dev smbclient 
 
 # Rules to configure and make the package.
 compile_rules()
@@ -33,7 +33,7 @@ compile_rules()
 		#~ --disable-bash-completion \
 		#~ $CONFIGURE_ARGS && \
 		#~ make && make install
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	mkdir build && cd build
 	meson --prefix=/usr       \
       --buildtype=release \

@@ -24,7 +24,7 @@ WGET_URL="$SF_MIRROR/$SOURCE/$TARBALL"
 
 DEPENDS="gcc-lib-base libboost-chrono-dev libboost-date-time-dev \
 	libboost-math-dev"
-BUILD_DEPENDS="bzip2-dev expat expat-dev py3k py3k-dev zlib-dev libiconv-dev"
+BUILD_DEPENDS="bzip2-dev expat expat-dev py3k py3k-dev zlib-dev "
 RELOCATE_LIBS="{ date_time filesystem graph iostreams \
 	math program_options python regex serialization \
 	signal system test thread tr1 wave }"
@@ -45,7 +45,7 @@ compile_rules()
 
 	# correct build script for b2 binary to avoid bootstrap failure (error "too many input files")
 	sed -i '497s|.*|    ( B2_VERBOSE_OPT=${TRUE} echo_run g++ ${CXXFLAGS} ${B2_CXXFLAGS} ${B2_SOURCES} -o b2 )|' $src/tools/build/src/engine/build.sh
-	sed -i 's|CXXFLAGS=|CXXFLAGS="-liconv"|' $src/bootstrap.sh
+	sed -i 's|CXXFLAGS=|CXXFLAGS=""|' $src/bootstrap.sh
 	
 	./bootstrap.sh					\
 		--prefix=$DESTDIR/usr			\

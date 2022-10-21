@@ -14,7 +14,7 @@ WGET_URL="http://www.libsdl.org/projects/SDL_mixer/release/$TARBALL"
 
 DEPENDS="libsdl libmad libvorbis libogg"
 BUILD_DEPENDS="alsa-lib-dev libmad-dev libogg-dev libsdl libsdl-dev \
-	libvorbis-dev libiconv-dev"
+	libvorbis-dev "
 
 HOST_ARCH="x86_64 i486 arm"
 

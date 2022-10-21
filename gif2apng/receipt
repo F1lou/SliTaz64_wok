@@ -12,12 +12,12 @@ TARBALL="$PACKAGE-$VERSION-src.zip"
 WGET_URL="$SF_MIRROR/$PACKAGE/$VERSION/$TARBALL"
 
 DEPENDS="zlib"
-BUILD_DEPENDS="zlib-dev libiconv-dev"
+BUILD_DEPENDS="zlib-dev "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	make LDFLAGS="$LDFLAGS -liconv"
+	make 
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

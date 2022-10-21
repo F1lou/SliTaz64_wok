@@ -11,7 +11,7 @@ WEB_SITE="https://www.ympd.org/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/SuperBFG7/$PACKAGE/archive/refs/tags/v$VERSION.tar.gz"
 DEPENDS="libmpdclient mpd openssl"
-BUILD_DEPENDS="cmake libmpdclient-dev openssl-dev libiconv-dev"
+BUILD_DEPENDS="cmake libmpdclient-dev openssl-dev "
 
 #HOST_ARCH="x86_64 i486 arm"
 
@@ -27,7 +27,7 @@ esac
 compile_rules()
 {
 	mkdir build && cd build
-	CPPFLAGS="$CPPFLAGS -fcommon" LDFLAGS="$LDFLAGS -liconv" cmake	..					\
+	CPPFLAGS="$CPPFLAGS -fcommon"  cmake	..					\
 		-DCMAKE_INSTALL_PREFIX:PATH=/usr	\
 		${ARCH_ARGS} &&
 	make &&

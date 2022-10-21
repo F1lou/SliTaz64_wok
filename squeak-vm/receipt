@@ -14,7 +14,7 @@ HOST_ARCH="x86_64 i486 arm"
 
 SUGGESTED="scratch"
 DEPENDS="alsa-lib dbus xorg-libXrender"
-BUILD_DEPENDS="alsa-lib-dev dbus-dev xorg-libXrender-dev libiconv-dev"
+BUILD_DEPENDS="alsa-lib-dev dbus-dev xorg-libXrender-dev "
 
 # Use build host cmake when cross compiling
 case "$ARCH" in
@@ -25,7 +25,7 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./unix/cmake/configure ${ARCH_ARGS} \
 		--prefix=/usr \
 		--without-quartz \

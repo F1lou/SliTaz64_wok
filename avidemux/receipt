@@ -16,7 +16,7 @@ opencore-amr lame faac faad2 libsamplerate xvidcore x264"
 BUILD_DEPENDS="tar coreutils-file-special coreutils-file-format cmake yasm \
 gettext pkg-config xorg-libXv-dev libxml2-dev libvorbis-dev lame-dev xvidcore-dev \
 opencore-amr-dev x264-dev faac-dev faad2-dev libsamplerate-dev alsa-lib-dev \
-libxslt-dev libvpx-dev gtk+-dev libiconv-dev sqlite-dev"
+libxslt-dev libvpx-dev gtk+-dev  sqlite-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -54,7 +54,7 @@ compile_rules()
 
 	#~ cook_pick_manpages $src/man/avidemux.1
 	chmod a+x bootStrap.bash
-	CXXFLAGS="$CXXFLAGS -liconv" ./bootStrap.bash
+	CXXFLAGS="$CXXFLAGS " ./bootStrap.bash
 	
 }
 

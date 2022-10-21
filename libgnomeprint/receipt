@@ -13,14 +13,14 @@ WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION%.*}/$TARBALL"
 DEPENDS="gtk+ popt libxml2 libart_lgpl"
 BUILD_DEPENDS="pkg-config glib-dev pango-dev intltool flex libart_lgpl-dev \
 libxml2-dev util-linux-mount-dev fribidi-dev harfbuzz-dev fontconfig-dev
-xorg-libXrender-dev xorg-libXft-dev cairo-dev libiconv-dev pixman-dev
+xorg-libXrender-dev xorg-libXft-dev cairo-dev  pixman-dev
 xorg-libXext-dev liblzma-dev gtk-doc"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	# Update for Bison 3
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	sed -e '/YYPARSE_PARAM/d' -e 's|yyerror (|&graph_t *g, |' \
 		-e 's|%pure_parser|&\n%parse-param { graph_t *graph }|' \
 		-i libgnomeprint/grammar.y

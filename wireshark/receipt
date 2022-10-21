@@ -14,7 +14,7 @@ TAGS="network analysis"
 DEPENDS="gnutls libgpg-error libcap gtk+3 pcre xorg-libXdamage libcomerr3 attr \
 libgcrypt portaudio libpcap libkrb5"
 BUILD_DEPENDS="gnutls-dev libgpg-error-dev libcap-dev libpcap-dev gtk+3-dev \
-libgcrypt-dev flex libtasn1-dev bison perl wget libgnutls libiconv-dev \
+libgcrypt-dev flex libtasn1-dev bison perl wget libgnutls  \
 c-ares-dev"
 
 # Rules to configure and make the package.
@@ -28,7 +28,7 @@ compile_rules()
 		#~ --with-gtk=3 \
 		#~ $CONFIGURE_ARGS
 	#~ sed -i 's/mozilla/browser/' config.h
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	mkdir build && cd build
 	cmake .. &&
 	make $MAKEFLAGS &&

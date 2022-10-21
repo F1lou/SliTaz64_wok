@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://github.com/$PACKAGE-org/$PACKAGE/releases/download/release-$VERSION/$TARBALL"
 DEPENDS="gtk+3 zlib openjpeg exiftool pugixml libgphoto2 libwebp-dev openexr sqlite
 	librsvg curl lcms2 json-glib exiv2"
-BUILD_DEPENDS="libiconv-dev zlib-dev gtk+3-dev openjpeg-dev libxml2-dev pugixml
+BUILD_DEPENDS=" zlib-dev gtk+3-dev openjpeg-dev libxml2-dev pugixml
 	libgphoto2-dev libwebp-dev openexr-dev sqlite-dev librsvg-dev curl-dev
 	lcms2-dev json-glib-dev exiv2-dev imath-dev" # llvm
 
@@ -21,7 +21,7 @@ ARCH="x86_64"
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	export CFLAGS="$CFLAGS -fPIC"
 	./build.sh \
 		--prefix /usr			\

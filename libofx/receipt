@@ -11,7 +11,7 @@ WEB_SITE="http://libofx.sourceforge.net/"
 WGET_URL="https://sourceforge.net/projects/$PACKAGE/files/$PACKAGE/$VERSION/$TARBALL"
 
 DEPENDS="opensp"
-BUILD_DEPENDS="opensp-dev libiconv-dev"
+BUILD_DEPENDS="opensp-dev "
 
 # Rules to configure and make the package.
 compile_rules()

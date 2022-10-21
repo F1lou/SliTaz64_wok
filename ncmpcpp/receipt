@@ -13,12 +13,12 @@ TAGS="music audio player"
 
 DEPENDS="ncurses taglib mpd curl libmpdclient ncursesw"
 BUILD_DEPENDS="ncurses-dev taglib taglib-dev curl-dev libmpdclient-dev
-	libiconv-dev libboost-dev"
+	 libboost-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./configure \
 		--prefix=/usr \
 		--enable-clock \

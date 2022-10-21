@@ -14,7 +14,7 @@ DEPENDS="expat freetype glib jpeg xorg-libXdamage lcms \
 gcc-lib-base cairo tiff bzlib libpng libbsd openjpeg2 libnss"
 BUILD_DEPENDS="$DEPENDS expat-dev pkg-config jpeg-dev tiff-dev \
 freetype-dev fontconfig-dev glib-dev lcms-dev zlib-dev cairo-dev \
-automake bzip2-dev libpng-dev libtool libxml2-dev libiconv-dev
+automake bzip2-dev libpng-dev libtool libxml2-dev 
 nss-dev pixman-dev libboost-dev libxcb-dev xorg-libX11-dev
 xorg-libXrender-dev xorg-libXext-dev gobject-introspection-dev
 gtk+3-dev gdk-pixbuf-dev libepoxy-dev mesa-dev xorg-libXtst-dev
@@ -23,8 +23,8 @@ openjpeg2-dev xorg-libXdmcp-dev libbsd-dev" # Qt4-dev
 # Rules to configure and make the package.
 compile_rules()
 {
-	export CXXFLAGS="$CXXFLAGS -liconv -lpthread"
-	#~ export CFLAGS="$CFLAGS -liconv -lpthread"
+	export CXXFLAGS="$CXXFLAGS  -lpthread"
+	#~ export CFLAGS="$CFLAGS  -lpthread"
 	mkdir build && cd build 
 	cmake  -DCMAKE_BUILD_TYPE=Release   \
 		-DCMAKE_INSTALL_PREFIX=/usr  \

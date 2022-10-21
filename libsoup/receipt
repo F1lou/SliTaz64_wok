@@ -14,7 +14,7 @@ HOST_ARCH="x86_64 i486 arm"
 DEPENDS="glib glibc-base libffi libgio libxml2 pcre zlib"
 BUILD_DEPENDS="glib-networking-dev libgio-dev krb5-dev \
 libxml2-dev libgcrypt-dev libtasn1-dev gnutls-dev zlib-dev \
-libgnome-keyring-dev sqlite-dev dbus-dev brotli libiconv-dev"
+libgnome-keyring-dev sqlite-dev dbus-dev brotli "
 
 # Handle cross compilation.
 case "$ARCH" in

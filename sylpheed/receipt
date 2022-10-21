@@ -13,12 +13,12 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="https://dotsrc.dl.osdn.net/osdn/sylpheed/68999/$TARBALL"
 
 DEPENDS="gtk+3 libffi libssl"
-BUILD_DEPENDS="gtk+3-dev openssl-dev libiconv-dev libbsd-dev xorg-randrproto"
+BUILD_DEPENDS="gtk+3-dev openssl-dev  libbsd-dev xorg-randrproto"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./configure			\
 		--disable-gtkspell	\
 		--disable-updatecheck	\

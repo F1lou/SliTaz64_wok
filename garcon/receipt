@@ -14,7 +14,7 @@ DEPENDS="libgio glib gtk+3 libxfce4ui libxfce4util util-linux-uuid
 	startup-notification"
 BUILD_DEPENDS="intltool libgio libgio-dev glib-dev libxfce4ui-dev 
 	libxfce4util-dev util-linux-uuid-dev gtk+3-dev xcb-util-dev
-	startup-notification-dev libiconv-dev"
+	startup-notification-dev "
 
 # Rules to configure and make the package.
 compile_rules()

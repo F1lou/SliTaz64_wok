@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://github.com/lib$PACKAGE/$PACKAGE/releases/download/$PACKAGE-0_6_22-release/$TARBALL"
 
 DEPENDS="libexif popt"
-BUILD_DEPENDS="libexif libexif-dev popt-dev libiconv-dev"
+BUILD_DEPENDS="libexif libexif-dev popt-dev "
 
 # Rules to configure and make the package.
 compile_rules()

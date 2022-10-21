@@ -12,13 +12,13 @@ TARBALL="${PACKAGE}-${VERSION}.tar.gz"
 WGET_URL="${WEB_SITE}release/$TARBALL"
 
 DEPENDS="alsa-lib jack-audio-connection-kit"
-BUILD_DEPENDS="alsa-lib-dev jack-audio-connection-kit-dev libiconv-dev
+BUILD_DEPENDS="alsa-lib-dev jack-audio-connection-kit-dev 
 	py3k-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./configure		\
 		--prefix=/usr	\
 		--with-alsa	\

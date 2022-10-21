@@ -13,7 +13,7 @@ TARBALL="$PACKAGE-$VERSION.tar.lz"
 WGET_URL="http://ftp.gnu.org/gnu/ddrescue/$TARBALL"
 
 DEPENDS="gcc-lib-base"
-BUILD_DEPENDS="lzip libiconv-dev"
+BUILD_DEPENDS="lzip "
 
 # Rules to configure and make the package.
 compile_rules()
@@ -22,7 +22,7 @@ compile_rules()
 		--prefix=/usr				\
 		--infodir=/usr/share/info	\
 		--mandir=/usr/share/man		\
-		LDFLAGS="$LDFLAGS -liconv"	\
+			\
 		$CONFIGURE_ARGS &&
 	make &&
 	make DESTDIR=$DESTDIR install

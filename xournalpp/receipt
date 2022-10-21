@@ -12,13 +12,13 @@ TARBALL="$VERSION.tar.gz"
 WGET_URL="https://github.com/$PACKAGE/$PACKAGE/archive/refs/tags/$TARBALL"
 SUGGESTED="ghostscript"
 DEPENDS="gtk+3 portaudiocpp libzip portaudio binutils libbfd"
-BUILD_DEPENDS="libiconv-dev xorg-dev gtk+3-dev poppler-dev librsvg-dev \
+BUILD_DEPENDS=" xorg-dev gtk+3-dev poppler-dev librsvg-dev \
 	libzip libzip-dev glibc-dev libsndfile-dev portaudio-dev portaudiocpp-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	mkdir build && cd build
 	cmake .. -DCMAKE_INSTALL_PREFIX=/usr &&
 	cmake --build . --target install

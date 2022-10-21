@@ -15,14 +15,14 @@ DEPENDS="lcms poppler tiff dbus-glib glib util-linux-uuid"
 BUILD_DEPENDS="gnome-doc-utils-dev docbook-xml libxml2-dev \
 gnome-icon-theme gtk+3-dev intltool lcms-dev util-linux-uuid-dev \
 poppler-dev tiff-dev dbus-glib-dev xorg-dev pixman-dev \
-libepoxy-dev mesa-dev adwaita-icon-theme libhandy-dev libiconv-dev \
+libepoxy-dev mesa-dev adwaita-icon-theme libhandy-dev  \
 gobject-introspection-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	mkdir build && cd build
-	CXXFLAGS="$CXXFLAGS -liconv"
+	CXXFLAGS="$CXXFLAGS "
 	meson --prefix=/usr		\
 	--libexecdir=/usr/lib/$PACKAGE \
 	-Dgtk_doc=false 		\

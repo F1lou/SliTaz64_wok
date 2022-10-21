@@ -15,13 +15,13 @@ DEPENDS="expat gtk+3 libxml2 xorg-libX11 xorg-libXau xorg-libXcomposite \
 xorg-libXcursor xorg-libXdmcp xorg-libXext xorg-libXfixes xorg-libXinerama \
 xorg-libXrandr xorg-libXrender xorg-libXdamage"
 BUILD_DEPENDS="intltool pkg-config gtk+3-dev libxml2-dev expat-dev glib-dev
-	libiconv-dev gobject-introspection-dev vala liblzma-dev libbsd-dev"
+	 gobject-introspection-dev vala liblzma-dev libbsd-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	mkdir build && cd build
-	LDFLAGS="$LDFLAGS -liconv" meson --prefix=/usr &&
+	 meson --prefix=/usr &&
 	ninja && ninja install
 }
 

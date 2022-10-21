@@ -12,12 +12,12 @@ WGET_URL="$WEB_SITE/$TARBALL"
 TAGS="compression archive"
 
 DEPENDS="lzo bzlib zlib gcc-lib-base"
-BUILD_DEPENDS="lzo-dev bzip2-dev zlib-dev nasm perl libiconv-dev lz4-dev"
+BUILD_DEPENDS="lzo-dev bzip2-dev zlib-dev nasm perl  lz4-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
- 	export LDFLAGS="$LDFLAGS -liconv"
+ 	
    ./configure $CONFIGURE_ARGS &&
     make &&
     make DESTDIR=$DESTDIR install

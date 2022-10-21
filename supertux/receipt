@@ -15,12 +15,12 @@ WGET_URL="https://github.com/$SOURCE/$PACKAGE/releases/download/v$VERSION/$TARBA
 DEPENDS="libsdl libsdl-image libsdl-mixer curl physfs openal mesa glew \
 supertux-data"
 BUILD_DEPENDS="libsdl-dev libsdl-image-dev libsdl-mixer-dev curl-dev \
-physfs-dev openal-dev mesa-dev glew-dev cmake libboost-dev libiconv-dev"
+physfs-dev openal-dev mesa-dev glew-dev cmake libboost-dev "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	#~ cd $src
 	#~ cp $stuff/menu.h src
 	#~ sed -i 's|#  include <curl/types.h>||g' src/addon/addon_manager.cpp

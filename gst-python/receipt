@@ -12,12 +12,12 @@ WGET_URL="$WEB_SITE/src/$PACKAGE/$TARBALL"
 
 DEPENDS="pygobject3 gstreamer gst-plugins-base"
 BUILD_DEPENDS="pygobject3-dev gstreamer-dev gst-plugins-base-dev 
-	libxml2-dev py3k-dev pkg-config libiconv-dev"
+	libxml2-dev py3k-dev pkg-config "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	mkdir build && cd build
 	meson --prefix=/usr \
 		--sysconfdir=/etc \

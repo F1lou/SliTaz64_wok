@@ -10,7 +10,7 @@ TARBALL="release-20211125.tar.gz"
 WEB_SITE="http://$PACKAGE.sourceforge.jp/"
 WGET_URL="https://github.com/jca02266/lha/archive/refs/tags/$TARBALL"
 
-BUILD_DEPENDS="libiconv-dev"
+BUILD_DEPENDS=""
 
 # Rules to configure and make the package.
 compile_rules()

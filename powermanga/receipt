@@ -13,7 +13,7 @@ WGET_URL="${WEB_SITE}download/$TARBALL"
 
 DEPENDS="libsdl-mixer zlib libogg"
 BUILD_DEPENDS="automake libsdl-dev libsdl-mixer-dev zlib-dev libogg-dev
-	libpng-dev libiconv-dev"
+	libpng-dev "
 
 # Rules to configure and make the package.
 compile_rules()

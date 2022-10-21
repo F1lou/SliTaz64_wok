@@ -17,7 +17,7 @@ DEPENDS="bzlib jbigkit jpeg libdrm libglu-mesa libpng mesa tiff
 	xorg-libXxf86vm"
 BUILD_DEPENDS="expat-dev fontconfig-dev freetype-dev jpeg-dev 
 	libglu-mesa-dev libpng-dev libxml2-dev mesa-dev libbsd-dev
-	tiff-dev xorg-libXft-dev libiconv-dev liblzma-dev
+	tiff-dev xorg-libXft-dev  liblzma-dev
 	xorg-libXshmfence-dev"
 
 HOST_ARCH="x86_64 i486 arm"
@@ -37,7 +37,7 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	LDFLAGS="$LDFLAGS -liconv" ./configure			\
+	 ./configure			\
 		--prefix=/usr		\
 		--mandir=/usr/share/man	\
 		--with-xft		\

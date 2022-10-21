@@ -15,7 +15,7 @@ DEPENDS="cairo fontconfig freetype glib libpng libwrap libxml2 pango pixman
 	xcb-util xorg-base-fonts zlib"
 BUILD_DEPENDS="cairo-dev fontconfig-dev freetype-dev glib-dev groff 
 	libpng-dev libwrap-dev libxml2-dev lua-dev pango-dev perl pixman-dev 
-	pkg-config py3k-dev ruby tcl-dev zlib-dev libiconv-dev"
+	pkg-config py3k-dev ruby tcl-dev zlib-dev "
 
 # Rules to configure and make the package.
 compile_rules()

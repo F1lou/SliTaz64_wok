@@ -18,14 +18,14 @@ DEPENDS="glibc-base libdrm mesa libglu-mesa \
 BUILD_DEPENDS="cmake libglu-mesa libglu-mesa-dev libxcb-dev mesa mesa-dev 
 	xorg-dev xorg-inputproto xorg-libX11-dev xorg-libXau-dev xorg-libXdamage-dev 
 	xorg-libXdmcp-dev xorg-libXext-dev xorg-libXfixes-dev xorg-libXi-dev 
-	xorg-libXxf86vm-dev xorg-xproto libiconv-dev xorg-libXshmfence-dev
+	xorg-libXxf86vm-dev xorg-xproto  xorg-libXshmfence-dev
 	libbsd-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	# Binutils 2.22 break many packages build without LDFLAGS set correctly.
-	export LDFLAGS="$LDFLAGS -liconv -Wl,--copy-dt-needed-entries"
+	export LDFLAGS="$LDFLAGS  -Wl,--copy-dt-needed-entries"
 	export CFLAGS="$CFLAGS -fcommon"
 
 	# patching for gcc10 compatibility

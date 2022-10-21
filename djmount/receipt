@@ -13,7 +13,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
 DEPENDS="fuse readline"
-BUILD_DEPENDS="automake bash fuse-dev readline-dev libiconv-dev"	# libupnp libupnp-dev
+BUILD_DEPENDS="automake bash fuse-dev readline-dev "	# libupnp libupnp-dev
 							# included in source archive
 
 # Rules to configure and make the package.
@@ -30,7 +30,7 @@ compile_rules()
 	ln -s $src/libupnp/ixml/inc/ixml.h	libupnp/upnp/ixml.h
 	ln -s $src/libupnp/threadutil/inc/ithread.h djmount/ithread.h
 
-	export LDFLAGS="$LDFLAGS -liconv -Lfuse3"
+	export LDFLAGS="$LDFLAGS  -Lfuse3"
 	export	LIBUPNP_CFLAGS="-I$src/libupnp/threadutil \
 			-I$src/libupnp/upnp -I$src/libupnp/ixml"
 

@@ -12,7 +12,7 @@ WGET_URL="https://www.gnupg.org/ftp/gcrypt/dirmngr/$TARBALL"
 
 DEPENDS="libassuan libgcrypt libksba libldap pth zlib"
 BUILD_DEPENDS="pth-dev libgpg-error-dev libgcrypt-dev libassuan-dev \
-libksba-dev openldap-dev libiconv-dev"
+libksba-dev openldap-dev "
 
 # Rules to configure and make the package.
 compile_rules()

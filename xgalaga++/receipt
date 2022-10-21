@@ -12,12 +12,12 @@ TARBALL="${PACKAGE}_$VERSION.tar.gz"
 WGET_URL="$WEB_SITE$TARBALL"
 
 DEPENDS="libxcb xorg-libX11 xorg-libXau xorg-libXdmcp xorg-libXpm"
-BUILD_DEPENDS="xorg-dev xorg-libXpm-dev libiconv-dev"
+BUILD_DEPENDS="xorg-dev xorg-libXpm-dev "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	LDFLAGS="$LDFLAGS -liconv" make xgalaga++
+	 make xgalaga++
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

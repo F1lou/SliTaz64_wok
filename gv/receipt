@@ -11,12 +11,12 @@ WEB_SITE="http://www.gnu.org/software/gv/"
 WGET_URL="http://ftp.gnu.org/gnu/gv/$TARBALL"
 
 DEPENDS="ghostscript xorg-libXaw3d xorg-libXinerama"
-BUILD_DEPENDS="xorg-libXaw3d-dev xorg-libXinerama-dev libiconv-dev"
+BUILD_DEPENDS="xorg-libXaw3d-dev xorg-libXinerama-dev "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./configure \
 		--prefix=/usr \
 		$CONFIGURE_ARGS &&

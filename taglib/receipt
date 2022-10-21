@@ -13,7 +13,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}releases/$TARBALL"
 
 DEPENDS="gcc-lib-base zlib"
-BUILD_DEPENDS="zlib-dev libiconv-dev"
+BUILD_DEPENDS="zlib-dev "
 
 HOST_ARCH="x86_64 i486 arm"
 
@@ -24,7 +24,7 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	mkdir build &&
 	cd build &&
 	cmake	..				\

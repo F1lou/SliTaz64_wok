@@ -17,7 +17,7 @@ BUILD_DEPENDS=""
 compile_rules()
 {
 	mkdir build && cd build
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	cmake \
 		-DCMAKE_INSTALL_PREFIX=/usr		\
 		-DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra" \

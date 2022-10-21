@@ -12,12 +12,12 @@ WEB_SITE="https://re2c.org/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/skvadrik/re2c/archive/$VERSION.tar.gz"
 
-BUILD_DEPENDS="automake libtool libiconv-dev sed"
+BUILD_DEPENDS="automake libtool  sed"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	[ -d m4 ] || mkdir m4
 	./autogen.sh &&
 	./configure		\

@@ -24,7 +24,7 @@ BUILD_DEPENDS="glib-dev pango-dev gdk-pixbuf-dev atk-dev expat-dev
 #	cups-dev dbus-dev 
 #	indent libffi-dev libxml2-dev perl pkg-config 
 #	util-linux-uuid-dev xorg-dev liblzma-dev libbsd-dev
-#	libiconv-dev libxkbcommon-dev expat-dev wayland-protocols
+#	 libxkbcommon-dev expat-dev wayland-protocols
 #	wayland-dev
 
 CONFIG_FILES="/etc/gtk-4.0/settings.ini"
@@ -34,7 +34,7 @@ CONFIG_FILES="/etc/gtk-4.0/settings.ini"
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	meson setup --prefix=/usr --buildtype=release builddir
 	cd builddir
 	ninja && ninja install

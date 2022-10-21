@@ -10,12 +10,12 @@ TARBALL="$VERSION.tar.gz"
 WEB_SITE="https://www.rbcafe.com/software/outguess/"
 WGET_URL="https://github.com/resurrecting-open-source-projects/$PACKAGE/archive/refs/tags/$TARBALL"
 TAGS="stenography"
-BUILD_DEPENDS="libiconv-dev"
+BUILD_DEPENDS=""
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./autogen.sh
 	./configure --prefix=/usr \
 		$CONFIGURE_ARGS &&

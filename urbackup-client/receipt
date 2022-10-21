@@ -13,12 +13,12 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://hndl.urbackup.org/Client/$VERSION/$TARBALL"
 
 DEPENDS="cryptopp wxWidgets"
-BUILD_DEPENDS="cryptopp wxWidgets-dev libiconv-dev xorg-libXtst-dev"
+BUILD_DEPENDS="cryptopp wxWidgets-dev  xorg-libXtst-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./configure			\
 		--prefix=/usr		\
 		--sysconfdir=/etc	\

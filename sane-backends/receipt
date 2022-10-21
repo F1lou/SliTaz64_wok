@@ -12,7 +12,7 @@ WGET_URL="https://anduin.linuxfromscratch.org/BLFS/sane/$TARBALL"
 
 DEPENDS="libusb-compat jpeg tiff zlib libgphoto2 libv4l libltdl"
 BUILD_DEPENDS="libusb-compat-dev jpeg-dev tiff-dev zlib-dev libv4l-dev \
-libgphoto2-dev libtool liblzma-dev libiconv-dev"
+libgphoto2-dev libtool liblzma-dev "
 SUGGESTED="imagemagick gocr tesseract-ocr"
 
 # Rules to configure and make the package.

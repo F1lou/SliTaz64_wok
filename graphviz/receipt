@@ -15,7 +15,7 @@ DEPENDS="expat gcc-lib-base jpeg libpng librsvg libxml2 pcre
 	util-linux-uuid zlib libnsl"
 BUILD_DEPENDS="py3k py3k-dev gcc expat-dev gdk-pixbuf-dev guile-dev jpeg-dev 
 	libcroco-dev libgd-dev libpng-dev librsvg-dev libxml2-dev 
-	ocaml pango-dev pcre-dev pkg-config libiconv-dev libnsl-dev
+	ocaml pango-dev pcre-dev pkg-config  libnsl-dev
 	python-dev ruby-dev swig tcl-dev tk-dev util-linux-uuid-dev 
 	xorg-dev zlib-dev automake sed liblzma-dev libbsd-dev lua-dev" # php-cli php-dev
 
@@ -27,7 +27,7 @@ compile_rules()
 	#~ sed -i 's/.*PHPWRITE.*/    TSRMLS_FETCH();\n&/' \
 		#~ tclpkg/gv/gv_php_init.c
 
-	CFLAGS="$CFLAGS -liconv"
+	CFLAGS="$CFLAGS "
 	./autogen.sh
 	./configure					\
 		--prefix=/usr			\

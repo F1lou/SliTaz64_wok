@@ -15,12 +15,12 @@ WGET_URL="$SF_MIRROR/gphoto/$TARBALL"
 DEPENDS="hal jpeg libexif libltdl libusb libusb-compat"
 BUILD_DEPENDS="jpeg jpeg-dev libexif libexif-dev libtool liblzma-dev \
 	libusb libusb-compat libusb-compat-dev libusb-dev pkg-config \
-	libiconv-dev"
+	"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	LDFLAGS="$LDFLAGS -liconv" ./configure				\
+	 ./configure				\
 		--prefix=/usr			\
 		udevscriptdir=/lib/udev		\
 		--with-camlibs=everything	\

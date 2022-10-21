@@ -13,12 +13,12 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="http://ftp.gnu.org/gnu/$PACKAGE/$TARBALL"
 
 DEPENDS="openssl zlib"
-BUILD_DEPENDS="openssl-dev zlib-dev libiconv-dev"
+BUILD_DEPENDS="openssl-dev zlib-dev "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./configure		\
 		--prefix=/usr	\
 		$CONFIGURE_ARGS &&

@@ -16,7 +16,7 @@ PROVIDE="lighttpd"
 SUGGESTED="lighttpd-modules perl php python"
 DEPENDS="openssl pcre"
 BUILD_DEPENDS="bzip2-dev openssl-dev libcrypto-dev pcre-dev file zlib-dev
-	libiconv-dev"
+	"
 
 CONFIG_FILES="/etc/lighttpd/vhosts.conf /etc/lighttpd/lighttpd.conf /etc/ssl/lighttpd"
 

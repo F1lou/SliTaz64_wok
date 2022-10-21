@@ -23,13 +23,13 @@ BUILD_DEPENDS="alsa-lib-dev cups-dev dbus-dev eudev-dev gcc glib-dev
 	freetype-dev harfbuzz-dev libjpeg-turbo-dev libpng-dev 
 	libxcb-dev libxkbcommon-dev mesa-dev openssl-dev pcre-dev 
 	sqlite-dev tslib-dev xorg-libX11-dev xorg-libXcomposite-dev 
-	xorg-libXrender-dev zlib-dev libiconv libiconv-dev"
+	xorg-libXrender-dev zlib-dev  "
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${src}/lib"
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	#sed -i 's|gcc|gcc-83|; s|g++|g++-83|'	qtbase/mkspecs/common/g++-base.conf
 
 	./configure						\

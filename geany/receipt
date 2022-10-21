@@ -20,7 +20,7 @@ xorg-libXdmcp xorg-libXext xorg-libXfixes xorg-libXinerama xorg-libXrender"
 BUILD_DEPENDS="glib-dev expat-dev gtk+3-dev atk-dev pango-dev cairo-dev \
 pixman-dev libpng-dev freetype-dev fontconfig-dev xorg-libXrender-dev \
 xorg-xproto xorg-renderproto xorg-libX11-dev xorg-kbproto xorg-libXau-dev \
-xorg-libXdmcp-dev libxml2-dev libiconv-dev"
+xorg-libXdmcp-dev libxml2-dev "
 
 # Handle cross compilation.
 case "$ARCH" in

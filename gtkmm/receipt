@@ -20,7 +20,7 @@ BUILD_DEPENDS="atkmm-dev cairomm-dev doxygen glibmm-dev gtk+-dev libgiomm-dev \
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./configure			\
 		--disable-documentation	\
 		$CONFIGURE_ARGS &&

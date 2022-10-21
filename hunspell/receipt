@@ -11,12 +11,12 @@ WEB_SITE="https://hunspell.github.io/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/$PACKAGE/$PACKAGE/archive/v$VERSION.tar.gz"
 
-BUILD_DEPENDS="autoconf automake libtool libiconv-dev"
+BUILD_DEPENDS="autoconf automake libtool "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	autoreconf -vfi &&
 	./configure				\
 		--prefix=/usr			\

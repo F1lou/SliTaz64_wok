@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-v$VERSION.tar.gz"
 WGET_URL="https://github.com/webmproject/$PACKAGE/archive/v$VERSION.tar.gz"
 
 DEPENDS="glibc-base"
-BUILD_DEPENDS="coreutils-file-format diffutils yasm libiconv-dev"
+BUILD_DEPENDS="coreutils-file-format diffutils yasm "
 
 # Rules to configure and make the package.
 compile_rules()
@@ -21,7 +21,7 @@ compile_rules()
 	#~ mkdir libvpx-build && cd libvpx-build
 	unset CFLAGS
 	unset CXXFLAGS
-	export LDFLAGS="-lpthread -liconv"
+	export LDFLAGS="-lpthread "
 	./configure --prefix=/usr  \
 		--enable-shared			\
         --disable-static 		\

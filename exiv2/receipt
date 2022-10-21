@@ -12,14 +12,14 @@ TARBALL="$PACKAGE-$VERSION-Source.tar.gz"
 WGET_URL="https://github.com/Exiv2/exiv2/releases/download/v$VERSION/$TARBALL"
 
 DEPENDS="expat gcc-lib-base zlib"
-BUILD_DEPENDS="cmake expat-dev gcc-lib-base zlib-dev libiconv-dev"
+BUILD_DEPENDS="cmake expat-dev gcc-lib-base zlib-dev "
 
 HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	mkdir build && cd build
 	cmake ..				\
 		-G "Unix Makefiles"		\

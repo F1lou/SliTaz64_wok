@@ -13,7 +13,7 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://downloads.xiph.org/releases/$PACKAGE/$TARBALL"
 
 DEPENDS="gcc-lib-base libogg"
-BUILD_DEPENDS="libogg-dev libiconv-dev"
+BUILD_DEPENDS="libogg-dev "
 
 HOST_ARCH="x86_64 i486 arm"
 
@@ -23,7 +23,7 @@ compile_rules()
 	# gcc4 fix: http://bugs.gentoo.org/199579
 #	busybox patch -p0 -i $stuff/flac-1.2.1_gcc4.u
 
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./configure			\
 		--prefix=/usr		\
 		--mandir=/usr/share/man	\

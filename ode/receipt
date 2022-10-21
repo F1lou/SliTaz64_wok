@@ -12,12 +12,12 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://bitbucket.org/odedevs/$PACKAGE/downloads/$TARBALL"
 
 DEPENDS="gcc-lib-base"
-BUILD_DEPENDS="gcc libtool libiconv-dev"
+BUILD_DEPENDS="gcc libtool "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./configure				\
 		--prefix=/usr			\
 		--infodir=/usr/share/info	\

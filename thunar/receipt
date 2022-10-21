@@ -16,7 +16,7 @@ gamin libxfce4ui startup-notification util-linux-uuid libnotify-gtk3 libxfconf"
 BUILD_DEPENDS="libpng-dev jpeg-dev gtk+3-dev libxml2-dev dbus-glib-dev \
 libexo-dev zlib-dev intltool libgudev-dev libxfce4ui-dev libxfce4util-dev xcb-util-dev \
 startup-notification-dev util-linux-uuid-dev libnotify-gtk3-dev libxfconf libxfconf-dev \
-libiconv-dev"
+"
 
 # Rules to configure and make the package.
 compile_rules()

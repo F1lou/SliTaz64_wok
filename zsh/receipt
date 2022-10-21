@@ -13,7 +13,7 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="${WEB_SITE}pub/$TARBALL"
 
 DEPENDS="gdbm ncurses ncursesw zlib"
-BUILD_DEPENDS="ncurses-dev zlib-dev libiconv-dev"
+BUILD_DEPENDS="ncurses-dev zlib-dev "
 
 # Rules to configure and make the package.
 compile_rules()

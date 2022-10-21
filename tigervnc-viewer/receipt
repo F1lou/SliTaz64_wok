@@ -11,14 +11,14 @@ WEB_SITE="https://tigervnc.org/"
 WGET_URL="https://github.com/TigerVNC/tigervnc/archive/refs/tags/$TARBALL"
 TAGS="vnc remote-desktop"
 
-DEPENDS="zlib pixman gnutls libjpeg-turbo libiconv fltk"
+DEPENDS="zlib pixman gnutls libjpeg-turbo  fltk"
 BUILD_DEPENDS="zlib-dev pixman-dev gnutls-dev jpeg-dev
-	libjpeg-turbo-dev libiconv-dev xorg-dev fltk-dev pam-dev"
+	libjpeg-turbo-dev  xorg-dev fltk-dev pam-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	mkdir build && cd build
 	cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr .. &&
 	make && make install

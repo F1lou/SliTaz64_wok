@@ -13,14 +13,14 @@ WGET_URL="http://znc.in/releases/archive/$TARBALL"
 
 SUGGESTED="tcl"
 DEPENDS="gcc-lib-base libssl zlib"
-BUILD_DEPENDS="gcc openssl-dev tcl-dev zlib-dev libiconv-dev"
+BUILD_DEPENDS="gcc openssl-dev tcl-dev zlib-dev "
 
 HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	 LDFLAGS="$LDFLAGS -liconv" ./configure			\
+	  ./configure			\
 		--enable-tcl		\
 		--disable-python	\
 		--disable-perl		\

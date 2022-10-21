@@ -13,13 +13,13 @@ TAGS="emulator nintendo snes"
 
 DEPENDS="gcc-lib-base libsdl libpng ncurses mesa zlib"
 BUILD_DEPENDS="$DEPENDS nasm libsdl-dev libpng-dev ncurses-dev mesa-dev \
-automake autoconf zlib-dev patch libiconv-dev libbsd-dev \
+automake autoconf zlib-dev patch  libbsd-dev \
 xorg-libXshmfence-dev"
 
 # Rules to configure and make the package.
 
 compile_rules() {
-  export LDFLAGS="$LDFLAGS -ltinfo -liconv"
+  export LDFLAGS="$LDFLAGS -ltinfo "
   cd $src
   patch -p1 -i $stuff/zsnes.patch 
   cd $src/src

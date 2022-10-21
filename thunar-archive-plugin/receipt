@@ -12,7 +12,7 @@ WGET_URL="http://archive.xfce.org/src/thunar-plugins/$PACKAGE/${VERSION%.*}/$TAR
 
 DEPENDS="thunar"
 BUILD_DEPENDS="intltool thunar-dev libexo-dev libxfce4ui-dev \
- xfconf-dev startup-notification-dev xcb-util-dev libiconv-dev \
+ xfconf-dev startup-notification-dev xcb-util-dev  \
  liblzma-dev"
 
 # Rules to configure and make the package.

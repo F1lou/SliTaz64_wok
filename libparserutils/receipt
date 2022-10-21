@@ -10,12 +10,12 @@ WEB_SITE="http://www.netsurf-browser.org/projects/libparserutils/"
 TARBALL="$PACKAGE-$VERSION-src.tar.gz"
 WGET_URL="http://download.netsurf-browser.org/libs/releases/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
-BUILD_DEPENDS="libiconv-dev"
+BUILD_DEPENDS=""
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export CFLAGS="$CFLAGS -liconv"
+	export CFLAGS="$CFLAGS "
 	make install DESTDIR=$DESTDIR PREFIX=/usr &&
 	make install COMPONENT_TYPE=lib-shared DESTDIR=$DESTDIR PREFIX=/usr 
 }

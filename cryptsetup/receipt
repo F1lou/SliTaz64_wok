@@ -14,7 +14,7 @@ WGET_URL="https://www.kernel.org/pub/linux/utils/$PACKAGE/v${VERSION%.*}/$TARBAL
 DEPENDS="e2fsprogs libdevmapper libgcrypt libjson-c openssl popt"
 BUILD_DEPENDS="e2fsprogs-dev libdevmapper-dev libgcrypt-dev 
 	libjson-c-dev openssl-dev popt-dev util-linux-blkid-dev 
-	util-linux-uuid-dev libiconv-dev"
+	util-linux-uuid-dev "
 
 current_version()
 {

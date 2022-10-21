@@ -32,7 +32,7 @@ case "$ARCH" in
                 BUILD_DEPENDS="$BUILD_DEPENDS tar gettext m4 bison flex gperf
                 autoconf automake libtool gtk+3-dev libepoxy-dev
                 mesa-dev xorg-libXtst-dev xorg-libXxf86vm-dev rubygems
-                glib-dev libiconv-dev" ;;
+                glib-dev " ;;
 esac
 
 # Rules to configure and make the package.
@@ -41,7 +41,7 @@ compile_rules()
         # libwebkit does not like parallel builds.
         export MAKEFLAGS=$(echo $MAKEFLAGS | sed 's/-j[0-9]*/-j1/')
         export CXXFLAGS="$CXXFLAGS -I/usr/include/harfbuzz/ -Wno-expansion-to-defined -Wno-unused-local-typedefs"
-        export LDFLAGS="$LDFLAGS -liconv"
+        
         # fix Bug 84526: webkit-gtk-1.8.0 fails to build with --disable-video
         # Build fix with newer bison 2.6
         #~ if [ ! "$continue" ]; then

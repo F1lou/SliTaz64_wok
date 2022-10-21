@@ -11,12 +11,12 @@ WEB_SITE="https://www.colm.net/open-source/ragel/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://www.colm.net/files/$PACKAGE/$TARBALL"
 
-BUILD_DEPENDS="libiconv-dev"
+BUILD_DEPENDS=""
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./configure $CONFIGURE_ARGS &&
 	make &&
 	make DESTDIR=$DESTDIR install

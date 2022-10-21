@@ -15,7 +15,7 @@ WGET_URL="$WEB_SITE/archive/refs/heads/$TARBALL"
 DEPENDS="gtk+ pciutils xorg-libXdamage libsoup json-glib"
 BUILD_DEPENDS="gtk+ gtk+-dev util-linux-mount-dev fribidi-dev
 	xorg-libXft-dev shared-mime-info-dev libsoup-dev libbsd-dev
-	xorg-dev libiconv-dev json-glib-dev"
+	xorg-dev  json-glib-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -36,7 +36,7 @@ compile_rules()
 	#~ make &&
 	#~ make DESTDIR=$DESTDIR install
 	
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	mkdir build && cd build
 	cmake -DCMAKE_INSTALL_PREFIX=/usr .. &&
 	make && make install 

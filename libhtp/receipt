@@ -11,12 +11,12 @@ WEB_SITE="http://www.openinfosecfoundation.org"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/OISF/$PACKAGE/archive/$VERSION.tar.gz"
 
-BUILD_DEPENDS="automake libtool libiconv-dev"
+BUILD_DEPENDS="automake libtool "
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	LDFLAGS="$LDFLAGS -liconv"
+	
 	./autogen.sh &&
 	./configure $CONFIGURE_ARGS &&
 	make &&

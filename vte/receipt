@@ -12,7 +12,7 @@ WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION%.*}/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="gtk+3 ncurses xorg-libXdamage pcre2"
-BUILD_DEPENDS="gtk+3-dev ncurses-dev libiconv-dev pcre2-dev
+BUILD_DEPENDS="gtk+3-dev ncurses-dev  pcre2-dev
 	gnutls-dev icu-dev"
 
 # Handle cross compilation.
@@ -28,7 +28,7 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	mkdir build && cd build
 	meson --prefix=/usr -D_systemd=false -Dvapi=false .. &&
 	ninja && ninja install

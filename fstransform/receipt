@@ -11,14 +11,14 @@ WEB_SITE="https://github.com/cosmos72/fstransform"
 WGET_URL="$WEB_SITE/archive/$VERSION.tar.gz"
 TAGS="filesystem"
 
-BUILD_DEPENDS="libiconv-dev"
+BUILD_DEPENDS=""
 SUGGESTED="jfsutils xfsprogs reiserfsprogs reiser4progs e2fsprogs"
 
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export LDFLAGS="$LDFLAGS -liconv"
+	
 	./configure --prefix=/usr \
 		$CONFIGURE_ARGS &&
 	make &&
