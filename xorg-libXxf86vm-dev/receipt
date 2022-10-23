@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xorg-libXxf86vm-dev"
-VERSION="1.1.4"
+VERSION="1.1.5"
 CATEGORY="development"
 SHORT_DESC="Xorg module - development files."
 MAINTAINER="pankso@slitaz.org"

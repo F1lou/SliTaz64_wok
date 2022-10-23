@@ -1,19 +1,19 @@
 # SliTaz package receipt.
 
 PACKAGE="fontconfig"
-VERSION="2.13.1"
+VERSION="2.14.1"
 CATEGORY="x-window"
 SHORT_DESC="Font configuration utilities and library"
 MAINTAINER="pankso@slitaz.org"
 LICENSE="MIT"
 WEB_SITE="https://www.freedesktop.org/wiki/Software/fontconfig/"
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="http://www.freedesktop.org/software/fontconfig/release/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="bzlib expat freetype libxml2"
 BUILD_DEPENDS="libxml2-dev freetype-dev liblzma-dev util-linux-uuid-dev
-	gperf "
+	gperf"
 
 # Rules to configure and make the package.
 compile_rules()

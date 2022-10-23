@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xorg-libXrender"
-VERSION="0.9.10"
+VERSION="0.9.11"
 CATEGORY="x-window"
 SHORT_DESC="X Render Library."
 MAINTAINER="pankso@slitaz.org"
@@ -9,7 +9,7 @@ LICENSE="other"
 WEB_SITE="https://www.x.org/wiki/"
 
 SOURCE="libXrender"
-TARBALL="$SOURCE-$VERSION.tar.bz2"
+TARBALL="$SOURCE-$VERSION.tar.xz"
 WGET_URL="$XORG_MIRROR/lib/$TARBALL"
 
 DEPENDS="xorg-libX11"

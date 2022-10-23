@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xorg-libXres"
-VERSION="1.2.0"
+VERSION="1.2.1"
 CATEGORY="x-window"
 SHORT_DESC="Xorg server module."
 MAINTAINER="pascal.bellard@slitaz.org"

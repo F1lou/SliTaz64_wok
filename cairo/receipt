@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="cairo"
-VERSION="1.17.4"
+VERSION="1.17.6"
 CATEGORY="x-window"
 SHORT_DESC="2D graphics library"
 MAINTAINER="pankso@slitaz.org"
@@ -9,15 +9,15 @@ LICENSE="MPL LGPL2.1"
 WEB_SITE="https://www.cairographics.org/"
 
 TARBALL="$PACKAGE-$VERSION.tar.xz"
-WGET_URL="${WEB_SITE}snapshots/$TARBALL"
+WGET_URL="https://download.gnome.org/sources/$PACKAGE/${VERSION%.*}/$TARBALL"
 
 DEPENDS="bzlib fontconfig freetype glib glibc-base harfbuzz libffi libpng \
 libxcb libxml2 pcre pixman xorg-libX11 xorg-libXau xorg-libXdmcp xorg-libXext \
 xorg-libXrender zlib"
 BUILD_DEPENDS="pkg-config glib-dev libpng-dev zlib-dev fontconfig-dev \
 freetype-dev xorg-libX11-dev pixman-dev xorg-libXau-dev xorg-libXdmcp-dev \
-harfbuzz-dev xorg-libXrender-dev xcb-util-dev libxcb-dev expat-dev \
-libxml2-dev util-linux-uuid-dev  binutils file"
+xorg-libXext-dev xcb-util-dev libxcb-dev expat-dev libxml2-dev \
+util-linux-uuid-dev xorg-randrproto file harfbuzz-dev"
 SPLIT="cairo-tools"
 SIBLINGS="cairo-gl"
 HOST_ARCH="x86_64 i486 arm"
@@ -30,9 +30,13 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
+	#~ Adapt this package for Binutils-2.39 or later: 
+	sed 's/PTR/void */' -i util/cairo-trace/lookup-symbol.c
+	#~ Fix a pkg-config file that may cause errors later: 
+	sed -e "/@prefix@/a exec_prefix=@exec_prefix@" -i util/cairo-script/cairo-script-interpreter.pc.in
 	
-	patch -Np1 -i $stuff/lookup-symbol.c.patch
-	sed -i '/index.sgml/d' doc/public/Makefile*
+	#~ patch -Np1 -i $stuff/lookup-symbol.c.patch
+	#~ sed -i '/index.sgml/d' doc/public/Makefile*
 	./configure \
 		--prefix=/usr \
 		--enable-xcb \

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xorg-libXfont2-dev"
-VERSION="2.0.4"
+VERSION="2.0.6"
 CATEGORY="development"
 SHORT_DESC="Development files for libXfont2."
 MAINTAINER="maintainer@slitaz.org"

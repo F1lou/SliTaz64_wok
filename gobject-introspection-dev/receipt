@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gobject-introspection-dev"
-VERSION="1.70.0"
+VERSION="1.74.0"
 CATEGORY="development"
 SHORT_DESC="Gobject-introspection devel files"
 MAINTAINER="pankso@slitaz.org"
@@ -14,12 +14,9 @@ DEPENDS="gobject-introspection glib-dev libffi-dev pkg-config"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p \
-		$fs/usr/lib \
-		$fs/usr/lib64 \
-		$fs/usr/share
+	mkdir -p $fs/usr/lib $fs/usr/share
 	cp -a $install/usr/include $fs/usr
-	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
 	#~ cp -a $install/usr/lib64/*.la $fs/usr/lib64
 	cp -a $install/usr/share/aclocal $fs/usr/share
 	cp -a $install/usr/share/gir-1.0 $fs/usr/share

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xorg-proto"
-VERSION="2021.4"
+VERSION="2022.2"
 CATEGORY="development"
 SHORT_DESC="proto headers."
 MAINTAINER="nhc1@gmx.net"
@@ -9,7 +9,7 @@ LICENSE="other"
 WEB_SITE="https://www.x.org/wiki/"
 
 SOURCE="xorgproto"
-TARBALL="$SOURCE-$VERSION.tar.bz2"
+TARBALL="$SOURCE-$VERSION.tar.xz"
 WGET_URL="$XORG_MIRROR/proto/$TARBALL"
 
 DEPENDS="pkg-config xorg-util-macros"

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="pixman"
-VERSION="0.40.0"
+VERSION="0.42.0"
 CATEGORY="x-window"
 SHORT_DESC="Pixel-manipulation library for X and Cairo."
 MAINTAINER="pankso@slitaz.org"

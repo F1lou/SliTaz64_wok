@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xorg-libXcursor-dev"
-VERSION="1.2.0"
+VERSION="1.2.1"
 CATEGORY="development"
 SHORT_DESC="Development files for libXcursor."
 MAINTAINER="pankso@slitaz.org"

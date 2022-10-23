@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xorg-libXres-dev"
-VERSION="1.2.0"
+VERSION="1.2.1"
 CATEGORY="development"
 SHORT_DESC="Xorg module - development files."
 MAINTAINER="pascal.bellard@slitaz.org"

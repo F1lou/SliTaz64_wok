@@ -13,7 +13,8 @@ TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="$XORG_MIRROR/lib/$TARBALL"
 
 DEPENDS="xorg-libX11"
-BUILD_DEPENDS="xorg-fixesproto xorg-libX11-dev"
+BUILD_DEPENDS="xorg-fixesproto xorg-libX11-dev xorg-xextproto 
+	xorg-randrproto"
 
 HOST_ARCH="x86_64 i486 arm"
 
