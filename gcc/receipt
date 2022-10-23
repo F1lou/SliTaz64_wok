@@ -17,7 +17,7 @@ TAGS="compiler C"
 # and uses its own copy.
 DEPENDS="binutils libgomp libobjc gcc-lib-base mpc-library elfutils"
 BUILD_DEPENDS="mpc-library mpfr-dev gmp-dev elfutils-dev gc-dev
-	zlib-dev texinfo"
+	gawk zlib-dev texinfo"
 
 # Handle cross compilation (native i486/ARM gcc)
 case "$ARCH" in
@@ -42,16 +42,16 @@ compile_rules()
 	[ "$3" = "--first-pass" ] && opt=$3
 
 	# Use libiberty.a from binutils.
-	#sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in || return 1
+	sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in || return 1
 
 	case "$ARCH" in
 		i?86) sed -i 's/^T_CFLAGS =$/& -fomit-frame-pointer/' gcc/Makefile.in ;;
 		x86_64) sed -e '/m64=/s/lib64/lib/' -i.orig gcc/config/i386/t-linux64 ;;
 	esac
 
-	#sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
+	sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
 
-	mkdir -p ../gcc-build && cd ../gcc-build
+	mkdir -p gcc-build && cd gcc-build
 
 	# This is the default GCC and we want a native build to cross compile after.
 	# SliTaz target i486 host so we need a native i486 build for GCC.
@@ -89,7 +89,9 @@ compile_rules()
 				--enable-lto \
 				--enable-threads=posix \
 				--with-pkgversion="$pkgversion" \
-				${CONFIGURE_ARGS} ${ARCH_ARGS} &&
+				--build=$HOST_SYSTEM \
+				--target=$HOST_SYSTEM \
+				${ARCH_ARGS} &&
 			make && make install ;;
 	esac
 }

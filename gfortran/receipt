@@ -14,7 +14,6 @@ TAGS="compiler fortran"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	HOST_SYSTEM="x86_64-pc-linux-gnu"
 	mkdir -p $fs/usr/lib/gcc/$HOST_SYSTEM/$VERSION $fs/usr/bin
 	cp -a $install/usr/bin/*gfortran $fs/usr/bin
 	cp -a $install/usr/lib/libgfortran*a $fs/usr/lib
