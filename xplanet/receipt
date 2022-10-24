@@ -16,7 +16,7 @@ glib xorg-libXau xorg-libXdmcp expat giflib xorg-libXss gcc-lib-base \
 BUILD_DEPENDS="giflib-dev jpeg-dev libpng-dev zlib-dev tiff-dev \
 xorg-libX11-dev freetype-dev pango-dev fontconfig-dev glib-dev \
 xorg-libXau-dev xorg-libXdmcp-dev xorg-libXScrnSaver-dev libboost-dev \
- libbsd-dev"
+ "
 
 # Rules to configure and make the package.
 compile_rules()

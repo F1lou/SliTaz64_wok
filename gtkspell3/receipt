@@ -14,7 +14,7 @@ WGET_URL="$SF_MIRROR/gtkspell/$TARBALL"
 DEPENDS="enchant gtk+3"
 BUILD_DEPENDS="enchant-dev gobject-introspection-dev gtk+3-dev gtk-doc vala
 	libepoxy-dev mesa-dev xorg-dev xorg-libXxf86vm-dev enchant2-dev
-	liblzma-dev aspell-dev libbsd-dev intltool "
+	liblzma-dev aspell-dev  intltool "
 
 HOST_ARCH="x86_64 i486 arm"
 

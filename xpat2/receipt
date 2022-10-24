@@ -11,7 +11,7 @@ TARBALL="$PACKAGE-$VERSION-src.tar.gz"
 WGET_URL="http://www.ibiblio.org/pub/Linux/games/solitaires/$TARBALL"
 
 DEPENDS="xorg-libX11 xorg-libXt xorg-libXaw"
-BUILD_DEPENDS="xorg-libX11-dev xorg-libXt-dev xorg-libXaw-dev libbsd-dev"
+BUILD_DEPENDS="xorg-libX11-dev xorg-libXt-dev xorg-libXaw-dev "
 
 # Rules to configure and make the package.
 compile_rules()

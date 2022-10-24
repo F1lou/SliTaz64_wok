@@ -14,7 +14,7 @@ WGET_URL="$WEB_SITE/archive/refs/heads/$TARBALL"
 
 DEPENDS="gtk+ pciutils xorg-libXdamage libsoup json-glib"
 BUILD_DEPENDS="gtk+ gtk+-dev util-linux-mount-dev fribidi-dev
-	xorg-libXft-dev shared-mime-info-dev libsoup-dev libbsd-dev
+	xorg-libXft-dev shared-mime-info-dev libsoup-dev 
 	xorg-dev  json-glib-dev"
 
 # Rules to configure and make the package.

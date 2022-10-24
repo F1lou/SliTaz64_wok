@@ -16,7 +16,7 @@ DEPENDS="atk bzlib cairo exiv2 fontconfig freetype gcc-lib-base gdk-pixbuf \
 	glib glibc-base gtk+ harfbuzz libffi libgio libpng libxcb libxml2 
 	pango pcre pixman xorg-libX11 xorg-libXau xorg-libXdmcp xorg-libXext 
 	xorg-libXrender zlib "
-BUILD_DEPENDS="exiv2-dev gtk+-dev libtool meson  libbsd-dev"
+BUILD_DEPENDS="exiv2-dev gtk+-dev libtool meson  "
 
 HOST_ARCH="x86_64 i486 arm"
 

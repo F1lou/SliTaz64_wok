@@ -14,7 +14,7 @@ WGET_URL="$XORG_MIRROR/lib/$TARBALL"
 
 DEPENDS=""
 BUILD_DEPENDS="xorg-dmxproto xorg-xextproto xorg-libXext-dev
-	xorg-libX11-dev libbsd-dev libmd-dev"
+	xorg-libX11-dev  libmd-dev"
 
 # Rules to configure and make the package.
 compile_rules()

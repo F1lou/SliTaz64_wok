@@ -12,7 +12,7 @@ WGET_URL="http://synergy.googlecode.com/files/$TARBALL"
 
 DEPENDS="xorg-libX11 xorg-libXtst xorg-libSM xorg-libICE xorg-libXinerama gcc-lib-base"
 BUILD_DEPENDS="xorg-dev-proto xorg-libXt-dev xorg-libXtst-dev cmake
-	 libbsd-dev"
+	 "
 
 # Rules to configure and make the package.
 compile_rules()

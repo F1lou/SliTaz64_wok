@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="cups"
-VERSION="2.3.3"
+VERSION="2.4.2"
 CATEGORY="system-tools"
 TAGS="printer printing"
 SHORT_DESC="Common UNIX Printing System."
@@ -10,7 +10,7 @@ LICENSE="GPL2 LGPL2"
 WEB_SITE="https://www.cups.org/"
 
 TARBALL="$PACKAGE-$VERSION-source.tar.gz"
-WGET_URL="https://github.com/apple/$PACKAGE/releases/download/v$VERSION/$TARBALL"
+WGET_URL="https://github.com/OpenPrinting/$PACKAGE/releases/download/v$VERSION/$TARBALL"
 
 DEPENDS="cups-doc cups-filters dbus libcomerr libcups libkrb5 libssl 
 	libunistring libusb-compat poppler-apps"

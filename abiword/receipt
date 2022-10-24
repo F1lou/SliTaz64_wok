@@ -20,7 +20,7 @@ BUILD_DEPENDS="$DEPENDS gtk+3-dev libgnomeprint-dev libgnomeprintui-dev \
 fribidi-dev libglade-dev popt-dev libxml2-dev libart_lgpl-dev libgsf-dev \
 enchant-dev wv-dev libgnomecanvas-dev libcroco-dev libboost-dev librsvg-dev \
  libpng-dev libepoxy-dev libxslt-dev mesa-dev xorg-libXtst-dev \
-xorg-libXxf86vm-dev libdrm-dev libjpeg-turbo-dev liblzma-dev libbsd-dev"
+xorg-libXxf86vm-dev libdrm-dev libjpeg-turbo-dev liblzma-dev "
 SUGGESTED="abiword-plugins"
 
 # Rules to configure and make the package.

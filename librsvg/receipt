@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="librsvg"
-VERSION="2.52.6"
+VERSION="2.55.1"
 CATEGORY="x-window"
 SHORT_DESC="SVG Rendering Library"
 MAINTAINER="erjo@slitaz.org"
@@ -13,7 +13,7 @@ HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="bzlib cairo fontconfig freetype gdk-pixbuf glib glibc-base harfbuzz
 	libcroco libffi libgio libpng libxcb libxml2 pango pcre pixman xorg-libX11
-	xorg-libXau xorg-libXdmcp xorg-libXext xorg-libXrender zlib libbsd
+	xorg-libXau xorg-libXdmcp xorg-libXext xorg-libXrender zlib 
 	fribidi"
 BUILD_DEPENDS="cairo-dev expat-dev fontconfig-dev freetype-dev gdk-pixbuf-dev
 	glib-dev libcroco-dev libffi-dev libpng-dev libxml2-dev pango-dev"
@@ -21,7 +21,7 @@ BUILD_DEPENDS="cairo-dev expat-dev fontconfig-dev freetype-dev gdk-pixbuf-dev
 # Handle cross compilation
 case "$ARCH" in
 	x86_64|i?86) BUILD_DEPENDS="$BUILD_DEPENDS gtk-doc perl libgsf libcroco-dev
-	gobject-introspection-dev gtk+3-dev rust rust-cargo libbsd-dev
+	gobject-introspection-dev gtk+3-dev rust rust-cargo 
 	liblzma-dev python3-docutils file gi-docgen 
 	shared-mime-info" ;;
 esac

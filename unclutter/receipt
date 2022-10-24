@@ -15,7 +15,7 @@ PATCH="$(basename $PATCH_URL)"
 EXTRA_SOURCE_FILES="$PATCH"
 
 DEPENDS="xorg-libX11 libxcb xorg-libXau xorg-libXdmcp"
-BUILD_DEPENDS="xorg-randrproto xorg-libX11-dev libbsd-dev"
+BUILD_DEPENDS="xorg-randrproto xorg-libX11-dev "
 
 # Rules to configure and make the package.
 compile_rules()

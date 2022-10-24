@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libtasn1"
-VERSION="4.18.0"
+VERSION="4.19.0"
 CATEGORY="security"
 SHORT_DESC="ASN.1 library."
 MAINTAINER="pankso@slitaz.org"
@@ -21,7 +21,7 @@ compile_rules()
 {
 	./configure		\
 		$CONFIGURE_ARGS &&
-	make -j 1 &&
+	make &&
 	make install
 }
 

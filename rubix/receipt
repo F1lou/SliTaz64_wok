@@ -11,7 +11,7 @@ WEB_SITE="http://sed.free.fr/rubix"
 WGET_URL="$WEB_SITE/$TARBALL"
 
 DEPENDS="xorg-libX11 libxcb xorg-libXau xorg-libXdmcp"
-BUILD_DEPENDS="xorg-dev libbsd-dev"
+BUILD_DEPENDS="xorg-dev "
 
 # Rules to configure and make the package.
 compile_rules()

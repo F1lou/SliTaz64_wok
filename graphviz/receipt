@@ -17,7 +17,7 @@ BUILD_DEPENDS="py3k py3k-dev gcc expat-dev gdk-pixbuf-dev guile-dev jpeg-dev
 	libcroco-dev libgd-dev libpng-dev librsvg-dev libxml2-dev 
 	ocaml pango-dev pcre-dev pkg-config  libnsl-dev
 	python-dev ruby-dev swig tcl-dev tk-dev util-linux-uuid-dev 
-	xorg-dev zlib-dev automake sed liblzma-dev libbsd-dev lua-dev" # php-cli php-dev
+	xorg-dev zlib-dev automake sed liblzma-dev  lua-dev" # php-cli php-dev
 
 # Rules to configure and make the package.
 compile_rules()

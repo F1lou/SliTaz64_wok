@@ -11,7 +11,7 @@ WEB_SITE="http://xvidcap.sourceforge.net/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://sourceforge.net/projects/xvidcap/files/latest/download/$TARBALL"
 
-BUILD_DEPENDS="gtk+-dev libglade-dev xorg-libXmu-dev libbsd-dev xorg-randrproto
+BUILD_DEPENDS="gtk+-dev libglade-dev xorg-libXmu-dev  xorg-randrproto
 	xorg-libXfixes-dev xorg-libXdamage-dev dbus-dev dbus-glib-dev lame-dev"
 
 HOST_ARCH="x86_64"

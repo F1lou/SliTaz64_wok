@@ -18,7 +18,7 @@ DEPENDS="gtk+ cdparanoia-III libmad xorg-libXv libtheora alsa-lib ncurses \
 lame xorg-libXdamage giflib enca lirc xorg-libXxf86vm esound libmng audiofile \
 libvorbis libogg zlib xvidcore x264 xorg-libXss gcc-lib-base libdvdnav libdvdread \
 libtheora-enc"
-BUILD_DEPENDS="gtk+-dev libmad-dev xorg-libXv-dev libtheora-dev libbsd-dev \
+BUILD_DEPENDS="gtk+-dev libmad-dev xorg-libXv-dev libtheora-dev  \
 alsa-lib-dev ncurses-dev lame-dev xorg-libXdamage-dev giflib-dev xorg-server-dev \
 xorg-libXxf86vm-dev esound-dev audiofile-dev libogg-dev libvorbis-dev desktop-file-utils \
 xvidcore-dev zlib-dev xorg-xextproto pkg-config yasm gcc libdvdnav-dev libdvdread-dev \

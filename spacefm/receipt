@@ -14,11 +14,11 @@ WGET_URL="https://github.com/IgnorantGuru/$PACKAGE/archive/$VERSION.tar.gz"
 
 DEPENDS="bash dbus dbus-glib expat gdk-pixbuf glib glibc-base gtk+3 libgio 
 	libxcb startup-notification eudev udevil util-linux-uuid xcb-util
-	shared-mime-info libbsd libepoxy"
+	shared-mime-info  libepoxy"
 BUILD_DEPENDS="coreutils-file-special dbus-dev dbus-glib-dev expat-dev 
 	gdk-pixbuf-dev gtk+3-dev intltool libxcb-dev startup-notification-dev 
 	eudev-dev xcb-util-dev xorg-dev glibc-dev desktop-file-utils
-	shared-mime-info-dev libbsd-dev libepoxy-dev"
+	shared-mime-info-dev  libepoxy-dev"
 
 # Rules to configure and make the package.
 compile_rules()

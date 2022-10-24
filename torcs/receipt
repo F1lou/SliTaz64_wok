@@ -13,7 +13,7 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="http://sourceforge.net/projects/$PACKAGE/files/all-in-one/$VERSION/$TARBALL/download"
 
 DEPENDS="mesa freeglut freealut libogg libvorbis xorg-libXmu"
-BUILD_DEPENDS="mesa-dev freeglut-dev xorg-randrproto  libbsd-dev
+BUILD_DEPENDS="mesa-dev freeglut-dev xorg-randrproto  
 	plib freealut-dev libogg-dev libvorbis-dev xorg-libXmu-dev 
 	xorg-libXshmfence-dev zlib-dev libpng-dev"
 

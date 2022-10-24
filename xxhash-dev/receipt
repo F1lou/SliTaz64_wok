@@ -3,7 +3,7 @@
 PACKED_SIZE="60.0K"
 UNPACKED_SIZE="248.0K"
 PACKAGE="xxhash-dev"
-VERSION="0.8.0"
+VERSION="0.8.1"
 CATEGORY="development"
 SHORT_DESC="Extremely fast non-cryptographic hash algorithm, development files."
 MAINTAINER="pascal.bellard@slitaz.org"

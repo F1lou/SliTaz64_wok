@@ -12,7 +12,7 @@ WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 TAGS="remote-desktop"
 
 DEPENDS="gtk+ rdesktop xorg-libXdamage"
-BUILD_DEPENDS="gtk+ gtk+-dev perl-xml-parser pkg-config libbsd-dev"
+BUILD_DEPENDS="gtk+ gtk+-dev perl-xml-parser pkg-config "
 
 # Rules to configure and make the package.
 compile_rules()

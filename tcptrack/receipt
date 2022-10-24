@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}archive/v$VERSION.tar.gz"
 
 DEPENDS="libpcap ncurses"
-BUILD_DEPENDS="libpcap-dev ncurses-dev  libbsd-dev"
+BUILD_DEPENDS="libpcap-dev ncurses-dev  "
 
 # Rules to configure and make the package.
 compile_rules()

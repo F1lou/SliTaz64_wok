@@ -13,7 +13,7 @@ TAGS="emulator nintendo snes"
 
 DEPENDS="gcc-lib-base libsdl libpng ncurses mesa zlib"
 BUILD_DEPENDS="$DEPENDS nasm libsdl-dev libpng-dev ncurses-dev mesa-dev \
-automake autoconf zlib-dev patch  libbsd-dev \
+automake autoconf zlib-dev patch   \
 xorg-libXshmfence-dev"
 
 # Rules to configure and make the package.

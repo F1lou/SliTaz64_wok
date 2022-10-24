@@ -15,7 +15,7 @@ gtk+ cairo atk fontconfig freetype pango pixman libpng \
 xorg-libX11 xorg-libXau xorg-libXcomposite xorg-libXcursor xorg-libXcursor \
 xorg-libXdamage xorg-libXdmcp xorg-libXext xorg-libXfixes xorg-libXinerama xorg-libXrender"
 BUILD_DEPENDS="pkg-config libxml2-dev gtk+-dev xorg-libXdamage-dev expat-dev liblzma-dev
-libbsd-dev"
+"
 
 # Rules to configure and make the package.
 compile_rules()

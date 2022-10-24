@@ -13,7 +13,7 @@ WGET_URL="https://xkbcommon.org/download/$TARBALL"
 
 DEPENDS="libxcb xorg-xkeyboard-config"
 BUILD_DEPENDS="bison libxcb-dev xorg-util-macros xorg-xkeyboard-config-dev
-	wayland-dev wayland-protocols  libbsd-dev"
+	wayland-dev wayland-protocols  "
 
 # Rules to configure and make the package.
 compile_rules()

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="php"
-VERSION="8.1.7"
+VERSION="8.1.11"
 CATEGORY="development"
 SHORT_DESC="PHP web programming language."
 MAINTAINER="pankso@slitaz.org"

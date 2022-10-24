@@ -14,7 +14,7 @@ WGET_URL="http://stardict-3.googlecode.com/files/$TARBALL"
 DEPENDS="enchant gtk+ libsigc++ xorg-libSM"
 BUILD_DEPENDS="bzip2 enchant-dev gtk+-dev intltool libffi libsigc++-dev \
 	popt util-linux-uuid-dev xorg-libSM-dev zlib-dev 
-	xorg-randrproto libbsd-dev"
+	xorg-randrproto "
 
 # Rules to configure and make the package.
 compile_rules()

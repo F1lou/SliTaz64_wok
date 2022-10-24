@@ -1,18 +1,18 @@
 # SliTaz package receipt.
 
 PACKAGE="tiff"
-VERSION="4.3.0"
+VERSION="4.4.0"
 CATEGORY="x-window"
 SHORT_DESC="A library of functions for manipulating TIFF format image files."
 MAINTAINER="pankso@slitaz.org"
 LICENSE="MIT"
 WEB_SITE="http://www.libtiff.org/"
 
-TARBALL="$PACKAGE-$VERSION.tar.gz"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://download.osgeo.org/libtiff/$TARBALL"
 
 DEPENDS="gcc-lib-base jpeg zlib"
-BUILD_DEPENDS="jbigkit jpeg-dev zlib-dev "
+BUILD_DEPENDS="jbigkit jpeg-dev zlib-dev cmake"
 
 HOST_ARCH="x86_64 i486 arm"
 
@@ -23,7 +23,7 @@ compile_rules()
 	mkdir -p libtiff-build &&
 	cd       libtiff-build &&
 
-	cmake -DCMAKE_INSTALL_PREFIX=/usr -G Ninja .. &&
+	CFLAGS="$CFLAGS -fPIC" cmake -DCMAKE_INSTALL_PREFIX=/usr -G Ninja .. &&
 	ninja &&
 	ninja install
 

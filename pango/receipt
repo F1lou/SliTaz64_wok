@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="pango"
-VERSION="1.50.4"
+VERSION="1.50.9"
 CATEGORY="x-window"
 SHORT_DESC="Layout and rendering of internationalized text"
 MAINTAINER="pankso@slitaz.org"
@@ -14,7 +14,7 @@ HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="cairo xorg-libXft slitaz-base-files gcc-lib-base util-linux-uuid"
 BUILD_DEPENDS="cairo-dev libxml2-dev xorg-libXft-dev fribidi-dev 
-	libgio-dev xorg-randrproto libbsd-dev"
+	libgio-dev xorg-randrproto "
 
 # Handle cross compilation
 case "$ARCH" in
@@ -44,9 +44,9 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib64 $fs/etc/pango
+	mkdir -p $fs/usr/lib $fs/etc/pango
 	cp -a $install/usr/bin $fs/usr/
-	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
 	#~ cp -a $install/usr/lib/pango $fs/usr/lib
 	#~ rm -rf $fs/usr/lib/pango/1.8.0/modules/*.la
 	#~ [ -d "$install/etc" ] && cp -a $install/etc $fs

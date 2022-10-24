@@ -14,7 +14,7 @@ PATCH2="http://sonic.net/~roelofs/code/xv-3.10a-enhancements.20070520-20081216.d
 EXTRA_SOURCE_FILES="$PATCH1 $PATCH2"
 
 DEPENDS="xorg"
-BUILD_DEPENDS="xorg-dev libbsd-dev"
+BUILD_DEPENDS="xorg-dev "
 
 # Rules to configure and make the package.
 compile_rules()

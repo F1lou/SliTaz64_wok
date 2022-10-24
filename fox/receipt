@@ -16,7 +16,7 @@ DEPENDS="bzlib jbigkit jpeg libdrm libglu-mesa libpng mesa tiff
 	xorg-libXcursor xorg-libXdamage xorg-libXft xorg-libXrandr 
 	xorg-libXxf86vm"
 BUILD_DEPENDS="expat-dev fontconfig-dev freetype-dev jpeg-dev 
-	libglu-mesa-dev libpng-dev libxml2-dev mesa-dev libbsd-dev
+	libglu-mesa-dev libpng-dev libxml2-dev mesa-dev 
 	tiff-dev xorg-libXft-dev  liblzma-dev
 	xorg-libXshmfence-dev"
 

@@ -11,8 +11,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 #~ WGET_URL="$SF_MIRROR/project/asciidoc/asciidoc/$VERSION/$TARBALL"
 WGET_URL="https://github.com/asciidoc-py/asciidoc-py/archive/refs/tags/$VERSION.tar.gz"
 DEPENDS="py3k"
-BUILD_DEPENDS="libxml2-tools docbook-xml docbook-xsl libxslt python3-pip
-	python3-setuptools"
+BUILD_DEPENDS="libxml2-tools docbook-xml docbook-xsl libxslt py3k"
 
 # Rules to configure and make the package.
 compile_rules()

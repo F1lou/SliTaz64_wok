@@ -14,7 +14,7 @@ WGET_URL="https://github.com/kupferlauncher/$SOURCE/releases/download/$SOURCE-3.
 DEPENDS="gtk+3"
 BUILD_DEPENDS="gtk+3-dev gobject-introspection-dev xorg-libXext-dev python-dev \
 pygtk-dev pygobject-dev automake autoconf libtool lua-dev liblzma-dev \
-libbsd-dev"
+"
 
 # Rules to configure and make the package.
 compile_rules()

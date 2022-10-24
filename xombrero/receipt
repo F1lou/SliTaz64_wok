@@ -13,8 +13,8 @@ CONFIG_FILES="/etc/xombrero.conf"
 TAGS="web-browser"
 
 SUGGESTED="cacerts"
-DEPENDS="gtk+ libwebkit libbsd"
-BUILD_DEPENDS="gtk+-dev libwebkit-dev libsoup-dev gnutls-dev libbsd-dev \
+DEPENDS="gtk+ libwebkit "
+BUILD_DEPENDS="gtk+-dev libwebkit-dev libsoup-dev gnutls-dev  \
 groff wget"
 
 # Rules to configure and make the package.

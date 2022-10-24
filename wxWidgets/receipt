@@ -19,7 +19,7 @@ DEPENDS="atk cairo expat fontconfig freetype gcc-lib-base glib glibc-base
 	xorg-libXxf86vm zlib"
 BUILD_DEPENDS="expat-dev gtk+3-dev jpeg-dev libglu-mesa libpng-dev mesa-dev 
 	tiff-dev xorg-dev xorg-libXpm-dev xorg-xineramaproto zlib-dev
-	 liblzma-dev libbsd-dev"
+	 liblzma-dev "
 
 # Rules to configure and make the package.
 compile_rules()

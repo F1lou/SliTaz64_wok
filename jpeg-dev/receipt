@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="jpeg-dev"
-VERSION="9d"
+VERSION="9e"
 CATEGORY="development"
 SHORT_DESC="JPEG images libraries."
 MAINTAINER="pankso@slitaz.org"

@@ -13,7 +13,7 @@ TARBALL="$SOURCE-$VERSION.tar.xz"
 WGET_URL="$XORG_MIRROR/app/$TARBALL"
 
 DEPENDS="xorg-libXrandr"
-BUILD_DEPENDS="xorg-libXrandr-dev libbsd-dev"
+BUILD_DEPENDS="xorg-libXrandr-dev "
 
 HOST_ARCH="x86_64 i486 arm"
 

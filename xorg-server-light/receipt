@@ -26,7 +26,7 @@ xorg-videoproto xorg-xtrans libgpg-error-dev libgcrypt-dev freetype-dev \
 libxcb-dev xorg-libXcomposite-dev xorg-libXxf86vm-dev xorg-libXv-dev \
 bzip2-dev eudev-dev xorg-resourceproto xorg-xf86dgaproto xorg-bigreqsproto \
 xorg-bigreqsproto xorg-xcmiscproto xorg-bigreqsproto xorg-resourceproto \
-libepoxy-dev xorg-dev xorg-libXfont2-dev libbsd-dev libdrm-dev \
+libepoxy-dev xorg-dev xorg-libXfont2-dev  libdrm-dev \
 xorg-xkbcomp-dev xorg-libXshmfence"
 
 # Handle cross compilation. ARM use build host: perl flex

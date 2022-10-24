@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libjpeg"
-VERSION="9d"
+VERSION="9e"
 CATEGORY="x-window"
 TAGS="jpeg jpg"
 SHORT_DESC="JPEG image libraries."

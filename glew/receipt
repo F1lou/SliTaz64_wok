@@ -21,7 +21,7 @@ BUILD_DEPENDS="glibc-base libdrm xorg-libX11 xorg-libXau xorg-libXdamage \
 	xorg-damageproto xorg-xproto xorg-fixesproto xorg-xextproto \
 	xorg-libX11-dev xorg-libXdamage-dev xorg-libXfixes-dev xorg-libXt-dev \
 	xorg-libICE-dev xorg-libSM-dev xorg-xf86vidmodeproto xorg-libXxf86vm-dev \
-	xorg-randrproto libbsd-dev xorg-libXshmfence-dev"
+	xorg-randrproto  xorg-libXshmfence-dev"
 
 # Rules to configure and make the package.
 compile_rules()

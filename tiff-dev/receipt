@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="tiff-dev"
-VERSION="4.3.0"
+VERSION="4.4.0"
 CATEGORY="development"
 SHORT_DESC="A library of functions for manipulating TIFF format image files - development files."
 MAINTAINER="pankso@slitaz.org"

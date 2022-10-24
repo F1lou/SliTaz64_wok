@@ -13,7 +13,7 @@ WGET_URL="http://downloads.sourceforge.net/mcj/$TARBALL"
 
 DEPENDS="xorg xorg-libXpm libpng zlib"
 BUILD_DEPENDS="xorg-imake xorg-libXpm-dev libpng-dev zlib-dev
-	xorg-libXt-dev xorg-randrproto xorg-libXaw3d-dev libbsd-dev"
+	xorg-libXt-dev xorg-randrproto xorg-libXaw3d-dev "
 
 # Rules to configure and make the package.
 compile_rules()

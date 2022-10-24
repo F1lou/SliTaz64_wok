@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="postgresql-client"
-VERSION="14.3"
+VERSION="15.0"
 CATEGORY="misc"
 SHORT_DESC="SQL database system client files."
 MAINTAINER="pascal.bellard@slitaz.org"

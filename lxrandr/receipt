@@ -12,8 +12,8 @@ WEB_SITE="https://wiki.lxde.org/en/LXRandR"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="$SF_MIRROR/lxde/$TARBALL"
 
-DEPENDS="gtk+ xorg-xrandr libbsd"
-BUILD_DEPENDS="gtk+-dev xorg-libXrandr-dev libbsd-dev"
+DEPENDS="gtk+ xorg-xrandr "
+BUILD_DEPENDS="gtk+-dev xorg-libXrandr-dev "
 
 HOST_ARCH="x86_64 i486 arm"
 

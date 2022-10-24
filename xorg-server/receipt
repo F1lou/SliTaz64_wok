@@ -21,7 +21,7 @@ flex xorg-xf86driproto xorg-xcmiscproto xorg-bigreqsproto xorg-randrproto \
 xorg-dri2proto xorg-libXau-dev xorg-dev-proto libdrm-dev xorg-glproto \
 mesa-dev xorg-libXv-dev xorg-proto xorg-glproto xorg-libXfont2-dev \
 xcb-util-renderutil-dev xorg-xkbcomp xcb-util-dev xcb-util-image-dev \
-xcb-util-wm-dev xcb-util-keysyms-dev libbsd-dev nettle-dev \
+xcb-util-wm-dev xcb-util-keysyms-dev  nettle-dev \
 xorg-libXshmfence-dev xorg-xkbcomp libepoxy-dev libmd-dev"
 
 # Rules to configure and make the package.

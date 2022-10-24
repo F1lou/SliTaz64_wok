@@ -13,7 +13,7 @@ TAGS="terminal"
 
 DEPENDS="vte libconfuse libglade"
 BUILD_DEPENDS="flex vte-dev libglade-dev libconfuse xorg-randrproto
-	xorg-libXrandr-dev libbsd-dev"
+	xorg-libXrandr-dev "
 
 # Rules to configure and make the package.
 compile_rules()

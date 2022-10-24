@@ -19,7 +19,7 @@ DEPENDS="alsa-lib gstreamer libogg libtheora libtheora-enc
 BUILD_DEPENDS="alsa-lib-dev automake gstreamer-dev libogg-dev libtheora-dev 
 	libtheora-enc libvorbis-dev opus-dev orc-dev pango-dev eudev-dev 
 	util-linux-uuid-dev xorg-libXv-dev xorg-libXvMC-dev libgio-dev
-	gobject-introspection-dev xorg-dev libbsd-dev "
+	gobject-introspection-dev xorg-dev  "
 
 HOST_ARCH="x86_64 i486 arm"
 

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gtk+3"
-VERSION="3.24.25"
+VERSION="3.24.34"
 CATEGORY="x-window"
 SHORT_DESC="The GIMP Toolkit 3.x"
 MAINTAINER="pankso@slitaz.org"
@@ -15,12 +15,11 @@ WGET_URL="$GNOME_MIRROR/$SOURCE/${VERSION%.*}/$TARBALL"
 SUGGESTED="cups"
 DEPENDS="at-spi2-atk atk gdk-pixbuf pango slitaz-icon util-linux-uuid 
 	xorg-libXcomposite xorg-libXcursor xorg-libXi xorg-libXinerama 
-	xorg-libXrandr libepoxy libbsd"
+	xorg-libXrandr libepoxy "
 BUILD_DEPENDS="at-spi2-atk atk-dev autoconf automake bash cairo-dev 
 	cups-dev dbus-dev gdk-pixbuf-dev gobject-introspection-dev 
 	indent libffi-dev libxml2-dev pango-dev perl pkg-config 
-	util-linux-uuid-dev xorg-dev libepoxy-dev liblzma-dev libbsd-dev
-	"
+	util-linux-uuid-dev xorg-dev libepoxy-dev liblzma-dev"
 
 CONFIG_FILES="/etc/gtk-3.0/settings.ini"
 

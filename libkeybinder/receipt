@@ -14,7 +14,7 @@ WGET_URL="https://github.com/kupferlauncher/$SOURCE/releases/download/v$VERSION/
 DEPENDS="gtk+"
 BUILD_DEPENDS="gtk+-dev gobject-introspection-dev xorg-libXext-dev python-dev \
 pygtk-dev pygobject-dev automake autoconf libtool lua-dev liblzma-dev \
-libbsd-dev xorg-randrproto"
+ xorg-randrproto"
 
 # Rules to configure and make the package.
 compile_rules()

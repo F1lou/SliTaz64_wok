@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$SF_MIRROR/libxosd/$TARBALL"
 
 DEPENDS="xorg-libX11"
-BUILD_DEPENDS="xorg-dev gtk+3-dev libbsd-dev"
+BUILD_DEPENDS="xorg-dev gtk+3-dev "
 
 # Rules to configure and make the package.
 compile_rules()
