@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="nss"
-VERSION="3.82"
+VERSION="3.84"
 CATEGORY="utilities"
 SHORT_DESC="Mozilla Network Security Services (NSS)."
 MAINTAINER="rocky@slitaz.org"
@@ -17,7 +17,7 @@ BUILD_DEPENDS="nspr-dev sqlite-dev zlib-dev perl pkg-config"
 compile_rules()
 {
 	#~ sed -i 's|uname -m|echo x86_64|' nss/coreconf/arch.mk nss/tests/run_niscc.sh
-	patch -Np1 -i $stuff/nss-$VERSION-standalone-1.patch &&
+	#~ patch -Np1 -i $stuff/nss-$VERSION-standalone-1.patch &&
 	cd nss &&
 	make BUILD_OPT=1 \
 		NSPR_INCLUDE_DIR=/usr/include/nspr \

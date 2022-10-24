@@ -15,12 +15,12 @@ WGET_URL="https://github.com/ice-wm/$PACKAGE/archive/$VERSION.tar.gz"
 DEPENDS="freetype gcc-lib-base gdk-pixbuf gettext-base imlib xorg-libICE 
 	xorg-libSM xorg-libX11 xorg-libXext xorg-libXft xorg-libXinerama 
 	xorg-libXpm xorg-libXrandr xorg-libXrender"
-BUILD_DEPENDS="autoconf automake fontconfig-dev freetype-dev gcc 
+BUILD_DEPENDS="asciidoc autoconf automake fontconfig-dev freetype-dev gcc 
 	gdk-pixbuf-dev gettext giflib-dev imlib-dev libtool pkg-config 
 	util-linux-uuid-dev xorg-libICE-dev xorg-libSM-dev xorg-libX11-dev 
 	xorg-libXext-dev xorg-libXft-dev xorg-libXinerama-dev xorg-libXpm-dev 
 	xorg-libXrandr-dev xorg-libXrender-dev xorg-randrproto xorg-xextproto 
-	xorg-xproto xz" # asciidoc
+	xorg-xproto xz"
 
 # Rules to configure and make the package.
 compile_rules()

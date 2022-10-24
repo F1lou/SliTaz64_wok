@@ -16,7 +16,8 @@ COOKOPTS="!pngquant op8"
 RELATED="slim-pam slim-theme-default" # don't forget to upgrade them too
 SUGGESTED="slim-theme-default slitaz-configs"
 DEPENDS="gcc-lib-base libjpeg libpng xorg-libXft xorg-libXmu"
-BUILD_DEPENDS="freetype-dev jpeg-dev libpng-dev xorg-libXft-dev xorg-libXmu-dev xorg-libXrandr-dev"
+BUILD_DEPENDS="freetype-dev jpeg-dev libpng-dev xorg-libXft-dev
+	xorg-libXmu-dev xorg-libXrandr-dev fontconfig-dev"
 
 # Handle cross compilation
 case "$ARCH" in
