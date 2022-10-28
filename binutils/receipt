@@ -36,6 +36,7 @@ compile_rules()
 
 	mkdir -p ../binutils-build &&
 	cd ../binutils-build
+	export LIBRARY_PATH="/usr/lib64:$LIBRARY_PATH"
 	$src/configure					\
 		--program-prefix=$TOOLPREFIX		\
 		--disable-initfini-array		\

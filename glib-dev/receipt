@@ -10,16 +10,16 @@ WANTED="glib"
 WEB_SITE="https://www.gtk.org/"
 HOST_ARCH="x86_64 i486 arm"
 
-DEPENDS="glib perl py3k libffi-dev libgio libgio-dev pcre-dev pkg-config"
+DEPENDS="glib perl py3k libffi-dev libgio libgio-dev pcre2-dev pkg-config"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib $fs/usr/lib $fs/usr/bin $fs/usr/share
+	mkdir -p $fs/usr/lib $fs/usr/lib64 $fs/usr/bin $fs/usr/share
 	#~ cp -a $install/usr/lib64/*.*a $fs/usr/lib64
-	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
+	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib
 	cp -a $install/usr/include $fs/usr/
-	cp -a $install/usr/lib/glib-2.0 $fs/usr/lib/
+	cp -a $install/usr/lib64/glib-2.0 $fs/usr/lib64/
 	cp -a $install/usr/share/aclocal $fs/usr/share
 	cp -a $install/usr/share/glib-2.0 $fs/usr/share
 	cp -a $install/usr/share/gdb $fs/usr/share
@@ -32,18 +32,18 @@ genpkg_rules()
 	done
 
 	# Remove libgio-dev
-	rm -rf $fs/usr/lib/libgio*.*a
+	rm -rf $fs/usr/lib64/libgio*.*a
 	rm -rf $fs/usr/include/gio-unix-2.0
 	rm $fs/usr/lib/pkgconfig/gio*.pc
 
 	# exclude from files.list (for tazpkg-find-depends)
 	cd $fs/usr/share/gdb/auto-load
-	mv usr/lib/* .
+	mv usr/lib64/* .
 	for i in $(ls *.py);do mv -f $i ${i//./-.-};done
 	
 	# create links for header file directories
 	cd $fs/usr/include
-	ln -s ../lib/glib-2.0/include/*.h .
+	ln -s ../lib64/glib-2.0/include/*.h .
 	ln -s glib-2.0/* .
 }
 post_install()

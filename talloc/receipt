@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="talloc"
-VERSION="2.3.3"
+VERSION="2.3.4"
 CATEGORY="system-tools"
 SHORT_DESC="Hierarchical pool based memory allocator with destructors."
 MAINTAINER="slaxemulator@gmail.com"
@@ -12,7 +12,7 @@ WGET_URL="http://samba.org/ftp/$PACKAGE/$TARBALL"
 CROSS="bug: must use --cross-compile and --cross-execute="
 
 DEPENDS="glibc-base"
-BUILD_DEPENDS="py3k-dev"
+BUILD_DEPENDS="py3k-dev coreutils-command"
 
 # Rules to configure and make the package.
 compile_rules()

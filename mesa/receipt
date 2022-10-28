@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="mesa"
-VERSION="21.3.6"
+VERSION="22.2.2"
 CATEGORY="x-window"
 SHORT_DESC="3D Graphics Library that is an open-source implementaton of OpenGL."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -14,10 +14,10 @@ WGET_URL="ftp://ftp.freedesktop.org/pub/mesa/$TARBALL"
 
 PROVIDE="libgl"
 SUGGESTED="nvidia"
-DEPENDS="expat libdrm libpthread-stubs eudev xorg-libXdamage xorg-libXt 
+DEPENDS="expat libdrm eudev xorg-libXdamage xorg-libXt 
 	xorg-libXxf86vm"
 BUILD_DEPENDS="autoconf automake expat-dev file lesstif-dev libdrm-dev 
-	libdrm-nouveau libpthread-stubs-dev libtool libxml2-python  
+	libdrm-nouveau libtool libxml2-python  
 	pkg-config talloc eudev-dev xorg-dri2proto xorg-glproto xorg-imake 
 	xorg-libXdamage-dev xorg-libXt-dev xorg-libXxf86vm-dev llvm
 	xorg-makedepend  python3-mako xorg-libpciaccess-dev

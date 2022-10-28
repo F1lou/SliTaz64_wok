@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="llvm"
-VERSION="14.0.0"
+VERSION="15.0.3"
 CATEGORY="development"
 SHORT_DESC="Modular compiler toolchain collection."
 MAINTAINER="nhc1@gmx.net"
