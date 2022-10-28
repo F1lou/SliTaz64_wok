@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="python3-mako"
-VERSION="1.1.6"
+VERSION="1.2.3"
 CATEGORY="development"
 TAGS="python"
 SHORT_DESC="Fast template library."
@@ -14,7 +14,7 @@ TARBALL="$SOURCE-$VERSION.tar.gz"
 WGET_URL="https://files.pythonhosted.org/packages/source/M/$SOURCE/$TARBALL"
 
 DEPENDS="py3k"
-BUILD_DEPENDS="py3k py3k-dev python3-setuptools"
+BUILD_DEPENDS="py3k py3k-dev"
 
 # Rules to configure and make the package.
 compile_rules()

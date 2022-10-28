@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="mesa-dev"
-VERSION="21.3.6"
+VERSION="22.2.2"
 CATEGORY="development"
 SHORT_DESC="3D Graphics Library - development files."
 MAINTAINER="pascal.bellard@slitaz.org"

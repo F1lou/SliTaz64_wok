@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xcb-util-renderutil"
-VERSION="0.3.9"
+VERSION="0.3.10"
 CATEGORY="x-window"
 TAGS="Xorg"
 SHORT_DESC="Convenience functions for the Render extension."
@@ -10,7 +10,7 @@ LICENSE="MIT"
 WEB_SITE="https://xcb.freedesktop.org/"
 LFS="http://www.linuxfromscratch.org/blfs/view/svn/x/xcb-util-renderutil.html"
 
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="$XORG_MIRROR/xcb/$TARBALL"
 TARBALL_SHA1="cb533b1d039f833f070e7d6398c221a31d30d5e2"
 

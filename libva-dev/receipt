@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="libva-dev"
+VERSION="2.16.0"
+CATEGORY="x-window"
+SHORT_DESC="provides access to hardware accelerated video processing"
+MAINTAINER="nhc1@gmx.net"
+LICENSE="GPL2"
+WEB_SITE="https://www.freedesktop.org/wiki/Software/VDPAU/"
+WANTED="libva"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="libva"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/include $fs/usr/
+	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib
+}
+

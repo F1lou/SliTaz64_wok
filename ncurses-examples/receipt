@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="ncurses-examples"
-VERSION="20180127"
+VERSION="20211021"
 CATEGORY="base-system"
 SHORT_DESC="Ncurses test functions."
 MAINTAINER="paul@slitaz.org"

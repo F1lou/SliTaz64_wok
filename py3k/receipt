@@ -14,13 +14,14 @@ WGET_URL="https://www.python.org/ftp/python/$VERSION/$TARBALL"
 DEPENDS="openssl bzlib readline sqlite zlib xorg-libXss ncursesw gdbm \
 tk xorg-libXext expat"
 BUILD_DEPENDS="readline-dev gdbm-dev openssl-dev libcrypto-dev sqlite-dev zlib-dev tk-dev \
-ncursesw-dev liblzma-dev xz-dev wget libunistring-dev pcre2-dev bzip2-dev expat-dev"
+ncursesw-dev liblzma-dev xz-dev wget libunistring-dev pcre2-dev bzip2-dev expat-dev \
+libffi-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	mkdir -p $DESTDIR/usr/lib/pkgconfig build
-	CFLAGS="$CFLAGS -fPIC" CXXFLAGS="$CXXFLAGS -fPIC" ./configure \
+	./configure \
 	--enable-shared --enable-optimizations --with-system-expat \
 	--prefix=/usr --infodir=/usr/share/info \
 	--with-system-ffi --with-ensurepip=yes \

@@ -14,22 +14,21 @@ WGET_URL="ftp://ftp.freedesktop.org/pub/mesa/$TARBALL"
 
 PROVIDE="libgl"
 SUGGESTED="nvidia"
-DEPENDS="expat libdrm eudev xorg-libXdamage xorg-libXt 
-	xorg-libXxf86vm"
-BUILD_DEPENDS="autoconf automake expat-dev file lesstif-dev libdrm-dev 
-	libdrm-nouveau libtool libxml2-python  
-	pkg-config talloc eudev-dev xorg-dri2proto xorg-glproto xorg-imake 
-	xorg-libXdamage-dev xorg-libXt-dev xorg-libXxf86vm-dev llvm
-	xorg-makedepend  python3-mako xorg-libpciaccess-dev
-	wayland-dev wayland-protocols elfutils-dev xorg-libXshmfence-dev
-	xorg-libXrandr-dev xorg-server-dev"
+DEPENDS="expat libdrm eudev xorg-libXdamage xorg-libXt xorg-libXxf86vm
+	libvdpau"
+BUILD_DEPENDS="xorg-dev libva-dev eudev-dev libvdpau-dev zstd-dev llvm
+	libdrm-dev libdrm-intel libdrm-nouveau libdrm-radeon xorg-libpciaccess-dev
+	expat-dev wayland-dev wayland-protocols xorg-libXshmfence-dev
+	xorg-libXxf86vm-dev python3-mako python3-pygments python3-markupsafe
+	elfutils-dev"
+# autoconf automake expat-dev file lesstif-dev libtool libxml2-python pkg-config talloc xorg-server-dev
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	mkdir build && cd build && 
 	
-	meson --prefix=/usr -Dbuildtype=release -Dgallium-nine=false .. &&
+	meson --prefix=/usr -Dbuildtype=release -Dvulkan-drivers="" -Dgallium-nine=false .. &&
 	ninja install
 }
 

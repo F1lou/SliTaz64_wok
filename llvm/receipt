@@ -11,18 +11,28 @@ TARBALL="$PACKAGE-$VERSION.src.tar.xz"
 WGET_URL="https://github.com/$PACKAGE/$PACKAGE-project/releases/download/llvmorg-$VERSION/$TARBALL"
 
 DEPENDS="libffi gcc-lib-base"
-BUILD_DEPENDS="libffi-dev libffi perl gcc "
+BUILD_DEPENDS="libffi-dev libffi perl gcc zlib-dev libxml2-dev patch git"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	wget -c https://github.com/$PACKAGE/$PACKAGE-project/releases/download/llvmorg-$VERSION/clang-$VERSION.src.tar.xz && \
-	tar xf clang-$VERSION.src.tar.xz && mv clang-$VERSION.src clang
-	cd "$src/$PACKAGE-$VERSION.src/"
+	cd $SRC
+	if [ ! -f "clang-$VERSION.src.tar.xz" ]; then
+		wget -c https://github.com/$PACKAGE/$PACKAGE-project/releases/download/llvmorg-$VERSION/clang-$VERSION.src.tar.xz
+	fi
+	if [ ! -f "$PACKAGE-cmake-$VERSION.src.tar.xz" ]; then
+		wget -c https://anduin.linuxfromscratch.org/BLFS/$PACKAGE/$PACKAGE-cmake-$VERSION.src.tar.xz
+	fi
+	
+	cd $src
+	tar xf $SRC/$PACKAGE-cmake-$VERSION.src.tar.xz && mv cmake-$VERSION.src ../cmake
+	tar xf $SRC/clang-$VERSION.src.tar.xz -C tools && mv tools/clang-$VERSION.src tools/clang
+	
+	patch -Np2 -d tools/clang < $stuff/clang-15.0.3-enable_default_ssp-1.patch
+	
 	mkdir build && cd build
 	
 	cmake \
-		-DLLVM_ENABLE_PROJECTS=clang 		\
 		-G "Unix Makefiles" 				\
 		-DCMAKE_INSTALL_PREFIX=/usr			\
 		-DLLVM_BINUTILS_INCDIR=/usr/include \

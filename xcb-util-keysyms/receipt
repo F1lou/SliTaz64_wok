@@ -1,14 +1,14 @@
 # SliTaz package receipt.
 
 PACKAGE="xcb-util-keysyms"
-VERSION="0.4.0"
+VERSION="0.4.1"
 CATEGORY="x-window"
 SHORT_DESC="Utility libraries for XC Binding."
 MAINTAINER="slaxemulator@gmail.com"
 LICENSE="other"
 WEB_SITE="https://xcb.freedesktop.org/XcbUtil/"
 
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://xcb.freedesktop.org/dist/$TARBALL"
 
 DEPENDS="libxcb"
