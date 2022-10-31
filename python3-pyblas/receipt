@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="python3-pyblas"
+VERSION="0.0.10"
+CATEGORY="development"
+SHORT_DESC="A python port of the netlib reference BLAS implementation."
+MAINTAINER="filou@slitaz.org"
+LICENSE="GPL"
+WEB_SITE="https://pypi.org/project/pyblas/"
+
+SOURCE="pyblas"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://files.pythonhosted.org/packages/source/p/$SOURCE/$TARBALL"
+
+DEPENDS="py3k"
+BUILD_DEPENDS="$DEPENDS py3k-dev python3-setuptools"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python3 setup.py build &&
+	python3 setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr	$fs
+}

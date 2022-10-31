@@ -10,7 +10,7 @@ WEB_SITE="https://www.freedesktop.org/wiki/Software/fontconfig/"
 HOST_ARCH="x86_64 i486 arm"
 
 WANTED="fontconfig"
-DEPENDS="fontconfig pkg-config util-linux-uuid-dev"
+DEPENDS="fontconfig pkg-config util-linux-uuid-dev libxml2-dev"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

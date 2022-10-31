@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="enchant2-dev"
-VERSION="2.2.15"
+VERSION="2.3.3"
 CATEGORY="development"
 SHORT_DESC="Development files for enchant."
 MAINTAINER="pankso@slitaz.org"

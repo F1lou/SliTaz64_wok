@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gtk+3-dev"
-VERSION="3.24.25"
+VERSION="3.24.34"
 CATEGORY="development"
 SHORT_DESC="The GIMP Toolkit 3.x (development files)"
 MAINTAINER="pankso@slitaz.org"
@@ -12,7 +12,8 @@ WANTED="gtk+3"
 DEPENDS="atk-dev cairo-dev dbus-dev gdk-pixbuf-dev glib-dev gtk+3 
 	jpeg-dev libpng-dev pango-dev pkg-config tiff-dev 
 	xorg-libXcomposite-dev xorg-libXcursor-dev xorg-libXdamage-dev 
-	xorg-libXi-dev xorg-libXinerama-dev xorg-libXrandr-dev libepoxy-dev"
+	xorg-libXi-dev xorg-libXinerama-dev xorg-libXrandr-dev libepoxy-dev
+	wayland-dev libxkbcommon-dev"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

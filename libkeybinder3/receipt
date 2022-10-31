@@ -4,7 +4,7 @@ PACKAGE="libkeybinder3"
 VERSION="0.3.2"
 CATEGORY="x-window"
 SHORT_DESC="Library for registering global keyboard shortcuts"
-MAINTAINER="al.bobylev@gmail.com"
+MAINTAINER="filou@slitaz"
 LICENSE="GPL2"
 WEB_SITE="https://github.com/kupferlauncher/keybinder"
 SOURCE="keybinder"
@@ -12,14 +12,13 @@ TARBALL="$SOURCE-3.0-$VERSION.tar.gz"
 WGET_URL="https://github.com/kupferlauncher/$SOURCE/releases/download/$SOURCE-3.0-v$VERSION/$TARBALL"
 
 DEPENDS="gtk+3"
-BUILD_DEPENDS="gtk+3-dev gobject-introspection-dev xorg-libXext-dev python-dev \
-pygtk-dev pygobject-dev automake autoconf libtool lua-dev liblzma-dev \
-"
+BUILD_DEPENDS="gtk+3-dev gtk-doc gobject-introspection-dev xorg-randrproto
+	xorg-libXext-dev py3k-dev pygobject3-dev libtool lua-dev liblzma-dev" # pygtk3-dev 
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	autoreconf -vif &&
+	autoupdate && autoreconf -vif &&
 	./configure \
 		--disable-lua \
 		$CONFIGURE_ARGS &&

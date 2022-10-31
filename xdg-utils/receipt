@@ -17,6 +17,7 @@ BUILD_DEPENDS="docbook-xsl lynx util-linux-getopt xmlto"
 # Rules to configure and make the package.
 compile_rules()
 {
+	export XML_CATALOG_FILES="/etc/xml/catalog"
 	./configure		\
 		--prefix=/usr	\
 		$CONFIGURE_ARGS &&

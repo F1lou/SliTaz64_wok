@@ -13,8 +13,7 @@ TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="$XORG_MIRROR/lib/$TARBALL"
 
 DEPENDS=""
-BUILD_DEPENDS="xorg-dmxproto xorg-xextproto xorg-libXext-dev
-	xorg-libX11-dev  libmd-dev"
+BUILD_DEPENDS="xorg-proto xorg-libXext-dev xorg-libX11-dev libmd-dev" # xorg-dmxproto xorg-xextproto
 
 # Rules to configure and make the package.
 compile_rules()

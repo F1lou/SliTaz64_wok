@@ -10,7 +10,7 @@ WEB_SITE="https://www.x.org/wiki/"
 
 SOURCE="libXinerama"
 
-DEPENDS="pkg-config xorg-libXext-dev xorg-libXinerama xorg-xineramaproto"
+DEPENDS="pkg-config xorg-libXext-dev xorg-libXinerama xorg-proto" # xorg-xineramaproto
 WANTED="xorg-libXinerama"
 
 HOST_ARCH="x86_64 i486 arm"

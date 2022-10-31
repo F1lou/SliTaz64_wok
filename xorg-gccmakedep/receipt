@@ -12,7 +12,7 @@ SOURCE="gccmakedep"
 TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="$XORG_MIRROR/util/$TARBALL"
 
-BUILD_DEPENDS="xorg-dev-proto"
+BUILD_DEPENDS="xorg-proto" #xorg-dev-proto
 
 # Rules to configure and make the package.
 compile_rules()

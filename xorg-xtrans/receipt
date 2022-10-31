@@ -12,7 +12,7 @@ SOURCE="xtrans"
 TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="$XORG_MIRROR/lib/$TARBALL"
 
-DEPENDS="xorg-xproto"
+DEPENDS="xorg-proto" # xorg-xproto
 BUILD_DEPENDS="xorg-util-macros"
 
 HOST_ARCH="x86_64 i486 arm"

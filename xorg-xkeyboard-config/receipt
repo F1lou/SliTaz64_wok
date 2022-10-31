@@ -13,7 +13,7 @@ TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="$XORG_MIRROR/data/$TARBALL"
 
 DEPENDS="xorg-xkbcomp"
-BUILD_DEPENDS="intltool perl-xml-parser xorg-libX11-dev xorg-xkbcomp xorg-xproto"
+BUILD_DEPENDS="intltool perl-xml-parser xorg-libX11-dev xorg-xkbcomp xorg-proto" # xorg-xproto
 
 HOST_ARCH="x86_64 i486 arm"
 

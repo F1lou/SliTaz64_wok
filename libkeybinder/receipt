@@ -12,9 +12,9 @@ TARBALL="$SOURCE-$VERSION.tar.gz"
 WGET_URL="https://github.com/kupferlauncher/$SOURCE/releases/download/v$VERSION/$TARBALL"
 
 DEPENDS="gtk+"
-BUILD_DEPENDS="gtk+-dev gobject-introspection-dev xorg-libXext-dev python-dev \
-pygtk-dev pygobject-dev automake autoconf libtool lua-dev liblzma-dev \
- xorg-randrproto"
+BUILD_DEPENDS="gtk+-dev gobject-introspection-dev xorg-libXext-dev
+	python-dev pygtk-dev pygobject-dev 
+	libtool lua-dev liblzma-dev xorg-proto" # xorg-randrproto
 
 # Rules to configure and make the package.
 compile_rules()

@@ -9,7 +9,7 @@ LICENSE="other"
 WEB_SITE="https://www.x.org/wiki/"
 
 WANTED="xorg-libFS"
-DEPENDS="pkg-config xorg-fontsproto xorg-libFS"
+DEPENDS="pkg-config xorg-proto xorg-libFS" # xorg-fontsproto
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

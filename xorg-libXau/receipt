@@ -13,7 +13,7 @@ TARBALL="$SOURCE-$VERSION.tar.xz"
 WGET_URL="$XORG_MIRROR/lib/$TARBALL"
 
 DEPENDS="glibc-base"
-BUILD_DEPENDS="xorg-xproto"
+BUILD_DEPENDS="xorg-proto" # xorg-xproto
 
 HOST_ARCH="x86_64 i486 arm"
 

@@ -9,8 +9,8 @@ LICENSE="other"
 WEB_SITE="https://www.x.org/wiki/"
 
 WANTED="xorg-libXScrnSaver"
-DEPENDS="pkg-config xorg-libXext-dev xorg-libXScrnSaver xorg-scrnsaverproto"
-
+DEPENDS="pkg-config xorg-libXext-dev xorg-libXScrnSaver xorg-proto"
+ # xorg-scrnsaverproto
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {

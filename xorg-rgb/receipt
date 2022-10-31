@@ -12,7 +12,7 @@ SOURCE="rgb"
 TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="$XORG_MIRROR/app/$TARBALL"
 
-BUILD_DEPENDS="pkg-config xorg-xproto"
+BUILD_DEPENDS="pkg-config xorg-proto" # xorg-xproto
 
 # Rules to configure and make the package.
 compile_rules()

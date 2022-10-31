@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="python3-jinja2"
-VERSION="3.0.3"
+VERSION="3.1.2"
 CATEGORY="development"
 SHORT_DESC="Stand-alone template engine."
 MAINTAINER="claudinei@slitaz.org"

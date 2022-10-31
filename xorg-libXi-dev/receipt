@@ -8,7 +8,7 @@ MAINTAINER="pankso@slitaz.org"
 LICENSE="other"
 WEB_SITE="https://www.x.org/wiki/"
 
-DEPENDS="pkg-config xorg-libXext-dev xorg-libXfixes-dev xorg-libXi"
+DEPENDS="pkg-config xorg-libXext-dev xorg-libXfixes-dev xorg-libXi xorg-proto"
 WANTED="xorg-libXi"
 
 HOST_ARCH="x86_64 i486 arm"

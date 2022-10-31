@@ -13,7 +13,7 @@ TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="$XORG_MIRROR/lib/$TARBALL"
 
 DEPENDS="xorg-libXext"
-BUILD_DEPENDS="xorg-libXext-dev xorg-videoproto"
+BUILD_DEPENDS="xorg-libXext-dev xorg-proto" # xorg-videoproto
 
 HOST_ARCH="x86_64 i486 arm"
 

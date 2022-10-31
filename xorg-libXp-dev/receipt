@@ -8,7 +8,7 @@ MAINTAINER="rcx@zoominternet.net"
 LICENSE="MIT"
 WEB_SITE="https://www.x.org/wiki/"
 
-DEPENDS="pkg-config xorg-libXext-dev xorg-libXp xorg-printproto"
+DEPENDS="pkg-config xorg-libXext-dev xorg-libXp xorg-proto" # xorg-printproto
 WANTED="xorg-libXp"
 
 HOST_ARCH="x86_64 i486 arm"

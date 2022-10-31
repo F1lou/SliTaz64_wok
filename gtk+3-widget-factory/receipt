@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gtk+3-widget-factory"
-VERSION="3.24.25"
+VERSION="3.24.34"
 CATEGORY="development"
 SHORT_DESC="The GIMP Toolkit 3.x widget factory"
 MAINTAINER="pankso@slitaz.org"

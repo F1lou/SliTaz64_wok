@@ -9,7 +9,7 @@ LICENSE="MIT"
 WEB_SITE="https://www.x.org/wiki/"
 
 SOURCE="libXScrnSaver"
-DEPENDS="pkg-config xorg-libXext-dev xorg-libXss xorg-scrnsaverproto"
+DEPENDS="pkg-config xorg-libXext-dev xorg-libXss xorg-proto" # xorg-scrnsaverproto
 WANTED="xorg-libXss"
 
 HOST_ARCH="x86_64 i486 arm"

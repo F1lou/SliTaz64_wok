@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libxkbcommon"
-VERSION="1.3.1"
+VERSION="1.4.1"
 CATEGORY="x-window"
 SHORT_DESC="Keyboard handling library using XKB data."
 MAINTAINER="pankso@slitaz.org"
@@ -13,7 +13,7 @@ WGET_URL="https://xkbcommon.org/download/$TARBALL"
 
 DEPENDS="libxcb xorg-xkeyboard-config"
 BUILD_DEPENDS="bison libxcb-dev xorg-util-macros xorg-xkeyboard-config-dev
-	wayland-dev wayland-protocols  "
+	wayland-dev wayland-protocols libxml2-dev"
 
 # Rules to configure and make the package.
 compile_rules()

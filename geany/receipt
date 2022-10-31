@@ -19,8 +19,8 @@ xorg-libXau xorg-libXcomposite xorg-libXcursor xorg-libXdamage \
 xorg-libXdmcp xorg-libXext xorg-libXfixes xorg-libXinerama xorg-libXrender"
 BUILD_DEPENDS="glib-dev expat-dev gtk+3-dev atk-dev pango-dev cairo-dev \
 pixman-dev libpng-dev freetype-dev fontconfig-dev xorg-libXrender-dev \
-xorg-xproto xorg-renderproto xorg-libX11-dev xorg-kbproto xorg-libXau-dev \
-xorg-libXdmcp-dev libxml2-dev "
+xorg-proto xorg-libX11-dev xorg-libXau-dev libxkbcommon-dev \
+xorg-libXdmcp-dev libxml2-dev wayland-dev wayland-protocols" # xorg-xproto xorg-renderproto xorg-kbproto
 
 # Handle cross compilation.
 case "$ARCH" in

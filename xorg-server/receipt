@@ -15,8 +15,17 @@ WGET_URL="http://xorg.freedesktop.org/releases/individual/xserver/$TARBALL"
 DEPENDS="xorg-xkeyboard-config xorg-libpciaccess xorg-libXxf86vm \
 xorg-libXfont xorg-libXau xorg-base-fonts libgcrypt pixman eudev libdrm \
 xorg-xf86-input-evdev libepoxy"
-BUILD_DEPENDS="xorg-dev pixman-dev mesa-dev libepoxy-dev eudev-dev" 
-# xorg-libxkbfile-dev xorg-libpciaccess-dev xorg-libXxf86vm-dev xorg-libXfont-dev libgcrypt-dev pkg-config perl flex xorg-xf86driproto xorg-xcmiscproto xorg-bigreqsproto xorg-randrproto xorg-dri2proto xorg-libXau-dev xorg-dev-proto libdrm-dev xorg-glproto xorg-libXv-dev xorg-proto xorg-glproto xorg-libXfont2-dev xcb-util-renderutil-dev xorg-xkbcomp xcb-util-dev xcb-util-image-dev xcb-util-wm-dev xcb-util-keysyms-dev nettle-dev libmd-dev xorg-libXshmfence-dev xorg-xkbcomp
+BUILD_DEPENDS="xorg-dev pixman-dev mesa-dev libepoxy-dev eudev-dev xorg-xkbcomp-dev 
+	xorg-proto xorg-glproto xorg-kbproto xorg-dri2proto 
+	xorg-libXfont2-dev xorg-libxkbfile-dev xorg-libXshmfence-dev
+	xorg-libXcvt-dev freetype-dev xorg-libpciaccess-dev
+	xcb-util-dev xcb-util-renderutil-dev xcb-util-image-dev xcb-util-keysyms-dev
+	xcb-util-wm-dev openssl-dev nettle-dev dbus-dev"
+# xorg-damageproto xorg-xcmiscproto xorg-bigreqsproto xorg-xproto xorg-randrproto xorg-renderproto xorg-xextproto xorg-kbproto 
+# xorg-xf86driproto xorg-xcmiscproto xorg-bigreqsproto xorg-randrproto xorg-dev-proto 
+
+# xorg-libxkbfile-dev xorg-libXxf86vm-dev xorg-libXfont-dev libgcrypt-dev pkg-config perl flex xorg-libXau-dev libdrm-dev xorg-libXv-dev
+# xorg-libXfont2-dev xorg-xkbcomplibmd-dev xorg-xkbcomp
 
 # Rules to configure and make the package.
 compile_rules()
@@ -35,17 +44,11 @@ compile_rules()
 		--enable-install-setuid \
 		--enable-xorg \
 		--enable-kdrive \
-		--enable-kdrive-kbd \
-		--enable-kdrive-mouse \
-		--enable-kdrive-evdev \
-		--enable-xfbdev \
 		--enable-xephyr \
 		--enable-config-udev \
-		--disable-config-dbus \
 		--disable-docs \
 		--disable-devel-docs \
 		--with-fontrootdir=/usr/share/fonts/X11 \
-		--with-os-name="SliTaz GNU/Linux" \
 		--with-vendor-web="http://www.slitaz.org/" \
 		--with-builder-addr=$MAINTAINER \
 		$CONFIGURE_ARGS &&

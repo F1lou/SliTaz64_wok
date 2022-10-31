@@ -7,7 +7,7 @@ SHORT_DESC="GTK+3 for Python dev files with codegen."
 MAINTAINER="erjo@slitaz.org"
 LICENSE="LGPL2.1"
 WEB_SITE="http://www.pygtk.org/"
-WANTED="pygtk"
+WANTED="pygtk3"
 
 DEPENDS="pygtk3 gtk+3-dev pygobject3-dev pycairo3-dev pkg-config"
 

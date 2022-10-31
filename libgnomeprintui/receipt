@@ -11,8 +11,9 @@ WEB_SITE="https://www.gnome.org/"
 WGET_URL="http://ftp.gnome.org/pub/gnome/sources/$PACKAGE/${VERSION%.*}/$TARBALL"
 
 DEPENDS="gtk+ libgnomeprint libgnomecanvas libart_lgpl"
-BUILD_DEPENDS="pkg-config gnome-icon-theme flex libgnomeprint-dev \
-libgnomecanvas-dev libart_lgpl-dev intltool  liblzma-dev"
+BUILD_DEPENDS="pkg-config gnome-icon-theme flex libgnomeprint-dev
+	libgnomecanvas-dev libart_lgpl-dev intltool liblzma-dev
+	xorg-libXinerama-dev"
 
 # Rules to configure and make the package.
 compile_rules()

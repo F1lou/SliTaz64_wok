@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Action
+Name=Open Folder As Root
+Name[ru]=Открыть папку от имени Root
+Icon=dialog-password
+Profiles=root_on_folder;
+
+[X-Action-Profile root_on_folder]
+# don't show for root
+ShowIfTrue=test $(whoami) != root
+# for folders only
+MimeTypes=inode/directory;
+Exec=tazbox su "eval pkexec env XAUTHORITY=$XAUTHORITY DISPLAY=$DISPLAY pcmanfm %u"

@@ -10,7 +10,7 @@ WEB_SITE="http://pcmanfm.sourceforge.net"
 WANTED="libfm"
 HOST_ARCH="x86_64 i486 arm"
 
-DEPENDS="libfm libfm-gtk pkg-config glib-dev libgio-dev"
+DEPENDS="libfm libfm-gtk3 pkg-config glib-dev libgio-dev"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

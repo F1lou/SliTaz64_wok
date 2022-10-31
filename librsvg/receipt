@@ -16,7 +16,8 @@ DEPENDS="bzlib cairo fontconfig freetype gdk-pixbuf glib glibc-base harfbuzz
 	xorg-libXau xorg-libXdmcp xorg-libXext xorg-libXrender zlib 
 	fribidi"
 BUILD_DEPENDS="cairo-dev expat-dev fontconfig-dev freetype-dev gdk-pixbuf-dev
-	glib-dev libcroco-dev libffi-dev libpng-dev libxml2-dev pango-dev"
+	glib-dev libcroco-dev libffi-dev libpng-dev libxml2-dev pango-dev
+	zlib-dev"
 
 # Handle cross compilation
 case "$ARCH" in

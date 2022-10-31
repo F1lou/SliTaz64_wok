@@ -10,7 +10,7 @@ WANTED="wayland"
 WEB_SITE="http://www.bluez.org/"
 HOST_ARCH="x86_64 i486 arm"
 
-DEPENDS="wayland pkg-config"
+DEPENDS="wayland pkg-config libffi-dev"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

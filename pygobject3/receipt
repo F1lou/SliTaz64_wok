@@ -13,8 +13,8 @@ WGET_URL="$GNOME_MIRROR/$SOURCE/${VERSION%.*}/$TARBALL"
 
 PROVIDE="python-gi"
 DEPENDS="py3k pycairo3 glib libffi libgio gtk-girepository"
-BUILD_DEPENDS="$DEPENDS py3k-dev pkg-config glib-dev libgio-dev \
-pycairo3-dev cairo-dev libffi-dev gobject-introspection-dev"
+BUILD_DEPENDS="$DEPENDS bash py3k-dev pkg-config glib-dev libgio-dev 
+	pycairo3-dev cairo-dev libffi-dev gobject-introspection-dev"
 
 # Rules to configure and make the package.
 compile_rules()

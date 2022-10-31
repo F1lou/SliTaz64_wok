@@ -13,8 +13,8 @@ TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="$XORG_MIRROR/lib/$TARBALL"
 
 DEPENDS="bzlib freetype xorg-libfontenc"
-BUILD_DEPENDS="bzip2-dev freetype-dev xorg-fontsproto \
-	xorg-libfontenc-dev xorg-xtrans zlib-dev"
+BUILD_DEPENDS="bzip2-dev freetype-dev xorg-proto xorg-libfontenc-dev 
+	xorg-xtrans zlib-dev" # xorg-fontsproto 
 
 HOST_ARCH="x86_64 i486 arm"
 

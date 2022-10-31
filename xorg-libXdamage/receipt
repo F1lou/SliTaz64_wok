@@ -13,7 +13,7 @@ TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="$XORG_MIRROR/lib/$TARBALL"
 
 DEPENDS="xorg-libXfixes"
-BUILD_DEPENDS="xorg-damageproto xorg-libXfixes-dev"
+BUILD_DEPENDS="xorg-proto xorg-libXfixes-dev" # xorg-damageproto
 
 HOST_ARCH="x86_64 i486 arm"
 

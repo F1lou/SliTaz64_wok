@@ -13,7 +13,7 @@ TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="$XORG_MIRROR/util/$TARBALL"
 
 DEPENDS="xorg-cf-files"
-BUILD_DEPENDS="perl pkg-config xorg-gccmakedep xorg-makedepend xorg-xproto"
+BUILD_DEPENDS="perl pkg-config xorg-gccmakedep xorg-makedepend xorg-proto" #xorg-xproto
 
 # Rules to configure and make the package.
 compile_rules()

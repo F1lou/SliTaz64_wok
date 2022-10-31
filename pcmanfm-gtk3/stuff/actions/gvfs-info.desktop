@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Action
+Icon=help-about
+Profiles=gvfs-info;
+Name=GVFS info
+Name[ru]=Информация GVFS
+
+[X-Action-Profile gvfs-info]
+Exec=sh -c "gvfs-info %u 2>&1 | sed -e '/: /!s|$|&\\n|' -e '/: /s|: |\\n|' | yad --title='GVFS info' --window-icon='gtk-info' --list --width=600 --height=320 --column='Name' --column='Value' --button='gtk-close'"

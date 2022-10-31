@@ -14,7 +14,7 @@ WGET_URL="$SF_MIRROR/pcmanfm/$TARBALL"
 GENERIC_MENUS="no"
 
 DEPENDS="glib glibc-base libgio"
-BUILD_DEPENDS="automake gtk-doc libtool intltool"
+BUILD_DEPENDS="automake gtk-doc libtool intltool glib-dev"
 
 # Rules to configure and make the package.
 compile_rules()

@@ -11,12 +11,12 @@ TARBALL="$SOURCE-$VERSION.tar.bz2"
 WEB_SITE="http://www.pygtk.org/"
 WGET_URL="$GNOME_MIRROR/$SOURCE/${VERSION%.*}/$TARBALL"
 
-DEPENDS="python pycairo pygobject expat gtk+3 libglade libxml2 xorg-libX11 \
-xorg-libXau xorg-libXcomposite xorg-libXcursor xorg-libXdmcp xorg-libXext \
-xorg-libXfixes xorg-libXinerama xorg-libXrandr xorg-libXrender \
-xorg-libXdamage libffi python-numpy"
-BUILD_DEPENDS="python-dev pycairo-dev pygobject-dev expat-dev gtk+3-dev \
-libglade-dev libxml2-dev libffi-dev python-numpy"
+DEPENDS="py3k pycairo3 pygobject3 expat gtk+3 libglade libxml2 xorg-libX11 
+	xorg-libXau xorg-libXcomposite xorg-libXcursor xorg-libXdmcp xorg-libXext 
+	xorg-libXfixes xorg-libXinerama xorg-libXrandr xorg-libXrender 
+	xorg-libXdamage libffi" # python-numpy
+BUILD_DEPENDS="py3k-dev pycairo3-dev pygobject3-dev expat-dev gtk+3-dev 
+	libxml2-dev libffi-dev" #  python-numpy libglade-dev 
 
 # Rules to configure and make the package.
 compile_rules()

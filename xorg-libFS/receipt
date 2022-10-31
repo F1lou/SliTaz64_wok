@@ -13,7 +13,7 @@ TARBALL="$SOURCE-$VERSION.tar.xz"
 WGET_URL="$XORG_MIRROR/lib/$TARBALL"
 
 DEPENDS="glibc-base"
-BUILD_DEPENDS="xorg-fontsproto xorg-util-macros xorg-xproto xorg-xtrans"
+BUILD_DEPENDS="xorg-util-macros xorg-proto xorg-xtrans" # xorg-fontsproto xorg-xproto
 
 # Rules to configure and make the package.
 compile_rules()

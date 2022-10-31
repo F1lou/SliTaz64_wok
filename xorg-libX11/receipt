@@ -13,8 +13,9 @@ TARBALL="$SOURCE-$VERSION.tar.xz"
 WGET_URL="$XORG_MIRROR/lib/$TARBALL"
 
 DEPENDS="libxcb xorg-libXau xorg-libXdmcp"
-BUILD_DEPENDS="libxcb-dev xorg-inputproto xorg-kbproto xorg-libXau-dev 
-	xorg-libXdmcp-dev xorg-xextproto xorg-xf86bigfontproto xorg-xtrans"
+BUILD_DEPENDS="libxcb-dev xorg-proto xorg-libXau-dev xorg-libXdmcp-dev
+	xorg-xtrans xorg-kbproto"
+	# xorg-inputproto xorg-xextproto xorg-xf86bigfontproto
 
 HOST_ARCH="x86_64 i486 arm"
 

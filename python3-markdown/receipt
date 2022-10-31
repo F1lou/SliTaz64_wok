@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="python3-markdown"
-VERSION="3.3.6"
+VERSION="3.4.1"
 CATEGORY="development"
 TAGS="python"
 SHORT_DESC="Python implementation of John Gruber's Markdown."

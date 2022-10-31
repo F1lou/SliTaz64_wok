@@ -12,8 +12,8 @@ SOURCE="makedepend"
 TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="$XORG_MIRROR/util/$TARBALL"
 
-DEPENDS="glibc-base xorg-xproto"
-BUILD_DEPENDS="xorg-xproto"
+DEPENDS="glibc-base xorg-proto" # xorg-xproto
+BUILD_DEPENDS="xorg-proto" # xorg-xproto
 
 # Rules to configure and make the package.
 compile_rules()

@@ -11,16 +11,16 @@ WEB_SITE="https://www.pango.org/"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="pango cairo-dev pkg-config harfbuzz-dev fribidi-dev xorg-libXft-dev"
-BUILD_DEPENDS="fribidi-dev"
+BUILD_DEPENDS=""
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib $fs/usr/share
+	mkdir -p $fs/usr/lib $fs/usr/lib64 $fs/usr/share
 	#~ cp -a $install/usr/lib/*.*a $fs/usr/lib
-	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
-	[ -d "$install/usr/lib/girepository-1.0" ] && \
-		cp -a $install/usr/lib/girepository-1.0 $fs/usr/lib
+	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib
+	[ -d "$install/usr/lib64/girepository-1.0" ] && \
+		cp -a $install/usr/lib64/girepository-1.0 $fs/usr/lib64
 	[ -d "$install/usr/share/gir-1.0" ] && \
 		cp -a $install/usr/share/gir-1.0 $fs/usr/share
 	cp -a $install/usr/include $fs/usr

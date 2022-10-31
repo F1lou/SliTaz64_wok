@@ -13,8 +13,8 @@ SOURCE="fonttosfnt"
 TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="$WEB_SITE/releases/individual/app/$TARBALL"
 
-DEPENDS="freetype xproto fontenc xorg-libfontenc xorg-libX11"
-BUILD_DEPENDS="xorg-libfontenc-dev freetype-dev xorg-xproto"
+DEPENDS="freetype fontenc xorg-libfontenc xorg-libX11"
+BUILD_DEPENDS="xorg-libfontenc-dev freetype-dev xorg-proto" # xorg-xproto
 
 # Rules to configure and make the package.ls sr	
 compile_rules()

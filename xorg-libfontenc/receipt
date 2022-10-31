@@ -13,7 +13,7 @@ TARBALL="$SOURCE-$VERSION.tar.xz"
 WGET_URL="$XORG_MIRROR/lib/$TARBALL"
 
 DEPENDS="zlib"
-BUILD_DEPENDS="xorg-xproto zlib-dev"
+BUILD_DEPENDS="xorg-proto zlib-dev" # xorg-xproto
 
 HOST_ARCH="x86_64 i486 arm"
 

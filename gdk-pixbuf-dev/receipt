@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gdk-pixbuf-dev"
-VERSION="2.42.6"
+VERSION="2.42.9"
 CATEGORY="development"
 SHORT_DESC="Development files for gdk-pixbuf."
 MAINTAINER="slaxemulator@gmail.com"

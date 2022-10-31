@@ -20,8 +20,8 @@ BUILD_DEPENDS="xorg-dev libva-dev eudev-dev libvdpau-dev zstd-dev llvm
 	libdrm-dev libdrm-intel libdrm-nouveau libdrm-radeon xorg-libpciaccess-dev
 	expat-dev wayland-dev wayland-protocols xorg-libXshmfence-dev
 	xorg-libXxf86vm-dev python3-mako python3-pygments python3-markupsafe
-	elfutils-dev"
-# autoconf automake expat-dev file lesstif-dev libtool libxml2-python pkg-config talloc xorg-server-dev
+	elfutils-dev xorg-server-dev zlib-dev libffi-dev"
+# autoconf automake expat-dev file lesstif-dev libtool libxml2-python pkg-config talloc
 
 # Rules to configure and make the package.
 compile_rules()

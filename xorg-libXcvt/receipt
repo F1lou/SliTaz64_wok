@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="xorg-libXcvt"
+SOURCE="libxcvt"
+VERSION="0.1.2"
+CATEGORY="x-window"
+SHORT_DESC="Standalone version of the X server implementation of the VESA CVT standard timing modelines generator."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="GPL2"
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WEB_SITE="https://gitlab.freedesktop.org/xorg/lib/libxcvt"
+WGET_URL="$XORG_MIRROR/lib/$TARBALL"
+HOST_ARCH="x86_64 i486 arm"
+
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir build && cd build
+	meson --prefix=/usr --buildtype=release .. &&
+	ninja && ninja install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib64
+	cp -a $install/usr/bin $fs/usr/
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
+}
+

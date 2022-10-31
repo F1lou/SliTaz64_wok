@@ -13,7 +13,7 @@ TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="$XORG_MIRROR/lib/$TARBALL"
 
 DEPENDS="xorg-libXext xorg-libXrender"
-BUILD_DEPENDS="xorg-libXext-dev xorg-libXrender-dev xorg-randrproto "
+BUILD_DEPENDS="xorg-libXext-dev xorg-libXrender-dev xorg-proto" # xorg-randrproto
 
 HOST_ARCH="x86_64 i486 arm"
 

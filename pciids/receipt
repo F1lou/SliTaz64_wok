@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="pciids"
-VERSION="20200329"
+VERSION="20221030"
 CATEGORY="misc"
 SHORT_DESC="List of PCI ID's"
 MAINTAINER="slaxemulator@gmail.com"

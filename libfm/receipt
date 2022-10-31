@@ -13,10 +13,10 @@ WGET_URL="$SF_MIRROR/pcmanfm/$TARBALL"
 
 SUGGESTED="gvfs"
 DEPENDS="glib glibc-base libffi libgio menu-cache pcre zlib"
-BUILD_DEPENDS="automake dbus-dev dbus-glib-dev expat-dev gtk-doc gtk+-dev 
+BUILD_DEPENDS="automake dbus-dev dbus-glib-dev expat-dev gtk-doc gtk+3-dev 
 	libgio-dev libtool libxcb-dev menu-cache-dev shared-mime-info-dev 
-	startup-notification-dev xcb-util-dev  intltool
-	" # git-version deps: gtk-doc libtool automake
+	startup-notification-dev xcb-util-dev intltool wayland-dev
+	libxkbcommon-dev" # git-version deps: gtk-doc libtool automake
 
 GENERIC_MENUS="no"
 
@@ -34,12 +34,12 @@ compile_rules()
 	patch -p1 -i $stuff/quick-exec.patch
 
 	# Do *not* treat desktop entries as executables!
-	patch --input $stuff/patches/fm-file-info.c-1.3.1 \
-		src/base/fm-file-info.c
+	patch --input $stuff/patches/fm-file-info.c-1.3.1 src/base/fm-file-info.c
 
 	./configure			\
 		--sysconfdir=/etc	\
 		--disable-static	\
+		--with-gtk=3		\
 		$CONFIGURE_ARGS &&
 	make &&
 	make install || return 1

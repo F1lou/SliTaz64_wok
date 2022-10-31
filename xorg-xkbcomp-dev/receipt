@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xorg-xkbcomp-dev"
-VERSION="1.4.3"
+VERSION="1.4.5"
 CATEGORY="x-window"
 SHORT_DESC="Xorg keyboard composite."
 MAINTAINER="pankso@slitaz.org"

@@ -8,7 +8,7 @@ MAINTAINER="pankso@slitaz.org"
 LICENSE="other"
 WEB_SITE="https://www.x.org/wiki/"
 
-DEPENDS="pkg-config xorg-compositeproto xorg-libXcomposite xorg-libXfixes-dev"
+DEPENDS="pkg-config xorg-proto xorg-libXcomposite xorg-libXfixes-dev" # xorg-compositeproto
 WANTED="xorg-libXcomposite"
 
 HOST_ARCH="x86_64 i486 arm"
