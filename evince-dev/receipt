@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="evince-dev"
-VERSION="3.39.2"
+VERSION="42.4"
 CATEGORY="office"
 SHORT_DESC="Evince developement headers files."
 MAINTAINER="erjo@slitaz.org"

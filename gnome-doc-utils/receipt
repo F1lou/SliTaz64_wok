@@ -11,12 +11,21 @@ WEB_SITE="https://www.gnome.org/"
 WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION%.*}/$TARBALL"
 
 DEPENDS="libxml2 libxslt python libxml2-python rarian docbook-xml"
-BUILD_DEPENDS="libxml2-dev libxslt-dev rarian-dev libxml2-python pkg-config \
-intltool"
+BUILD_DEPENDS="libxml2-dev libxslt-dev rarian-dev libxml2-python
+	pkg-config intltool docbook-xsl"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export XML_CATALOG_FILES="/etc/xml/catalog"
+	
+	# Correct for Python3
+	sed -i 's|print VERSION|print(VERSION)|' $src/xml2po/xml2po/xml2po.py.in &&
+	sed -i 's|except Exception, e|except Exception(e)|' $src/xml2po/xml2po/__init__.py &&
+	sed -i 's|print "|print("|' $src/xml2po/xml2po/modes/docbook.py &&
+	sed -i 's|print(".*|&)|' $src/xml2po/xml2po/modes/docbook.py &&
+	sed -i 's|self.gt.ugettext|self.gt.gettext|' $src/xml2po/xml2po/__init__.py &&
+	
 	./configure --prefix=/usr \
 		--infodir=/usr/share/info \
 		--sysconfdir=/etc \

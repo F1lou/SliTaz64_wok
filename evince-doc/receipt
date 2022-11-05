@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="evince-doc"
-VERSION="3.39.2"
+VERSION="42.4"
 CATEGORY="development"
 SHORT_DESC="Evince documention."
 MAINTAINER="erjo@slitaz.org"

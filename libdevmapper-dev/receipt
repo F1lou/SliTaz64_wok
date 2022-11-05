@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libdevmapper-dev"
-VERSION="2.03.11"
+VERSION="2.03.16"
 CATEGORY="development"
 SHORT_DESC="Linux device mapper library development files."
 MAINTAINER="b1+slitaz@nagel.org"

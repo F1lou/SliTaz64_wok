@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="cryptsetup"
-VERSION="2.3.5"
+VERSION="2.5.0"
 CATEGORY="system-tools"
 SHORT_DESC="dm-crypt setup tool for encryption of block devices."
 MAINTAINER="b1+slitaz@nagel.org"
@@ -11,10 +11,10 @@ WEB_SITE="https://gitlab.com/$PACKAGE/$PACKAGE"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://www.kernel.org/pub/linux/utils/$PACKAGE/v${VERSION%.*}/$TARBALL"
 
-DEPENDS="e2fsprogs libdevmapper libgcrypt libjson-c openssl popt"
+DEPENDS="e2fsprogs libdevmapper libgcrypt libjson-c openssl libssh popt"
 BUILD_DEPENDS="e2fsprogs-dev libdevmapper-dev libgcrypt-dev 
 	libjson-c-dev openssl-dev popt-dev util-linux-blkid-dev 
-	util-linux-uuid-dev "
+	util-linux-uuid-dev libssh-dev"
 
 current_version()
 {
@@ -30,6 +30,7 @@ compile_rules()
 {
 	./configure		\
 		--prefix=/usr	\
+		--disable-asciidoc \
 		$CONFIGURE_ARGS &&
 	make &&
 	make DESTDIR=$DESTDIR install

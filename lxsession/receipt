@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="$SF_MIRROR/lxde/$TARBALL"
 
 DEPENDS="dbus gtk+"
-BUILD_DEPENDS="dbus-dev gtk+-dev libunique-dev polkit-dev"
+BUILD_DEPENDS="dbus-dev gtk+-dev polkit-dev"
 SUGGESTED="lxsession-lxpolkit"
 
 HOST_ARCH="x86_64 i486 arm"

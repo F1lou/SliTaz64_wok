@@ -1,35 +1,34 @@
 # SliTaz package receipt.
 
 PACKAGE="evince"
-VERSION="3.39.2"
+VERSION="42.4"
 CATEGORY="office"
 SHORT_DESC="Document viewer for Gnome"
 MAINTAINER="erjo@slitaz.org"
 LICENSE="GPL2"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WEB_SITE="http://projects.gnome.org/evince/"
-WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION:0:4}/$TARBALL"
+WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION:0:2}/$TARBALL"
 TAGS="viewer pdf tiff ps postscript dvi"
 
-DEPENDS="lcms poppler tiff dbus-glib glib util-linux-uuid"
-BUILD_DEPENDS="gnome-doc-utils-dev docbook-xml libxml2-dev \
-gnome-icon-theme gtk+3-dev intltool lcms-dev util-linux-uuid-dev \
-poppler-dev tiff-dev dbus-glib-dev xorg-dev pixman-dev \
-libepoxy-dev mesa-dev adwaita-icon-theme libhandy-dev  \
-gobject-introspection-dev"
+DEPENDS="lcms2 poppler tiff dbus-glib glib util-linux-uuid"
+BUILD_DEPENDS="libxml2-dev itstool bash
+	gnome-icon-theme gtk+3-dev intltool lcms2-dev util-linux-uuid-dev 
+	poppler-dev tiff-dev dbus-glib-dev xorg-dev pixman-dev 
+	libepoxy-dev mesa-dev adwaita-icon-theme libhandy-dev 
+	gobject-introspection-dev" # gnome-doc-utils-dev docbook-xml 
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	mkdir build && cd build
-	CXXFLAGS="$CXXFLAGS "
 	meson --prefix=/usr		\
-	--libexecdir=/usr/lib/$PACKAGE \
-	-Dgtk_doc=false 		\
-	-Dsystemduserunitdir=no \
-	-Dnautilus=false		\
-	-Dcomics=disabled		\
-	-Dkeyring=disabled .. &&
+		--libexecdir=/usr/lib/$PACKAGE \
+		-Dgtk_doc=false 		\
+		-Dsystemduserunitdir=no \
+		-Dnautilus=false		\
+		-Dcomics=disabled		\
+		-Dkeyring=disabled .. &&
 	ninja && ninja install
 
 	#~ ./configure --prefix=/usr \

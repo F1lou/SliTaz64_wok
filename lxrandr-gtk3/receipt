@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="lxrandr-gtk3"
+SOURCE="lxrandr"
+VERSION="0.3.2"
+CATEGORY="utilities"
+TAGS="LXDE"
+SHORT_DESC="LXDE monitor configuration tool."
+MAINTAINER="gokhlayeh@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://wiki.lxde.org/en/LXRandR"
+
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WGET_URL="$SF_MIRROR/lxde/$TARBALL"
+
+DEPENDS="gtk+3 xorg-xrandr"
+BUILD_DEPENDS="gtk+3-dev xorg-libXrandr-dev intltool"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# Fix sources.
+	echo "Icon=video-display" >> data/lxrandr.desktop.in 
+	touch po/stamp-it 
+
+	./configure	--enable-gtk3 $CONFIGURE_ARGS &&
+	make && make install
+	
+	sed -i 's|^Icon=.*$|Icon=preferences-desktop-display|' $install/usr/share/applications/lxrandr.desktop
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin	$fs/usr
+}

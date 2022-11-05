@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libsasl-without-ldap"
-VERSION="2.1.27"
+VERSION="2.1.28"
 CATEGORY="system-tools"
 SHORT_DESC="Cyrus Simple Authentication Service Layer (SASL) library."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -10,8 +10,7 @@ WEB_SITE="https://www.cyrusimap.org/sasl/"
 
 SOURCE="cyrus-sasl"
 TARBALL="$SOURCE-$VERSION.tar.gz"
-WGET_URL="https://www.cyrusimap.org/releases/$TARBALL"
-
+WGET_URL="https://github.com/cyrusimap/$SOURCE/archive/refs/tags/$TARBALL"
 DEPENDS="db openssl"
 BUILD_DEPENDS="db-dev openssl-dev"
 
@@ -19,7 +18,7 @@ BUILD_DEPENDS="db-dev openssl-dev"
 compile_rules()
 {
 #	patch -Np1 -i $stuff/0027_db5_support.patch
-
+	./autogen.sh &&
 	./configure				\
 		--prefix=/usr			\
 		--infodir=/usr/share/info	\

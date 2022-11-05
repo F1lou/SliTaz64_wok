@@ -2,7 +2,7 @@
 
 PACKAGE="libboost-tr1-dev"
 LIB_NAME="tr1"
-VERSION="1.78.0"
+VERSION="1.80.0"
 
 CATEGORY="development"
 SHORT_DESC="Part of the Boost C++ Libraries collection."

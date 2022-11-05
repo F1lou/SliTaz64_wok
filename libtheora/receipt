@@ -12,12 +12,13 @@ WGET_URL="https://downloads.xiph.org/releases/theora/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="libogg libvorbis"
-BUILD_DEPENDS="libogg-dev libvorbis-dev"
+BUILD_DEPENDS="libogg-dev libvorbis-dev libpng-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	cd $src
+	patch -Np1 -i $stuff/png_sizeof.patch &&
 	./configure \
 		--prefix=/usr \
 		--mandir=/usr/share/man \

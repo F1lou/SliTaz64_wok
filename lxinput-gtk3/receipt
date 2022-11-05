@@ -1,0 +1,40 @@
+# SliTaz package receipt.
+
+PACKAGE="lxinput-gtk3"
+SOURCE="lxinput"
+VERSION="0.3.5"
+CATEGORY="x-window"
+TAGS="LXDE keyboard mouse"
+SHORT_DESC="LXDE keyboard and mouse configuration."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://lxde.org"
+
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WGET_URL="$SF_MIRROR/lxde/$TARBALL"
+
+DEPENDS="gtk+3 xorg-xset"
+BUILD_DEPENDS="gtk+3-dev intltool"
+GENERIC_MENUS="no"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure --enable-gtk3 $CONFIGURE_ARGS &&
+	make &&	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+
+	rm -r $fs/usr/share/locale
+	rm -r $fs/usr/share/man
+	rm -r $fs/usr/share/lxinput/*.png
+
+	sed -i 's|^Icon=.*$|Icon=preferences-desktop-keyboard|' \
+		$fs/usr/share/applications/lxinput.desktop
+}

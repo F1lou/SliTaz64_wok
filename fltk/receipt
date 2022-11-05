@@ -14,8 +14,8 @@ WGET_URL="http://fltk.org/pub/fltk/$VERSION/$TARBALL"
 DEPENDS="expat fontconfig freetype gcc-lib-base jpeg libglu-mesa libpng mesa 
 	xorg-libX11 xorg-libXau xorg-libXdmcp xorg-libXext xorg-libXft 
 	xorg-libXrender zlib"
-BUILD_DEPENDS="jpeg-dev libglu-mesa libglu-mesa-dev libpng-dev mesa mesa-dev 
-	slitaz-tools xorg-libXft-dev xorg-libXinerama-dev"
+BUILD_DEPENDS="jpeg-dev libpng-dev mesa mesa-dev slitaz-tools 
+	xorg-libXft-dev xorg-libXinerama-dev" # libglu-mesa libglu-mesa-dev
 
 HOST_ARCH="x86_64 i486 arm"
 

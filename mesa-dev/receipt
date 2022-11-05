@@ -9,9 +9,10 @@ LICENSE="MIT"
 WEB_SITE="https://www.mesa3d.org/"
 WANTED="mesa"
 
-DEPENDS="libdrm-dev mesa libglu-mesa-dev libglw-mesa-dev mesa-dri mesa-dri-ati 
+DEPENDS="libdrm-dev mesa mesa-dri mesa-dri-ati 
 	mesa-dri-intel mesa-dri-nouveau pkg-config xorg-proto 
-	xorg-libXdamage-dev xorg-libXt-dev xorg-libXxf86vm-dev" # xorg-dri2proto xorg-glproto
+	xorg-libXdamage-dev xorg-libXt-dev xorg-libXxf86vm-dev" 
+	# xorg-dri2proto xorg-glproto libglu-mesa-dev libglw-mesa-dev 
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

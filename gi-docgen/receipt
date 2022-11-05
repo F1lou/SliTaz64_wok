@@ -13,10 +13,10 @@ WGET_URL="https://gitlab.gnome.org/GNOME/$PACKAGE/-/archive/$VERSION/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="python3-jinja2	python3-markdown python3-markupsafe python3-pygments
-	python3-toml python3-typogrify"
+	python3-toml python3-typogrify python3-smartypants"
 BUILD_DEPENDS="py3k py3k-dev python3-setuptools python3-jinja2
 	python3-markdown python3-markupsafe python3-pygments
-	python3-toml python3-typogrify"
+	python3-toml python3-typogrify python3-smartypants"
 
 # Rules to configure and make the package.
 compile_rules()

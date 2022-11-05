@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="yaml-dev"
-VERSION="0.2.4"
+VERSION="0.2.5"
 CATEGORY="development"
 SHORT_DESC="yaml - development files."
 MAINTAINER="erjo@slitaz.org"

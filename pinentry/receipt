@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="pinentry"
-VERSION="1.2.0"
+VERSION="1.2.1"
 CATEGORY="security"
 SHORT_DESC="Collection of dialog programs that allow GnuPG to read passphrases and PIN numbers in a secure manner."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -11,8 +11,8 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="https://www.gnupg.org/ftp/gcrypt/pinentry/$TARBALL"
 
 DEPENDS="libassuan libcap libgio libsecret ncursesw"
-BUILD_DEPENDS="libgpg-error-dev libassuan-dev libsecret-dev ncursesw-dev \
-libcap-dev libgcrypt-dev"
+BUILD_DEPENDS="libgpg-error-dev libassuan-dev libsecret-dev ncursesw-dev 
+	libcap-dev libgcrypt-dev"
 SIBLINGS="pinentry-gtk"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
@@ -20,9 +20,9 @@ SIBLINGS="pinentry-gtk"
 compile_rules()
 {
 	# Integrity check: https://www.gnupg.org/download/integrity_check.html
-	echo "693bdf9f48dfb3e040d92f50b1bb464e268b9fb0  $SRC/$TARBALL" | sha1sum -c || exit 1
+	echo "29daaf45f15cb5b8ec9b4a06284343f7a87082fb  $SRC/$TARBALL" | sha1sum -c || exit 1
 
-	./configure --enable-pinentry-curses --build=i486-slitaz-linux-gnu &&
+	./configure --enable-pinentry-curses &&
 	make && make install
 }
 

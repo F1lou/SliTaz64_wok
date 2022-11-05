@@ -12,7 +12,7 @@ HOST_ARCH="x86_64 i486 arm"
 
 SUGGESTED="lxterminal lxdm lxshortcut xarchiver"
 # hack DEPENDS with lxsession046 (lxsession needs consolekit)
-DEPENDS="xorg-libX11 gtk+3 lxpanel lxtask lxappearance lxsession pcmanfm \
+DEPENDS="xorg-libX11 gtk+ lxpanel lxtask lxappearance lxsession pcmanfm \
 lxsession-edit lxrandr lxinput openbox obconf gpicview leafpad slitaz-configs \
 slitaz-tools-boxes"
 

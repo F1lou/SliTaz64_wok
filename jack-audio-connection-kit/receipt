@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="jack-audio-connection-kit"
-VERSION="0.125.0"
+VERSION="1.9.21"
 CATEGORY="multimedia"
 TAGS="audio server"
 SHORT_DESC="Low-latency audio server."
@@ -9,8 +9,8 @@ MAINTAINER="allan316@gmail.com"
 LICENSE="GPL LGPL"
 WEB_SITE="https://jackaudio.org"
 
-TARBALL="$PACKAGE-$VERSION.tar.gz"
-WGET_URL="http://jackaudio.org/downloads/$TARBALL"
+TARBALL="v$VERSION.tar.gz"
+WGET_URL="https://github.com/jackaudio/jack2/archive/$TARBALL"
 
 DEPENDS="alsa-lib ncurses readline libsndfile libogg libsamplerate"
 BUILD_DEPENDS="alsa-lib-dev libsamplerate-dev db-dev util-linux-uuid-dev"
@@ -20,7 +20,7 @@ HOST_ARCH="x86_64 i486 arm"
 compile_rules()
 {
 	./configure $CONFIGURE_ARGS &&
-	make -j 1 &&
+	make &&
 	make DESTDIR=$DESTDIR install &&
 
 	install -Dm644 $src/jack/jslist.h $install/usr/include/jack/jslist.h

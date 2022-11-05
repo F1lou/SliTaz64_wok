@@ -12,7 +12,7 @@ WGET_URL="https://download.gnome.org/sources/$PACKAGE/${VERSION%.*}/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="cairo gtk+"
-BUILD_DEPENDS="cairo-dev gtk+-dev glib-dev expat-dev"
+BUILD_DEPENDS="cairo-dev gtk+-dev glib-dev expat-dev bash"
 
 case "$ARCH" in
 	x86_64|i?86)

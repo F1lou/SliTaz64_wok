@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="fftw"
-VERSION="3.3.9"
+VERSION="3.3.10"
 CATEGORY="multimedia"
 MAINTAINER="jozee@slitaz.org"
 LICENSE="GPL2"

@@ -1,0 +1,10 @@
+--- /usr/portage/media-libs/libtheora/libtheora-1.1.1.ebuild
++++ /usr/portage/local/miscellaneous/media-libs/libtheora/libtheora-1.1.1.ebuild
+@@ -28,6 +28,7 @@
+ 
+ src_prepare() {
+ 	epatch "${FILESDIR}"/${PN}-1.0_beta2-flags.patch
++        sed -i 's/png_\(sizeof\)/\1/g' examples/png2theora.c
+ 	AT_M4DIR="m4" eautoreconf
+ }
+ 

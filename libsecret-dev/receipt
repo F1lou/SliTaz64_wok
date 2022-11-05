@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libsecret-dev"
-VERSION="0.18.5"
+VERSION="0.20.5"
 CATEGORY="development"
 SHORT_DESC="GObject bindings for Secret Service API, development files"
 MAINTAINER="devl547@gmail.com"
@@ -15,7 +15,11 @@ DEPENDS="libsecret glib-dev libgio-dev"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	cp -a $install/* $fs
-	rm -r $fs/usr/bin $fs/usr/lib/*.so*
-	rm -r $fs/usr/share/locale $fs/usr/share/gtk-doc
+	mkdir -p $fs/usr/lib $fs/usr/lib64 $fs/usr/share
+	
+	cp -a $install/usr/include $fs/usr/
+	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib/
+	cp -a $install/usr/lib64/girepository* $fs/usr/lib/
+	cp -a $install/usr/share/gir* $fs/usr/share/
+	cp -a $install/usr/share/vala $fs/usr/share/
 }

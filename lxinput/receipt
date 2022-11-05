@@ -21,10 +21,8 @@ HOST_ARCH="x86_64 i486 arm"
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure \
-		$CONFIGURE_ARGS &&
-	make -j 1 &&
-	make install
+	./configure $CONFIGURE_ARGS &&
+	make &&	make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

@@ -262,5 +262,6 @@ diff --color -uNar nss-3.55.orig/nss/manifest.mn nss-3.55/nss/manifest.mn
 -DIRS = coreconf lib cmd cpputil gtests
 +DIRS = coreconf lib cmd cpputil gtests config
  
- lib: coreconf
- cmd: lib
+ HAVE_ALL_TARGET := 1
+
+ 

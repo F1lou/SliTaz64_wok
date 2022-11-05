@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libaio"
-VERSION="0.3.112"
+VERSION="0.3.113"
 CATEGORY="misc"
 SHORT_DESC="Linux-native asynchronous I/O access library."
 MAINTAINER="pascal.bellard@slitaz.org"

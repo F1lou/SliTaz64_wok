@@ -13,9 +13,9 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="$WEB_SITE/releases/$TARBALL"
 
 SUGGESTED="lame flac"
-DEPENDS="alsa-lib cdparanoia-III gtk+ libcddb vorbis-tools 
+DEPENDS="alsa-lib cdparanoia-III gtk+3 libcddb vorbis-tools 
 	xorg-libXdamage"
-BUILD_DEPENDS="alsa-lib-dev cdparanoia-III-dev gtk+-dev libcddb-dev 
+BUILD_DEPENDS="alsa-lib-dev cdparanoia-III-dev gtk+3-dev libcddb-dev 
 	xorg-libXdamage-dev intltool"
 
 GENERIC_PIXMAPS="no"

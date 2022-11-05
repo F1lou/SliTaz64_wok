@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libboost"
-VERSION="1.78.0"
+VERSION="1.80.0"
 CATEGORY="meta"
 SHORT_DESC="Libboost meta-package to install base modules."
 MAINTAINER="pankso@slitaz.org"

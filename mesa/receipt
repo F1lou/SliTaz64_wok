@@ -39,11 +39,11 @@ genpkg_rules()
 	cp -a $install/usr/lib64/*.so*	$fs/usr/lib64
 
 	# libGLU is included in the package libglu-mesa
-	rm -r -f $fs/usr/lib64/libGLU*
+	#~ rm -r -f $fs/usr/lib64/libGLU*
 
 	#libGLw is included in the package libglw-mesa
-	rm -r -f $fs/usr/lib/libGLw*
+	#~ rm -r -f $fs/usr/lib/libGLw*
 
 	#libEGL is included in the package libegl-mesa
-	rm -r -f $fs/usr/lib/libEGL*
+	#~ rm -r -f $fs/usr/lib/libEGL*
 }

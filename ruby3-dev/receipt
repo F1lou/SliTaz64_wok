@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="ruby3-dev"
-VERSION="3.1.0"
+VERSION="3.1.2"
 CATEGORY="development"
 SHORT_DESC="Development files for Ruby (to compile ruby-modules)."
 MAINTAINER="nhc1@gmx.net"

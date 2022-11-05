@@ -12,18 +12,16 @@ WEB_SITE="http://lxde.sourceforge.net/gpicview/"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="$SF_MIRROR/lxde/$TARBALL"
 
-DEPENDS="gtk+ expat glib libgio libpng jpeg zlib"
-BUILD_DEPENDS="gtk+-dev expat-dev glib-dev libgio-dev libpng-dev jpeg-dev
-	intltool"
+DEPENDS="gtk+3 expat glib libgio libpng jpeg zlib"
+BUILD_DEPENDS="gtk+3-dev expat-dev glib-dev libgio-dev libpng-dev jpeg-dev
+	intltool xorg-proto"
 HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure \
-		$CONFIGURE_ARGS &&
-	make -j 1 &&
-	make install
+	./configure --enable-gtk3 $CONFIGURE_ARGS &&
+	make &&	make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

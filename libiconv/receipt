@@ -1,14 +1,12 @@
 # SliTaz package receipt.
 
-PACKED_SIZE="500K"
-UNPACKED_SIZE="948K"
-PACKAGE=""
-VERSION="1.16"
+PACKAGE="libiconv"
+VERSION="1.17"
 CATEGORY="misc"
-SHORT_DESC="iconc library."
+SHORT_DESC="The iconv program reads in text in one encoding and outputs the text in another encoding."
 MAINTAINER="filou@slitaz.org"
 LICENSE="GPL3 LGPL2.1"
-WEB_SITE="https://www.gnu.org/software//"
+WEB_SITE="https://www.gnu.org/software/libiconv/"
 
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$GNU_MIRROR/$PACKAGE/$TARBALL"

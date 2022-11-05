@@ -9,7 +9,8 @@ LICENSE="GPL2"
 WEB_SITE="https://www.gtk.org/"
 
 DEPENDS="atk-dev cairo-dev gdk-pixbuf-dev glib-dev gtk+ jpeg-dev 
-	libgio-dev libpng-dev libxml2-dev pango-dev pkg-config tiff-dev"
+	libgio-dev libpng-dev libxml2-dev pango-dev pkg-config tiff-dev
+	xorg-proto"
 WANTED="gtk+"
 
 HOST_ARCH="x86_64 i486 arm"

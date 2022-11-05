@@ -2,7 +2,7 @@
 
 PACKAGE="libboost-system"
 LIB_NAME="system"
-VERSION="1.78.0"
+VERSION="1.80.0"
 
 CATEGORY="development"
 SHORT_DESC="Part of the Boost C++ Libraries collection."

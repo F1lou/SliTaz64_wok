@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="openjpeg2"
-VERSION="2.4.0"
+VERSION="2.5.0"
 CATEGORY="development"
 SHORT_DESC="Open-source C-Library for JPEG 2000 (ver. 2.x)."
 MAINTAINER="al.bobylev@gmail.com"

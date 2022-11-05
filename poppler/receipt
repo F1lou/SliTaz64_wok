@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="poppler"
-VERSION="22.10.0"
+VERSION="22.11.0"
 CATEGORY="office"
 SHORT_DESC="Poppler is a PDF rendering library."
 MAINTAINER="pankso@slitaz.org"
@@ -10,10 +10,10 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WEB_SITE="https://poppler.freedesktop.org/"
 WGET_URL="https://poppler.freedesktop.org/$TARBALL"
 
-DEPENDS="expat freetype glib jpeg xorg-libXdamage lcms \
-gcc-lib-base cairo tiff bzlib libpng  openjpeg2 libnss"
-BUILD_DEPENDS="$DEPENDS expat-dev pkg-config jpeg-dev tiff-dev \
-freetype-dev fontconfig-dev glib-dev lcms-dev zlib-dev cairo-dev \
+DEPENDS="expat freetype glib jpeg xorg-libXdamage lcms2 \
+gcc-lib-base cairo tiff bzlib libpng  openjpeg2 nss"
+BUILD_DEPENDS="$DEPENDS bash expat-dev pkg-config jpeg-dev tiff-dev \
+freetype-dev fontconfig-dev glib-dev lcms2-dev zlib-dev cairo-dev \
 automake bzip2-dev libpng-dev libtool libxml2-dev 
 nss-dev pixman-dev libboost-dev libxcb-dev xorg-libX11-dev
 xorg-libXrender-dev xorg-libXext-dev gobject-introspection-dev
@@ -23,20 +23,11 @@ openjpeg2-dev xorg-libXdmcp-dev" # Qt4-dev
 # Rules to configure and make the package.
 compile_rules()
 {
-	export CXXFLAGS="$CXXFLAGS  -lpthread"
-	#~ export CFLAGS="$CFLAGS  -lpthread"
 	mkdir build && cd build 
-	cmake  -DCMAKE_BUILD_TYPE=Release   \
-		-DCMAKE_INSTALL_PREFIX=/usr  \
-		-DENABLE_UNSTABLE_API_ABI_HEADERS=ON \
-		.. &&
-	#~ autoreconf -fi
-	#~ ./configure \
-		#~ --enable-zlib \
-		#~ --enable-cairo-output \
-		#~ --enable-poppler-qt4 \
-		#~ --disable-libopenjpeg \
-		#~ $CONFIGURE_ARGS &&
+	cmake  	-DCMAKE_BUILD_TYPE=Release   \
+			-DCMAKE_INSTALL_PREFIX=/usr  \
+			-DENABLE_UNSTABLE_API_ABI_HEADERS=ON \
+			.. &&
 	make &&	make install
 }
 
