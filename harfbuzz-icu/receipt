@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="harfbuzz-icu"
-VERSION="2.8.0"
+VERSION="5.3.1"
 CATEGORY="system-tools"
 SHORT_DESC="OpenType text shaping engine with icu support."
 MAINTAINER="pankso@slitaz.org"
@@ -9,19 +9,20 @@ LICENSE="GPL2"
 WEB_SITE="https://www.freedesktop.org/wiki/Software/HarfBuzz"
 
 SOURCE="harfbuzz"
-TARBALL="$SOURCE-$VERSION.tar.bz2"
-WGET_URL="https://www.freedesktop.org/software/$SOURCE/release/$TARBALL"
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WGET_URL="https://github.com/$SOURCE/$SOURCE/releases/download/$VERSION/$TARBALL"
 
 PROVIDE="harfbuzz"
 DEPENDS="freetype gcc-lib-base glib icu"
-BUILD_DEPENDS="freetype-dev gcc glib-dev icu-dev"
+BUILD_DEPENDS="bash gcc glib-dev gtk-doc fontconfig-dev freetype-dev
+	python3-pygments gobject-introspection-dev cairo-dev icu-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	mkdir build && cd build &&
 
-	meson --prefix=/usr .. &&
+	meson --prefix=/usr -Ddocs=disabled -Dtests=disabled .. &&
 	ninja
 	DESTDIR=$DESTDIR ninja install
 	

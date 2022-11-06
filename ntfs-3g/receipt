@@ -1,29 +1,29 @@
 # SliTaz package receipt.
 
 PACKAGE="ntfs-3g"
-VERSION="2017.3.23"
+VERSION="2022.10.3"
 CATEGORY="system-tools"
 SHORT_DESC="Read/write NTFS driver for FUSE"
 MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL2"
 SOURCE="ntfs-3g_ntfsprogs"
-TARBALL="$SOURCE-$VERSION.tgz"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="https://www.tuxera.com/community/open-source-ntfs-3g/"
-WGET_URL="https://tuxera.com/opensource/$TARBALL"
+WGET_URL="https://github.com/tuxera/$PACKAGE/archive/refs/tags/$VERSION.tar.gz"
 CONFIG_FILES="/etc/filesystems"
 TAGS="windows"
 
 DEPENDS="fuse attr"
-BUILD_DEPENDS="fuse-dev attr-dev util-linux-uuid-dev libtool"
+BUILD_DEPENDS="fuse-dev attr-dev util-linux-uuid-dev libtool libgcrypt-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	mkdir -p $DESTDIR/lib
+	./autogen.sh &&
 	./configure --prefix=/usr \
-	--disable-static \
-	--with-fuse=internal \
-	--mandir=/usr/share/man $CONFIGURE_ARGS &&
+		--disable-static \
+		--with-fuse=internal \
+		--mandir=/usr/share/man $CONFIGURE_ARGS &&
 	make &&
 	make DESTDIR=$DESTDIR install
 }
@@ -36,9 +36,9 @@ genpkg_rules()
 	rm -rf $fs/usr/bin/ntfs[a-z]* $fs/sbin/mkfs.ntfs $fs/usr/s*
 	rm -rf $fs/usr/share $fs/usr/lib/pkgconfig $fs/usr/lib/*.a $fs/usr/include
 	touch $fs/etc/filesystems
-	#this link allow udisks2 to use ntfs-3g
-	cd $fs/sbin
-	ln -s mount.ntfs-3g mount.ntfs
+	#this link allow udisks2 to use ntfs-3g <- deprecated, since Linux Kernel provides faster NTFS
+	#~ cd $fs/sbin
+	#~ ln -s mount.ntfs-3g mount.ntfs
 }
 
 # Pre remove and post install commands for Tazpkg.

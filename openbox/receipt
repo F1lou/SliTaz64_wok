@@ -13,10 +13,10 @@ TAGS="window-manager"
 HOST_ARCH="x86_64 i486 arm"
 
 SUGGESTED="obconf spacefm pcmanfm hsetroot wbar2 conky"
-DEPENDS="pango glib xorg-libX11 fontconfig freetype xorg-libXrandr \
-xorg-libXft xorg-libXinerama xorg-libXcursor libxml2 slitaz-configs"
-BUILD_DEPENDS=" pango-dev glib-dev xorg-libXft-dev util-linux-uuid-dev \
-libxml2-dev xcb-util-dev"
+DEPENDS="pango glib xorg-libX11 fontconfig freetype xorg-libXrandr 
+	xorg-libXft xorg-libXinerama xorg-libXcursor libxml2 slitaz-configs"
+BUILD_DEPENDS="pango-dev glib-dev xorg-libXft-dev util-linux-uuid-dev 
+	libxml2-dev xcb-util-dev liblzma-dev"
 
 # Handle slitaz arch: /etc/slitaz/slitaz.conf
 case "$SLITAZ_ARCH" in 

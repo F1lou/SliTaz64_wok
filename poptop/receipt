@@ -15,7 +15,6 @@ WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
 DEPENDS="ppp bcrelay"
 BUILD_DEPENDS="ppp-dev"
-#WANTED="ppp"		# need VERSION
 
 CONFIG_FILES="/etc/pptpd.conf /etc/ppp/options.pptpd"
 

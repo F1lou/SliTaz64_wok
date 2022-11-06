@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libwebp"
-VERSION="1.2.0"
+VERSION="1.2.4"
 CATEGORY="x-window"
 SHORT_DESC="WebP image library."
 MAINTAINER="devl547@gmail.com"
@@ -20,11 +20,8 @@ HOST_ARCH="x86_64 i486 arm"
 compile_rules()
 {
 	./autogen.sh &&
-	./configure			\
-		--disable-static	\
-		$CONFIGURE_ARGS &&
-	make -j 1 &&
-	make DESTDIR=$DESTDIR install
+	./configure	--disable-static $CONFIGURE_ARGS &&
+	make && make DESTDIR=$DESTDIR install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

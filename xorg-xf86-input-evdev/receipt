@@ -15,7 +15,8 @@ WGET_URL="$XORG_MIRROR/driver/$TARBALL"
 # We can use xorg-server-light with evdev and vesa driver.
 #DEPENDS="xorg-server"
 DEPENDS="libevdev mtdev"
-BUILD_DEPENDS="libevdev-dev mtdev-dev eudev-dev xorg-server-dev"
+BUILD_DEPENDS="libevdev-dev mtdev-dev eudev-dev xorg-server-dev
+	xorg-libXcvt-dev xorg-proto"
 
 MODS='/usr/lib/X11/modules'
 

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libjs"
-VERSION="78.8.0esr"
+VERSION="91.12.0esr"
 CATEGORY="network"
 MAINTAINER="filou@slitaz.org"
 LICENSE="MPL2"
@@ -11,8 +11,8 @@ SOURCE="firefox"
 TARBALL="${SOURCE}-$VERSION.source.tar.xz"
 WGET_URL="https://archive.mozilla.org/pub/$SOURCE/releases/$VERSION/source/$TARBALL"
 
-DEPENDS=""
-BUILD_DEPENDS="autoconf213 icu rust which"
+DEPENDS="icu"
+BUILD_DEPENDS="llvm autoconf213 icu-dev rust-cargo which zlib-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -20,12 +20,13 @@ compile_rules()
 	#~ mountpoint -q /dev/shm || mount -t tmpfs devshm /dev/shm
 	#~ export SHELL=/bin/sh
 	mkdir obj && cd obj
-	../js/src/configure --prefix=/usr            \
-                    --with-intl-api          \
-                    --with-system-zlib       \
-                    --with-system-icu        \
-                    --disable-jemalloc       \
-                    --disable-debug-symbols  \
+	chmod a+x ../js/src/configure.in &&
+	../js/src/configure.in --prefix=/usr	\
+                    --with-intl-api			\
+                    --with-system-zlib		\
+                    --with-system-icu		\
+                    --disable-jemalloc		\
+                    --disable-debug-symbols	\
                     --enable-readline &&
 	make && make install
 }

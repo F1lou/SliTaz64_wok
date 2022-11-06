@@ -12,8 +12,8 @@ WEB_SITE="https://sylpheed.sraoss.jp/en/"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="https://dotsrc.dl.osdn.net/osdn/sylpheed/68999/$TARBALL"
 
-DEPENDS="gtk+3 libffi libssl"
-BUILD_DEPENDS="gtk+3-dev openssl-dev   xorg-randrproto"
+DEPENDS="gtk+ libffi libssl"
+BUILD_DEPENDS="gtk+-dev openssl-dev xorg-proto liblzma-dev"
 
 # Rules to configure and make the package.
 compile_rules()

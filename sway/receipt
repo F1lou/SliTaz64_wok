@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="sway"
+VERSION="1.7"
+CATEGORY="x-window"
+SHORT_DESC="i3-compatible Wayland compositor"
+MAINTAINER="nhc1@gmx.net"
+LICENSE="MIT"
+WEB_SITE="https://swaywm.org/"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/swaywm/sway/archive/refs/tags/$VERSION.tar.gz"
+
+DEPENDS="wayland pcre2 libjson-c pango cairo gdk-pixbuf libxkbcommon
+	wlroots"
+BUILD_DEPENDS="wayland-dev wayland-protocols pcre2 libjson-c-dev pango-dev
+	cairo-dev gdk-pixbuf-dev git libxkbcommon-dev wlroots-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	meson --prefix=/usr build
+	ninja -C build
+	sudo ninja -C build install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+
+genpkg_rules()
+{
+	chmod a+s $fs/usr/bin/sway
+	cp -a $install/* $fs
+}

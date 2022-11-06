@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gnumeric"
-VERSION="1.12.51"
+VERSION="1.12.53"
 CATEGORY="office"
 SHORT_DESC="Office Spreadsheet application."
 MAINTAINER="pankso@slitaz.org"
@@ -19,7 +19,7 @@ xorg-libXinerama xorg-libXrandr xorg-libXrender zlib dconf goffice"
 BUILD_DEPENDS="gtk-doc bison goffice-dev gtk+3-dev libcroco-dev rarian
 	xorg-dev mesa-dev at-spi2 at-spi2-atk libxml2-dev util-linux-uuid-dev
 	freetype-dev libpng-dev liblzma-dev libepoxy-dev xorg-libXxf86vm-dev
-	intltool itstool "
+	intltool itstool"
 
 # Rules to configure and make the package.
 compile_rules()

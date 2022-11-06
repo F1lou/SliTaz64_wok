@@ -13,7 +13,7 @@ HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="xorg-libXdamage xorg-libXcomposite xorg-xcompmgr xorg-libXrender \
 xorg-libXext"
-BUILD_DEPENDS="xorg-libXdamage-dev xorg-libXcomposite-dev"
+BUILD_DEPENDS="xorg-libXdamage-dev xorg-libXcomposite-dev xorg-libXrender-dev"
 
 # Rules to configure and make the package.
 compile_rules()

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="jpegtran"
-VERSION="9d"
+VERSION="9e"
 CATEGORY="graphics"
 SHORT_DESC="Convert jpeg files to progressive jpeg files."
 MAINTAINER="pascal.bellard@slitaz.org"

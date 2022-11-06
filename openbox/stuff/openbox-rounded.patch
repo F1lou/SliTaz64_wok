@@ -16,27 +16,27 @@
  gchar   *config_theme;
  gboolean config_theme_keepborder;
  guint    config_theme_window_list_icon_size;
-+guint	 config_theme_cornerradius;
++guint   config_theme_cornerradius;
 +gboolean config_theme_menuradius;
  
  gchar   *config_title_layout;
  
-@@ -702,6 +704,10 @@
+@@ -719,6 +721,10 @@
          else if (config_theme_window_list_icon_size > 96)
              config_theme_window_list_icon_size = 96;
      }
-+    if ((n = obt_xml_find_node(node, "cornerRadius"))) {
-+	config_theme_cornerradius = obt_xml_node_int(n);
-+	obt_xml_attr_bool(n, "menu", &config_theme_menuradius);
++       if ((n = obt_xml_find_node(node, "cornerRadius"))) {
++              config_theme_cornerradius = obt_xml_node_int(n);
++              obt_xml_attr_bool(n, "menu", &config_theme_menuradius);
 +    }
  
-     n = obt_xml_find_node(node, "font");
-     while (n) {
-@@ -1078,6 +1084,8 @@
+     for (n = obt_xml_find_node(node, "font");
+          n;
+@@ -1098,6 +1104,8 @@
      config_title_layout = g_strdup("NLIMC");
      config_theme_keepborder = TRUE;
      config_theme_window_list_icon_size = 36;
-+    config_theme_cornerradius = 0;
++       config_theme_cornerradius = 0;
 +    config_theme_menuradius = TRUE;
  
      config_font_activewindow = NULL;

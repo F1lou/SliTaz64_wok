@@ -12,7 +12,7 @@ LFS="http://www.linuxfromscratch.org/blfs/view/svn/x/x7driver.html#libevdev"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="http://www.freedesktop.org/software/libevdev/$TARBALL"
 
-BUILD_DEPENDS="check-dev python" # doxygen
+BUILD_DEPENDS="check-dev py3k" # doxygen
 
 # Rules to configure and make the package.
 compile_rules()

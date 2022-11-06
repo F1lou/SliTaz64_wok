@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libjs-dev"
-VERSION="78.8.0esr"
+VERSION="91.12.0esr"
 CATEGORY="development"
 MAINTAINER="filou@slitaz.org"
 LICENSE="MPL2"
@@ -10,7 +10,7 @@ WEB_SITE="http://www.mozilla.org/firefox"
 WANTED="libjs"
 
 DEPENDS=""
-BUILD_DEPENDS=""
+BUILD_DEPENDS="icu-dev"
 	
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="fontforge"
-VERSION="20201107"
+VERSION="20220308"
 CATEGORY="development"
 TAGS="editor font"
 SHORT_DESC="An outline font editor."
@@ -12,12 +12,12 @@ WEB_SITE="https://fontforge.github.io/"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://github.com/$PACKAGE/$PACKAGE/releases/download/$VERSION/$TARBALL"
 
-DEPENDS="gtk+ libltdl libspiro libuninameslist python"
-BUILD_DEPENDS="autoconf automake bash cacerts cairo-dev \
-	coreutils-context-system coreutils-line freetype-dev \
-	git gtk+-dev jpeg-dev libpng-dev libspiro-dev libtool \
-	libuninameslist-dev pango-dev perl python-dev \
-	readline-dev util-linux-uuid-dev xorg-libX11-dev \
+DEPENDS="gtk+3 libltdl libspiro libuninameslist py3k"
+BUILD_DEPENDS="autoconf automake bash cacerts cairo-dev 
+	coreutils-context-system coreutils-line freetype-dev 
+	git gtk+3-dev jpeg-dev libpng-dev libspiro-dev libtool 
+	libuninameslist-dev pango-dev perl py3k-dev 
+	readline-dev util-linux-uuid-dev xorg-libX11-dev
 	xorg-libXft-dev zlib-dev"
 # As 'busybox date' does not support the given options,
 # coreutils-context-system is required.

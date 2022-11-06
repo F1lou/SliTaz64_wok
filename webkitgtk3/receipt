@@ -1,23 +1,25 @@
 # SliTaz package receipt.
 
-PACKAGE="webkitgtk"
+PACKAGE="webkitgtk3"
+SOURCE="webkitgtk"
 VERSION="2.38.2"
 CATEGORY="network"
 SHORT_DESC="xHTML render library."
 MAINTAINER="nhc1@gmx.net"
 LICENSE="BSD LGPL"
-TARBALL="$PACKAGE-${VERSION}.tar.xz"
+TARBALL="$SOURCE-${VERSION}.tar.xz"
 WEB_SITE="https://webkitgtk.org/"
 WGET_URL="https://webkitgtk.org/releases/$TARBALL"
 
 DEPENDS=""
 BUILD_DEPENDS="cairo-dev ruby3-dev libepoxy-dev mesa-dev xorg-libXxf86vm-dev
 	xorg-libXtst-dev harfbuzz-icu icu-dev libwebp-dev libsoup-dev jpeg-dev
-	sqlite-dev"
+	sqlite-dev gtk+3-dev libsoup-dev libsoup-gnome"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	
 	mkdir build && cd build &&
 	cmake -DCMAKE_BUILD_TYPE=Release	\
       -DCMAKE_INSTALL_PREFIX=/usr		\

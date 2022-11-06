@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="pulseaudio"
-VERSION="13.0"
+VERSION="16.1"
 CATEGORY="multimedia"
 SHORT_DESC="A sound system for POSIX OSes."
 MAINTAINER="pascal.bellard@slitaz.org"

@@ -12,16 +12,20 @@ WEB_SITE="https://wiki.lxde.org/en/LXSession"
 TARBALL="$SOURCE-$VERSION.tar.xz"
 WGET_URL="$SF_MIRROR/lxde/$TARBALL"
 
-DEPENDS="dbus gtk+"
-BUILD_DEPENDS="dbus-dev gtk+-dev polkit-dev"
-SUGGESTED="lxsession-lxpolkit"
+DEPENDS="dbus gtk+3"
+BUILD_DEPENDS="dbus-dev gtksourceview-dev gtk+3-dev polkit-dev intltool"
+SUGGESTED="lxsession-lxpolkit-gtk3"
 
 HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure	--enable-gtk3 --sysconfdir=/etc	$CONFIGURE_ARGS &&
+	./configure	--enable-gtk3 		\
+				--prefix=/usr		\
+				--disable-man		\
+				--sysconfdir=/etc	\
+				$CONFIGURE_ARGS &&
 	make && make install
 }
 

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="mtpaint"
-VERSION="3.49.25"
+VERSION="3.51"
 COMMIT="03b1b0938067b88d86d9f1b1088730f1934d411e"
 CATEGORY="graphics"
 SHORT_DESC="Painting program to create pixel art and manipulate digital photos."
@@ -9,36 +9,18 @@ MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL3"
 WEB_SITE="http://mtpaint.sourceforge.net/"
 
-TARBALL="$PACKAGE-$VERSION.tar.gz"
+TARBALL="$PACKAGE-$VERSION.zip"
 #WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
-WGET_URL="https://github.com/wjaguar/mtPaint/archive/$COMMIT.tar.gz"
-
-DEPENDS="gtk+ libpng lcms2"
-BUILD_DEPENDS="cairo-dev gtk+-dev lcms2-dev libpng-dev zlib-dev"
+WGET_URL="https://github.com/wjaguar/mtPaint/archive/refs/heads/master.zip"
+DEPENDS="gtk+3 libpng lcms2"
+BUILD_DEPENDS="cairo-dev gtk+3-dev lcms2-dev libpng-dev zlib-dev"
 
 #HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	patch -p0 < $stuff/mtpaint.patch
-	sed -i 's/mem_undo_limit,\t32/mem_undo_limit,\t256/' \
-		$src/src/mainwindow.c
-
-	case "$ARCH" in
-		i?86)
-			export LDFLAGS="$LDFLAGS -Wl,--copy-dt-needed-entries -lpng12"
-			./configure		\
-				--cpu=$ARCH	\
-				--prefix=/usr	\
-				intl nogif nojp2 ;;
-		arm*)
-			# we need: arm-slitaz-linux-gnueabi-pkg-config
-			./configure \
-				--prefix=/usr \
-				--host=${HOST_SYSTEM} \
-				intl nogif
-	esac &&
+	./configure gtk3 --prefix=/usr &&
 	make &&
 	make DESTDIR=$install install
 }

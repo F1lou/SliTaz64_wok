@@ -10,27 +10,19 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WEB_SITE="http://projects.gnome.org/gtksourceview/"
 WGET_URL="http://ftp.gnome.org/pub/gnome/sources/$PACKAGE/${VERSION%.*}/$TARBALL"
 
-DEPENDS="expat gtk+3 libxml2 xorg-libX11 xorg-libXau xorg-libXcomposite \
-xorg-libXcursor xorg-libXdmcp xorg-libXext xorg-libXfixes xorg-libXinerama \
-xorg-libXrandr xorg-libXrender xorg-libXdamage"
-BUILD_DEPENDS="intltool pkg-config gtk+3-dev libxml2-dev expat-dev glib-dev
-	 gobject-introspection-dev vala liblzma-dev "
+DEPENDS="expat gtk+3 libxml2 xorg-libX11 xorg-libXau xorg-libXcomposite 
+	xorg-libXcursor xorg-libXdmcp xorg-libXext xorg-libXfixes 
+	xorg-libXinerama xorg-libXrandr xorg-libXrender xorg-libXdamage"
+BUILD_DEPENDS="intltool itstool pkg-config gtk+3-dev libxml2-dev tar
+	expat-dev glib-dev gobject-introspection-dev vala liblzma-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	#~ mkdir build && cd build
-	#~  meson --prefix=/usr &&
-	#~ ninja && ninja install
+	sed -i 's|#!/usr/bin/sh|#!/bin/sh|' install-sh
 	
-	cd $src
-	./configure \
-		--prefix=/usr \
-		--infodir=/usr/share/info \
-		--mandir=/usr/share/man \
-		$CONFIGURE_ARGS &&
-	make &&
-	make DESTDIR=$DESTDIR install
+	./configure --prefix=/usr $CONFIGURE_ARGS &&
+	make &&	make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

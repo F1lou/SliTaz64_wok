@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="glib-networking"
-VERSION="2.66.0"
+VERSION="2.74.0"
 CATEGORY="x-window"
 SHORT_DESC="TLS support for glib."
 MAINTAINER="pankso@slitaz.org"
@@ -11,8 +11,9 @@ WEB_SITE="https://www.gtk.org/"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION%.*}/$TARBALL"
 
-DEPENDS="glib libgio libgnutls libunistring"
-BUILD_DEPENDS="glib-dev gnutls-dev libgio-dev libgnutls libunistring-dev"
+DEPENDS="glib libgio libgnutls libunistring openssl"
+BUILD_DEPENDS="glib-dev gnutls-dev libgio-dev libgnutls libunistring-dev
+	openssl-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 
@@ -32,13 +33,6 @@ compile_rules()
 	ninja
 	
 	DESTDIR=$DESTDIR ninja install
-
-	#~ ./configure				\
-		#~ --prefix=/usr			\
-		#~ --without-ca-certificates	\
-		#~ $CONFIGURE_ARGS &&
-	#~ make &&
-	#~ make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

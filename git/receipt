@@ -23,10 +23,9 @@ CROSS_BUGS="bug: can't run test and make package."
 compile_rules()
 {
 	export LDFLAGS="$LDFLAGS -ldl"
-	./configure			\
-		--prefix=/usr		\
+	./configure					\
+		--prefix=/usr			\
 		--libexecdir=/usr/lib	\
-		--without-tcltk		\
 		$CONFIGURE_ARGS &&
 	make THREADED_DELTA_SEARCH=1 &&
 	make THREADED_DELTA_SEARCH=1 DESTDIR=$DESTDIR install
@@ -39,8 +38,15 @@ genpkg_rules()
 
 	cp -a $stuff/git-daemon	$fs/etc/init.d
 	cp -a $install/usr	$fs/
-
+	
 	strip -s $fs/usr/lib/git-core/* 2>/dev/null || true
+	
+	# leave for new package gitk
+	rm 	$fs/usr/bin/gitk \
+		$fs/usr/lib/git-core/git-gui* \
+		$fs/usr/lib/git-core/git-citool
+	rm -R 	$fs/usr/share/git-gui \
+			$fs/usr/share/gitk
 }
 
 # edit daemons.conf.

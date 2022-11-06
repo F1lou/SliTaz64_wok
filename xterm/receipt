@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xterm"
-VERSION="356"
+VERSION="375"
 CATEGORY="utilities"
 TAGS="terminal"
 SHORT_DESC="X terminal emulator."
@@ -15,7 +15,7 @@ WGET_URL="http://invisible-mirror.net/archives/$PACKAGE/$TARBALL"
 DEPENDS="expat fontconfig freetype ncurses xorg-libXaw3d 
 	xorg-libXft xorg-libXpm xorg-libXt"
 BUILD_DEPENDS="expat-dev fontconfig-dev freetype-dev ncurses-dev 
-	xorg-libXaw3d-dev xorg-libXft-dev xorg-libXt-dev"
+	bash xorg-libXaw3d-dev xorg-libXft-dev xorg-libXt-dev"
 
 GENERIC_PIXMAPS="no"
 

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="nfs-utils"
-VERSION="2.5.4"
+VERSION="2.6.2"
 CATEGORY="system-tools"
 TAGS="filesystem"
 SHORT_DESC="Network FileSystem tools."
@@ -13,7 +13,7 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://www.kernel.org/pub/linux/utils/$PACKAGE/$VERSION/$TARBALL"
 
 DEPENDS="libcap libtirpc rpcbind util-linux-blkid util-linux-uuid" # libwrap
-BUILD_DEPENDS="libcap-dev libtirpc-dev util-linux-blkid \
+BUILD_DEPENDS="libcap-dev libtirpc-dev util-linux-blkid util-linux-mount-dev
 	util-linux-blkid-dev util-linux-uuid-dev rpcsvc-proto" # libwrap-dev
 CONFIG_FILES="/etc/exports"
 

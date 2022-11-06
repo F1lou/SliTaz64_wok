@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="wpa_supplicant"
-VERSION="2.9"
+VERSION="2.10"
 CATEGORY="utilities"
 SHORT_DESC="WPA Supplicant with support for WPA and WPA2"
 MAINTAINER="0dddba11@googlemail.com"

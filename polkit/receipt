@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="polkit"
-VERSION="0.119"
+VERSION="121"
 CATEGORY="base-system"
 SHORT_DESC="Application development toolkit for controlling system-wide privileges."
 MAINTAINER="slaxemulator@gmail.com"
@@ -13,8 +13,9 @@ WGET_URL="https://www.freedesktop.org/software/$PACKAGE/releases/$TARBALL"
 CROSS="error: cannot check for file existence when cross compiling"
 
 DEPENDS="glib libgio dbus dbus-glib expat util-linux-eject"
-BUILD_DEPENDS="glib-dev libgio-dev gobject-introspection-dev dbus-dev \
-dbus-glib-dev expat-dev zlib-dev util-linux-mount-dev libjs-dev pam-dev"
+BUILD_DEPENDS="glib-dev libgio-dev gobject-introspection-dev dbus-dev 
+	dbus-glib-dev expat-dev zlib-dev util-linux-mount-dev libjs-dev
+	pam-dev intltool bash"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -24,30 +25,25 @@ compile_rules()
 
 	mkdir build && cd build
 	
-	meson .. &&
+	meson	--prefix=/usr					\
+			--buildtype=release				\
+			-Dman=false						\
+			-Dsystemdsystemunitdir=/tmp		\
+			-Dtests=false					\
+			-Djs_engine=mozjs				\
+			.. &&
 	ninja && 
 	ninja install
-	
-	#~ ./configure \
-		#~ --prefix=/usr \
-		#~ --sysconfdir=/etc \
-		#~ --localstatedir=/var \
-		#~ --libexecdir=/usr/lib/polkit-1 \
-		#~ --disable-man-pages \
-		#~ --disable-gtk-doc \
-		#~ --with-authfw=shadow \
-		#~ $CONFIGURE_ARGS &&
-	#~ make && make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib64 $fs/usr/share
+	mkdir -p $fs/usr/lib $fs/usr/lib64 $fs/usr/share
 	cp -a $install/usr/bin $fs/usr
 	cp -a $install/etc $fs
 	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
-	cp -a $install/usr/lib64/polkit-1 $fs/usr/lib64
+	cp -a $install/usr/lib/polkit-1 $fs/usr/lib
 	#~ rm $fs/usr/lib64/polkit-1/extensions/*.*a
 	cp -a $install/usr/share/dbus-1 $fs/usr/share
 	cp -a $install/usr/share/gettext $fs/usr/share

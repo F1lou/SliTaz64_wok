@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="gitk"
+VERSION="2.38.1"
+CATEGORY="development"
+SHORT_DESC="Fast version control system - GUI parts."
+MAINTAINER="b1+slitaz@nagel.org"
+LICENSE="GPL2"
+WEB_SITE="https://git-scm.com/"
+
+WANTED="git"
+DEPENDS="git tk"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin $fs/usr/share $fs/usr/lib/git-core
+
+	cp -a $install/usr/bin/gitk $fs/usr/bin/
+	cp -a $install/usr/lib/git-core/git-gui* $fs/usr/lib/git-core/
+	cp -a $install/usr/lib/git-core/git-citool $fs/usr/lib/git-core/
+	cp -a $install/usr/share/git-gui $install/usr/share/gitk $fs/usr/share/
+}

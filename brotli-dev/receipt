@@ -10,6 +10,7 @@ WEB_SITE="https://github.com/google/brotli"
 TAGS="compression"
 
 WANTED="brotli"
+DEPENDS="brotli"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libuninameslist-dev"
-VERSION="20200413"
+VERSION="20221022"
 CATEGORY="development"
 SHORT_DESC="Development files for libuninameslist."
 MAINTAINER="al.bobylev@gmail.com"

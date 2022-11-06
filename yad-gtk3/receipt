@@ -14,20 +14,17 @@ WGET_URL="$SF_MIRROR/yad-dialog/$TARBALL"
 
 PROVIDE="yad:gtk+3"
 SIBLINGS="yad-gtk2 yad-gtk2-html"
-DEPENDS="atk cairo gdk-pixbuf glib glibc-base gtk+3 libffi libgio pango pcre \
-	zlib"
-BUILD_DEPENDS="gtk+3-dev"
+DEPENDS="atk cairo gdk-pixbuf glib glibc-base gtk+3 libffi libgio pango
+	pcre zlib"
+BUILD_DEPENDS="gtk+3-dev intltool"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	patch -p1 -i $WOK/yad-gtk2/stuff/ru.patch
+	#~ patch -p1 -i $WOK/yad-gtk2/stuff/ru.patch
 
-	./configure			\
-		--with-gtk=gtk3		\
-		--enable-icon-browser &&
-	make &&
-	make install
+	./configure	--with-gtk=gtk3	--enable-icon-browser &&
+	make && make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

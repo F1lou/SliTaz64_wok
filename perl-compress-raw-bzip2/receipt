@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="perl-compress-raw-bzip2"
-VERSION="2.093"
+VERSION="2.201"
 CATEGORY="development"
 SHORT_DESC="PERL low-level interface to bzip2."
 MAINTAINER="erjo@slitaz.org"

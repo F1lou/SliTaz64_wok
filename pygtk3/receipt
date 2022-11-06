@@ -2,7 +2,7 @@
 
 PACKAGE="pygtk3"
 SOURCE="pygtk"
-VERSION="3.42.0"
+VERSION="2.24.0"
 CATEGORY="development"
 SHORT_DESC="GTK+3 for Python"
 MAINTAINER="erjo@slitaz.org"
