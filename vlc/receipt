@@ -15,7 +15,7 @@ WGET_URL="https://download.videolan.org/pub/videolan/$PACKAGE/$VERSION/$TARBALL"
 DEPENDS="gcc-lib-base libQtCore libQtGui libvlc"
 BUILD_DEPENDS="alsa-lib-dev cairo-dev dbus-dev expat-dev ffmpeg-dev flac-dev 
 	fluidsynth-dev fribidi-dev gcc gcc-lib-base gettext gmp-dev gnutls-dev 
-	hicolor-icon-theme jack-audio-connection-kit-dev libarchive-dev 
+	hicolor-icon-theme jack-audio-connection-kit2-dev libarchive-dev 
 	libavc1394-dev libcaca-dev libcddb-dev libdvdread-dev libdvdnav-dev 
 	libegl-mesa libgnutls libmad-dev libmodplug-dev libmpeg2-dev libmtp-dev 
 	libraw1394-dev librsvg-dev libsamplerate-dev libsdl-image-dev libsecret-dev 

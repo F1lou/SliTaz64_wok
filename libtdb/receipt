@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libtdb"
-VERSION="1.4.3"
+VERSION="1.4.7"
 CATEGORY="misc"
 SHORT_DESC="A Trivia Database similar to GDBM but allows simultaneous commits."
 MAINTAINER="slaxemulator@gmail.com"
@@ -18,15 +18,11 @@ BUILD_DEPENDS="docbook-xsl libxslt-dev py3k-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
-	# 1.4.3 uses python3
-#	sed -i 's#python2\.6\([^ ]*\)#python2.7\1 python2.6\1#' configure
 	# Use system docbook.xsl
-	_manstyle="/usr/share/xml/docbook/stylesheet/docbook-xsl/manpages/docbook.xsl"
-	#sed -i "s#http.*xsl#$_manstyle#" tdb.mk
-
+	export XML_CATALOG_FILES="/etc/xml/catalog"
+	
 	./configure &&
-	make &&
-	make install
+	make && make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

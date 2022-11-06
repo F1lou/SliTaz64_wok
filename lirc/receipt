@@ -14,7 +14,7 @@ DEPENDS="glibc-base libusb libusb-compat libftdi xorg-libXau libirman \
 portaudio alsa-lib util-linux-uuid lirc-bin"
 BUILD_DEPENDS="linux linux-module-headers python libusb-dev libirman-dev \
 portaudio-dev alsa-lib-dev libusb-compat-dev util-linux-uuid-dev \
-libftdi-dev jack-audio-connection-kit-dev"
+libftdi-dev jack-audio-connection-kit2-dev"
 
 # Rules to configure and make the package.
 compile_rules()

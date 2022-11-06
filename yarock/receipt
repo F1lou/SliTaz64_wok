@@ -17,7 +17,7 @@ WGET_URL="https://launchpad.net/yarock/trunk/$VERSION/+download/$TARBALL"
 # TODO: review libQtPlugins (huge depends, maybe split?) gst-plugins-good (gtk?)
 #
 DEPENDS="libQtDBus qjson taglib gst-ffmpeg gst-plugins-good libshout \
-libQtMultimedia libQtPlugins jack-audio-connection-kit phonon-backend-gstreamer"
+libQtMultimedia libQtPlugins jack-audio-connection-kit2 phonon-backend-gstreamer"
 BUILD_DEPENDS="cmake Qt4-dev qmake phonon-dev taglib-dev pkg-config qjson-dev \
 xorg-libX11 xorg-libXext xorg-libX11-dev wget"
 

@@ -15,7 +15,7 @@ portaudio portmidi libQtOpenGL libQtWebkit libQt3Support libQtScript \
 libQtSvg libQtDBus libQtPlugins phonon-backend-gstreamer"
 BUILD_DEPENDS="libsndfile-dev libogg-dev libid3tag-dev libmad-dev \
 libvorbis-dev taglib-dev libshout-dev portaudio-dev phonon-dev \
-Qt4-dev alsa-lib-dev jack-audio-connection-kit-dev mesa-dev scons \
+Qt4-dev alsa-lib-dev jack-audio-connection-kit2-dev mesa-dev scons \
 pkg-config flac-dev portmidi"
 
 # Rules to configure and make the package.

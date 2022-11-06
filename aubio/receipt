@@ -12,9 +12,9 @@ WEB_SITE="https://aubio.org/"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="${WEB_SITE}pub/$TARBALL"
 
-DEPENDS="fftw flac jack-audio-connection-kit libogg \
+DEPENDS="fftw flac jack-audio-connection-kit2 libogg \
 	libsamplerate libvorbis"
-BUILD_DEPENDS="fftw fftw-dev flac-dev jack-audio-connection-kit-dev \
+BUILD_DEPENDS="fftw fftw-dev flac-dev jack-audio-connection-kit2-dev \
 	libogg-dev libsamplerate libsamplerate-dev libsndfile-dev \
 	libvorbis-dev"
 

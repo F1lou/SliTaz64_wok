@@ -11,7 +11,7 @@ WEB_SITE="https://gstreamer.freedesktop.org/"
 WANTED="gst-plugins-good"
 
 DEPENDS="gst-plugins-good libcdio libdv taglib wavpack libshout libsoup-gnome"
-SUGGESTED="jack-audio-connection-kit"
+SUGGESTED="jack-audio-connection-kit2"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

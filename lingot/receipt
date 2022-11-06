@@ -10,8 +10,8 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://www.nongnu.org/lingot/"
 WGET_URL="http://download.savannah.gnu.org/releases/lingot/$TARBALL"
 
-DEPENDS="gtk+ alsa-lib jack-audio-connection-kit libglade"
-BUILD_DEPENDS="gtk+-dev alsa-lib-dev jack-audio-connection-kit-dev \
+DEPENDS="gtk+ alsa-lib jack-audio-connection-kit2 libglade"
+BUILD_DEPENDS="gtk+-dev alsa-lib-dev jack-audio-connection-kit2-dev \
 libglade-dev intltool"
 
 # Rules to configure and make the package.

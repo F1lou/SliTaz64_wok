@@ -11,8 +11,8 @@ WEB_SITE="https://www.music.mcgill.ca/~gary/rtaudio/"
 TARBALL="${PACKAGE}-${VERSION}.tar.gz"
 WGET_URL="${WEB_SITE}release/$TARBALL"
 
-DEPENDS="alsa-lib jack-audio-connection-kit"
-BUILD_DEPENDS="alsa-lib-dev jack-audio-connection-kit-dev 
+DEPENDS="alsa-lib jack-audio-connection-kit2"
+BUILD_DEPENDS="alsa-lib-dev jack-audio-connection-kit2-dev 
 	py3k-dev"
 
 # Rules to configure and make the package.

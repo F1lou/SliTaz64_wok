@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="pulseaudio-vala"
-VERSION="13.0"
+VERSION="16.1"
 CATEGORY="development"
 SHORT_DESC="A sound system for POSIX OSes - Vala files."
 MAINTAINER="pascal.bellard@slitaz.org"

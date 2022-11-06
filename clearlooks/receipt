@@ -12,7 +12,7 @@ WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="gtk+ xorg-libXdamage"
-BUILD_DEPENDS="pkg-config file gtk+-dev"
+BUILD_DEPENDS="pkg-config file gtk+-dev liblzma-dev"
 
 # Rules to configure and make the package.
 compile_rules()

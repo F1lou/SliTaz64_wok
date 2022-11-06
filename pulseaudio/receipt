@@ -11,13 +11,14 @@ WEB_SITE="https://www.freedesktop.org/wiki/Software/PulseAudio/"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="http://freedesktop.org/software/$PACKAGE/releases/$TARBALL"
 
-DEPENDS="attr dbus flac gcc-lib-base gdbm jack-audio-connection-kit \
-	libcap libjson-c libsamplerate libsndfile libltdl libvorbis \
-	speex"
-BUILD_DEPENDS="alsa-lib-dev autoconf automake dbus-dev file flac-dev \
-	gcc intltool jack-audio-connection-kit-dev libcap-dev \
-	libjson-c-dev libsamplerate-dev libsndfile-dev libtool libvorbis-dev \
-	m4 pkg-config speex-dev eudev-dev util-linux-uuid-dev bash"
+DEPENDS="attr dbus flac gcc-lib-base gdbm jack-audio-connection-kit2
+	libcap libjson-c libsamplerate libsndfile libltdl libvorbis
+	speex libtdb check"
+BUILD_DEPENDS="alsa-lib-dev autoconf automake dbus-dev file flac-dev
+	gcc intltool jack-audio-connection-kit2-dev libcap-dev libtdb-dev
+	libjson-c-dev libsamplerate-dev libsndfile-dev libtool libvorbis-dev
+	m4 pkg-config speex-dev eudev-dev util-linux-uuid-dev bash libgio-dev
+	glib-dev check-dev"
 SPLIT="pulseaudio-locale pulseaudio-man pulseaudio-vala pulseaudio-dev"
 
 CONFIG_FILES="/etc/pulse/client.conf /etc/pulse/daemon.conf \
@@ -26,24 +27,30 @@ CONFIG_FILES="/etc/pulse/client.conf /etc/pulse/daemon.conf \
 # Rules to configure and make the package.
 compile_rules()
 {
-	grep -rsl 'uname -m' $src | xargs sed -i 's|uname -m|echo i686|'
+	#~ grep -rsl 'uname -m' $src | xargs sed -i 's|uname -m|echo i686|'
 
-	./bootstrap.sh &&
-	./configure					\
-		--sysconfdir=/etc			\
-		--localstatedir=/var			\
-		--disable-bluez4			\
-		--disable-systemd-daemon		\
-		--disable-systemd-login			\
-		--disable-systemd-journal		\
-		--disable-oss-output			\
-		--disable-oss-wrapper			\
-		--disable-esound			\
-		--disable-rpath				\
-		--with-udev-rules-dir=/etc/udev/rules.d	\
-		$CONFIGURE_ARGS &&
-	make &&
-	make -j1 install
+	mkdir build && cd build
+	
+	meson --prefix=/usr	-Ddoxygen=false	-Dman=false .. &&
+	ninja && ninja install
+	
+	
+	
+	#~ ./configure					\
+		#~ --sysconfdir=/etc			\
+		#~ --localstatedir=/var			\
+		#~ --disable-bluez4			\
+		#~ --disable-systemd-daemon		\
+		#~ --disable-systemd-login			\
+		#~ --disable-systemd-journal		\
+		#~ --disable-oss-output			\
+		#~ --disable-oss-wrapper			\
+		#~ --disable-esound			\
+		#~ --disable-rpath				\
+		#~ --with-udev-rules-dir=/etc/udev/rules.d	\
+		#~ $CONFIGURE_ARGS &&
+	#~ make &&
+	#~ make -j1 install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

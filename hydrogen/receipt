@@ -12,9 +12,9 @@ WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 TAGS="multimedia"
 
 DEPENDS="libarchive liblrdf libQtCore libQtGui libQtXml \
-jack-audio-connection-kit libsndfile"
+jack-audio-connection-kit2 libsndfile"
 BUILD_DEPENDS="scons libarchive-dev liblrdf-dev Qt4-dev \
-jack-audio-connection-kit jack-audio-connection-kit-dev \
+jack-audio-connection-kit2 jack-audio-connection-kit-dev \
 flac-dev libsndfile-dev alsa-lib-dev zlib-dev libtar-dev \
 ladspa-dev raptor-dev pkg-config subversion"
 

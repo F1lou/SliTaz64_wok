@@ -11,8 +11,8 @@ WEB_SITE="https://sourceforge.net/projects/njconnect/"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="$SF_MIRROR/$PACKAGE/$PACKAGE-$VERSION.tar.xz"
 
-DEPENDS="jack-audio-connection-kit ncursesw"
-BUILD_DEPENDS="jack-audio-connection-kit-dev ncursesw ncursesw-dev"
+DEPENDS="jack-audio-connection-kit2 ncursesw"
+BUILD_DEPENDS="jack-audio-connection-kit2-dev ncursesw ncursesw-dev"
 
 # Rules to configure and make the package.
 compile_rules()

@@ -11,11 +11,11 @@ WEB_SITE="https://gnuradio.org/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$WEB_SITE/releases/$PACKAGE/$TARBALL"
 
-DEPENDS="alsa-lib fftw gsl jack-audio-connection-kit \
+DEPENDS="alsa-lib fftw gsl jack-audio-connection-kit2 \
 	libboost-date-time libboost-filesystem libboost-program-options \
 	libboost-system libboost-thread orc portaudio python"
 BUILD_DEPENDS="alsa-lib-dev cmake cppunit-dev fftw-dev gsl-dev \
-	jack-audio-connection-kit-dev libboost-dev libboost-filesystem-dev \
+	jack-audio-connection-kit2-dev libboost-dev libboost-filesystem-dev \
 	libboost-program-options-dev libboost-regex-dev libboost-system-dev \
 	libboost-test-dev libboost-thread-dev libboost-tr1-dev \
 	libsdl-dev libusb-dev log4c-dev orc-dev pkg-config portaudio-dev \

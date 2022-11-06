@@ -11,10 +11,10 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://non.tuxfamily.org"
 WGET_URL="http://git.tuxfamily.org/non/non/?p=non/non.git;a=snapshot;h=$GITHASH;sf=tgz"
 
-DEPENDS="ntk libsndfile libsigc++ liblrdf liblo jack-audio-connection-kit \
+DEPENDS="ntk libsndfile libsigc++ liblrdf liblo jack-audio-connection-kit2 \
 ladspa"
 BUILD_DEPENDS="ntk-dev libsndfile-dev libsigc++-dev liblrdf-dev liblo-dev \
-jack-audio-connection-kit-dev ladspa-dev"
+jack-audio-connection-kit2-dev ladspa-dev"
 
 # Handle cross compilation
 case "$ARCH" in

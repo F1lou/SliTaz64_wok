@@ -24,7 +24,7 @@ dahdi-linux dahdi-tools dahdi-dev \
 newt-dev mysql-dev nbs-dev popt-dev neon-dev neon postgresql sqlite-dev \
 openssl-dev lua-dev lua libpri-dev bluez-dev bluez portaudio-dev alsa-lib-dev \
 libsdl-image-dev net-snmp iksemel libical-dev curl-dev libcap-dev iksemel-dev \
-jack-audio-connection-kit-dev radiusclient-ng-dev radiusclient-ng \
+jack-audio-connection-kit2-dev radiusclient-ng-dev radiusclient-ng \
 libvorbis-dev speex-dev opus-dev codec2-dev autoconf automake libtool"
 
 # Rules to configure and make the package.
