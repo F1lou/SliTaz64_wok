@@ -1,0 +1,24 @@
+# SliTaz package receipt.
+
+PACKAGE="wayfire-dev"
+VERSION="0.7.4"
+CATEGORY="x-window"
+SHORT_DESC="Stacking Wayland compositor based on wlroots."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="MIT"
+WANTED="wayfire"
+WEB_SITE="https://wayfire.org/"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="wayfire wlroots-dev glm cairo-wayland-dev pango-wayland-dev
+	libdrm-wayland-dev mesa-wayland-dev libxkbcommon-wayland-dev
+	libseat-dev libevdev-dev jpeg-dev"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/lib64 $fs/usr/share
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib64/*.*a $fs/usr/lib64
+	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib
+}

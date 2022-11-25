@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="wayfire"
+VERSION="0.7.4"
+CATEGORY="x-window"
+SHORT_DESC="Stacking Wayland compositor based on wlroots."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="MIT"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WEB_SITE="https://wayfire.org/"
+WGET_URL="https://github.com/WayfireWM/wayfire/releases/download/v$VERSION/$TARBALL"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="wlroots cairo-wayland pango-wayland libdrm-wayland mesa-wayland
+	libxkbcommon-wayland libseat libevdev libjpeg"
+BUILD_DEPENDS="wlroots-dev glm cairo-wayland-dev pango-wayland-dev
+	libdrm-wayland-dev mesa-wayland-dev libxkbcommon-wayland-dev
+	libseat-dev libevdev-dev jpeg-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir build && cd build
+	meson --prefix=/usr .. &&
+	ninja && ninja install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib64
+	cp -a $install/usr/bin 				$fs/usr
+	cp -a $install/usr/lib64/*.so* 		$fs/usr/lib64
+	cp -a $install/usr/lib64/wayfire 	$fs/usr/lib64
+	cp -a $install/usr/share			$fs/usr
+}

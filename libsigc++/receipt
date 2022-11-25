@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libsigc++"
-VERSION="2.10.7"
+VERSION="2.10.8"
 CATEGORY="system-tools"
 SHORT_DESC="Callback Framework for C++"
 MAINTAINER="pankso@slitaz.org"

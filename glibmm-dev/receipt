@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="glibmm-dev"
-VERSION="2.68.0"
+VERSION="2.66.5"
 CATEGORY="development"
 SHORT_DESC="Callback Framework for C++ devel files."
 MAINTAINER="pankso@slitaz.org"
@@ -14,14 +14,9 @@ DEPENDS="glibmm libgiomm-dev libsigc++-dev glib-dev pkg-config"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib $fs/usr/lib64 $fs/usr/share
+	mkdir -p $fs/usr/lib/pkgconfig $fs/usr/lib64 $fs/usr/include
 	#~ cp -a $install/usr/lib/*.*a $fs/usr/lib
-	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib
-	cp -a $install/usr/lib64/glibmm-${VERSION:0:4} $fs/usr/lib64
-	cp -a $install/usr/include $fs/usr
-	#~ cp -a $install/usr/share/devhelp $fs/usr/share
-	# Remove libgiomm-dev
-	#~ rm -rf $fs/usr/lib/libgiomm*.*a
-	rm -rf $fs/usr/lib/pkgconfig/giomm-${VERSION:0:4}.pc
-	rm -rf $fs/usr/include/giomm-${VERSION:0:4}
+	cp -a $install/usr/lib64/pkgconfig/glibmm-* $fs/usr/lib/pkgconfig/
+	cp -a $install/usr/lib64/glibmm-* $fs/usr/lib64/
+	cp -a $install/usr/include/glibmm-* $fs/usr/include/
 }

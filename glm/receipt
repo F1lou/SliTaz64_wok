@@ -14,10 +14,10 @@ WGET_URL="https://github.com/g-truc/$PACKAGE/archive/$VERSION.tar.gz"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/include
-	mkdir -p $fs/usr/share/doc
+	mkdir -p $fs/usr/include $fs/usr/share/doc $fs/usr/lib/pkgconfig
 
-	cp -a $src/glm	$fs/usr/include
-	cp -a $src/doc	$fs/usr/share/doc/glm
-	rm -f		$fs/usr/include/glm/CMakeLists.txt
+	cp -a $src/glm		$fs/usr/include
+	cp -a $stuff/glm.pc $fs/usr/lib/pkgconfig
+	cp -a $src/doc		$fs/usr/share/doc/glm
+	rm -f $fs/usr/include/glm/CMakeLists.txt
 }

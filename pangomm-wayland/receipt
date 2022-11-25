@@ -1,30 +1,27 @@
 # SliTaz package receipt.
 
-PACKAGE="libsigc++3"
-SOURCE="libsigc++"
-VERSION="3.2.0"
-CATEGORY="system-tools"
-SHORT_DESC="Callback Framework for C++"
+PACKAGE="pangomm-wayland"
+SOURCE="pangomm"
+VERSION="2.46.3"
+CATEGORY="x-window"
+SHORT_DESC="Pango binding for GTKmm."
 MAINTAINER="pankso@slitaz.org"
 LICENSE="LGPL2.1"
 TARBALL="$SOURCE-$VERSION.tar.xz"
-WEB_SITE="https://developer.gnome.org/$SOURCE/"
+WEB_SITE="https://www.gnome.org/"
 WGET_URL="$GNOME_MIRROR/$SOURCE/${VERSION%.*}/$TARBALL"
-HOST_ARCH="x86_64 i486 arm"
 
-BUILD_DEPENDS="m4 "
+DEPENDS="pixman cairomm-wayland glibmm libgiomm pango-wayland gcc-lib-base"
+BUILD_DEPENDS="cairo-wayland-dev cairomm-wayland-dev glibmm-dev
+	pango-wayland-dev libxml2-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	#~ ./configure \
-		#~ $CONFIGURE_ARGS &&
-	#~ make && make install
-	
-	mkdir bld && cd bld
+ 	mkdir bld && cd bld &&
+
 	meson --prefix=/usr .. &&
-	ninja &&
-	ninja install
+	ninja && ninja install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
@@ -33,3 +30,4 @@ genpkg_rules()
 	mkdir -p $fs/usr/lib64
 	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
 }
+

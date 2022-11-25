@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="wf-shell"
+VERSION="0.7.0"
+CATEGORY="x-window"
+SHORT_DESC="GTK-based panel and background client for Wayfire."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="MIT"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
+WEB_SITE="https://github.com/WayfireWM/wf-shell"
+WGET_URL="https://github.com/WayfireWM/wf-shell/releases/download/v$VERSION/$TARBALL"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="wayfire"
+BUILD_DEPENDS="wayfire-dev gtkmm3-wayland-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir build && cd build
+	meson --prefix=/usr .. &&
+	ninja && ninja install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib64
+	cp -a $install/usr/bin 				$fs/usr
+	cp -a $install/usr/lib64/*.so* 		$fs/usr/lib64
+	cp -a $install/usr/lib64/wayfire 	$fs/usr/lib64
+	cp -a $install/usr/share			$fs/usr
+}

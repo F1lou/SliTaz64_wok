@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="gtkmm3-wayland"
+SOURCE="gtkmm"
+VERSION="3.24.7"
+CATEGORY="x-window"
+SHORT_DESC="C++ interface for the popular GUI library GTK+."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2.1"
+WEB_SITE="https://www.gtkmm.org/"
+
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WGET_URL="$GNOME_MIRROR/$SOURCE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="gtk+3-wayland libsigc++ cairomm-wayland pangomm-wayland
+	atkmm-wayland glibmm"
+BUILD_DEPENDS="gtk+3-wayland-dev libsigc++-dev cairomm-wayland-dev
+	pangomm-wayland-dev atkmm-wayland-dev glibmm-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir bld && cd bld
+	meson --prefix=/usr -Dbuild-x11-api=false -Dbuild-documentation=false -Dbuild-demos=false -Dbuild-tests=false .. &&
+	ninja && ninja install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib64
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
+}

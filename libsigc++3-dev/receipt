@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libsigc++3-dev"
-VERSION="3.0.6"
+VERSION="3.2.0"
 CATEGORY="development"
 SHORT_DESC="Callback Framework for C++ devel files."
 MAINTAINER="pankso@slitaz.org"

@@ -1,0 +1,25 @@
+# SliTaz package receipt.
+
+PACKAGE="gtkmm3-wayland-dev"
+VERSION="3.24.7"
+CATEGORY="development"
+SHORT_DESC="Callback Framework for C++ development files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2.1"
+
+WANTED="gtkmm3-wayland"
+WEB_SITE="https://www.gtkmm.org/"
+
+DEPENDS="gtk+3-wayland-dev gtkmm3-wayland libsigc++-dev cairomm-wayland-dev
+	pangomm-wayland-dev atkmm-wayland-dev glibmm-dev pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/lib64
+	#~ cp -a $install/usr/lib/*.*a		$fs/usr/lib
+	cp -a $install/usr/lib64/pkgconfig	$fs/usr/lib
+	cp -a $install/usr/lib64/gtkmm-*	$fs/usr/lib64
+	cp -a $install/usr/lib64/gdkmm-*	$fs/usr/lib64
+	cp -a $install/usr/include		$fs/usr
+}

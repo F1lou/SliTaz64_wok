@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="cairomm-wayland-dev"
+VERSION="1.14.4"
+CATEGORY="development"
+SHORT_DESC="Cairomm library devel files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2"
+WANTED="cairomm-wayland"
+WEB_SITE="https://www.cairographics.org/"
+
+DEPENDS="cairomm-wayland cairo-wayland-dev pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/lib64
+	#~ cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib
+	cp -a $install/usr/include $fs/usr
+	#~ cp -a $install/usr/lib64/cairomm-${VERSION:0:4} $fs/usr/lib64
+	cp -a $install/usr/lib64/cairomm-1.0 $fs/usr/lib64
+}
