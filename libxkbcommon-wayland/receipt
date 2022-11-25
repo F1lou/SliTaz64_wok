@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="libxkbcommon-wayland"
+SOURCE="libxkbcommon"
+VERSION="1.4.1"
+CATEGORY="x-window"
+SHORT_DESC="Keyboard handling library using XKB data."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://xkbcommon.org"
+
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WGET_URL="https://xkbcommon.org/download/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS="bison wayland-dev wayland-protocols libxml2-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir build && cd build
+
+	meson --prefix=/usr     \
+		-Denable-x11=false	\
+		-Denable-docs=false	\
+		.. &&
+	ninja
+	
+	DESTDIR=$DESTDIR ninja install
+
+	#~ ./configure						\
+		#~ --with-xkb-config-root=/usr/share/X11/xkb	\
+		#~ $CONFIGURE_ARGS &&
+	#~ make -j 1 &&
+	#~ make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib64
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
+}

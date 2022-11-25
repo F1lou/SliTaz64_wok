@@ -1,7 +1,5 @@
 # SliTaz package receipt.
 
-PACKED_SIZE="32.0K"
-UNPACKED_SIZE="84.0K"
 PACKAGE="xxhash"
 VERSION="0.8.1"
 CATEGORY="misc"

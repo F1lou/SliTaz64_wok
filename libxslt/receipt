@@ -9,7 +9,7 @@ LICENSE="MIT"
 WEB_SITE="http://www.xmlsoft.org/XSLT/"
 
 TARBALL="$PACKAGE-$VERSION.tar.xz"
-WGET_URL="ftp://xmlsoft.org/libxslt/$TARBALL"
+WGET_URL="https://download.gnome.org/sources/$PACKAGE/${VERSION%.*}/$TARBALL"
 
 DEPENDS="libgcrypt libgpg-error libxml2 zlib"
 BUILD_DEPENDS="libgcrypt-dev libgpg-error-dev libxml2-dev \

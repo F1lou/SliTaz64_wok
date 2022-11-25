@@ -41,6 +41,7 @@ patch_bash()
 cook_tmp_toolchain()
 {
 	patch_bash
+	patch -Np1 -i $stuff/bash-5.1-parallel_make.patch
 	./configure --without-bash-malloc &&
 	make &&
 	make install

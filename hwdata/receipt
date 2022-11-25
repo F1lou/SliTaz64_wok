@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="hwdata"
+VERSION="0.364"
+CATEGORY="misc"
+SHORT_DESC="List of Hardware ID's"
+MAINTAINER="nhc1@gmx.net"
+LICENSE="GPL2"
+WEB_SITE="https://github.com/vcrhonek/hwdata"
+
+TARBALL="v$VERSION.tar.gz"
+WGET_URL="https://github.com/vcrhonek/hwdata/archive/refs/tags/$TARBALL"
+
+HOST_ARCH="x86_64 i486 arm"
+
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/hwdata/
+	cp $src/pnp.ids	$fs/usr/share/hwdata/
+}

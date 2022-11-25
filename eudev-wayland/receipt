@@ -1,0 +1,89 @@
+# SliTaz package receipt.
+
+PACKAGE="eudev-wayland"
+SOURCE="eudev"
+VERSION="3.2.11"
+CATEGORY="base-system"
+SHORT_DESC="Fork of udev to avoid depending on systemd."
+MAINTAINER="tcg.thegamer@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://wiki.gentoo.org/wiki/Project:Eudev"
+
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://dev.gentoo.org/~blueness/$PACKAGE/$TARBALL"
+
+PROVIDE="udev"
+DEPENDS="acl dbus-wayland kmod pciids usbids util-linux-blkid"
+BUILD_DEPENDS="acl-dev dbus-wayland-dev gperf kmod-dev pcre-dev pkg-config 
+	util-linux-blkid-dev util-linux-uuid-dev libxslt docbook-xsl"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	# 3.2.9 unrecognised:
+	#	--disable-keymap
+	#	--enable-floppy
+	export XML_CATALOG_FILES="/etc/xml/catalog"
+	
+	./autogen.sh && ./configure	\
+		--sysconfdir=/etc		\
+		--exec-prefix=""		\
+		--with-rootprefix=""	\
+		--disable-manpages		\
+		--disable-introspection	\
+		--enable-rule-generator	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/lib/firmware
+
+	cp -a $install/bin		$fs
+	cp -a $install/sbin		$fs
+	cp -a $install/etc		$fs
+	cp -a $install/lib/libudev*so*	$fs/lib
+	cp -a $install/lib/udev		$fs/lib
+
+	# Copy rules files to udev configuration directory
+	mv -f $fs/lib/udev/rules.d	$fs/etc/udev
+	cp $stuff/udev.conf		$fs/etc/udev
+	cp $stuff/*.rules		$fs/etc/udev/rules.d
+
+	# Create some devices and directories that Udev cannot handle
+	# due to them being required very early in the boot process
+	mkdir -p $fs/lib/udev/devices/pts
+	mkdir -p $fs/lib/udev/devices/shm
+	mknod -m 0666 $fs/lib/udev/devices/null c 1 3
+
+	# Fix permissions
+	chmod +x			$fs/lib/udev/*
+	chown -R root.root		$fs
+}
+
+list_udev_group()
+{
+	object=$2
+	[ -n "$object" ] || object=GROUP
+	grep $object "$1"/etc/udev/rules.d/* | \
+		sed 's/.*GROUP="\([a-zA-Z0-9]*\)".*/\1/' | sort | uniq
+}
+
+post_install()
+{
+	# Sanity check for udev+ldap boot
+	list_udev_group "$1" GROUP | \
+	while read x
+	  do
+		grep -q ^$x: "$1/etc/group" || chroot "$1/" addgroup -S $x
+	  done
+
+	list_udev_group "$1" OWNER | \
+	while read x
+	  do
+		grep -q ^$x: "$1/etc/passwd" || chroot "$1/" adduser -S -D -H $x
+	  done
+}

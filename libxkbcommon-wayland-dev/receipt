@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="libxkbcommon-wayland-dev"
+VERSION="1.4.1"
+CATEGORY="development"
+SHORT_DESC="libxkbcommon development files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://xkbcommon.org"
+
+DEPENDS="libxkbcommon-wayland pkg-config"
+WANTED="libxkbcommon-wayland"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	#~ cp -a $install/usr/lib/*.*a		$fs/usr/lib
+	cp -a $install/usr/lib64/pkgconfig	$fs/usr/lib
+	cp -a $install/usr/include		$fs/usr
+}

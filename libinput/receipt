@@ -1,0 +1,38 @@
+# SliTaz package receipt.
+
+PACKAGE="libinput"
+VERSION="1.22.0"
+CATEGORY="x-window"
+SHORT_DESC="Input device management and event handling library."
+MAINTAINER="nhc1@gmx.net"
+LICENSE=""
+WEB_SITE="https://gitlab.freedesktop.org/libinput/libinput"
+
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="${WEB_SITE}/-/archive/$VERSION/$TARBALL"
+
+DEPENDS="eudev-wayland gtk+3-wayland mtdev libevdev"
+BUILD_DEPENDS="eudev-wayland-dev gtk+3-wayland-dev mtdev-dev libevdev-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir build && cd build
+	meson --prefix=/usr -Dtests=false -Dlibwacom=false .. &&
+	ninja && ninja install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/lib64 $fs/usr/share
+	
+	cp -a $install/etc 					$fs/
+	cp -a $install/usr/bin 				$fs/usr/
+	cp -a $install/usr/lib				$fs/usr/
+	cp -a $install/usr/lib64/*.so*		$fs/usr/lib64/
+	cp -a $install/usr/libexec			$fs/usr/
+	cp -a $install/usr/share/libinput	$fs/usr/share/
+}

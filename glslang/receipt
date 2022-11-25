@@ -1,0 +1,27 @@
+# SliTaz package receipt.
+
+PACKAGE="glslang"
+VERSION="11.12.0"
+CATEGORY="development"
+SHORT_DESC="Khronos-reference front end for GLSL/ESSL, partial front end for HLSL, and a SPIR-V generator."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="BSD"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://www.khronos.org/opengles/sdk/tools/Reference-Compiler/"
+WGET_URL="https://github.com/KhronosGroup/$PACKAGE/archive/refs/tags/$VERSION.tar.gz"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir build && cd build
+	cmake 	-DCMAKE_BUILD_TYPE=Release		\
+			-DCMAKE_INSTALL_PREFIX="/usr"	\
+			.. &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs/
+}

@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="gtk+3-wayland-dev"
+VERSION="3.24.34"
+CATEGORY="development"
+SHORT_DESC="The GIMP Toolkit 3.x (development files)"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="LGPL2"
+WEB_SITE="https://www.gtk.org/"
+
+WANTED="gtk+3-wayland"
+DEPENDS="atk-wayland-dev cairo-wayland-dev dbus-wayland-dev
+	gdk-pixbuf-wayland-dev gtk+3-wayland pango-wayland-dev
+	libepoxy-wayland-dev wayland-dev libxkbcommon-wayland-dev
+	jpeg-dev libpng-dev pkg-config tiff-dev"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/share
+
+	cp -a $install/usr/include		$fs/usr
+	#~ cp -a $install/usr/lib/girepository-1.0	$fs/usr/lib
+
+	# Copy all libraries and remove the shared.
+	cp -a $install/usr/lib/gtk-3.0		$fs/usr/lib
+	rm -rf	$fs/usr/lib/gtk-3.0/3.0.0/*/*.so
+
+	cp -a $install/usr/lib/pkgconfig	$fs/usr/lib
+	cp -a $install/usr/lib/*.la		$fs/usr/lib
+
+	cp -a $install/usr/share/aclocal	$fs/usr/share
+	#~ cp -a $install/usr/share/gir-1.0	$fs/usr/share
+}

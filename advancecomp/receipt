@@ -13,6 +13,7 @@ TAGS="compression archive"
 
 DEPENDS="gcc-lib-base zlib"
 BUILD_DEPENDS="automake zlib-dev"
+BUILD_DEPENDS=""
 
 # Rules to configure and make the package.
 compile_rules()

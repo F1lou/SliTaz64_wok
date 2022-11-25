@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="libepoxy-wayland"
+SOURCE="libepoxy"
+VERSION="1.5.10"
+CATEGORY="x-window"
+SHORT_DESC="GL handling libary."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="other"
+WEB_SITE="https://github.com/anholt/libepoxy"
+
+TARBALL="$VERSION.tar.gz"
+WGET_URL="https://github.com/anholt/$SOURCE/archive/refs/tags/$TARBALL"
+
+DEPENDS="mesa-wayland"
+BUILD_DEPENDS="mesa-wayland-dev"
+
+HOST_ARCH="x86_64"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	
+	mkdir build && cd build &&
+	meson --prefix=/usr -Dtests=false -Dx11=false -Ddocs=false .. &&
+	ninja &&
+	ninja install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib64
+	
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
+}

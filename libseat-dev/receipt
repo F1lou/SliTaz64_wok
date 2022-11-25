@@ -1,0 +1,24 @@
+# SliTaz package receipt.
+
+PACKAGE="libseat-dev"
+VERSION="0.7.0"
+CATEGORY="x-window"
+SHORT_DESC="Mediating access to shared devices"
+MAINTAINER="nhc1@gmx.net"
+LICENSE="GPL2"
+WEB_SITE="https://github.com/vcrhonek/hwdata"
+
+WANTED="libseat"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="libseat"
+BUILD_DEPENDS=""
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	
+	cp -a $install/usr/include $fs/usr
+	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib
+}

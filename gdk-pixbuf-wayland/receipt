@@ -1,0 +1,53 @@
+# SliTaz package receipt.
+
+PACKAGE="gdk-pixbuf-wayland"
+SOURCE="gdk-pixbuf"
+VERSION="2.42.9"
+CATEGORY="x-window"
+SHORT_DESC="An image loading library for gtk2."
+MAINTAINER="slaxemulator@gmail.com"
+LICENSE="GPL2"
+WEB_SITE="https://www.gtk.org/"
+
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WGET_URL="$GNOME_MIRROR/$SOURCE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="glib jpeg libgio libpng shared-mime-info tiff zlib"
+BUILD_DEPENDS="bash glib-dev jbigkit jpeg-dev libgio-dev libpng-dev 
+	shared-mime-info-dev tiff-dev zlib-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	case "$ARCH" in
+		arm) echo "gio_can_sniff=yes" > arm.cache ;;
+	esac
+	mkdir build && cd build &&
+
+	meson 	--prefix=/usr 	\
+			-Dman=false 	\
+			-Dtests=false 	&&
+	ninja
+	DESTDIR=$DESTDIR ninja install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib64
+	
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/lib64/gdk-pixbuf-2.0 $fs/usr/lib64
+	[ -d "$install/usr/lib64/girepository-1.0" ] &&
+		cp -a $install/usr/lib64/girepository-1.0	$fs/usr/lib64
+	cp -a $install/usr/lib64/*.so*	$fs/usr/lib64
+}
+
+# Pre and post install commands for Tazpkg.
+post_install()
+{
+	# Updating gdk pixbuf loaders cache file...
+	chroot "$1/" /usr/bin/gdk-pixbuf-query-loaders --update-cache
+}

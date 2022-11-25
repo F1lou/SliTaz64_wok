@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="libinput-dev"
+VERSION="1.22.0"
+CATEGORY="x-window"
+SHORT_DESC="Input device management and event handling library."
+MAINTAINER="nhc1@gmx.net"
+LICENSE=""
+WEB_SITE="https://gitlab.freedesktop.org/libinput/libinput"
+
+WANTED="libinput"
+DEPENDS="libinput"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/include		$fs/usr
+	cp -a $install/usr/lib64/pkgconfig	$fs/usr/lib
+}

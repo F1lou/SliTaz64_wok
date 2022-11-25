@@ -1,0 +1,39 @@
+# SliTaz package receipt.
+
+PACKAGE="libdrm-wayland"
+SOURCE="libdrm"
+VERSION="2.4.113"
+CATEGORY="x-window"
+SHORT_DESC="Freedesktop DRM Library."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://dri.freedesktop.org"
+
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WGET_URL="$WEB_SITE/$PACKAGE/$TARBALL"
+
+DEPENDS="glibc-base linux-drm eudev-wayland xorg-libpciaccess"
+BUILD_DEPENDS="gc-dev pkg-config eudev-wayland-dev xorg-libpciaccess-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	meson --prefix=/usr		\
+		--buildtype=release	\
+		-Dudev=true			\
+		-Dtests=false		\
+		-Dvalgrind=disabled	\
+		builddir/			&&
+	ninja -C builddir/ install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib64
+
+	cp -a $install/usr/lib64/libdrm*.so*	$fs/usr/lib64
+	#~ cp -a $install/usr/lib64/libkms*.so*	$fs/usr/lib64
+}

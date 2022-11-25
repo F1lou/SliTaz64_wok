@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="mesa-wayland-vulkan-radeon"
+VERSION="22.2.2"
+CATEGORY="x-window"
+SHORT_DESC="Mesa Vulkan drivers for Radeon."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="MIT"
+WEB_SITE="https://www.mesa3d.org/"
+
+DEPENDS="libdrm-wayland-nouveau mesa-wayland"
+WANTED="mesa-wayland"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib64
+
+	cp $install/usr/lib64/libvulkan_radeon.so	$fs/usr/lib64
+}
+
+TAZBB_NO_INSTALL="because this is not hardware neutral"

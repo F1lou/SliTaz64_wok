@@ -1,7 +1,5 @@
 # SliTaz package receipt.
 
-PACKED_SIZE="24.0K"
-UNPACKED_SIZE="56.0K"
 PACKAGE="xxhash-lib"
 VERSION="0.8.1"
 CATEGORY="libs"

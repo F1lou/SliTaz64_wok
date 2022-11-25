@@ -1,0 +1,48 @@
+# SliTaz package receipt.
+
+PACKAGE="cairo-wayland"
+SOURCE="cairo"
+VERSION="1.17.6"
+CATEGORY="x-window"
+SHORT_DESC="2D graphics library"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MPL LGPL2.1"
+WEB_SITE="https://www.cairographics.org/"
+
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WGET_URL="https://download.gnome.org/sources/$PACKAGE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="bzlib fontconfig freetype glib glibc-base harfbuzz libffi libpng
+	libxcb libxml2 pcre pixman zlib"
+BUILD_DEPENDS="pkg-config glib-dev libpng-dev zlib-dev fontconfig-dev
+	freetype-dev pixman-dev expat-dev libxml2-dev liblzma-dev
+	util-linux-uuid-dev file harfbuzz-dev" # libxcb-dev xcb-util-dev 
+SPLIT="cairo-tools"
+SIBLINGS="cairo-gl"
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	#~ Adapt this package for Binutils-2.39 or later: 
+	sed 's/PTR/void */' -i util/cairo-trace/lookup-symbol.c
+	#~ Fix a pkg-config file that may cause errors later: 
+	sed -e "/@prefix@/a exec_prefix=@exec_prefix@" -i util/cairo-script/cairo-script-interpreter.pc.in
+	
+	#~ patch -Np1 -i $stuff/lookup-symbol.c.patch
+	#~ sed -i '/index.sgml/d' doc/public/Makefile*
+	./configure			\
+		--prefix=/usr	\
+		--without-x		\
+		--disable-static \
+		$CONFIGURE_ARGS &&
+	make $MAKEFLAGS &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

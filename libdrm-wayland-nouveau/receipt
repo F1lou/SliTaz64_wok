@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="libdrm-wayland-nouveau"
+VERSION="2.4.113"
+CATEGORY="x-window"
+SHORT_DESC="Freedesktop DRM Library (nouveau library)."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://dri.freedesktop.org/"
+
+DEPENDS="glibc-base libdrm-wayland eudev"
+WANTED="libdrm-wayland"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib64
+	cp -a $install/usr/lib64/libdrm_nouveau*.so*	$fs/usr/lib64
+}

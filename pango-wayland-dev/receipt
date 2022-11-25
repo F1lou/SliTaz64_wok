@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="pango-wayland-dev"
+VERSION="1.50.9"
+CATEGORY="development"
+SHORT_DESC="Library for layout and rendering of text devel files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WANTED="pango-wayland"
+WEB_SITE="https://www.pango.org/"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="pango-wayland cairo-wayland-dev pkg-config harfbuzz-dev fribidi-dev"
+BUILD_DEPENDS=""
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/lib64 $fs/usr/share
+	#~ cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib
+	[ -d "$install/usr/lib64/girepository-1.0" ] && \
+		cp -a $install/usr/lib64/girepository-1.0 $fs/usr/lib64
+	[ -d "$install/usr/share/gir-1.0" ] && \
+		cp -a $install/usr/share/gir-1.0 $fs/usr/share
+	cp -a $install/usr/include $fs/usr
+	cd $fs/usr/include
+	ln -s pango-1.0/* .
+	#~ cp -a $install/usr/lib/pango $fs/usr/lib
+	#~ rm -rf $fs/usr/lib/pango/1.8.0/modules/*.so
+}

@@ -10,23 +10,27 @@ WEB_SITE="https://swaywm.org/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/swaywm/sway/archive/refs/tags/$VERSION.tar.gz"
 
-DEPENDS="wayland pcre2 libjson-c pango cairo gdk-pixbuf libxkbcommon
-	wlroots"
-BUILD_DEPENDS="wayland-dev wayland-protocols pcre2 libjson-c-dev pango-dev
-	cairo-dev gdk-pixbuf-dev git libxkbcommon-dev wlroots-dev"
+DEPENDS="wayland mesa-wayland libevdev pcre2 libjson-c pango-wayland
+	cairo-wayland gtk+3-wayland libxkbcommon-wayland libdrm-wayland 
+	wlroots libseat" # gdk-pixbuf
+BUILD_DEPENDS="wayland-dev wayland-protocols pcre2 libjson-c-dev
+	git wlroots-dev libxkbcommon-wayland-dev libgio-dev libevdev-dev
+	mesa-wayland-dev cairo-wayland-dev pango-wayland-dev
+	wlroots-dev libdrm-wayland-dev libseat-dev" # gdk-pixbuf-dev
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	meson --prefix=/usr build
-	ninja -C build
-	sudo ninja -C build install
+	export CFLAGS="$CFLAGS -Wno-error=address"
+	meson --prefix=/usr build &&
+	ninja -C build &&
+	ninja -C build install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 
 genpkg_rules()
 {
-	chmod a+s $fs/usr/bin/sway
 	cp -a $install/* $fs
+	chmod a+s $fs/usr/bin/sway
 }

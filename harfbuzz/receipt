@@ -11,7 +11,7 @@ WEB_SITE="https://www.freedesktop.org/wiki/Software/HarfBuzz/"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://github.com/$PACKAGE/$PACKAGE/releases/download/$VERSION/$TARBALL"
 DEPENDS="cairo freetype gcc-lib-base glib libffi pcre"
-BUILD_DEPENDS="bash gcc glib-dev gtk-doc fontconfig-dev freetype-dev
+BUILD_DEPENDS="gcc glib-dev gtk-doc fontconfig-dev freetype-dev
 	python3-pygments gobject-introspection-dev cairo-dev"
 
 HOST_ARCH="x86_64 i486 arm"
@@ -21,7 +21,7 @@ compile_rules()
 {
 	mkdir build && cd build &&
 	
-	meson --prefix=/usr -Ddocs=disabled -Dtests=disabled .. &&
+	meson --prefix=/usr -Ddocs=disabled .. &&
 	ninja
 	DESTDIR=$DESTDIR ninja install
 	

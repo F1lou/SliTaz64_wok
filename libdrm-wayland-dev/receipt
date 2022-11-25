@@ -1,0 +1,26 @@
+# SliTaz package receipt.
+
+PACKAGE="libdrm-wayland-dev"
+VERSION="2.4.113"
+CATEGORY="development"
+SHORT_DESC="Lib DRM - development files."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://dri.freedesktop.org/"
+
+DEPENDS="libdrm-wayland libdrm-wayland-intel libdrm-wayland-nouveau pkg-config"
+# libdrm-wayland-radeon
+WANTED="libdrm-wayland"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib64
+	mkdir -p $fs/usr/lib
+	
+	cp -a $install/usr/include		$fs/usr
+	#~ cp -a $install/usr/lib64/*.*a		$fs/usr/lib64
+	cp -a $install/usr/lib64/pkgconfig	$fs/usr/lib
+}

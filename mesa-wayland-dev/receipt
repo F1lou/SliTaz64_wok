@@ -1,14 +1,14 @@
 # SliTaz package receipt.
 
 PACKAGE="mesa-wayland-dev"
-VERSION="21.0.1"
+VERSION="22.2.2"
 CATEGORY="development"
 SHORT_DESC="Wayland X server - development files."
 MAINTAINER="pankso@slitaz.org"
 LICENSE="MIT"
 WEB_SITE="https://www.mesa3d.org/"
 
-DEPENDS="pkg-config udev-dev"
+DEPENDS="pkg-config eudev-wayland-dev"
 WANTED="mesa-wayland"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

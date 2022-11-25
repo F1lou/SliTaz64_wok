@@ -1,0 +1,34 @@
+# SliTaz package receipt.
+
+PACKAGE="atk-wayland"
+SOURCE="atk"
+VERSION="2.38.0"
+CATEGORY="x-window"
+TAGS="accessibility"
+SHORT_DESC="Accessibility toolkit."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://www.gnome.org/"
+
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WGET_URL="$GNOME_MIRROR/$SOURCE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="glib"
+BUILD_DEPENDS="bash glib-dev libgio-dev zlib-dev"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	meson .	_build	--prefix=/usr -Dintrospection=false &&
+	ninja	-C _build &&
+	ninja	-C _build install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib64
+	cp -a $install/usr/lib64/*.so*	$fs/usr/lib64
+}

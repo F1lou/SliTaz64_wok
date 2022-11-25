@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="mesa-wayland"
-VERSION="21.2.2"
+VERSION="22.2.2"
 CATEGORY="x-window"
 SHORT_DESC="3D Graphics Library that is an open-source implementaton of OpenGL."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -16,65 +16,52 @@ WGET_URL="ftp://ftp.freedesktop.org/pub/mesa/$TARBALL"
 PROVIDE="libegl-mesa libgl libglw-mesa"
 
 SUGGESTED="nvidia"
-DEPENDS="expat libdrm eudev wayland xorg-libXdamage xorg-libXt xorg-libXxf86vm"
-BUILD_DEPENDS="expat-dev lesstif-dev libdrm-dev libxml2-python pkg-config 
-	eudev-dev wayland-dev xorg-proto
-	xorg-libXdamage-dev xorg-libXt-dev xorg-libXxf86vm-dev xorg-server-dev
-	xorg-libXshmfence-dev xorg-libXrandr-dev elfutils-dev" # xorg-dri2proto xorg-glproto
+DEPENDS="expat libdrm-wayland eudev-wayland wayland wayland-protocols"
+BUILD_DEPENDS="wayland-dev  wayland-protocols glslang zlib-dev expat-dev
+	libdrm-wayland-dev libdrm-wayland-intel libdrm-wayland-nouveau
+	python3-mako python3-markupsafe elfutils-dev
+	xorg-libpciaccess-dev eudev-wayland-dev"
 
 #HOST_ARCH="x86_64 arm i486"
 
-# Use some build system tools
-case "$ARCH" in
-	x86_64|i?86) 
-		BUILD_DEPENDS="$BUILD_DEPENDS autoconf automake file libdrm-nouveau 
-		libpthread-stubs-dev libtool llvm talloc xorg-imake xorg-makedepend
-		 python3-mako wayland-protocols" ;;
-esac
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export CXXFLAGS="$CXXFLAGS "
 	find . -name 'nouveau*.h' | \
 		xargs sed -i 's|libdrm/nouveau.h|libdrm/nouveau/nouveau.h|'
 
 	mkdir build && cd build &&
 
-	meson --prefix=/usr			         \
-		  -Dbuildtype=release            \
-		  -Ddri-drivers=i965,nouveau     \
-		  -Dgallium-drivers=r300,r600,swrast,nouveau \
-		  -Dgallium-nine=false           \
-		  -Dglx=dri                      \
-		  -Dosmesa=true               \
-		  -Dvalgrind=disabled            \
-		  -Dlibunwind=disabled           \
-		  ..                             &&
-
+	meson --prefix=/usr							\
+		  -Dbuildtype=release					\
+		  -Dplatforms="wayland"					\
+		  -Degl-native-platform="wayland"		\
+		  -Dgallium-drivers="i915,nouveau"		\
+		  -Dvulkan-drivers="amd,intel"			\
+		  -Dglx=disabled						\
+		  -Dvalgrind=disabled					\
+		  -Dlibunwind=disabled					\
+		  -Dllvm=disabled						\
+		  .. &&
 
 	ninja && ninja install
-
-		#~ --sysconfdir=/etc/X11/${PACKAGE}		\
-		#~ --enable-gles2					\
-		#~ --disable-gallium-egl				\
-		#~ --with-egl-platforms=x11,wayland,drm		\
-		#~ --enable-gbm					\
-		#~ --enable-shared-glapi				\
-		#~ $CONFIGURE_ARGS &&
-	#~ make $MAKEFLAGS &&
-	#~ make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib64/dri
+	mkdir -p $fs/usr/lib64
 
 	#~ cp -a $install/etc			$fs
-	cp -a $install/usr/lib64/*.so*		$fs/usr/lib64
-	cp -a $install/usr/lib64/dri/*.so*	$fs/usr/lib64/dri
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
 
+	# libvulkan is included in seperate packages
+	rm $fs/usr/lib64/libvulkan*.so
+	
+	# no X, so libxatracker is not necessary
+	rm $fs/usr/lib64/libxatracker*
+	
 	# libGLU is included in the package libglu-mesa
 	#rm -r -f $fs/usr/lib/libGLU*
 
