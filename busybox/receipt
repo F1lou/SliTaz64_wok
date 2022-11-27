@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="busybox"
-VERSION="1.31.1"
+VERSION="1.34.1"
 CATEGORY="base-system"
 SHORT_DESC="Busybox combines tiny versions of many common UNIX utilities."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -12,12 +12,10 @@ WGET_URL="http://www.busybox.net/downloads/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="slitaz-base-files glibc-base ncurses-common"
-BUILD_DEPENDS="bzip2 pam pam-dev uclibc-cross-compiler-i486 \
-musl-libc-dev dietlibc gettext-tools"
+BUILD_DEPENDS="bzip2 pam pam-dev gettext-tools"
 
 CONFIG_FILES="/etc/dnsd.conf /etc/inetd.conf /etc/udhcpd.conf \
 /etc/resolv.conf /etc/httpd.conf"
-AUFS_NOT_RAMFS="uclibc-cross-compiler-i486 is not compatible with aufs+tmpfs 8("
 
 # Handle cross compilation
 case "$ARCH" in
@@ -30,34 +28,6 @@ current_version()
 	sed "/tar/!d;s|.*$PACKAGE-\\(.*\\).tar.*\".*|\\1|;q"
 }
 
-# Busybox patches
-apply_bb_patchs()
-{
-    sed -i 's|march=|&i486 -mtune=|' arch/i386/Makefile
-    while read file; do
-    	[ -f done.$file ] && continue
-    	echo "Apply $file..."
-    	patch -p1 < $stuff/$PACKAGE-${VERSION%.*}-$file || return 1
-	cp $stuff/$PACKAGE-${VERSION%.*}-$file done.$file
-    done <<EOT
-tar.u
-stat.u
-ris.u
-zmodules.u
-cmdline.u
-diff.u
-diet.u
-losetup.u
-fbvnc.u
-cpio.u
-shutdown.u
-scriptreplay.u
-mkfs_vfat.u
-ash.u
-EOT
-    cp $stuff/$PACKAGE-${VERSION%.*}.config .config
-    cp $stuff/$PACKAGE-${VERSION%.*}.config .
-}
 
 # Rules to configure and make the package.
 compile_rules()
@@ -70,12 +40,11 @@ compile_rules()
 			make oldconfig | sed 's|ERROR|error|' &&
 			make && make install || return 1
 			chmod 4755 $src/_install/bin/busybox ;;
-		x86_64) echo "TODO" ;;
-		i?86)
-			echo "=== Build busybox ==="
-			sed -i 's|uname -m|echo i486|' Makefile
-			apply_bb_patchs &&
-			make oldconfig | sed 's|ERROR|error|' &&
+		i?86|x86_64)
+			echo "=== Build busybox $ARCH ==="
+			#~ sed -i 's|uname -m|echo i486|' Makefile
+			#~ apply_bb_patchs &&
+			make oldconfig &&
 			make && make install || return 1
 		    strip --strip-unneeded -R .eh_frame -R .eh_frame_hdr \
 				$src/_install/bin/busybox
@@ -93,60 +62,60 @@ compile_rules()
 		    mv docs/busybox.1 docs/busybox.pam.1
 
 		    # prepare busybox-static package
-		    if [ -x /usr/bin/uclibc-i486-gcc ]; then
-			echo "=== Build busybox-uclibc ==="
-			cp $stuff/$PACKAGE-${VERSION%.*}.config-static .config
-			cp $stuff/$PACKAGE-${VERSION%.*}.config-static .
-			sed -i 's/# CONFIG_ASH_INTERNAL_GLOB is not set/CONFIG_ASH_INTERNAL_GLOB=y/' .config
-			make oldconfig | sed 's|ERROR|error|' &&
-			LDFLAGS="" make || return 1
-			cp busybox busybox-static
-			mv busybox busybox-uclibc
-			mv busybox_unstripped.map busybox-uclibc.map
-			mv -f docs/busybox.1 docs/busybox.static.1
-		    fi
+		    #~ if [ -x /usr/bin/uclibc-i486-gcc ]; then
+			#~ echo "=== Build busybox-uclibc ==="
+			#~ cp $stuff/$PACKAGE-${VERSION%.*}.config-static .config
+			#~ cp $stuff/$PACKAGE-${VERSION%.*}.config-static .
+			#~ sed -i 's/# CONFIG_ASH_INTERNAL_GLOB is not set/CONFIG_ASH_INTERNAL_GLOB=y/' .config
+			#~ make oldconfig | sed 's|ERROR|error|' &&
+			#~ LDFLAGS="" make || return 1
+			#~ cp busybox busybox-static
+			#~ mv busybox busybox-uclibc
+			#~ mv busybox_unstripped.map busybox-uclibc.map
+			#~ mv -f docs/busybox.1 docs/busybox.static.1
+		    #~ fi
 
-		    if [ -x /usr/bin/musl-gcc ]; then
-			echo "=== Build busybox-musl ==="
-			# prepare busybox-musl package
-			cp $stuff/$PACKAGE-${VERSION%.*}.config-static .config
-			cp $stuff/$PACKAGE-${VERSION%.*}.config-static .
-			sed -i 's|uclibc-i486-||' .config
-			make oldconfig | sed 's|ERROR|error|' &&
-			if make CC=musl-gcc 2> musl-err.log ; then
-				mv busybox busybox-musl
-				mv busybox_unstripped.map busybox-musl.map
-				mv -f docs/busybox.1 docs/busybox.static.1
-			fi
-		    fi
+		    #~ if [ -x /usr/bin/musl-gcc ]; then
+			#~ echo "=== Build busybox-musl ==="
+			#~ # prepare busybox-musl package
+			#~ cp $stuff/$PACKAGE-${VERSION%.*}.config-static .config
+			#~ cp $stuff/$PACKAGE-${VERSION%.*}.config-static .
+			#~ sed -i 's|uclibc-i486-||' .config
+			#~ make oldconfig | sed 's|ERROR|error|' &&
+			#~ if make CC=musl-gcc 2> musl-err.log ; then
+				#~ mv busybox busybox-musl
+				#~ mv busybox_unstripped.map busybox-musl.map
+				#~ mv -f docs/busybox.1 docs/busybox.static.1
+			#~ fi
+		    #~ fi
 
-		    if [ -x /usr/lib/diet/bin/diet ]; then
-			echo "=== Build busybox-diet ==="
-			# prepare busybox-diet package
-			cp $stuff/$PACKAGE-${VERSION%.*}.config-static .config
-			cp $stuff/$PACKAGE-${VERSION%.*}.config-static .
-			sed -i 's|uclibc-i486-||;s|CFLAGS="|&-D_BSD_SOURCE |;s|LDFLAGS="|&-Wl,--allow-multiple-definition |;s|LDLIBS="|&compat rpc |' .config
-			make oldconfig | sed 's|ERROR|error|' &&
-			if make CC="/usr/lib/diet/bin/diet gcc" 2> diet-err.log ; then
-				mv busybox busybox-diet
-				mv busybox_unstripped.map busybox-diet.map
-				mv -f docs/busybox.1 docs/busybox.static.1
-			fi
-		    fi
+		    #~ if [ -x /usr/lib/diet/bin/diet ]; then
+			#~ echo "=== Build busybox-diet ==="
+			#~ # prepare busybox-diet package
+			#~ cp $stuff/$PACKAGE-${VERSION%.*}.config-static .config
+			#~ cp $stuff/$PACKAGE-${VERSION%.*}.config-static .
+			#~ sed -i 's|uclibc-i486-||;s|CFLAGS="|&-D_BSD_SOURCE |;s|LDFLAGS="|&-Wl,--allow-multiple-definition |;s|LDLIBS="|&compat rpc |' .config
+			#~ make oldconfig | sed 's|ERROR|error|' &&
+			#~ if make CC="/usr/lib/diet/bin/diet gcc" 2> diet-err.log ; then
+				#~ mv busybox busybox-diet
+				#~ mv busybox_unstripped.map busybox-diet.map
+				#~ mv -f docs/busybox.1 docs/busybox.static.1
+			#~ fi
+		    #~ fi
 
-		    # prepare ssfs-busybox package
-			echo "=== Build busybox-ssfs ==="
-		    rootfs=$src/ssfs-busybox/usr/share/ssfs/rootfs
-		    mkdir -p $rootfs/etc
-		    cp $stuff/$PACKAGE-${VERSION%.*}.config-ssfs .config
-		    cp $stuff/$PACKAGE-${VERSION%.*}.config-ssfs .
-		    make oldconfig | sed 's|ERROR|error|' && make busybox &&
-		    make CONFIG_PREFIX=$rootfs install || return 1
-		    mv busybox_unstripped.map busybox-ssfs.map
-		    cp $stuff/busybox.conf-ssfs $rootfs/etc/busybox.conf
-		    chown -R 0.0 $rootfs/etc
-		    chmod 0600 $rootfs/etc/busybox.conf
-		    chmod 4755 $rootfs/bin/busybox
+		    #~ # prepare ssfs-busybox package
+			#~ echo "=== Build busybox-ssfs ==="
+		    #~ rootfs=$src/ssfs-busybox/usr/share/ssfs/rootfs
+		    #~ mkdir -p $rootfs/etc
+		    #~ cp $stuff/$PACKAGE-${VERSION%.*}.config-ssfs .config
+		    #~ cp $stuff/$PACKAGE-${VERSION%.*}.config-ssfs .
+		    #~ make oldconfig | sed 's|ERROR|error|' && make busybox &&
+		    #~ make CONFIG_PREFIX=$rootfs install || return 1
+		    #~ mv busybox_unstripped.map busybox-ssfs.map
+		    #~ cp $stuff/busybox.conf-ssfs $rootfs/etc/busybox.conf
+		    #~ chown -R 0.0 $rootfs/etc
+		    #~ chmod 0600 $rootfs/etc/busybox.conf
+		    #~ chmod 4755 $rootfs/bin/busybox
 
 			# Compile translations
 			echo "=== Build translations ==="

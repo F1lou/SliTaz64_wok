@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="tidy-html5"
-VERSION="5.6.0"
+VERSION="5.8.0"
 CATEGORY="development"
 SHORT_DESC="The granddaddy of HTML tools, with support for modern standards."
 MAINTAINER="al.bobylev@gmail.com"
