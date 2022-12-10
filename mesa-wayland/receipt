@@ -33,16 +33,16 @@ compile_rules()
 
 	mkdir build && cd build &&
 
-	meson --prefix=/usr							\
-		  -Dbuildtype=release					\
-		  -Dplatforms="wayland"					\
-		  -Degl-native-platform="wayland"		\
-		  -Dgallium-drivers="i915,nouveau"		\
-		  -Dvulkan-drivers="amd,intel"			\
-		  -Dglx=disabled						\
-		  -Dvalgrind=disabled					\
-		  -Dlibunwind=disabled					\
-		  -Dllvm=disabled						\
+	meson --prefix=/usr								\
+		  -Dbuildtype=release						\
+		  -Dplatforms="wayland"						\
+		  -Degl-native-platform="wayland"			\
+		  -Dgallium-drivers="i915,nouveau,crocus"	\
+		  -Dvulkan-drivers="amd,intel"				\
+		  -Dglx=disabled							\
+		  -Dvalgrind=disabled						\
+		  -Dlibunwind=disabled						\
+		  -Dllvm=disabled							\
 		  .. &&
 
 	ninja && ninja install
