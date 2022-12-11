@@ -1,0 +1,47 @@
+# SliTaz package receipt.
+
+PACKAGE="dbus-wayland-glib"
+SOURCE="dbus-glib"
+VERSION="0.112"
+CATEGORY="x-window"
+SHORT_DESC="D-Bus glib binding."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://freedesktop.org/wiki/Software/DBusBindings/"
+
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://dbus.freedesktop.org/releases/$SOURCE/$TARBALL"
+
+DEPENDS="dbus-wayland expat libgio"
+BUILD_DEPENDS="dbus-wayland-dev expat-dev gettext glib-dev libgio-dev pkg-config"
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Handle cross compilation. Host pkg-config/gettext are used
+case "$ARCH" in
+	arm*) 
+		BUILD_DEPENDS="dbus-dev expat-dev glib-dev libgio-dev" 
+		export ac_cv_have_abstract_sockets=${ac_cv_have_abstract_sockets=yes} ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure $CONFIGURE_ARGS &&
+	case "$ARCH" in
+		arm)
+			patch -p1 < $stuff/dbus-glib.patch &&
+			patch -p0 < $stuff/dbus.patch ;;
+	esac &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/bin		$fs/usr
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+}

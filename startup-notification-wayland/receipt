@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="startup-notification"
+VERSION="0.12"
+CATEGORY="x-window"
+SHORT_DESC="Startup notification protocol"
+MAINTAINER="erjo@slitaz.org"
+LICENSE="LGPL2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="http://freedesktop.org/software/startup-notification/releases/"
+WGET_URL="${WEB_SITE}$TARBALL"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="xcb-util xorg-libSM xorg-libX11"
+BUILD_DEPENDS="util-linux-uuid-dev libxcb-dev xcb-util-dev xorg-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export lf_cv_sane_realloc=yes
+	./configure \
+		--prefix=/usr \
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so* $fs/usr/lib
+}

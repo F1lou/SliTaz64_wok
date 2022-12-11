@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="menu-cache-wayland"
+SOURCE="menu-cache"
+VERSION="1.1.0"
+CATEGORY="x-window"
+SHORT_DESC="LXDE implementation of the freedesktop Menu's cache"
+MAINTAINER="devel@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://github.com/lxde/menu-cache"
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WGET_URL="$SF_MIRROR/lxde/$TARBALL"
+TAGS="LXDE"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="glib glibc-base libfm-wayland-extra libgio" # slitaz-menus ?
+BUILD_DEPENDS="libtool libfm-wayland-extra-dev" # gtk-doc
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--libexecdir=/usr/lib \
+		--disable-static \
+		$CONFIGURE_ARGS &&
+	make CFLAGS="$CFLAGS -fcommon" && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/*.so*      $fs/usr/lib/
+	cp -a $install/usr/lib/menu-cache $fs/usr/lib/
+}
