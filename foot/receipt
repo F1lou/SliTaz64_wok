@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="foot"
+VERSION="1.13.1"
+CATEGORY="x-window"
+SHORT_DESC="A fast, lightweight and minimalistic Wayland terminal emulator"
+MAINTAINER="nhc1@gmx.net"
+LICENSE="MIT"
+WEB_SITE="https://codeberg.org/dnkl/foot"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/archive/$VERSION.tar.gz"
+
+DEPENDS="fontconfig freetype pixman wayland libxkbcommon-wayland"
+
+BUILD_DEPENDS="wayland-dev wayland-protocols ncurses-dev ncursesw-extra
+	pixman-dev libxkbcommon-wayland-dev fontconfig-dev freetype-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	meson --buildtype=release --prefix=/usr -Dtests=false build &&
+	ninja -C build &&
+	ninja -C build install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/etc $fs/
+	cp -a $install/usr/bin $fs/usr/
+	cp -a $install/usr/share/foot $fs/usr/share/
+	cp -a $install/usr/share/applications $fs/usr/share/
+	cp -a $install/usr/share/icons $fs/usr/share/
+}

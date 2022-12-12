@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="swayimg"
+VERSION="v1.9"
+CATEGORY="x-window"
+SHORT_DESC="Swayimg is a lightweight image viewer for Wayland display servers."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="MIT"
+WEB_SITE="https://github.com/artemsen/swayimg"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/archive/refs/tags/$VERSION.tar.gz"
+
+DEPENDS="wayland libxkbcommon-wayland fontconfig freetype
+	libjpeg libpng"
+BUILD_DEPENDS="wayland-dev wayland-protocols libjson-c-dev 
+	libxkbcommon-wayland-dev fontconfig-dev freetype-dev 
+	jpeg-dev libpng-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	meson --prefix=/usr build &&
+	ninja -C build &&
+	ninja -C build install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/bin $fs/usr/
+	cp -a $install/usr/share/applications $fs/usr/share/
+	cp -a $install/usr/share/icons $fs/usr/share/
+}
