@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="dmenu-wayland"
+VERSION="v0.1"
+CATEGORY="x-window"
+SHORT_DESC="dmenu-wl is an efficient dynamic menu for wayland (wlroots)."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="MIT"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://github.com/nyyManni/dmenu-wayland"
+WGET_URL="$WEB_SITE/archive/refs/tags/$VERSION.tar.gz"
+
+TAGS="launchbar"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="wayland cairo-wayland pango-wayland libxkbcommon-wayland
+	glib wlroots"
+BUILD_DEPENDS="wayland-dev wayland-protocols cairo-wayland-dev 
+	pango-wayland-dev libxkbcommon-wayland-dev glib-dev wlroots-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+    export CFLAGS="$CFLAGS -fcommon"
+    mkdir build &&
+    meson --prefix=/usr build &&
+    ninja -C build &&
+    ninja -C build install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+    mkdir -p $fs/usr
+    cp -a $install/usr/bin $fs/usr/
+}
