@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="mc"
-VERSION="4.8.26"
+VERSION="4.8.28"
 CATEGORY="system-tools"
 TAGS="file-manager text-editor"
 SHORT_DESC="Midnight Commander - ncurses based file manager."

@@ -21,7 +21,7 @@ DEPENDS="glibc-base glib libgio util-linux-uuid expat zlib fontconfig
 	# libxcb xcb-util startup-notification
 BUILD_DEPENDS="gtk+3-wayland-dev dbus-wayland-glib-dev dbus-wayland-dev
 	libfm-wayland-dev menu-cache-wayland-dev expat-dev libfm-wayland-gtk3
-	libtool intltool xorg-randrproto" 
+	libtool intltool" 
 	# xorg-randrproto libxcb-dev xcb-util-dev xorg-proto gtk-doc startup-notification-dev 
 
 # Handle cross compilation.
@@ -32,7 +32,8 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure --with-gtk=3 --disable-x $CONFIGURE_ARGS &&
+	./configure --prefix=/usr --sysconfdir=/etc --with-gtk=3 \
+		--with-wayland=yes $CONFIGURE_ARGS &&
 	make && make install
 }
 

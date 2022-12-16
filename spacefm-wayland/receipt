@@ -1,0 +1,75 @@
+# SliTaz package receipt.
+
+PACKAGE="spacefm-wayland"
+SOURCE="spacefm"
+VERSION="1.0.6"
+CATEGORY="system-tools"
+TAGS="file-manager"
+SHORT_DESC="Light, fast and easy to use file manager."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL3"
+WEB_SITE="https://ignorantguru.github.io/spacefm/"
+
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://github.com/IgnorantGuru/$SOURCE/archive/$VERSION.tar.gz"
+
+DEPENDS="bash dbus-wayland dbus-wayland-glib expat gdk-pixbuf-wayland glib
+	glibc-base gtk+3-wayland libgio eudev-wayland util-linux-uuid shared-mime-info
+	libepoxy-wayland" 
+	# startup-notification libxcb xcb-util udevil 
+BUILD_DEPENDS="coreutils-file-special dbus-wayland-dev dbus-wayland-glib-dev
+	expat-dev gdk-pixbuf-wayland-dev gtk+3-wayland-dev intltool eudev-wayland-dev
+	glibc-dev desktop-file-utils shared-mime-info-dev libepoxy-wayland-dev"
+	# libxcb-dev startup-notification-dev xcb-util-dev xorg-dev 
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	patch --input=$stuff/patches/main.c-$VERSION src/main.c
+	patch --input=$stuff/patches/prefdlg.ui-$VERSION data/ui/prefdlg.ui
+	patch --input=$stuff/patches/settings.c-$VERSION src/settings.c
+	patch --input=$stuff/patches/settings.h-$VERSION src/settings.h
+	patch --input=$stuff/patches/vfs-file-task.c-$VERSION src/vfs/vfs-file-task.c
+
+	export LDFLAGS="$LDFLAGS -lX11" 
+	./configure					\
+		--with-preferable-sudo="/usr/bin/subox"	\
+		--disable-video-thumbnails		\
+		--disable-pixmaps			\
+		--with-gtk3	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	mkdir -p $fs/etc/spacefm
+
+	# config file
+	cp -a $stuff/tux-as-root $install/etc/spacefm/
+	
+	cp -a $install/usr/bin	$fs/usr
+	for d in icons spacefm # applications
+	  do
+		cp -a $install/usr/share/$d	$fs/usr/share
+	  done
+	cp $stuff/spacefm.conf	$fs/etc/spacefm
+	cp -a $stuff/xdg	$fs/etc
+
+	# Faenza --> SliTaz
+	mv $fs/usr/share/icons/Faenza	$fs/usr/share/icons/SliTaz
+	rm -rf				$fs/usr/share/icons/hicolor/128x128
+
+	# /bin/bash --> /bin/sh
+	sed -i s'|/bin/bash|/bin/sh|'g	$fs/usr/bin/spacefm-auth
+}
+
+post_install()
+{
+	echo
+	echo 'Remove or rename /etc/xdg/autostart/spacefm.desktop'
+	echo 'if pcmanfm is to remain desktop manager.'
+}

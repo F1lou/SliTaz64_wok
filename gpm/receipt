@@ -23,6 +23,7 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
+	patch -Np1 -i $stuff/gpm-1.20.7-consolidated-1.patch
 	./autogen.sh
 	ln -s headers/gpm.h src		# ???
 	CFLAGS="$CFLAGS -fcommon" ./configure \

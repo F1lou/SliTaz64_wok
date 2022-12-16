@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="swaybg"
+VERSION="v1.2.0"
+CATEGORY="x-window"
+SHORT_DESC="wallpaper utility for Wayland compositors."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="MIT"
+WEB_SITE="https://github.com/swaywm/swaybg"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/archive/refs/tags/$VERSION.tar.gz"
+
+DEPENDS="wayland cairo-wayland gdk-pixbuf-wayland"
+BUILD_DEPENDS="wayland-dev wayland-protocols cairo-wayland-dev
+	gdk-pixbuf-wayland-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	meson --prefix=/usr build &&
+	ninja -C build &&
+	ninja -C build install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+
+genpkg_rules()
+{
+	cp -a $install/usr $fs/
+}
