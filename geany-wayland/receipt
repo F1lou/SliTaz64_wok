@@ -1,0 +1,56 @@
+# SliTaz package receipt.
+
+PACKAGE="geany-wayland"
+SOURCE="geany"
+VERSION="1.38"
+CATEGORY="development"
+SHORT_DESC="Small and fast IDE using GTK+ toolkit."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+SUGGESTED="geany-plugins vte"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WEB_SITE="http://geany.uvena.de/"
+WGET_URL="http://download.geany.org/$TARBALL"
+TAGS="text-editor"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="glibc-base glib gcc-lib-base libgio expat zlib gtk+3-wayland
+	atk-wayland cairo-wayland pango-wayland pixman libpng fontconfig
+	freetype"
+	# libxcb xcb-util xorg-libX11 xorg-libXau xorg-libXcomposite xorg-libXcursor xorg-libXdamage
+	# xorg-libXdmcp xorg-libXext xorg-libXfixes xorg-libXinerama xorg-libXrender
+BUILD_DEPENDS="glib-dev expat-dev gtk+3-wayland-dev atk-wayland-dev
+	pango-wayland-dev cairo-wayland-dev pixman-dev libpng-dev liblzma-dev
+	freetype-dev fontconfig-dev wayland-dev wayland-protocols" 
+	# xorg-xproto xorg-renderproto xorg-kbproto xorg-libXrender-dev
+	# xorg-proto xorg-libX11-dev xorg-libXau-dev libxkbcommon-dev
+	# xorg-libXdmcp-dev libxml2-dev 
+
+# Handle cross compilation.
+case "$ARCH" in
+	x86_64|i?86) BUILD_DEPENDS="$BUILD_DEPENDS perl-xml-parser intltool gettext glibc-locale" ;;
+	arm*) ARCH_ARGS="--disable-vte" ;;
+esac
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		${CONFIGURE_ARGS} ${ARCH_ARGS} &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share/pixmaps $fs/usr/lib/geany
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/lib/geany/*.so $fs/usr/lib/geany
+	cp -a $install/usr/lib/*.so* $fs/usr/lib/
+	cp -a $install/usr/share/geany $fs/usr/share
+	cp -a $stuff/filetype_extensions.conf $fs/usr/share/geany
+	rm $fs/usr/share/geany/GPL-2
+	cp -a $install/usr/share/icons $fs/usr/share
+	cd $fs/usr/share
+	ln -sf /usr/share/icons/hicolor/48x48/apps/geany.png pixmaps/geany.png
+}
