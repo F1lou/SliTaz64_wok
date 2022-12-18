@@ -1,27 +1,36 @@
 # SliTaz package receipt.
 
 PACKAGE="mate-desktop"
-VERSION="1.9.3"
+VERSION="1.27.0"
 CATEGORY="utilities"
 LICENSE="GPL3"
 SHORT_DESC="Common package for MATE Desktop applications."
 MAINTAINER="yuripourre@gmail.com"
-TARBALL="$PACKAGE-$VERSION.tar.gz"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
 WEB_SITE="http://www.mate-desktop.org/"
-WGET_URL="https://github.com/mate-desktop/$PACKAGE/archive/$TARBALL"
+WGET_URL="https://pub.mate-desktop.org/releases/${VERSION%.*}/$TARBALL"
 TAGS="MATE"
-DEPENDS="gtk+ gdk-pixbuf libltdl"
-BUILD_DEPENDS="wget cacerts autoconf automake dconf-dev libtool itstool \
-mate-common-dev gtk-doc gtk+-dev gdk-pixbuf-dev yelp-tools harfbuzz-dev"
+DEPENDS="gtk+3-wayland gdk-pixbuf-wayland libltdl"
+BUILD_DEPENDS="cacerts autoconf automake libtool itstool mate-common-dev
+	gtk+3-wayland-dev gdk-pixbuf-wayland-dev yelp-tools harfbuzz-dev
+	dconf-wayland-dev gtk-doc wget"  
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	./autogen.sh               \
-		--prefix=/usr          \
-		$CONFIGURE_ARGS &&
-	make &&
-	make DESTDIR=$DESTDIR install
+	mkdir build && cd build
+	meson --prefix=/usr .. &&
+	ninja && ninja install
+	
+	#~ autoupdate &&
+	#~ ./autogen.sh  		       	\
+		#~ --prefix=/usr          	\
+		#~ --disable-gtk-doc-html	\
+		#~ --without-x				\
+		#~ --disable-static		\
+		#~ $CONFIGURE_ARGS &&
+	#~ make &&
+	#~ make DESTDIR=$DESTDIR install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

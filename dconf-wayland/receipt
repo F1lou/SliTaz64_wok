@@ -1,0 +1,47 @@
+# SliTaz package receipt.
+
+PACKAGE="dconf-wayland"
+SOURCE="dconf"
+VERSION="0.40.0"
+CATEGORY="system-tools"
+SHORT_DESC="A low-level configuration system"
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="LGPL2.1"
+WEB_SITE="http://live.gnome.org/dconf"
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WGET_URL="$GNOME_MIRROR/$SOURCE/${VERSION%.*}/$TARBALL"
+
+DEPENDS="dbus-wayland"
+BUILD_DEPENDS="vala glib-dev dbus-wayland-dev gtk+3-wayland-dev 
+	libxml2-dev libxslt	docbook-xsl"
+GENERIC_MENUS="no"
+GENERIC_PIXMAPS="no"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export XML_CATALOG_FILES="/etc/xml/catalog"
+	sed -i 's/install_dir: systemd_userunitdir,//' service/meson.build
+	
+	mkdir build && cd build
+	meson --prefix=/usr --buildtype=release -Dbash_completion=false .. &&
+	ninja && ninja install
+	
+	#~ ./configure \
+		#~ --sysconfdir=/etc \
+		#~ --libexecdir=/usr/lib \
+		#~ $CONFIGURE_ARGS &&
+	#~ make &&
+	#~ make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib64 $fs/usr/share
+	cp -a $install/usr/bin $fs/usr/
+	cp -a $install/usr/libexec $fs/usr/
+	cp -a $install/usr/lib64/gio $fs/usr/lib64/
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64/
+	cp -a $install/usr/share/dbus* $fs/usr/share
+}

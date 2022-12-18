@@ -1,15 +1,15 @@
 # SliTaz package receipt.
 
 PACKAGE="mate-common"
-VERSION="1.27.0"
+VERSION="1.26.0"
 CATEGORY="utilities"
 LICENSE="GPL3"
 SHORT_DESC="Common package for MATE applications."
 MAINTAINER="yuripourre@gmail.com"
-TARBALL="$PACKAGE-$VERSION.tar.gz"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
 WEB_SITE="http://www.mate-desktop.org/"
-WGET_URL="https://github.com/mate-desktop/$PACKAGE/archive/$TARBALL"
-TAGS="MATE"
+WGET_URL="https://pub.mate-desktop.org/releases/${VERSION%.*}/$TARBALL"
+
 DEPENDS=""
 BUILD_DEPENDS="wget cacerts autoconf automake"
 

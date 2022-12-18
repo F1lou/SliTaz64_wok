@@ -32,6 +32,12 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
+	#~ patch -Np1 -i $stuff/wayland.patch
+	# eliminate X11-relations
+	sed -i '5854,5944d'	configure
+	sed -i '/gdkx.h/d'	src/pcmanfm.c
+	sed -i '/gdkx.h\|X11\/\|cairo-xlib.h/d'	src/desktop.c
+	
 	./configure --prefix=/usr --sysconfdir=/etc --with-gtk=3 \
 		--with-wayland=yes $CONFIGURE_ARGS &&
 	make && make install

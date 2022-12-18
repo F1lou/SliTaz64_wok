@@ -1,9 +1,9 @@
 # SliTaz package receipt.
 
 PACKAGE="nnn"
-VERSION="3.4"
+VERSION="4.7"
 CATEGORY="system-tools"
-SHORT_DESC="The missing terminal file manager for X."
+SHORT_DESC="The missing terminal file manager for X/Wayland."
 MAINTAINER="developer@slitaz.org"
 LICENSE="BSD-2"
 WEB_SITE="https://github.com/jarun/nnn/"
@@ -21,7 +21,7 @@ compile_rules()
 	sed -i 's|\$(LDLIBS_CURSES)|-lncursesw -ltinfo -lrt|' Makefile
 
 	# -std=c11 invalid
-	sed -i 's|-std=c11|-std=c1x|' Makefile
+	# sed -i 's|-std=c11|-std=c1x|' Makefile
 
 	make CFLAGS_OPTIMIZATION=-O2 PREFIX=/usr &&
 	make PREFIX=/usr install

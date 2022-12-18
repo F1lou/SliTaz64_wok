@@ -13,10 +13,10 @@ WGET_URL="https://github.com/mate-desktop/$SOURCE/archive/$TARBALL"
 
 DEPENDS="gtk+3-wayland mate-desktop dconf exempi gvfs libunique"
 BUILD_DEPENDS="wget dbus-wayland-dev cacerts autoconf automake
-	libtool itstool gtk+3-wayland-dev mate-common-dev mate-desktop-dev
+	libtool itstool gtk+3-wayland-dev mate-desktop-dev
 	mate-icon-theme libunique-dev gvfs-dev desktop-file-utils 
 	gobject-introspection-dev util-linux-uuid-dev"
-# gtk-doc dconf-dev 
+# gtk-doc dconf-dev mate-common-dev 
 SUGGESTED="gvfs-smb"
 
 TAGS="MATE file-manager"
