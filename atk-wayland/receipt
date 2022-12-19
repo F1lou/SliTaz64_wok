@@ -14,14 +14,14 @@ TARBALL="$SOURCE-$VERSION.tar.xz"
 WGET_URL="$GNOME_MIRROR/$SOURCE/${VERSION%.*}/$TARBALL"
 
 DEPENDS="glib"
-BUILD_DEPENDS="bash glib-dev libgio-dev zlib-dev"
+BUILD_DEPENDS="bash glib-dev libgio-dev zlib-dev gobject-introspection-wayland-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	meson .	_build	--prefix=/usr -Dintrospection=false &&
+	meson .	_build	--prefix=/usr &&
 	ninja	-C _build &&
 	ninja	-C _build install
 }

@@ -14,7 +14,7 @@ WGET_URL="$GNOME_MIRROR/$SOURCE/${VERSION%.*}/$TARBALL"
 
 DEPENDS="glib jpeg libgio libpng shared-mime-info tiff zlib"
 BUILD_DEPENDS="bash glib-dev jbigkit jpeg-dev libgio-dev libpng-dev 
-	shared-mime-info-dev tiff-dev zlib-dev"
+	shared-mime-info-dev tiff-dev zlib-dev gobject-introspection-wayland-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 

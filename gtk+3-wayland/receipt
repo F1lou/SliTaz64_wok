@@ -14,13 +14,14 @@ WGET_URL="$GNOME_MIRROR/$SOURCE/${VERSION%.*}/$TARBALL"
 
 SUGGESTED="cups"
 DEPENDS="wayland cairo-wayland pango-wayland atk-wayland gdk-pixbuf-wayland
-	libepoxy-wayland slitaz-icon util-linux-uuid" # at-spi2-atk atk 
+	slitaz-icon util-linux-uuid" # at-spi2-atk atk libepoxy-wayland 
 BUILD_DEPENDS="autoconf automake bash 
 	wayland-dev wayland-protocols cairo-wayland-dev pango-wayland-dev
-	dbus-wayland-dev libxkbcommon-wayland-dev atk-wayland-dev
-	gdk-pixbuf-wayland-dev libepoxy-wayland-dev libffi-dev libxml2-dev perl pkg-config 
-	util-linux-uuid-dev liblzma-dev"
-	# cups-dev libepoxy-dev at-spi2-atk indent gdk-pixbuf-dev gobject-introspection-dev
+	dbus-wayland-dev libxkbcommon-wayland-dev atk-wayland-dev perl
+	gdk-pixbuf-wayland-dev libepoxy-wayland-dev libffi-dev libxml2-dev pkg-config 
+	util-linux-uuid-dev liblzma-dev gobject-introspection-wayland-dev
+	libepoxy-wayland-dev"
+	# cups-dev at-spi2-atk indent
 	
 CONFIG_FILES="/etc/gtk-3.0/settings.ini"
 
@@ -46,52 +47,42 @@ compile_rules()
 	sed -i '25179a CUPS_API_MAJOR=1'	configure
 	# Results in error: dereferencing pointer to incomplete type
 	# Can we waive cups support?
-
-	# unrecognised:
-	#	--enable-packagekit=no
 	
-	./configure						\
-		--prefix=/usr				\
-		--sysconfdir=/etc			\
-		--localstatedir=/var		\
-		--enable-wayland-backend	\
-		--disable-x11-backend		\
-		--without-x					\
-		--enable-colord=no			\
-		--enable-debug=no			\
-		--enable-introspection=no	\
-		--disable-broadway-backend	\
-		--disable-cups				\
-		$CONFIGURE_ARGS				\
-		${ARCH_ARGS} &&
-	make $MAKEFLAGS &&
-	make DESTDIR=$DESTDIR install
+	# enfoce no X11.h dependency
+	sed -i '63 i #define EGL_NO_X11' /usr/include/EGL/eglplatform.h
+	
+	mkdir build && cd build &&
+	meson 	--prefix=/usr \
+			-Dx11_backend=false		\
+			-Dwayland_backend=true	\
+			-Dwin32_backend=false	\
+			-Dquartz_backend=false	\
+			-Dxinerama=no			\
+			-Dintrospection=true	\
+			-Ddemos=false			\
+			-Dexamples=false		\
+			-Dtests=false			\
+			.. &&
+	ninja && ninja install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/etc/gtk-3.0
-	mkdir -p $fs/usr/bin
-	mkdir -p $fs/usr/lib/gtk-3.0
-	mkdir -p $fs/usr/share
+	mkdir -p $fs/etc/gtk-3.0 $fs/usr/lib64 $fs/usr/share
 
 	# Configuration file.
-	cp -a $install/etc		$fs
-	cp -f $stuff/settings.ini	$fs/etc/gtk-3.0
+	cp -a $install/etc			$fs/
+	cp -f $stuff/settings.ini	$fs/etc/gtk-3.0/
 
 	# Applications.
-	cp $install/usr/bin/gtk-query-immodules-3.0	$fs/usr/bin
-	cp $install/usr/bin/gtk-update-icon-cache	$fs/usr/bin
-	# gtk3-demo & gtk3-demo-application -> gtk+3-demo
-	# gtk3-widget-factory -> gtk+3-widget-factory
+	cp -a $install/usr/bin		$fs/usr/
 
 	# Libraries.
-	cp -a $install/usr/lib/*.so*		$fs/usr/lib
-	cp -a $install/usr/lib/gtk-3.0/3.0.0	$fs/usr/lib/gtk-3.0
-	rm -rf					$fs/usr/lib/gtk-3.0/3.0.0/*/*.la
+	cp -a $install/usr/lib64/*.so*		$fs/usr/lib64/
+	cp -a $install/usr/lib64/gtk-3.0	$fs/usr/lib64/
 
 	# Themes.
-	cp -a $install/usr/share/themes		$fs/usr/share
-	cp -a $install/usr/share/glib-2.0	$fs/usr/share
+	cp -a $install/usr/share/themes		$fs/usr/share/
+	cp -a $install/usr/share/glib-2.0	$fs/usr/share/
 }

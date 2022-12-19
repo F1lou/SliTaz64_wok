@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="json-glib-wayland-dev"
+VERSION="1.6.6"
+CATEGORY="development"
+SHORT_DESC="json-glib development files"
+MAINTAINER="mallory@sweetpeople.org"
+LICENSE="LGPL2.1"
+WEB_SITE="http://live.gnome.org/JsonGlib"
+WANTED="json-glib-wayland"
+
+DEPENDS="json-glib-wayland glib-dev pkg-config"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/share
+	cp -a $install/usr/include $fs/usr
+	#~ cp -a $install/usr/lib/*.*a $fs/usr/lib
+	cp -a $install/usr/lib64/pkgconfig $fs/usr/lib
+	cp -a $install/usr/share/gir-1.0 $fs/usr/share
+}
+

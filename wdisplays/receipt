@@ -1,0 +1,32 @@
+# SliTaz package receipt.
+
+PACKAGE="wdisplays"
+VERSION="1.1"
+CATEGORY="x-window"
+SHORT_DESC="wdisplays is a graphical application for configuring displays in Wayland compositors."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="GPL3"
+WEB_SITE="https://github.com/artizirk/wdisplays"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/archive/refs/tags/$VERSION.tar.gz"
+
+DEPENDS="wayland gtk+3-wayland libepoxy-wayland"
+BUILD_DEPENDS="gtk+3-wayland-dev libepoxy-wayland-dev wayland-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	meson --prefix=/usr build &&
+	ninja -C build &&
+	ninja -C build install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/bin $fs/usr/
+	cp -a $install/usr/share/applications $fs/usr/share/
+	cp -a $install/usr/share/icons $fs/usr/share/
+}

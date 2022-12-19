@@ -17,10 +17,10 @@ PROVIDE="libegl-mesa libgl libglw-mesa"
 
 SUGGESTED="nvidia"
 DEPENDS="expat libdrm-wayland eudev-wayland wayland wayland-protocols"
-BUILD_DEPENDS="wayland-dev  wayland-protocols glslang zlib-dev expat-dev
+BUILD_DEPENDS="wayland-dev wayland-protocols glslang zlib-dev expat-dev
 	libdrm-wayland-dev libdrm-wayland-intel libdrm-wayland-nouveau
-	python3-mako python3-markupsafe elfutils-dev
-	xorg-libpciaccess-dev eudev-wayland-dev"
+	python3-mako python3-markupsafe elfutils-dev eudev-wayland-dev
+	xorg-libpciaccess-dev"
 
 #HOST_ARCH="x86_64 arm i486"
 

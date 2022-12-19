@@ -20,8 +20,8 @@ genpkg_rules()
 
 #	cp -a $install/usr/lib/*.*a		$fs/usr/lib
 	cp -a $install/usr/lib64/pkgconfig	$fs/usr/lib
-	#~ cp -a $install/usr/lib64/girepository-1.0	$fs/usr/lib64
-	#~ cp -a $install/usr/share/gir-1.0	$fs/usr/share
+	cp -a $install/usr/lib64/girepository-1.0	$fs/usr/lib64
+	cp -a $install/usr/share/gir-1.0	$fs/usr/share
 	cp -a $install/usr/include		$fs/usr
 	version="$(ls $install/usr/lib64/libatk-*.so.*.*.* | \
 		sed 's|.*so.||;s|\.| |g')"

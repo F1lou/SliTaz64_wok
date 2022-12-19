@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="libhandy-wayland"
+SOURCE="libhandy"
+VERSION="1.8.0"
+CATEGORY="x-window"
+SHORT_DESC="Librairies for GNOME"
+MAINTAINER="nhc1@gmx.net"
+LICENSE="GPL2"
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WEB_SITE="https://developer.gnome.org"
+WGET_URL="$GNOME_MIRROR/$SOURCE/${VERSION:0:3}/$TARBALL"
+
+DEPENDS="gtk+3-wayland libepoxy-wayland mesa-wayland"
+BUILD_DEPENDS="gtk+3-wayland-dev libepoxy-wayland-dev mesa-wayland-dev
+	bash gobject-introspection-wayland-dev vala"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir build && cd build &&
+	meson --prefix=/usr .. &&
+	ninja && ninja install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib64
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
+}

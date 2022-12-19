@@ -10,7 +10,7 @@ WANTED="glib"
 WEB_SITE="https://www.gtk.org/"
 HOST_ARCH="x86_64 i486 arm"
 
-DEPENDS="libgio pkg-config util-linux-mount-dev zlib-dev"
+DEPENDS="libgio glib-dev pkg-config util-linux-mount-dev zlib-dev"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
