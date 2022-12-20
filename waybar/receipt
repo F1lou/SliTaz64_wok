@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="waybar"
+VERSION="0.9.16"
+CATEGORY="x-window"
+SHORT_DESC="Highly customizable Wayland bar for Sway and Wlroots based compositors."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="MIT"
+WEB_SITE="https://github.com/Alexays/Waybar"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/archive/refs/tags/$VERSION.tar.gz"
+
+DEPENDS="wayland gtkmm3-wayland libepoxy-wayland"
+BUILD_DEPENDS="wayland-dev wayland-protocols gtkmm3-wayland-dev
+	gobject-introspection-wayland-dev libepoxy-wayland-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	meson --prefix=/usr build &&
+	ninja -C build &&
+	ninja -C build install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr/
+}

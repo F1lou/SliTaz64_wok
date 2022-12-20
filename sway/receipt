@@ -12,11 +12,11 @@ WGET_URL="https://github.com/swaywm/sway/archive/refs/tags/$VERSION.tar.gz"
 
 DEPENDS="wayland mesa-wayland libevdev pcre2 libjson-c pango-wayland
 	cairo-wayland gtk+3-wayland libxkbcommon-wayland libdrm-wayland 
-	wlroots libseat" # gdk-pixbuf
+	wlroots libseat gdk-pixbuf-wayland"
 BUILD_DEPENDS="wayland-dev wayland-protocols pcre2 libjson-c-dev
 	git wlroots-dev libxkbcommon-wayland-dev libgio-dev libevdev-dev
 	mesa-wayland-dev cairo-wayland-dev pango-wayland-dev
-	wlroots-dev libdrm-wayland-dev libseat-dev" # gdk-pixbuf-dev
+	wlroots-dev libdrm-wayland-dev libseat-dev gdk-pixbuf-wayland-dev"
 
 # Rules to configure and make the package.
 compile_rules()

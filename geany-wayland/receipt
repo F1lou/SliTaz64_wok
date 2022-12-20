@@ -16,12 +16,13 @@ HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="glibc-base glib gcc-lib-base libgio expat zlib gtk+3-wayland
 	atk-wayland cairo-wayland pango-wayland pixman libpng fontconfig
-	freetype"
+	freetype libepoxy-wayland"
 	# libxcb xcb-util xorg-libX11 xorg-libXau xorg-libXcomposite xorg-libXcursor xorg-libXdamage
 	# xorg-libXdmcp xorg-libXext xorg-libXfixes xorg-libXinerama xorg-libXrender
 BUILD_DEPENDS="glib-dev expat-dev gtk+3-wayland-dev atk-wayland-dev
 	pango-wayland-dev cairo-wayland-dev pixman-dev libpng-dev liblzma-dev
-	freetype-dev fontconfig-dev wayland-dev wayland-protocols" 
+	freetype-dev fontconfig-dev wayland-dev wayland-protocols
+	gobject-introspection-wayland-dev libepoxy-wayland-dev" 
 	# xorg-xproto xorg-renderproto xorg-kbproto xorg-libXrender-dev
 	# xorg-proto xorg-libX11-dev xorg-libXau-dev libxkbcommon-dev
 	# xorg-libXdmcp-dev libxml2-dev 

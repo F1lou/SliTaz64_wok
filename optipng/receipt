@@ -19,6 +19,7 @@ BUILD_DEPENDS="libpng+apng-dev zlib-dev"
 compile_rules()
 {
 	export CFLAGS="$CFLAGS -Wno-implicit-function-declaration"
+	export LDFLAGS="$LDFLAGS -lm"
 	sed -i 's|prefix)/man|prefix)/share/man|' configure
 	grep -rle "strcpy" src/* | while read DATEI; do sed -i 's|strcpy|strcpy_s|' $DATEI; done
 	

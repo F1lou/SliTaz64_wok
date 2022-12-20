@@ -24,12 +24,13 @@ compile_rules()
 	case "$ARCH" in
 		arm) echo "gio_can_sniff=yes" > arm.cache ;;
 	esac
+	
 	mkdir build && cd build &&
 
 	meson 	--prefix=/usr 	\
 			-Dman=false 	\
 			-Dtests=false 	&&
-	ninja
+	ninja &&
 	DESTDIR=$DESTDIR ninja install
 }
 

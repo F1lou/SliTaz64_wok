@@ -24,15 +24,16 @@ compile_rules()
 {
 	cd $src
 	./configure \
-		--enable-shared \
-		--prefix=/usr \
+		--enable-shared 	\
+		--disable-static	\
+		--prefix=/usr 		\
 		--mandir=/usr/share/man \
 		$CONFIGURE_ARGS &&
 	make &&
 	make DESTDIR=$DESTDIR install
 
 	cd contrib/pngminus
-	make PNGLIB="-L$DESTDIR/usr/lib -lpng" png2pnm pnm2png
+	make PNGLIB_SHARED="-L$DESTDIR/usr/lib -lpng" png2pnm pnm2png
 	mkdir -p $DESTDIR/usr/bin
 	cp -a png2pnm pnm2png $DESTDIR/usr/bin
 }

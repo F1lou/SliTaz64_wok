@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="nota"
+VERSION="v2.2.1"
+CATEGORY="x-window"
+SHORT_DESC="Multi-platform text editor."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="MIT"
+WEB_SITE="https://invent.kde.org/maui/nota"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="$WEB_SITE/-/archive/$VERSION/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cmake -DCMAKE_INSTALL_PREFIX=/usr . &&
+	make $MAKEFLAGS &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr/
+}
