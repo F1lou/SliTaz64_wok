@@ -11,10 +11,13 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$WEB_SITE/archive/refs/tags/$VERSION.tar.gz"
 
 DEPENDS="wayland gtkmm3-wayland libepoxy-wayland pulseaudio-wayland
-	gtk-layer-shell"
+	gtk-layer-shell libmpdclient libnl libmpdclient
+	jack-audio-connection-kit2"
 BUILD_DEPENDS="wayland-dev wayland-protocols gtkmm3-wayland-dev
 	gobject-introspection-wayland-dev libepoxy-wayland-dev
-	gtk-layer-shell-dev pulseaudio-wayland-dev"
+	gtk-layer-shell-dev pulseaudio-wayland-dev libmpdclient-dev
+	libnl-dev libmpdclient-dev jack-audio-connection-kit2-dev
+	libinput-dev libevdev-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -28,8 +31,9 @@ compile_rules()
 
 genpkg_rules()
 {
-	mkdir -p $fs/usr $fs/etc/xdg/waybar
-	cp -a $install/usr/bin $fs/usr/
-	cp -a $src/resources/config $fs/etc/xdg/waybar
-	cp -a $src/resources/style.css $fs/etc/xdg/waybar
+	mkdir -p $fs/usr/share/fonts/opentype $fs/etc/xdg/waybar
+	cp -a $install/usr/bin 			$fs/usr/
+	cp -a $src/resources/config 	$fs/etc/xdg/waybar
+	cp -a $src/resources/style.css	$fs/etc/xdg/waybar
+	cp -a $stuff/FontAwesome.otf	$fs/usr/share/fonts/opentype
 }
