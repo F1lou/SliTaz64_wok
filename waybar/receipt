@@ -10,9 +10,11 @@ WEB_SITE="https://github.com/Alexays/Waybar"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$WEB_SITE/archive/refs/tags/$VERSION.tar.gz"
 
-DEPENDS="wayland gtkmm3-wayland libepoxy-wayland"
+DEPENDS="wayland gtkmm3-wayland libepoxy-wayland pulseaudio-wayland
+	gtk-layer-shell"
 BUILD_DEPENDS="wayland-dev wayland-protocols gtkmm3-wayland-dev
-	gobject-introspection-wayland-dev libepoxy-wayland-dev"
+	gobject-introspection-wayland-dev libepoxy-wayland-dev
+	gtk-layer-shell-dev pulseaudio-wayland-dev"
 
 # Rules to configure and make the package.
 compile_rules()
