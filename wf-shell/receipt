@@ -11,8 +11,9 @@ WEB_SITE="https://github.com/WayfireWM/wf-shell"
 WGET_URL="https://github.com/WayfireWM/wf-shell/releases/download/v$VERSION/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
-DEPENDS="wayfire"
-BUILD_DEPENDS="wayfire-dev gtkmm3-wayland-dev"
+DEPENDS="wayfire wf-config libepoxy-wayland"
+BUILD_DEPENDS="wayfire-dev wf-config-dev gtkmm3-wayland-dev
+	gobject-introspection-wayland-dev libepoxy-wayland-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -25,9 +26,9 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib64
-	cp -a $install/usr/bin 				$fs/usr
-	cp -a $install/usr/lib64/*.so* 		$fs/usr/lib64
-	cp -a $install/usr/lib64/wayfire 	$fs/usr/lib64
-	cp -a $install/usr/share			$fs/usr
+	mkdir -p $fs/usr/lib64 $fs/usr/share/wayfire
+	cp -a $install/usr/bin 						$fs/usr/
+	cp -a $install/usr/lib64/*.so* 				$fs/usr/lib64/
+	cp -a $install/usr/share/wayfire/icons 		$fs/usr/share/wayfire/
+	cp -a $install/usr/share/wayfire/metadata 	$fs/usr/share/wayfire/
 }
