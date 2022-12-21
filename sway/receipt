@@ -25,12 +25,19 @@ compile_rules()
 	meson --prefix=/usr build &&
 	ninja -C build &&
 	ninja -C build install
+	
+	sed -i 's|backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png|images/slitaz-background.jpg|' $install/etc/sway/config
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 
 genpkg_rules()
 {
-	cp -a $install/* $fs
+	mkdir -p $fs/usr/share
+	
+	cp -a $install/etc							$fs
+	cp -a $install/usr/bin						$fs/usr
+	cp -a $install/usr/share/wayland-sessions	$fs/usr/share
+	
 	chmod a+s $fs/usr/bin/sway
 }

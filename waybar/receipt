@@ -26,6 +26,8 @@ compile_rules()
 
 genpkg_rules()
 {
-	mkdir -p $fs/usr
+	mkdir -p $fs/usr $fs/etc/xdg/waybar
 	cp -a $install/usr/bin $fs/usr/
+	cp -a $src/resources/config $fs/etc/xdg/waybar
+	cp -a $src/resources/style.css $fs/etc/xdg/waybar
 }
