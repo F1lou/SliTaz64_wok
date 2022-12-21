@@ -1,0 +1,25 @@
+# SliTaz package receipt.
+
+PACKAGE="gtk-layer-shell-dev"
+VERSION="v0.8.0"
+CATEGORY="x-window"
+SHORT_DESC="A library to write GTK applications that use Layer Shell."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="GPL3"
+WEB_SITE="https://github.com/wmww/gtk-layer-shell"
+WANTED="gtk-layer-shell"
+
+DEPENDS="gtk-layer-shell gtk+3-wayland-dev libepoxy-wayland-dev
+	gobject-introspection-wayland-dev"
+BUILD_DEPENDS=""
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib $fs/usr/lib64
+	cp -a $install/usr/include			$fs/usr
+	cp -a $install/usr/share			$fs/usr
+	cp -a $install/usr/lib64/gir*		$fs/usr/lib64
+	cp -a $install/usr/lib64/pkgconfig	$fs/usr/lib
+}

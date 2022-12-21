@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="wayland-logout"
+VERSION="1.4"
+CATEGORY="x-window"
+SHORT_DESC="GTK-based panel and background client for Wayfire."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="MIT"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://github.com/soreau/wayland-logout"
+WGET_URL="$WEB_SITE/archive/refs/tags/v$VERSION.tar.gz"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS=""
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	meson --prefix=/usr build &&
+	ninja -C build &&
+	ninja -C build install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin 	$fs/usr/
+}

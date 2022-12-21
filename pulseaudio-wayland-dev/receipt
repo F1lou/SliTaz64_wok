@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="pulseaudio-wayland-dev"
+VERSION="16.1"
+CATEGORY="development"
+SHORT_DESC="A sound system for POSIX OSes - development files."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="LGPL2.1 GPL2 MIT"
+WEB_SITE="https://www.freedesktop.org/wiki/Software/PulseAudio/"
+
+DEPENDS="pulseaudio-wayland"
+WANTED="pulseaudio-wayland"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cook_copy_files *.h *.la *.pc *.cmake
+	mv $fs/usr/lib64/pkgconfig $fs/usr/lib
+}
+
