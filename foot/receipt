@@ -28,9 +28,10 @@ compile_rules()
 genpkg_rules()
 {
 	mkdir -p $fs/usr/share
-	cp -a $install/etc $fs/
-	cp -a $install/usr/bin $fs/usr/
-	cp -a $install/usr/share/foot $fs/usr/share/
-	cp -a $install/usr/share/applications $fs/usr/share/
-	cp -a $install/usr/share/icons $fs/usr/share/
+	cp -a $install/etc 						$fs/
+	cp -a $install/usr/bin 					$fs/usr/
+	cp -a $install/usr/share/foot			$fs/usr/share/
+	cp -a $install/usr/share/terminfo		$fs/usr/share/
+	cp -a $install/usr/share/applications	$fs/usr/share/
+	cp -a $install/usr/share/icons			$fs/usr/share/
 }
