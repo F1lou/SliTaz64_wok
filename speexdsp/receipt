@@ -1,0 +1,33 @@
+# SliTaz package receipt.
+
+PACKAGE="speexdsp"
+VERSION="1.2.1"
+CATEGORY="multimedia"
+SHORT_DESC="Low bandwidth voice codec."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="BSD"
+WEB_SITE="https://www.speex.org/"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://ftp.osuosl.org/pub/xiph/releases/speex/$TARBALL"
+
+DEPENDS=""
+BUILD_DEPENDS=""
+
+HOST_ARCH="x86_64 i486 arm"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure --disable-static $CONFIGURE_ARGS &&
+	make &&
+	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+}
