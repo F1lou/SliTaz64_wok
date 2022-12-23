@@ -12,7 +12,7 @@ WEB_SITE="http://libsdl.org"
 TARBALL="SDL2-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}/release/${TARBALL}"
 
-DEPENDS="alsa-lib dbus-wayland mesa"
+DEPENDS="alsa-lib dbus-wayland mesa-wayland"
 BUILD_DEPENDS="alsa-lib-dev dbus-wayland-dev mesa-wayland-dev
 	pulseaudio-wayland-dev"
 
