@@ -13,7 +13,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
 DEPENDS="ncurses"
-BUILD_DEPENDS="gtk+-dev ncurses-dev libtinfo"
+BUILD_DEPENDS="ncurses-dev libtinfo" # gtk+-dev 
 HOST_ARCH="x86_64 i486 arm"
 
 case "$ARCH" in
@@ -23,7 +23,7 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i 's|uname -m|echo i486|' Makefile.unix
+	#~ sed -i 's|uname -m|echo i486|' Makefile.unix
 	export LDFLAGS="$LDFLAGS -ltinfo"
 
 	./configure				\
@@ -31,7 +31,7 @@ compile_rules()
 		--infodir=/usr/share/info	\
 		--mandir=/usr/share/man		\
 		$CONFIGURE_ARGS &&
-	make -j 1 &&
+	make &&
 	make DESTDIR=$DESTDIR install
 }
 

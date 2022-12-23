@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="libsdl2-wayland"
+SOURCE="libsdl2"
+VERSION="2.26.0"
+CATEGORY="x-window"
+SHORT_DESC="A cross-platform interactive media development library."
+MAINTAINER="tcg.thegamer@gmail.com"
+LICENSE="zlib/libpng"
+WEB_SITE="http://libsdl.org"
+
+TARBALL="SDL2-$VERSION.tar.gz"
+WGET_URL="${WEB_SITE}/release/${TARBALL}"
+
+DEPENDS="alsa-lib dbus-wayland mesa"
+BUILD_DEPENDS="alsa-lib-dev dbus-wayland-dev mesa-wayland-dev
+	pulseaudio-wayland-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure		\
+		--prefix=/usr	\
+		$CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+
+	cp -a $install/usr/lib/*so*	$fs/usr/lib
+	cp -a $install/usr/bin		$fs/usr
+}

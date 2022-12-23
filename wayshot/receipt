@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="wayshot"
+VERSION="1.1.5"
+CATEGORY="x-window"
+SHORT_DESC="A native, blazing-fast screenshot tool for wlroots based compositors such as sway and river written in Rust."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="BSD2"
+WEB_SITE="https://github.com/waycrate/wayshot"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/archive/refs/tags/$VERSION.tar.gz"
+
+DEPENDS=""
+BUILD_DEPENDS="rust-cargo"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	make setup &&  make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/bin $fs/usr/
+	cp -a $install/usr/share/applications $fs/usr/share/
+	cp -a $install/usr/share/icons $fs/usr/share/
+}

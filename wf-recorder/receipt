@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="wf-recorder"
+VERSION="0.3.0"
+CATEGORY="x-window"
+SHORT_DESC="wf-recorder is a utility program for screen recording of wlroots-based compositors."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="MIT"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://github.com/ammen99/wf-recorder"
+WGET_URL="$WEB_SITE/archive/refs/tags/v$VERSION.tar.gz"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="wayland pulseaudio-wayland ffmpeg-wayland libxml2"
+BUILD_DEPENDS="wayland-dev wayland-protocols pulseaudio-wayland-dev
+	ffmpeg-wayland-dev libxml2-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir build && cd build
+	meson --prefix=/usr .. &&
+	ninja && ninja install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin	$fs/usr
+}

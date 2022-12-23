@@ -12,14 +12,14 @@ LFS="http://www.linuxfromscratch.org/blfs/view/stable/postlfs/p11-kit.html"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://github.com/p11-glue/p11-kit/releases/download/$VERSION/$TARBALL"
 
-BUILD_DEPENDS="cacerts gettext glib glib-dev gtk-doc libffi libffi-dev \
-	libtasn1-dev libxslt"
+BUILD_DEPENDS="cacerts gettext glib glib-dev libffi libffi-dev libtasn1-dev"
+	# gtk-doc libxslt
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure					\
-		--sysconfdir=/etc			\
+	./configure	--disable-doc				\
+		--sysconfdir=/etc					\
 		--with-module-path=/usr/lib/pkcs11	\
 		$CONFIGURE_ARGS && 
 	make &&

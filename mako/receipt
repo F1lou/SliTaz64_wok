@@ -1,0 +1,30 @@
+# SliTaz package receipt.
+
+PACKAGE="mako"
+VERSION="1.7.1"
+CATEGORY="x-window"
+SHORT_DESC="A lightweight notification daemon for Wayland. Works on Sway."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="MIT"
+WEB_SITE="https://github.com/emersion/mako"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/archive/refs/tags/v$VERSION.tar.gz"
+
+DEPENDS="wayland cairo-wayland pango-wayland basu"
+BUILD_DEPENDS="wayland-dev wayland-protocols cairo-wayland-dev 
+	pango-wayland-dev basu-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	meson --prefix=/usr build &&
+	ninja -C build &&
+	ninja install -C build
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+
+genpkg_rules()
+{
+	cp -a $install/usr $fs/
+}

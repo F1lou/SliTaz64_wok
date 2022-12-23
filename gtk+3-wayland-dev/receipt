@@ -12,7 +12,7 @@ WANTED="gtk+3-wayland"
 DEPENDS="atk-wayland-dev cairo-wayland-dev dbus-wayland-dev
 	gdk-pixbuf-wayland-dev gtk+3-wayland pango-wayland-dev
 	libepoxy-wayland-dev wayland-dev libxkbcommon-wayland-dev
-	jpeg-dev libpng-dev pkg-config tiff-dev"
+	jpeg-dev libpng-dev pkg-config tiff-dev libexpoy-wayland-dev"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

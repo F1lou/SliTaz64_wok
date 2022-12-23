@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="basu-dev"
+VERSION="0.2.1"
+CATEGORY="system-tools"
+SHORT_DESC="The sd-bus library, extracted from systemd."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="LGPL2.1"
+WEB_SITE="https://sr.ht/~emersion/basu/"
+
+DEPENDS="basu"
+WANTED="basu"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/include			$fs/usr/
+	cp -a $install/usr/lib64/pkgconfig	$fs/usr/lib
+
+}
