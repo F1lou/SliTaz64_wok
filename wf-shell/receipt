@@ -12,16 +12,16 @@ WGET_URL="https://github.com/WayfireWM/wf-shell/releases/download/v$VERSION/$TAR
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="wayfire wf-config gtk-layer-shell libepoxy-wayland
-	pulseaudio-wayland alsa-lib"
+	pulseaudio-wayland alsa-lib wayland-logout"
 BUILD_DEPENDS="wayfire-dev gtkmm3-wayland-dev gtk-layer-shell-dev
 	gobject-introspection-wayland-dev libepoxy-wayland-dev wf-config-dev
-	pulseaudio-wayland-dev alsa-lib-dev"
+	pulseaudio-wayland-dev alsa-lib-dev wayland-logout"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	mkdir build && cd build
-	meson --prefix=/usr .. &&
+	meson --prefix=/usr -Dwayland-logout=false .. &&
 	ninja && ninja install
 }
 

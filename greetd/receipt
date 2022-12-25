@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="greetd"
+VERSION="0.8.0"
+CATEGORY="x-window"
+SHORT_DESC="greetd is a minimal and flexible login manager daemon that makes no assumptions about what you want to launch."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="MIT"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WEB_SITE="https://sr.ht/~kennylevinsen/greetd"
+WGET_URL="https://git.sr.ht/~kennylevinsen/$PACKAGE/archive/$VERSION.tar.gz"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="pam"
+BUILD_DEPENDS="rust-cargo pam-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cargo build --release
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/bin $fs/etc/greetd
+	cp -a $src/target/release/greetd	$fs/usr/bin
+	cp -a $src/config.toml				$fs/etc/greetd
+}
