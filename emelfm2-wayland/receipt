@@ -39,5 +39,5 @@ genpkg_rules()
 	cp -a $install/usr/lib $fs/usr
 	cp -a $install/usr/share/pixmaps $fs/usr/share
 	cd $fs/usr/share/pixmaps
-	#~ ln -s emelfm2/emelfm2_32.png emelfm2.png
+	ln -s emelfm2/32x32/emelfm2.png .
 }

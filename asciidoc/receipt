@@ -16,6 +16,7 @@ BUILD_DEPENDS="libxml2-tools docbook-xml docbook-xsl libxslt py3k"
 # Rules to configure and make the package.
 compile_rules()
 {
+	export XML_CATALOG_FILES="/etc/xml/catalog"
 	autoconf
 	./configure \
 		--sysconfdir=/etc \
@@ -26,7 +27,5 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr
-	cp -a $install/etc $fs
-	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr $fs
 }

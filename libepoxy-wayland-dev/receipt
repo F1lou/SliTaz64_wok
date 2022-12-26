@@ -9,7 +9,7 @@ LICENSE="other"
 WEB_SITE="https://github.com/anholt/libepoxy"
 
 WANTED="libepoxy-wayland"
-DEPENDS="mesa-wayland-dev"
+DEPENDS="libepoxy-wayland mesa-wayland-dev"
 
 
 genpkg_rules() {
