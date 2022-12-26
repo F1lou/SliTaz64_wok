@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="poppler-wayland-apps"
+VERSION="22.11.0"
+CATEGORY="office"
+SHORT_DESC="Poppler utilities to manipulate PDF file."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WANTED="poppler-wayland"
+WEB_SITE="https://poppler.freedesktop.org/"
+
+DEPENDS="fontconfig poppler-wayland cairo-wayland zlib libpng gcc-lib-base"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr
+	cp -a $install/usr/bin $fs/usr
+	if [ -f $fs/usr/bin/poppler-glib-demo ]; then
+		rm -rf $fs/usr/bin/poppler-glib-demo
+	fi
+}

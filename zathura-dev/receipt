@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="zathura-dev"
+VERSION="0.5.2"
+CATEGORY="x-window"
+SHORT_DESC="Document viewer."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="MIT"
+WEB_SITE="https://git.pwmt.org/pwmt/zathura"
+WANTED="zathura"
+
+DEPENDS="zathura glib-dev gtk+3-wayland-dev libmagic-dev
+	libepoxy-wayland-dev"
+BUILD_DEPENDS=""
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/include				$fs/usr
+	cp -a $install/usr/lib64/pkgconfig		$fs/usr/lib
+}

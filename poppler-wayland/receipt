@@ -1,0 +1,43 @@
+# SliTaz package receipt.
+
+PACKAGE="poppler-wayland"
+SOURCE="poppler"
+VERSION="22.11.0"
+CATEGORY="office"
+SHORT_DESC="Poppler is a PDF rendering library."
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WEB_SITE="https://poppler.freedesktop.org/"
+WGET_URL="https://poppler.freedesktop.org/$TARBALL"
+
+DEPENDS="expat freetype glib jpeg lcms2 gcc-lib-base cairo-wayland
+	tiff bzlib libpng openjpeg2 nss" # xorg-libXdamage 
+BUILD_DEPENDS="$DEPENDS bash expat-dev pkg-config jpeg-dev tiff-dev 
+	freetype-dev fontconfig-dev glib-dev lcms2-dev zlib-dev 
+	cairo-wayland-dev automake bzip2-dev libpng-dev libtool libxml2-dev
+	nss-dev pixman-dev libboost-dev gobject-introspection-wayland-dev
+	gtk+3-wayland-dev gdk-pixbuf-wayland-dev libepoxy-wayland-dev 
+	mesa-wayland-dev openjpeg2-dev" 
+	# Qt4-dev libxcb-dev xorg-libX11-dev xorg-libXtst-dev xorg-libXdmcp-dev xorg-libXrender-dev xorg-libXext-dev 
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	mkdir build && cd build 
+	cmake  	-DCMAKE_BUILD_TYPE=Release   \
+			-DCMAKE_INSTALL_PREFIX=/usr  \
+			-DENABLE_UNSTABLE_API_ABI_HEADERS=OFF \
+			.. &&
+	make &&	make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib64
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
+	#following libs are included in poppler-qt4
+	#~ rm -r $fs/usr/lib/*qt4.so*
+}
+
