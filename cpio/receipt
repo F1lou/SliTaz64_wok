@@ -18,6 +18,7 @@ BUILD_DEPENDS=""
 # Rules to configure and make the package.
 compile_rules()
 {
+	export CFLAGS="$CFLAGS -fcommon"
 	./configure --prefix=/usr \
 		--bindir=/bin \
 		--libexecdir=/usr/bin \

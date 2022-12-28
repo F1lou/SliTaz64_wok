@@ -13,8 +13,8 @@ TAGS="window-manager"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="xorg-libX11 xorg-xsetroot"
-BUILD_DEPENDS="xorg-libX11-dev xorg-xproto xorg-xineramaproto \
-xorg-libXinerama-dev xorg-randrproto xorg-libXft-dev"
+BUILD_DEPENDS="xorg-libX11-dev xorg-proto xorg-libXinerama-dev xorg-libXft-dev"
+	#  xorg-xineramaproto xorg-x proto xorg-randrproto
 
 # Rules to configure and make the package.
 compile_rules()

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="amd-microcode"
-VERSION="20180125" # just date of creating the receipt
+VERSION="20221228" # just date of creating the receipt
 CATEGORY="kernel"
 SHORT_DESC="AMD processor microcode update for Linux"
 MAINTAINER="al.bobylev@gmail.com"

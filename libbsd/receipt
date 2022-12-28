@@ -1,6 +1,6 @@
 # SliTaz package receipt.
 
-PACKAGE=""
+PACKAGE="libbsd"
 VERSION="0.11.3"
 CATEGORY="development"
 SHORT_DESC="Provides useful functions commonly found on BSD systems."

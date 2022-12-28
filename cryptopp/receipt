@@ -1,26 +1,24 @@
 # SliTaz package receipt.
 
 PACKAGE="cryptopp"
-VERSION="8.6.0"
+VERSION="8.7.0"
 CATEGORY="security"
 SHORT_DESC="C++ class library of cryptographic schemes."
 MAINTAINER="pankso@slitaz.org"
 LICENSE="MIT PublicDomain"
 WEB_SITE="https://www.cryptopp.com"
 
-TARBALL="${PACKAGE}860.zip"
+TARBALL="${PACKAGE}870.zip"
 WGET_URL="$WEB_SITE/$TARBALL"
 BUILD_DEPENDS=""
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	#~ sed -i 's|uname -m|echo i486|' GNUmakefile
-	
 	make PREFIX=/usr
-	#~ make PREFIX=/usr libcryptopp.so &&
-	#~ make PREFIX=/usr libcryptopp.pc &&
-	#~ make PREFIX=/usr install
+	make PREFIX=/usr libcryptopp.so &&
+	make PREFIX=/usr libcryptopp.pc &&
+	make PREFIX=/usr install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

@@ -1,12 +1,12 @@
 # SliTaz package receipt.
 
 PACKAGE="daloradius"
-VERSION="0.9-9"
+VERSION="1.1-2"
 CATEGORY="network"
 SHORT_DESC="A RADIUS web platform for managing Hotspots."
 MAINTAINER="pascal.bellard@slitaz.org"
 LICENSE="GPL2"
-TARBALL="$PACKAGE-$VERSION.tar.gz"
+TARBALL="$PACKAGE-$VERSION.zip"
 WEB_SITE="http://www.daloradius.com/"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
@@ -16,7 +16,7 @@ DEPENDS="php-gd php-mysql freeradius"
 genpkg_rules()
 {
 	mkdir -p $fs/usr/share/daloradius $fs/etc/mysql.d
-	cp -a $src/* $fs/usr/share/daloradius
+	cp -a $src/daloradius/* $fs/usr/share/daloradius
 	mv $fs/usr/share/daloradius/library/daloradius.conf.php $fs/etc/
 	ln -s /etc/daloradius.conf.php $fs/usr/share/daloradius/library/daloradius.conf.php
 	cat > $fs/etc/mysql.d/daloradius <<EOT

@@ -13,10 +13,10 @@ WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION%.*}/$TARBALL"
 
 DEPENDS="atk cairo dbus dbus-glib expat fontconfig freetype glib glibc-base gtk+ 
 	libgio libpng libxml2 ORBit2 pango pixman polkit xorg-libX11 xorg-libXau 
-	xorg-libXcomposite xorg-libXcursor xorg-libXdamage xorg-libXdmcp 
+	xorg-libXcomposite xorg-libXcursor xorg-libXdamage xorg-libXdmcp liblzma
 	xorg-libXext xorg-libXfixes xorg-libXinerama xorg-libXrender zlib"
 BUILD_DEPENDS="dbus-dev dbus-glib-dev gettext gobject-introspection-dev intltool 
-	libcomerr3 libcrypto libxml2-dev ORBit2-dev polkit-dev"
+	libcomerr3 libcrypto libxml2-dev ORBit2-dev polkit-dev liblzma-dev"
 
 # Rules to configure and make the package.
 compile_rules()

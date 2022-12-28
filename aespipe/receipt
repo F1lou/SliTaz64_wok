@@ -1,15 +1,15 @@
 # SliTaz package receipt.
 
 PACKAGE="aespipe"
-VERSION="2.4f"
+VERSION="3.7z"
 CATEGORY="utilities"
 SHORT_DESC="AES encrypting or decrypting pipe."
 MAINTAINER="pascal.bellard@slitaz.org"
 LICENSE="GPL"
-WEB_SITE="https://sourceforge.net/projects/loop-aes/"
+WEB_SITE="https://sourceforge.net/projects/loop-aes"
 
 TARBALL="$PACKAGE-v$VERSION.tar.bz2"
-WGET_URL="${WEB_SITE}files/$PACKAGE/v$VERSION/$TARBALL"
+WGET_URL="${WEB_SITE}/files/loop-aes/v$VERSION/loop-AES-v$VERSION.tar.bz2"
 
 # Rules to configure and make the package.
 compile_rules()

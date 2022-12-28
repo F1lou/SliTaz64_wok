@@ -1,6 +1,6 @@
 # SliTaz package receipt.
 
-PACKAGE=""
+PACKAGE="libbsd-dev"
 VERSION="0.11.3"
 CATEGORY="development"
 SHORT_DESC="Development files for ."
@@ -8,8 +8,8 @@ MAINTAINER="claudinei@slitaz.org"
 LICENSE="BSD MIT"
 WEB_SITE="https://.freedesktop.org/wiki/"
 
-DEPENDS=" pkg-config"
-WANTED=""
+DEPENDS="libbsd pkg-config"
+WANTED="libbsd"
 
 HOST_ARCH="x86_64 i486 arm"
 

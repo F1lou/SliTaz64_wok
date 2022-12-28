@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="assaultcube"
-VERSION="1.1.0.4"
+VERSION="1.2.0.2"
 CATEGORY="games"
 SHORT_DESC="A realistic team oriented multiplayer FPS based on the cube engine."
 MAINTAINER="slaxemulator@gmail.com"

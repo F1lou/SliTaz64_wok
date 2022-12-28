@@ -1,0 +1,29 @@
+# SliTaz package receipt.
+
+PACKAGE="python3-psautohint"
+VERSION="2.4.0"
+CATEGORY="development"
+TAGS="python"
+SHORT_DESC="Fast template library."
+MAINTAINER="taziden@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://github.com/adobe-type-tools/psautohint"
+
+SOURCE="psautohint"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="https://files.pythonhosted.org/packages/source/p/$SOURCE/$TARBALL"
+
+DEPENDS="py3k"
+BUILD_DEPENDS="py3k py3k-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	python3 setup.py install --root=$DESTDIR
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/usr	$fs
+}

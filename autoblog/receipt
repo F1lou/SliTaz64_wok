@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="autoblog"
-VERSIONV1="0.1.31"
+VERSIONV1="0.1.32"
 VERSIONV2="2.5.22"	# need php 5.3
 VERSION="$VERSIONV1"
 CATEGORY="network"

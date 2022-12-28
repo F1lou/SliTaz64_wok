@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="dolibarr"
-VERSION="14.0.4"
+VERSION="16.0.3"
 CATEGORY="office"
 SHORT_DESC="ERP/CRM for small and medium companies."
 MAINTAINER="erjo@slitaz.org"
@@ -9,7 +9,7 @@ LICENSE="GPLv3"
 WEB_SITE="https://www.dolibarr.fr/"
 
 TARBALL="$PACKAGE-$VERSION.tgz"
-WGET_URL="https://sourceforge.net/projects/$PACKAGE/files/Dolibarr%20ERP-CRM/$VERSION/$TARBALL"
+WGET_URL="https://sourceforge.net/projects/$PACKAGE/files/Dolibarr%20ERP-CRM/$VERSION/$TARBALL/download"
 
 DEPENDS="apache php-apache php-gd php-mysqli"
 BUILD_DEPENDS=""
