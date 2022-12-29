@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="cryptsetup"
-VERSION="2.5.0"
+VERSION="2.6.0"
 CATEGORY="system-tools"
 SHORT_DESC="dm-crypt setup tool for encryption of block devices."
 MAINTAINER="b1+slitaz@nagel.org"
@@ -11,26 +11,19 @@ WEB_SITE="https://gitlab.com/$PACKAGE/$PACKAGE"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://www.kernel.org/pub/linux/utils/$PACKAGE/v${VERSION%.*}/$TARBALL"
 
-DEPENDS="e2fsprogs libdevmapper libgcrypt libjson-c openssl libssh popt"
-BUILD_DEPENDS="e2fsprogs-dev libdevmapper-dev libgcrypt-dev 
+DEPENDS="e2fsprogs libdevmapper libgcrypt libjson-c openssl libssh popt
+	libsodium"
+BUILD_DEPENDS="e2fsprogs-dev libdevmapper-dev libgcrypt-dev
 	libjson-c-dev openssl-dev popt-dev util-linux-blkid-dev 
 	util-linux-uuid-dev libssh-dev"
-
-current_version()
-{
-	local base=$(wget -O - ${WGET_URL%/v*} 2>/dev/null | \
-		sed '/href/!d;s|.*href="\(.*\)".*|\1|' | tail -n 1)
-	wget -O - ${WGET_URL%/v*}/$base 2>/dev/null | sed \
-		"/href/!d;/z/!d;s|.*href=\"$PACKAGE-\\(.*\\).tar.*\".*|\\1|" | \
-		tail -n1
-}
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure		\
-		--prefix=/usr	\
-		--disable-asciidoc \
+	./configure				\
+		--prefix=/usr		\
+		--disable-asciidoc	\
+		--enable-libargon2	\
 		$CONFIGURE_ARGS &&
 	make &&
 	make DESTDIR=$DESTDIR install

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="aspell-pl"
-VERSION="6.0_20191230-0"
+VERSION="6.0_20221201-0"
 CATEGORY="system-tools"
 SHORT_DESC="Polish aspell dictionary."
 MAINTAINER="paul@slitaz.org"

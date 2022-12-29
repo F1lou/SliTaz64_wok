@@ -1,17 +1,19 @@
 # SliTaz package receipt.
 
 PACKAGE="dzen2"
-VERSION="0.8.5"
+VERSION="0.1"
 CATEGORY="utilities"
 SHORT_DESC="A general purpose messaging and notification program."
 MAINTAINER="mallory@sweetpeople.org"
 LICENSE="MIT"
-TARBALL="$PACKAGE-$VERSION.tar.gz"
-WEB_SITE="http://gotmor.googlepages.com/dzen"
-WGET_URL="http://gotmor.googlepages.com/$TARBALL"
+TARBALL="$PACKAGE-$VERSION.zip"
+WEB_SITE="https://github.com/minos-org/dzen2/"
+WGET_URL="$WEB_SITE/archive/refs/heads/master.zip"
 TAGS="system monitor notification"
 
 DEPENDS="xorg-libX11 xorg-libXau xorg-libXdmcp"
+BUILD_DEPENDS="xorg-libX11-dev xorg-libXinerama-dev xorg-libXpm-dev
+	xorg-libXft-dev"
 
 # Rules to configure and make the package.
 compile_rules()
