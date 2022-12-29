@@ -30,11 +30,11 @@ compile_rules()
 genpkg_rules()
 {
 	mkdir -p $fs/usr/share
-	mkdir -p $fs/lib
+	mkdir -p $fs/lib64
 
 	cp -a $install/usr/share/keyutils	$fs/usr/share
 	cp -a $install/etc			$fs
 	cp -a $install/bin			$fs
 	cp -a $install/sbin			$fs
-	cp -a $install/lib/*.so*		$fs/lib
+	cp -a $install/lib64/*.so*	$fs/lib64
 }

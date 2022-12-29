@@ -1,36 +1,38 @@
 # SliTaz package receipt.
 
-PACKAGE="fuse2"
-VERSION="2.9.9"
+PACKAGE="fuse3"
+VERSION="3.12.0"
 SOURCE="fuse"
 CATEGORY="system-tools"
 SHORT_DESC="Fuse Filsystem in user space."
 MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL2"
 TARBALL="$SOURCE-$VERSION.tar.gz"
-WEB_SITE="http://fuse.sourceforge.net/"
-WGET_URL="https://github.com/libfuse/libfuse/releases/download/fuse-$VERSION/$TARBALL"
+WEB_SITE="https://github.com/libfuse/libfuse"
+WGET_URL="$WEB_SITE/archive/refs/tags//$TARBALL"
 TAGS="filesystem"
 HOST_ARCH="x86_64 i486 arm"
 
-BUILD_DEPENDS="automake"
+DEPENDS="eudev"
+BUILD_DEPENDS="eudev-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	patch -Np1 -i $stuff/fuse2_glibc2-34.patch
-	autoreconf
-	./configure --prefix=/usr &&
-	make && make install
+	mkdir build && cd build
+	meson --prefix=/usr .. &&
+	ninja && ninja install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/lib64
 	cp -a $install/dev $fs
-	cp -a $install/sbin $fs
+	cp -a $install/etc $fs
+	cp -a $install/lib/udev $fs/etc
 	cp -a $install/usr/bin $fs/usr
-	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/sbin $fs/usr
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
 }
 

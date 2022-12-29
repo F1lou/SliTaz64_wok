@@ -1,0 +1,86 @@
+--- control.c
++++ control.c
+@@ -1076,7 +1076,7 @@
+     return 0;
+ }
+ 
+-inline int check_control (const struct buffer *buf, struct tunnel *t,
++static inline int check_control (const struct buffer *buf, struct tunnel *t,
+                           struct call *c)
+ {
+     /*
+@@ -1212,7 +1212,7 @@
+     return 0;
+ }
+ 
+-inline int check_payload (struct buffer *buf, struct tunnel *t,
++static inline int check_payload (struct buffer *buf, struct tunnel *t,
+                           struct call *c)
+ {
+     /*
+@@ -1318,7 +1318,7 @@
+ #endif
+     return 0;
+ }
+-inline int expand_payload (struct buffer *buf, struct tunnel *t,
++static inline int expand_payload (struct buffer *buf, struct tunnel *t,
+                            struct call *c)
+ {
+     /*
+@@ -1498,7 +1498,7 @@
+     toss (buf);
+ }
+ 
+-inline int write_packet (struct buffer *buf, struct tunnel *t, struct call *c,
++static inline int write_packet (struct buffer *buf, struct tunnel *t, struct call *c,
+                          int convert)
+ {
+     /*
+
+
+--- misc.c
++++ misc.c
+@@ -147,7 +147,7 @@
+     printf ("}\n");
+ }
+ 
+-inline void swaps (void *buf_v, int len)
++void swaps (void *buf_v, int len)
+ {
+ #ifdef __alpha
+     /* Reverse byte order alpha is little endian so lest save a step.
+     
+     
+--- misc.h
++++ misc.h
+@@ -68,7 +68,7 @@
+ extern struct buffer *new_buf (int);
+ extern void udppush_handler (int);
+ extern int addfcs (struct buffer *buf);
+-extern inline void swaps (void *, int);
++extern void swaps (void *, int);
+ extern void do_packet_dump (struct buffer *);
+ extern void status (const char *fmt, ...);
+ extern void status_handler (int signal);
+ 
+ 
+--- network.c
++++ network.c
+@@ -99,7 +99,7 @@
+     return 0;
+ }
+ 
+-inline void extract (void *buf, int *tunnel, int *call)
++static inline void extract (void *buf, int *tunnel, int *call)
+ {
+     /*
+      * Extract the tunnel and call #'s, and fix the order of the 
+@@ -119,7 +119,7 @@
+     }
+ }
+ 
+-inline void fix_hdr (void *buf)
++static inline void fix_hdr (void *buf)
+ {
+     /*
+      * Fix the byte order of the header

@@ -15,8 +15,8 @@ DEPENDS="glibc-base"
 BUILD_DEPENDS="bison"
 
 # Rules to configure and make the package.
-compile_rules() {
-	cd $src
+compile_rules() 
+{
 	./configure --prefix=/usr $CONFIGURE_ARGS &&
 	make &&
 	make DESTDIR=$DESTDIR install 

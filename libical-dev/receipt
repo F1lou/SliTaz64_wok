@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libical-dev"
-VERSION="3.0.14"
+VERSION="3.0.16"
 CATEGORY="development"
 SHORT_DESC="Opensource ICalendar - development files."
 MAINTAINER="erjo@slitaz.org"

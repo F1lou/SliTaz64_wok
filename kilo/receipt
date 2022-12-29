@@ -6,12 +6,12 @@ CATEGORY="office"
 SHORT_DESC="A text editor in less than 1000 LOC with syntax highlight and search."
 MAINTAINER="paul@slitaz.org"
 LICENSE="BSD"
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
+TARBALL="$PACKAGE-$VERSION.zip"
 WEB_SITE="https://github.com/antirez/kilo"
-WGET_URL="git|git://github.com/antirez/kilo"
+WGET_URL="https://github.com/antirez/$PACKAGE/archive/refs/heads/master.zip"
 
-#DEPENDS=""
-BUILD_DEPENDS="git bzip2"
+DEPENDS=""
+BUILD_DEPENDS=""
 
 # Rules to configure and make the package.
 compile_rules()

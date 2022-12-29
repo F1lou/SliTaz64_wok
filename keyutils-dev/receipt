@@ -14,10 +14,9 @@ WANTED="keyutils"
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr
-	mkdir -p $fs/lib
+	mkdir -p $fs/usr $fs/lib $fs/lib64
 
-	cp -a $install/usr/include	$fs/usr
-	cp -a $install/lib/*.a		$fs/lib
-	cp -a $install/lib/pkgconfig	$fs/lib
+	cp -a $install/usr/include		$fs/usr
+	cp -a $install/lib64/*.a		$fs/lib64
+	cp -a $install/lib64/pkgconfig	$fs/lib
 }

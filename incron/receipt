@@ -16,9 +16,9 @@ DEPENDS="gcc-lib-base"
 # Rules to configure and make the package.
 compile_rules()
 {
-	
 	patch icd-main.cpp < $stuff/icd-main.cpp.patch
 	sed -i 's|/usr/local|/usr|' Makefile
+	export CXXFLAGS="$CXXFLAGS -std=c++14"
 	make &&
 	make DESTDIR=$DESTDIR install
 }

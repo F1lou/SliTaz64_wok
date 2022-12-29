@@ -15,11 +15,12 @@ TAGS="vpn tunnel"
 # Rules to configure and make the package.
 compile_rules()
 {
+	patch -Np1 -i $stuff/l2tpd.patch
 	sed -i 's/dont know how to handle mandatory attribute.*"$/&,/' avp.c
 	sed -i 's/static struct addr_ent/struct addr_ent/' aaa.c
 	sed -i 's/recv packet from.*,$/&\\n \\/' network.c
 	sed -i 's/If you do, please$/&\\n \\/' call.c
-	make
+	CFLAGS="$CFLAGS -fcommon" make
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

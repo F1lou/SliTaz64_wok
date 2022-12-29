@@ -16,7 +16,7 @@ BUILD_DEPENDS=""
 # Rules to configure and make the package.
 compile_rules()
 {
-	unset CXXFLAGS
+	export CXXFLAGS="-std=c++14"
 	mkdir Objects_static Objects_shared _internal/Source/Dependencies
 	mkdir -p $DESTDIR/usr/lib 
 	sed -i 's|^in[a-z]*_path *= |&$(DESTDIR)|' makefile

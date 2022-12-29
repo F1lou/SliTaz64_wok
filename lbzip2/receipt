@@ -13,6 +13,7 @@ WGET_URL="http://archive.lbzip2.org/$TARBALL"
 # Rules to configure and make the package.
 compile_rules()
 {
+	patch -Np1 -i $stuff/fseterr.patch
 	./configure --prefix=/usr $CONFIGURE_ARGS &&
 	make check &&
 	make DESTDIR=$DESTDIR install

@@ -1,0 +1,31 @@
+# SliTaz package receipt.
+
+PACKAGE="libicu"
+VERSION="72-1"
+CATEGORY="development"
+SHORT_DESC="International Components for Unicode."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="ICU"
+WEB_SITE="https://github.com/unicode-org/icu"
+
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/archive/refs/tags/release-$VERSION.tar.gz"
+
+DEPENDS=""
+BUILD_DEPENDS=""
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	cd $src/icu4c/source
+	./configure	--prefix=/usr $CONFIGURE_ARGS &&
+	make &&
+	make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/lib/libicu*.so*	$fs/usr/lib
+}

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libnsgif"
-VERSION="0.0.3"
+VERSION="0.2.1"
 CATEGORY="system-tools"
 SHORT_DESC="Libnsgif is a decoding library for the GIF image file format."
 MAINTAINER="pankso@slitaz.org"
@@ -10,6 +10,8 @@ TARBALL="$PACKAGE-$VERSION-src.tar.gz"
 WEB_SITE="http://www.netsurf-browser.org/projects/libnsgif/"
 WGET_URL="http://download.netsurf-browser.org/libs/releases/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
+
+BUILD_DEPENDS="netsurf"
 
 # Rules to configure and make the package.
 compile_rules()

@@ -18,8 +18,8 @@ BUILD_DEPENDS="cmake"
 # Rules to configure and make the package.
 compile_rules()
 {
-	mkdir build
-	cd build &&
+	sed -i '41i #include <unistd.h>' src/CTPP2FileSourceLoader.cpp
+	mkdir build && cd build
 	cmake -DCMAKE_INSTALL_PREFIX=/usr .. &&
 	make -j 1 &&
 	make DESTDIR=$DESTDIR install

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libpthread-stubs-dev"
-VERSION="0.2"
+VERSION="0.4"
 CATEGORY="development"
 SHORT_DESC="Weak aliases for pthread functions development files"
 MAINTAINER="erjo@slitaz.org"
@@ -16,6 +16,6 @@ DEPENDS="libpthread-stubs pkg-config"
 genpkg_rules()
 {
 	mkdir -p $fs/usr/lib
-	cp -a $install/usr/lib/*.la $fs/usr/lib
+	#~ cp -a $install/usr/lib/*.la $fs/usr/lib
 	cp -a $install/usr/lib/pkgconfig $fs/usr/lib
 }
