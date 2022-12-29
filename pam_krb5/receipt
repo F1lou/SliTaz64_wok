@@ -31,5 +31,5 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	cp -a $install/lib	$fs
+	cp -a $install/lib64	$fs
 }

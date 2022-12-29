@@ -1,7 +1,7 @@
 # SliTaz package receipt v2.
 
 PACKAGE="mbedtls-dev"
-VERSION="2.6.0"
+VERSION="3.3.0"
 CATEGORY="development"
 SHORT_DESC="Portable cryptographic and SSL/TLS library (ex polarssl) (development files)"
 MAINTAINER="al.bobylev@gmail.com"

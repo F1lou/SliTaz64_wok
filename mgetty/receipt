@@ -25,6 +25,11 @@ compile_rules()
 	cp Makefile Makefile.dist
 	cp Makefile Makefile.install
 	cp policy.h-dist policy.h
+	
+	# patching for glib deprecations
+	sed -i '335d' logfile.c
+	sed -i 's|"<error not in list>" |strerror(errnr)|' logfile.c
+	
 	sed -i  -e 's|/* #define AUTO_PPP */|#define AUTO_PPP|' \
 		policy.h
 	sed -i  -e "s|^prefix=/usr/local|prefix=/usr|" \

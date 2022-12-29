@@ -10,13 +10,12 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="https://github.com/dimkr/logfence"
 WGET_URL="$WEB_SITE/archive/v$VERSION.tar.gz"
 
-DEPENDS="fuse"
-BUILD_DEPENDS="fuse-dev"
+DEPENDS="fuse2"
+BUILD_DEPENDS="fuse2-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export CFLAGS="$CFLAGS -I/usr/include/fuse3/"
 	make &&
 	make DESTDIR=$DESTDIR install
 }

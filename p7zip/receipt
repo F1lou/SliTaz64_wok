@@ -13,7 +13,8 @@ WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 # Rules to configure and make the package.
 compile_rules()
 {
-	export CFLAGS="$CFLAGS -Wno-narrowing" 
+	cp makefile.linux_amd64 makefile.machine
+	export CFLAGS="$CFLAGS -std=c++11, -Wno-narrowing" 
 	make 7zr
 }
 

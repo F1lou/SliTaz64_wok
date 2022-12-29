@@ -1,26 +1,24 @@
 # SliTaz package receipt.
 
 PACKAGE="monkey"
-VERSION="1.5.6"
+VERSION="1.6.9"
 CATEGORY="network"
 SHORT_DESC="Lightweight HTTP server"
 MAINTAINER="necrophcodr@necrophcodr.me"
 LICENSE="APL2"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
-WEB_SITE="https://web.archive.org/web/20200229054452/http://monkey-project.com/"
-WGET_URL="$WEB_SITE/releases/${VERSION%.*}/$TARBALL"
+WEB_SITE="https://github.com/monkey/monkey"
+WGET_URL="$WEB_SITE/releases/archive/refs/tags/v$VERSION.tar.gz"
 
 DEPENDS=""
-BUILD_DEPENDS="findutils"
+BUILD_DEPENDS="findutils bash"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure --enable-shared --prefix=/usr --datadir=/var/www \
-	--pidfile=/var/run/monkey.pid --sysconfdir=/etc/monkey \
-	--disable-plugins=mbedtls --mandir=/usr/share/man \
-	--plugdir=/usr/share/monkey/plugins &&
-	make &&
+	export CFLAGS="$CFLAGS -fcommon"
+	./configure &&
+	make -j1 &&
 	make DESTDIR=$install install
 }
 

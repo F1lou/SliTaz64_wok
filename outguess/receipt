@@ -10,14 +10,13 @@ TARBALL="$VERSION.tar.gz"
 WEB_SITE="https://www.rbcafe.com/software/outguess/"
 WGET_URL="https://github.com/resurrecting-open-source-projects/$PACKAGE/archive/refs/tags/$TARBALL"
 TAGS="stenography"
-BUILD_DEPENDS=""
+BUILD_DEPENDS="jpeg-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	
 	./autogen.sh
-	./configure --prefix=/usr \
+	./configure --prefix=/usr --with-generic-jconfig \
 		$CONFIGURE_ARGS &&
 	make && make install
 }
@@ -26,5 +25,5 @@ compile_rules()
 genpkg_rules()
 {
 	mkdir -p $fs/usr/bin
-	cp -a $src/outguess $fs/usr/bin
+	cp -a $install/usr/bin/outguess $fs/usr/bin
 }

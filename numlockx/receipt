@@ -11,7 +11,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="http://pkgs.fedoraproject.org/repo/pkgs/$PACKAGE/$TARBALL/be9109370447eae23f6f3f8527bb1a67/$TARBALL"
 
 DEPENDS="xorg-libXtst"
-BUILD_DEPENDS=""
+BUILD_DEPENDS="xorg-libX11-dev"
 
 # Rules to configure and make the package.
 compile_rules()

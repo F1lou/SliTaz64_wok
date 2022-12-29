@@ -21,7 +21,7 @@ compile_rules()
 {
 	# suitable for lua 5.2
 	# package for lua 5.1 should be named lua5.1-ffi
-	sed -i 's|lua5.1|lua5.2|'	Makefile
+	sed -i 's|lua5.1|lua5.4|'	Makefile
 
 	make &&
 	make test
