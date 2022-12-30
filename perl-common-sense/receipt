@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="perl-common-sense"
-VERSION="3.74"
+VERSION="3.75"
 CATEGORY="development"
 SHORT_DESC="Perl extension common::sense."
 MAINTAINER="pascal.bellard@slitaz.org"

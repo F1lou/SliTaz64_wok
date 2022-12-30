@@ -10,6 +10,9 @@ TARBALL="master.zip"
 WEB_SITE="https://github.com/sleuthkit/scalpel"
 WGET_URL="$WEB_SITE/archive/refs/heads/$TARBALL"
 
+DEPENDS="libtre"
+BUILD_DEPENDS="libtre-dev"
+
 # Rules to configure and make the package.
 compile_rules()
 {

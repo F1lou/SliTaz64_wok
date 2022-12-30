@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="perl-gd"
-VERSION="2.71"
+VERSION="2.76"
 CATEGORY="development"
 SHORT_DESC="Perl extension GD."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -13,7 +13,8 @@ TARBALL="$SOURCE-$VERSION.tar.gz"
 WGET_URL="https://www.cpan.org/modules/by-module/GD/$TARBALL"
 
 DEPENDS="libgd perl"
-BUILD_DEPENDS="libgd libgd-dev perl"
+BUILD_DEPENDS="libgd libgd-dev perl
+	perl-ExtUtils::PkgConfig"
 
 # Rules to configure and make the package.
 compile_rules()

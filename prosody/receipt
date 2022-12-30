@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="prosody"
-VERSION="0.11.5"
+VERSION="0.12.2"
 CATEGORY="network"
 SHORT_DESC="Xmpp-jabber server in lua."
 MAINTAINER="allan316@gmail.com"
@@ -11,8 +11,8 @@ WEB_SITE="https://prosody.im"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$WEB_SITE/downloads/source/$TARBALL"
 
-DEPENDS="libcrypto libidn libssl lua"
-BUILD_DEPENDS="libidn-dev openssl-dev lua-dev"
+DEPENDS="libcrypto libidn libssl lua libicu"
+BUILD_DEPENDS="libidn-dev openssl-dev lua-dev libicu-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 

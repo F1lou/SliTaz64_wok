@@ -1,47 +1,49 @@
 # SliTaz package receipt.
 
 PACKAGE="polkit-pam"
-VERSION="0.104"
+VERSION="121"
 CATEGORY="base-system"
 SHORT_DESC="Polkit with PAM support."
 MAINTAINER="slaxemulator@gmail.com"
 LICENSE="LGPL2"
 SOURCE="polkit"
-TARBALL="$SOURCE-$VERSION.tar.gz"
+TARBALL="$SOURCE-$VERSION.tar.bz2"
 WEB_SITE="http://www.freedesktop.org/wiki/Software/PolicyKit"
-WGET_URL="http://hal.freedesktop.org/releases/$TARBALL"
+WGET_URL="https://gitlab.freedesktop.org/polkit/polkit/-/archive/$VERSION/polkit-$VERSION.tar.bz2"
 PROVIDE="polkit"
 
-DEPENDS="glib libgio gobject-introspection dbus dbus-glib expat pam"
-BUILD_DEPENDS="glib-dev libgio-dev gobject-introspection-dev dbus-dev \
-dbus-glib-dev expat-dev pam-dev"
+DEPENDS="glib libgio gobject-introspection dbus dbus-glib expat pam libjs"
+BUILD_DEPENDS="glib-dev libgio-dev gobject-introspection-dev dbus-dev
+	dbus-glib-dev expat-dev pam-dev intltool libjs-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	cd $src
-	./configure \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var \
-		--libexecdir=/usr/lib/polkit-1 \
-		--disable-man-pages \
-		--disable-gtk-doc \
-		--with-authfw=pam \
-		$CONFIGURE_ARGS &&
-	make && make install
+	addgroup -g 27 polkitd
+	adduser -D -u 27 -G polkitd -s /bin/false -h /etc/polkit-1 polkitd
+
+	mkdir build && cd build
+	
+	meson	--prefix=/usr					\
+			--buildtype=release				\
+			-Dman=false						\
+			-Dsystemdsystemunitdir=/tmp		\
+			-Dtests=false					\
+			-Djs_engine=mozjs				\
+			.. &&
+	ninja && 
+	ninja install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib $fs/usr/share
+	mkdir -p $fs/usr/lib $fs/usr/lib64 $fs/usr/share
 	cp -a $install/usr/bin $fs/usr
 	cp -a $install/etc $fs
-	cp -a $install/usr/lib/*.so* $fs/usr/lib
+	cp -a $install/usr/lib64/*.so* $fs/usr/lib64
 	cp -a $install/usr/lib/polkit-1 $fs/usr/lib
-	rm $fs/usr/lib/polkit-1/extensions/*.*a
 	cp -a $install/usr/share/dbus-1 $fs/usr/share
 	cp -a $install/usr/share/polkit-1 $fs/usr/share
-	cp -a $install/var $fs
+	#~ cp -a $install/var $fs
 }

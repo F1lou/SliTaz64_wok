@@ -10,6 +10,7 @@ TARBALL="$PACKAGE-$VERSION.tgz"
 WEB_SITE="https://fossies.org/linux/misc/old/$TARBALL/"
 WGET_URL="${WEB_SITE%/}"
 TAGS="basic C"
+BUILD_DEPENDS="xorg-libX11-dev"
 
 # Rules to configure and make the package.
 compile_rules()

@@ -14,10 +14,10 @@ CONFIG_FILES="/etc/procmail*"
 # Rules to configure and make the package.
 compile_rules()
 {
-	cd $src
+	unset LD_LIBRARY_PATH
 	find -name '*.c' | xargs sed -i 's/getline/get_line/' src/formisc.h
 	sed -i 's/exec <_autotst.rrr/cat _autotst.rrr |/' initmake
-	yes '' | make VISIBLE_BINDIR=$DESTDIR/usr/bin
+	yes '' | make LDFLAGS="$LDFLAGS -lm" VISIBLE_BINDIR=$DESTDIR/usr/bin
 	make BINDIR=$DESTDIR/usr/bin install.bin
 }
 

@@ -1,52 +1,45 @@
---- screenfetch-dev.orig	2014-07-09 18:56:48.000000000 +0100
-+++ screenfetch-dev	2014-07-13 13:17:37.000000000 +0100
-@@ -207,8 +207,8 @@
- 	printf "	CrunchBang, Raspbian, elementary OS, Fedora, Frugalware, Fuduntu, Gentoo,\n"
- 	printf "	Funtoo, Jiyuu Linux, LinuxDeepin, Kali Linux, Mageia, Mandriva, Manjaro,\n"
- 	printf "	Linux Mint, LMDE, openSUSE, Parabola GNU/Linux-libre, Peppermint,\n"
--	printf "	Red Hat Enterprise Linux, Sabayon, Scientific Linux, Slackware, SolusOS,\n"
--	printf "	TinyCore, Trisquel, Ubuntu and Viperr.\n\n"
-+	printf "	Red Hat Enterprise Linux, Sabayon, Scientific Linux, Slackware, SliTaz,\n"
-+	printf "	SolusOS, TinyCore, Trisquel, Ubuntu and Viperr.\n\n"
- 	printf "${underline}Other Supported Systems${c0}:\n"
- 	printf "	Mac OS X, FreeBSD, DragonFlyBSD, NetBSD, OpenBSD, Android and Cygwin.\n\n"
- 	printf "${underline}Supported Desktop Managers${c0}:\n"
-@@ -440,6 +440,8 @@
- 				distro="Sabayon"
- 			elif [[ "${distro_detect}" == "SolusOS" ]]; then
- 				distro="SolusOS"
-+			elif [[ "${distro_detect}" == "SliTaz" ]]; then
-+				distro="SliTaz"
- 			elif [[ "${distro_detect}" == "Trisquel" ]]; then
- 				distro="Trisquel"
- 			elif [[ "${distro_detect}" == "Ubuntu" ]]; then
-@@ -535,6 +537,7 @@
- 					elif [ -f /etc/redhat-release ] && grep -q "Red Hat" /etc/redhat-release; then distro="Red Hat Enterprise Linux"
- 					elif [ -f /etc/redhat-release ] && grep -q "CentOS" /etc/redhat-release; then distro="CentOS"
- 					elif [ -f /etc/slackware-version ]; then distro="Slackware"
-+					elif [ -f /etc/slitaz-release ]; then distro="SliTaz"
- 					elif [ -f /usr/share/doc/tc/release.txt ]; then distro="TinyCore"
- 					elif [ -f /etc/sabayon-edition ]; then distro="Sabayon"; fi
- 				else
-@@ -645,6 +648,7 @@
- 		gentoo) distro="Gentoo" ;;
- 		funtoo) distro="Funtoo" ;;
+--- screenfetch-dev	2019-11-12 21:59:19.000000000 +0000
++++ screenfetch-dev	2022-12-30 21:06:29.560632384 +0000
+@@ -364,7 +364,7 @@
+ Fux, Gentoo, gNewSense, Guix System, Hyperbola GNU/Linux-libre, januslinux, Jiyuu Linux, Kali Linux, KaOS, KDE neon, Kogaion, Korora, \
+ LinuxDeepin, Linux Mint, LMDE, Logos, Mageia, Mandriva/Mandrake, Manjaro, Mer, Netrunner, NixOS, OBRevenge, openSUSE, \
+ OS Elbrus, Oracle Linux, Parabola GNU/Linux-libre, Pardus, Parrot Security, PCLinuxOS, PeppermintOS, Proxmox VE, PureOS, Qubes OS, \
+-Raspbian, Red Hat Enterprise Linux, ROSA, Sabayon, SailfishOS, Scientific Linux, Siduction, Slackware, Solus, Source Mage GNU/Linux, \
++Raspbian, Red Hat Enterprise Linux, ROSA, Sabayon, SailfishOS, Scientific Linux, Siduction, Slackware, SliTaz, Solus, Source Mage GNU/Linux, \
+ SparkyLinux, SteamOS, SUSE Linux Enterprise, SwagArch, TinyCore, Trisquel, Ubuntu, Viperr, Void and Zorin OS and EndeavourOS"
+ 
+ supported_other="Dragonfly/Free/Open/Net BSD, Haiku, Mac OS X, Windows+Cygwin and Windows+MSYS2."
+@@ -1104,6 +1104,10 @@
+ 							distro = "Solus"
+ 							exit
+ 						}
++						else if ($0 ~ /"SliTaz"/) {
++							distro = "SliTaz"
++							exit
++						}
+ 						else if ($0 ~ /"ALDOS"/) {
+ 							distro = "ALDOS"
+ 							exit
+@@ -1233,6 +1237,7 @@
+ 		scientific*) distro="Scientific Linux" ;;
+ 		siduction) distro="Siduction" ;;
  		slackware) distro="Slackware" ;;
 +		slitaz) distro="SliTaz" ;;
- 		frugalware) distro="Frugalware" ;;
- 		peppermint) distro="Peppermint" ;;
- 		solusos) distro="SolusOS" ;;
-@@ -729,6 +733,7 @@
- 	case $distro in
- 		'Arch Linux'|'Parabola GNU/Linux-libre'|'Chakra'|'Manjaro'|'Antergos'|'KaOS') pkgs=$(pacman -Qq | wc -l) ;;
- 		'Frugalware') pkgs=$(pacman-g2 -Q | wc -l) ;;
-+		'SliTaz') pkgs=$(tazpkg list | wc -l) ;;
- 		'Fuduntu'|'Ubuntu'|'Mint'|'SolusOS'|'Debian'|'Raspbian'|'LMDE'|'CrunchBang'|'Peppermint'|'LinuxDeepin'|'Kali Linux'|'Trisquel'|'elementary OS') pkgs=$(dpkg --get-selections | wc -l) ;;
- 		'Slackware') pkgs=$(ls -1 /var/log/packages | wc -l) ;;
- 		'Gentoo'|'Sabayon'|'Funtoo') pkgs=$(ls -d /var/db/pkg/*/* | wc -l) ;;
-@@ -2967,6 +2972,33 @@
- "${c2}          ...............             %s")
-                 ;;
+ 		smgl|source*mage|source*mage*gnu*linux) distro="Source Mage GNU/Linux" ;;
+ 		solus) distro="Solus" ;;
+ 		sparky|sparky*linux) distro="SparkyLinux" ;;
+@@ -1358,6 +1363,8 @@
+ 			pkgs=$(dpkg -l | grep -c '^i') ;;
+ 		'Slackware')
+ 			pkgs=$(ls -1 /var/log/packages | wc -l) ;;
++		'SliTaz')
++			pkgs=$(tazpkg list | wc -l) ;;		
+ 		'Gentoo'|'Sabayon'|'Funtoo'|'Kogaion')
+ 			pkgs=$(ls -d /var/db/pkg/*/* | wc -l) ;;
+ 		'NixOS')
+@@ -4130,6 +4137,33 @@
+ "${c1}                 ::::::::::::                 %s")
+ 		;;
  
 +		"#SliTaz")
 +			if [[ "$no_color" != "1" ]]; then
@@ -75,24 +68,24 @@
 +"                                  %s")  
 +		;;
 +
- 
-                 "KaOS")
- 	if [[ "$no_color" != "1" ]]; then
-@@ -3086,7 +3118,7 @@
+ 		"ROSA")
  			if [[ "$no_color" != "1" ]]; then
- 				c1=$(getColor 'white') # White
- 				c2=$(getColor 'dark grey') # Light Gray
--				c3=$(getColor 'yellow') # Light Yellow
-+				c3=$(getColor 'light red') # Light Red
- 			fi
- 			if [ -n "${my_lcolor}" ]; then c1="${my_lcolor}"; c2="${my_lcolor}"; c3="${my_lcolor}"; fi
- 			startline="0"
-@@ -3188,7 +3220,7 @@
- 		"Arch Linux - Old"|"Fedora"|"Mandriva"|"Mandrake"|"Chakra"|"Sabayon"|"Slackware"|"Mac OS X"|"Trisquel"|"Kali Linux"|"Jiyuu Linux"|"Antergos"|"KaOS") labelcolor=$(getColor 'light blue');;
- 		"Arch Linux"|"Frugalware"|"Mageia") labelcolor=$(getColor 'light cyan');;
- 		"Mint"|"LMDE"|"openSUSE"|"LinuxDeepin"|"DragonflyBSD"|"Manjaro"|"Manjaro-tree"|"Android") labelcolor=$(getColor 'light green');;
--		"Ubuntu-3color"|"FreeBSD"|"Debian"|"Raspbian"|"BSD"|"Red Hat Enterprise Linux"|"Peppermint"|"Cygwin"|"Fuduntu"|"NetBSD"|"Scientific Linux"|"DragonFlyBSD"|"BackTrack Linux") labelcolor=$(getColor 'light red');;
-+		"Ubuntu-3color"|"FreeBSD"|"Debian"|"Raspbian"|"BSD"|"Red Hat Enterprise Linux"|"Peppermint"|"Cygwin"|"Fuduntu"|"NetBSD"|"Scientific Linux"|"DragonFlyBSD"|"SliTaz"|"BackTrack Linux") labelcolor=$(getColor 'light red');;
- 		"CrunchBang"|"SolusOS"|"Viperr"|"elementary"*) labelcolor=$(getColor 'dark grey');;
- 		"Gentoo"|"Parabola GNU/Linux-libre"|"Funtoo"|"Funtoo-text") labelcolor=$(getColor 'light purple');;
- 		"CentOS"|"Ubuntu"|*) labelcolor=$(getColor 'yellow');;
+ 				c1=$(getColor 'rosa_blue') # special blue color from ROSA
+@@ -5850,7 +5884,7 @@
+ 				if [[ "$no_color" != "1" ]]; then
+ 					c1=$(getColor 'white') # White
+ 					c2=$(getColor 'dark grey') # Light Gray
+-					c3=$(getColor 'yellow') # Light Yellow
++					c3=$(getColor 'light red') # Light Red
+ 				fi
+ 				if [ -n "${my_lcolor}" ]; then c1="${my_lcolor}"; c2="${my_lcolor}"; c3="${my_lcolor}"; fi
+ 				startline="0"
+@@ -6080,7 +6114,7 @@
+ 			labelcolor=$(getColor 'light green')
+ 		;;
+ 		"Ubuntu"|"FreeBSD"|"FreeBSD - Old"|"Debian"|"Raspbian"|"BSD"|"Red Hat Enterprise Linux"|"Oracle Linux"| \
+-		"Peppermint"|"Cygwin"|"Msys"|"Fuduntu"|"Scientific Linux"|"DragonFlyBSD"|"BackTrack Linux"|"Red Star OS"| \
++		"Peppermint"|"Cygwin"|"Msys"|"Fuduntu"|"Scientific Linux"|"SliTaz"|"DragonFlyBSD"|"BackTrack Linux"|"Red Star OS"| \
+ 		"SparkyLinux"|"OBRevenge"|"Source Mage GNU/Linux")
+ 			labelcolor=$(getColor 'light red')
+ 		;;

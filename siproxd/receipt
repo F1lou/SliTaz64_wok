@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="siproxd"
-VERSION="0.8.2"
+VERSION="0.8.3"
 CATEGORY="network"
 SHORT_DESC="A masquerading SIP Proxy Server."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -11,8 +11,8 @@ WEB_SITE="http://siproxd.sourceforge.net/"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 CONFIG_FILES="/etc/siproxd"
 
-DEPENDS="osip"
-BUILD_DEPENDS="osip-dev libtool"
+DEPENDS="osip libsqlite"
+BUILD_DEPENDS="osip-dev libtool sqlite-dev"
 
 # Rules to configure and make the package.
 compile_rules()

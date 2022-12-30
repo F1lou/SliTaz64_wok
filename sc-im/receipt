@@ -1,13 +1,13 @@
 # SliTaz package receipt.
 
 PACKAGE="sc-im"
-VERSION="0.7.0"
+VERSION="0.8.2"
 CATEGORY="office"
 SHORT_DESC="Spreadsheet Calculator Improved"
 MAINTAINER="paul@slitaz.org"
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="https://github.com/andmarti1424/sc-im"
-WGET_URL="git|git://github.com/andmarti1424/sc-im"
+WGET_URL="$WEB_SITE/archive/refs/tags/v$VERSION.tar.gz"
 
 DEPENDS="ncursesw"
 BUILD_DEPENDS="git ncursesw-dev bison"

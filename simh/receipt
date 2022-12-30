@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="simh"
-VERSION="3.11.0"
+VERSION="3.12.3"
 CATEGORY="misc"
 TAGS="emulator PDP VAX Interdata Honeywell altair nova"
 SHORT_DESC="multi-system simulator."
@@ -20,7 +20,7 @@ BUILD_DEPENDS="libpcap-dev"
 compile_rules()
 {
 	mkdir BIN
-	make -j 1
+	make CFLAGS_G=" -fcommon"
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

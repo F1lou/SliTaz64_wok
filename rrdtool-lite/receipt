@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="rrdtool-lite"
-VERSION="1.7.2"
+VERSION="1.8.0"
 CATEGORY="misc"
 TAGS="logs"
 SHORT_DESC="Data logging system for time series data."
@@ -10,10 +10,10 @@ WEB_SITE="https://oss.oetiker.ch/rrdtool/"
 
 SOURCE="rrdtool"
 TARBALL="$SOURCE-$VERSION.tar.gz"
-WGET_URL="${WEB_SITE}pub/$TARBALL"
+WGET_URL="https://github.com/oetiker/$SOURCE-${VERSION%.*.*}.x/archive/refs/tags/v$VERSION.tar.gz"
 
-DEPENDS="glib libxml2 zlib"
-BUILD_DEPENDS="glib-dev groff libxml2-dev pkg-config"
+DEPENDS="glib libxml2 zlib liblzma"
+BUILD_DEPENDS="glib-dev groff libxml2-dev pkg-config liblzma-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 

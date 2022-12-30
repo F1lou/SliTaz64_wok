@@ -17,8 +17,8 @@ BUILD_DEPENDS=""
 # Rules to configure and make the package.
 compile_rules()
 {
-	cd $src
 	./configure --prefix=/usr --sysconfdir=/etc $CONFIGURE_ARGS &&
+	sed -i 's|linux/if.h|net/if.h|' .deps/pdnsd-icmp.Tpo
 	make && make DESTDIR=$DESTDIR install
 }
 

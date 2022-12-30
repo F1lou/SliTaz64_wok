@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="slim-theme-japan-art"
-VERSION="20150603"
+VERSION="2.0"
 CATEGORY="x-window"
 SHORT_DESC="Japan Art - theme for SLiM"
 MAINTAINER="al.bobylev@gmail.com"
@@ -10,8 +10,8 @@ WEB_SITE="https://web.archive.org/web/20151101010005/http://desktopstylish.tumbl
 TAGS="hackdorte slim"
 COOKOPTS="!pngquant"
 
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
-WGET_URL="https://drive.google.com/uc?export=download&id=0B4Re2DvqOMqlUkJHVDJrXzVFRUk"
+TARBALL="hackdorte-slim-theme-$VERSION.tar.gz"
+WGET_URL="https://github.com/SliTaz-official/hackdorte-artwork/archive/refs/tags/$VERSION.tar.gz"
 
 DEPENDS="slim"
 BUILD_DEPENDS=""
@@ -21,7 +21,7 @@ compile_rules()
 {
 	theme=$install/usr/share/slim/themes/JapanArt
 	mkdir -p $theme
-	cp -a $src/* $theme
+	cp -a $src/slim/themes/JapanArt/* $theme
 	chown -R root:root $install
 }
 

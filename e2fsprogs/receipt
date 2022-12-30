@@ -25,6 +25,7 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
+	export CFLAGS="$CFLAGS -fPIE -fPIC"
 	sed -i 's|\$ac_MKDIR_P&|mkdir -p\&|' configure
 
 	mkdir ../build &&

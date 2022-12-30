@@ -18,13 +18,14 @@ HOST_ARCH="x86_64 i486 arm"
 # Rules to configure and make the package.
 compile_rules()
 {
+	export LIBRARY_PATH=/home/slitaz/wok/portaudio/install/usr/lib/
 	cd bindings/cpp
-	LDFLAGS="$LDFLAGS  -I/home/slitaz/wok/portaudio/install/usr/lib/" ./configure \
+	./configure \
 		--prefix=/usr			\
 		--disable-static		\
 		--enable-shared			\
 		$CONFIGURE_ARGS &&
-	make &&
+	make && make &&
 	make DESTDIR=$DESTDIR install
 }
 

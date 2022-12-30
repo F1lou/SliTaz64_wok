@@ -8,12 +8,12 @@ SHORT_DESC="A proxy HTTP."
 MAINTAINER="pascal.bellard@slitaz.org"
 LICENSE="GPL2"
 WEB_SITE="https://sebsauvage.net/wiki/doku.php?id=phproxy"
-TARBALL="$SOURCE%20$VERSION%20mod%20SSE+ARKA%2020100825.7z"
-WGET_URL="https://sebsauvage.net/temp/$TARBALL"
+TARBALL="$SOURCE-$VERSION.zip"
+WGET_URL="http://sebsauvage.net/temp/poxy-${VERSION}_encrypt.zip"
 #HOST_ARCH="x86_64 any"
 
 DEPENDS="php"
-BUILD_DEPENDS="p7zip"
+BUILD_DEPENDS=""
 
 # Rules to configure and make the package.
 compile_rules()

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="perl-file-basedir"
-VERSION="0.03"
+VERSION="0.09"
 CATEGORY="development"
 SHORT_DESC="File::BaseDir module is a Perl extension."
 MAINTAINER="paul@slitaz.org"

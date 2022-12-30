@@ -20,7 +20,7 @@ compile_rules()
 	
 	# Build 
 	# Disabling TCP_WRAPPER with NO_TCP_WRAPPER variable
-	NO_TCP_WRAPPER=1  make
+	NO_TCP_WRAPPER=1 make
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="slim-theme-montanhoso"
-VERSION="20150526"
+VERSION="2.0"
 CATEGORY="x-window"
 SHORT_DESC="Montanhoso - theme for SLiM"
 MAINTAINER="al.bobylev@gmail.com"
@@ -10,8 +10,8 @@ WEB_SITE="https://github.com/SliTaz-official/hackdorte-artwork/tree/master/slim/
 TAGS="hackdorte slim"
 COOKOPTS="!pngquant"
 
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
-WGET_URL="https://drive.google.com/uc?export=download&id=0B4Re2DvqOMqlTXZZRDJWaFI4NkE"
+TARBALL="hackdorte-slim-theme-$VERSION.tar.gz"
+WGET_URL="https://github.com/SliTaz-official/hackdorte-artwork/archive/refs/tags/$VERSION.tar.gz"
 
 DEPENDS="slim"
 BUILD_DEPENDS=""
@@ -21,7 +21,7 @@ compile_rules()
 {
 	theme=$install/usr/share/slim/themes/Montanhoso
 	mkdir -p $theme
-	cp -a $src/* $theme
+	cp -a $src/slim/themes/Montanhoso/* $theme
 	chown -R root:root $install
 }
 

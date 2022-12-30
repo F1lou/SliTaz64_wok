@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="perl-fcgi"
-VERSION="0.79"
+VERSION="0.82"
 CATEGORY="development"
 SHORT_DESC="Perl Module FCGI."
 MAINTAINER="nneul@neulinger.org"
