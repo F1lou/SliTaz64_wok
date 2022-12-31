@@ -13,7 +13,7 @@ TARBALL="$SOURCE-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}$TARBALL"
 
 DEPENDS="gcc-lib-base"
-BUILD_DEPENDS="e2fsprogs-dev openssl-dev"
+BUILD_DEPENDS="e2fsprogs-dev openssl-dev libxml2-dev"
 
 # Rules to configure and make the package.
 compile_rules()

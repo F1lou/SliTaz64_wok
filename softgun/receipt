@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="softgun"
-VERSION="0.20"
+VERSION="0.22"
 CATEGORY="development"
 SHORT_DESC="ARM software emulator."
 MAINTAINER="pankso@slitaz.org"
@@ -12,12 +12,12 @@ WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 TAGS="emulator arm"
 
 DEPENDS="alsa-lib"
-BUILD_DEPENDS="alsa-lib-dev"
+BUILD_DEPENDS="alsa-lib-dev zlib-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	cd $src
+	export SHAREDCFLAGS=" -fcommon"
 	mkdir -p $DESTDIR/usr/bin
 	make && make prefix=$DESTDIR/usr install
 }

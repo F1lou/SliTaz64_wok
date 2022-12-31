@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="slurm"
-VERSION="0.3.3"
+VERSION="0.4.4"
 CATEGORY="network"
 SHORT_DESC="Realtime network interface monitor."
 MAINTAINER="paul@slitaz.org"
@@ -16,13 +16,9 @@ BUILD_DEPENDS="ncurses-dev automake autoconf"
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i 's|lncurses|& -ltinfo|' *
-	./configure \
-		--prefix=/usr \
-		--infodir=/usr/share/info \
-		--mandir=/usr/share/man \
-		$CONFIGURE_ARGS &&
-	make && make DESTDIR=$DESTDIR install
+	mkdir build && cd build
+	meson --prefix=/usr .. &&
+	ninja && ninja install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

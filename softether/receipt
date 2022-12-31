@@ -1,8 +1,8 @@
 # SliTaz package receipt.
 
 PACKAGE="softether"
-VERSION="4.38-9760-rtm"
-RELEASE="2021.08.17"
+VERSION="4.41-9782-beta"
+RELEASE="2022.11.17"
 CATEGORY="network"
 SHORT_DESC="An Open-Source Free Cross-platform Multi-protocol VPN Program."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -10,7 +10,7 @@ LICENSE="Apache 2.0"
 WEB_SITE="https://www.softether.org/"
 
 TARBALL="$PACKAGE-src-v$VERSION.tar.gz"
-WGET_URL="http://www.softether-download.com/files/softether/v$VERSION-$RELEASE-tree/Source_Code/$TARBALL"
+WGET_URL="https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/releases/download/v$VERSION/$PACKAGE-src-v$VERSION.tar.gz"
 
 DEPENDS="libcrypto libssl ncurses readline zlib"
 BUILD_DEPENDS="ncurses-dev openssl-dev readline-dev "
