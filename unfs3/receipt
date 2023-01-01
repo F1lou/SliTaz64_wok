@@ -1,14 +1,14 @@
 # SliTaz package receipt.
 
 PACKAGE="unfs3"
-VERSION="0.9.22"
+VERSION="0.10.0"
 CATEGORY="network"
 SHORT_DESC="User-land NFSv3 Server"
 MAINTAINER="erjo@slitaz.org"
 LICENSE="BSD"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
-WEB_SITE="http://unfs3.sourceforge.net/"
-WGET_URL="http://ovh.dl.sourceforge.net/sourceforge/unfs3/${TARBALL}"
+WEB_SITE="https://unfs3.github.io/"
+WGET_URL="https://github.com/$PACKAGE/$PACKAGE/releases/download/$PACKAGE-$VERSION/$TARBALL"
 TAGS="network nfs"
 CONFIG_FILES="/etc/exports"
 

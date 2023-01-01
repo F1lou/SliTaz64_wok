@@ -18,25 +18,21 @@ BUILD_DEPENDS="libpng+apng-dev zlib-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
-	export CFLAGS="$CFLAGS -Wno-implicit-function-declaration"
-	export LDFLAGS="$LDFLAGS -lm"
+	export LDFLAGS="$LDFLAGS -lm -lc"
 	sed -i 's|prefix)/man|prefix)/share/man|' configure
-	grep -rle "strcpy" src/* | while read DATEI; do sed -i 's|strcpy|strcpy_s|' $DATEI; done
 	
 	./configure		 	\
 		--prefix=/usr	\
 		--with-system-libs &&
 	make &&
-	#~ make test &&
 	make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/bin
-	mkdir -p $fs/usr/share/licenses
+	mkdir -p $fs/usr//share/licenses
 
-	cp -a $src/LICENSE.txt	$fs/usr/share/licenses/$PACKAGE.txt
 	cp -a $install/usr/bin	$fs/usr
+	cp -a $src/LICENSE.txt	$fs/usr/share/licenses/$PACKAGE.txt
 }

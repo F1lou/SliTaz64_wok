@@ -1,14 +1,14 @@
 # SliTaz package receipt.
 
 PACKAGE="tls"
-VERSION="1.6.7"
+VERSION="1.7.22"
 CATEGORY="network"
 SHORT_DESC="OpenSSL Tcl extension."
 MAINTAINER="erjo@slitaz.org"
 LICENSE="MIT"
-TARBALL="${PACKAGE}${VERSION}-src.tar.gz"
+TARBALL="${PACKAGE}-${VERSION}.tar.gz"
 WEB_SITE="http://tls.sourceforge.net/"
-WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
+WGET_URL="https://core.tcl-lang.org/tcltls/uv/tcltls-$VERSION.tar.gz"
 
 DEPENDS="openssl tcl"
 BUILD_DEPENDS="openssl-dev tcl-dev"
@@ -20,16 +20,11 @@ compile_rules()
 	./configure --prefix=/usr \
 	  --with-ssl-dir=/usr \
 	  --disable-symboles && \														
-	make  
+	make && make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib/tls1.6
-	cp -a $src/libtls1.6.so $fs/usr/lib/tls1.6
-	cp -a $src/pkgIndex.tcl $fs/usr/lib/tls1.6
-	cp -a $src/tls.tcl $fs/usr/lib/tls1.6
-	
-	sed -i 's/dir ../dir/' $fs/usr/lib/tls1.6/pkgIndex.tcl
+	cp -a $install/usr $fs/
 }

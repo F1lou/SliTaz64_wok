@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="traceroute"
-VERSION="2.1.0"
+VERSION="2.1.1"
 CATEGORY="network"
 SHORT_DESC="The full-featured traceroute program."
 MAINTAINER="samuel_trassare@yahoo.com"
@@ -11,9 +11,12 @@ WEB_SITE="http://traceroute.sourceforge.net/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
+BUILD_DEPENDS="glibc-dev"
+
 # Rules to configure and make the package.
 compile_rules()
 {
+	unset LD 
 	make &&
 	make prefix=/usr DESTDIR=$DESTDIR install
 }

@@ -13,17 +13,13 @@ SOURCE="rxvt-unicode"
 TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="http://dist.schmorp.de/$SOURCE/$TARBALL"
 
-DEPENDS="expat fontconfig freetype gcc-lib-base xorg-libX11 xorg-libXft \
+DEPENDS="expat fontconfig freetype gcc-lib-base xorg-libX11 xorg-libXft
 	xorg-xmessage zlib"
+BUILD_DEPENDS="libptytty-dev xorg-libX11-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	cd	src
-	patch	--input=$stuff/patches/command.C-9.22
-	patch	--input=$stuff/patches/misc.C-9.22
-	cd	..
-
 	./configure				\
 		--prefix=/usr			\
 		--infodir=/usr/share/info	\

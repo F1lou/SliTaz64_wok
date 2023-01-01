@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="udpcast"
-VERSION="20120424"
+VERSION="20211207"
 CATEGORY="network"
 SHORT_DESC="Multicast file transfer."
 MAINTAINER="pascal.bellard@slitaz.org"

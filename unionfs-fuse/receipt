@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="unionfs-fuse"
-VERSION="2.2"
+VERSION="3.2"
 CATEGORY="system-tools"
 SHORT_DESC="An effort to create a userland unionfs implementation that is way more flexible than the current in-kernel based unionfs solution."
 MAINTAINER="slaxemulator@gmail.com"
@@ -17,7 +17,8 @@ BUILD_DEPENDS="cmake fuse-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
-	cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_C_FLAGS="-I/usr/include/fuse3/" . &&
+	mkdir build && cd build
+	cmake -DCMAKE_INSTALL_PREFIX=/usr .. &&
 	make &&
 	make install
 }

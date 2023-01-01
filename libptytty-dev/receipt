@@ -1,0 +1,23 @@
+# SliTaz package receipt.
+
+PACKAGE="libptytty-dev"
+VERSION="2.0"
+CATEGORY="development"
+SHORT_DESC="libptytty is an offspring of rxvt-unicode that handles pty/tty/utmp/wtmp/lastlog handling in mostly OS-independent ways, so it's less of a hassle for you :)."
+MAINTAINER="nhc1@gmx.net"
+LICENSE=""
+WEB_SITE="http://software.schmorp.de/pkg/libptytty.html"
+
+WANTED="libptytty"
+DEPENDS="libptytty"
+BUILD_DEPENDS=""
+
+HOST_ARCH="x86_64"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/include			$fs/usr/
+	cp -a $install/usr/lib64/pkgconfig	$fs/usr/lib
+}

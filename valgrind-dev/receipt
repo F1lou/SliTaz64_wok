@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="valgrind-dev"
-VERSION="3.15.0"
+VERSION="3.20.0"
 CATEGORY="development"
 SHORT_DESC="Valgrind development files."
 MAINTAINER="paul@slitaz.org"
