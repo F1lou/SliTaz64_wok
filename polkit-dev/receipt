@@ -10,7 +10,9 @@ WANTED="polkit"
 WEB_SITE="http://www.freedesktop.org/wiki/Software/PolicyKit"
 PROVIDE="PolicyKit-dev"
 
-DEPENDS="pkg-config"
+DEPENDS="pkg-config glib-dev libgio-dev gobject-introspection-dev dbus-dev 
+	dbus-glib-dev expat-dev zlib-dev util-linux-mount-dev libjs-dev
+	pam-dev intltool"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

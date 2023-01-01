@@ -18,7 +18,7 @@ BUILD_DEPENDS="libpcap-dev ncurses-dev  "
 compile_rules()
 {
 	export LDFLAGS="$LDFLAGS -ltinfo "
-
+	export CXXFLAGS=" -Wno-error"
 	./configure			\
 		--prefix=/usr		\
 		--mandir=/usr/share/man	\

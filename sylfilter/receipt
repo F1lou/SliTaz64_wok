@@ -11,8 +11,8 @@ WEB_SITE="http://sylpheed.sraoss.jp/sylfilter/"
 WGET_URL="http://sylpheed.sraoss.jp/sylfilter/src/$TARBALL"
 TAGS="mail email filter spam"
 
-DEPENDS="sqlite"
-BUILD_DEPENDS="sqlite-dev "
+DEPENDS="sqlite glib"
+BUILD_DEPENDS="sqlite-dev glib-dev"
 
 # Rules to configure and make the package.
 compile_rules()

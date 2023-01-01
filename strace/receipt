@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="strace"
-VERSION="5.6"
+VERSION="6.1"
 CATEGORY="development"
 TAGS="analysis debugger diagnostic"
 SHORT_DESC="System call tracer."

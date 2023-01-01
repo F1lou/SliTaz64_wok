@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="sshpass"
-VERSION="1.06"
+VERSION="1.09"
 CATEGORY="network"
 SHORT_DESC="Non-interactive ssh password authentication."
 MAINTAINER="pascal.bellard@slitaz.org"

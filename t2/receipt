@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="t2"
-VERSION="8.0"
+VERSION="22.9"
 CATEGORY="development"
 SHORT_DESC="System Development Environment."
 MAINTAINER="pascal.bellard@slitaz.org"

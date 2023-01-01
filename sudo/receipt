@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="sudo"
-VERSION="1.9.8p2"
+VERSION="1.9.12p1"
 CATEGORY="security"
 SHORT_DESC="Allows command execution as root for specified users."
 MAINTAINER="erjo@slitaz.org"

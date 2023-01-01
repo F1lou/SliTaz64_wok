@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="peazip"
-VERSION="8.4.0"
+VERSION="9.0.0"
 CATEGORY="x-window"
 TAGS="archiver bzip2 encryption gzip rar split tar unrar xz zip 7zip"
 SHORT_DESC="Open Source archive manager and data compression utility."
