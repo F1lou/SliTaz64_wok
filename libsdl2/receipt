@@ -11,8 +11,9 @@ WEB_SITE="http://libsdl.org"
 TARBALL="SDL2-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}/release/${TARBALL}"
 
-DEPENDS="alsa-lib dbus mesa"
-BUILD_DEPENDS="alsa-lib-dev dbus-dev mesa-dev mesa-dev pulseaudio-dev"
+DEPENDS="alsa-lib dbus mesa eudev"
+BUILD_DEPENDS="alsa-lib-dev dbus-dev mesa-dev mesa-dev pulseaudio-dev
+	eudev-dev"
 
 # Rules to configure and make the package.
 compile_rules()
