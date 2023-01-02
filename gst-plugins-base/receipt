@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gst-plugins-base"
-VERSION="1.20.0"
+VERSION="1.20.5"
 SERIES="1.0"
 CATEGORY="multimedia"
 SHORT_DESC="GStreamer Base Plugins."
@@ -15,11 +15,11 @@ WGET_URL="${WEB_SITE}src/gst-plugins-base/$TARBALL"
 
 DEPENDS="alsa-lib gstreamer libogg libtheora libtheora-enc 
 	libvorbis opus orc pango eudev vorbis-tools xorg xorg-libXv 
-	xorg-libXvMC"
+	xorg-libXvMC gtk+3"
 BUILD_DEPENDS="alsa-lib-dev automake gstreamer-dev libogg-dev libtheora-dev 
 	libtheora-enc libvorbis-dev opus-dev orc-dev pango-dev eudev-dev 
 	util-linux-uuid-dev xorg-libXv-dev xorg-libXvMC-dev libgio-dev
-	gobject-introspection-dev xorg-dev  "
+	gobject-introspection-dev xorg-dev gtk+3-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 

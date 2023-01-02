@@ -10,13 +10,12 @@ WEB_SITE="http://alexthepuffin.googlepages.com/"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
-DEPENDS="fuse libgcrypt readline gmp"
-BUILD_DEPENDS="libgcrypt-dev readline-dev gmp-dev fuse-dev automake"
+DEPENDS="fuse2 libgcrypt readline gmp"
+BUILD_DEPENDS="libgcrypt-dev readline-dev gmp-dev fuse2-dev automake"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	ln -s /usr/lib/pkgconfig/fuse3.pc /usr/lib/pkgconfig/fuse.pc
 	./configure $CONFIGURE_ARGS &&
 	make && make install
 }

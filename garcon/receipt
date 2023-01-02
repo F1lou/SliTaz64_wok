@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="garcon"
-VERSION="4.17.0"
+VERSION="4.18.0"
 CATEGORY="misc"
 SHORT_DESC="Xfce menu library"
 MAINTAINER="erjo@slitaz.org"
@@ -14,7 +14,7 @@ DEPENDS="libgio glib gtk+3 libxfce4ui libxfce4util util-linux-uuid
 	startup-notification"
 BUILD_DEPENDS="intltool libgio libgio-dev glib-dev libxfce4ui-dev 
 	libxfce4util-dev util-linux-uuid-dev gtk+3-dev xcb-util-dev
-	startup-notification-dev "
+	startup-notification-dev liblzma-dev"
 
 # Rules to configure and make the package.
 compile_rules()

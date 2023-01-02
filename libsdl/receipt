@@ -13,8 +13,8 @@ TARBALL="$SOURCE-$VERSION.tar.gz"
 WGET_URL="http://www.libsdl.org/release/$TARBALL"
 
 DEPENDS="xorg-libX11 xorg-libXext xorg-libXrender"
-BUILD_DEPENDS="alsa-lib-dev libglu-mesa mesa-dev xorg-libX11-dev xorg-libXext-dev \
-	xorg-libXrender-dev xorg-libXt-dev xorg-proto "
+BUILD_DEPENDS="alsa-lib-dev mesa-dev xorg-libX11-dev xorg-libXext-dev
+	xorg-libXrender-dev xorg-libXt-dev xorg-proto" # libglu-mesa
 
 HOST_ARCH="x86_64 i486 arm"
 

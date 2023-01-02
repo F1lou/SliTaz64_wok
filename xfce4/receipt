@@ -10,9 +10,9 @@ SUGGESTED="xfce4-slitaz-config"
 WEB_SITE="https://www.xfce.org"
 PROVIDE="xfce"
 
-DEPENDS="libxfce4util xfconf libxfce4ui garcon libexo xorg-xdpyinfo \
-xfce4-panel thunar xfce4-settings xfce4-session xfwm4 xfdesktop thunar-volman \
-thunar-archive-plugin xfce-utils"
+DEPENDS="libxfce4util xfconf libxfce4ui garcon libexo xorg-xdpyinfo 
+	xfce4-panel thunar xfce4-settings xfce4-session xfwm4 xfdesktop
+	thunar-volman thunar-archive-plugin xfce-utils"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

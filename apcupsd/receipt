@@ -23,8 +23,7 @@ compile_rules()
 		--disable-snmp			\
 		--disable-net			\
 		--with-upstype=usb		\
-		--with-dev=			\
-		--enable-threads		\
+		--with-dev=				\
 		--enable-cgi			\
 		--prefix=/usr			\
 		--infodir=/usr/share/info	\

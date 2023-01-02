@@ -13,8 +13,10 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}download/$TARBALL"
 
 DEPENDS="jpeg ncurses-extra xorg xorg-libXp"
-BUILD_DEPENDS="jpeg-dev xorg-bdftopcf xorg-cf-files xorg-gccmakedep 
-	xorg-imake xorg-libXp xorg-mkfontdir xorg-mkfontscale xorg-xbitmaps"
+BUILD_DEPENDS="xorg-libX11-dev jpeg-dev xorg-bdftopcf xorg-cf-files
+	xorg-gccmakedep xorg-imake xorg-libXp xorg-mkfontdir xorg-mkfontscale
+	xorg-xbitmaps xorg-libXt-dev xorg-libXpm-dev xorg-libXaw-dev
+	xorg-libXmu-dev"
 
 CONFIG_FILES="/etc/xtel"
 

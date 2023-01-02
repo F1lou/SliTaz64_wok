@@ -1,0 +1,28 @@
+# SliTaz package receipt.
+
+PACKAGE="xsnow-modern"
+SOURCE="xsnow"
+VERSION="3.6.0"
+CATEGORY="misc"
+SHORT_DESC="X-windows application that will let it snow on the desktop."
+MAINTAINER="Lucas Levrel <llev@slitaz.org>"
+LICENSE="Freeware"
+WEB_SITE="https://sourceforge.net/projects/xsnow/"
+TARBALL="$SOURCE-$VERSION.tar.gz"
+WGET_URL="$WEB_SITE/files/$TARBALL"
+
+DEPENDS="xorg-server gtk+3"
+BUILD_DEPENDS="xorg-libX11-dev gtk+3-dev gsl-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure --prefix=/usr &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	cp -a $install/* $fs
+}

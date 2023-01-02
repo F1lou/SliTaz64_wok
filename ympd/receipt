@@ -27,8 +27,9 @@ esac
 compile_rules()
 {
 	mkdir build && cd build
-	CPPFLAGS="$CPPFLAGS -fcommon"  cmake	..					\
-		-DCMAKE_INSTALL_PREFIX:PATH=/usr	\
+	cmake ..										\
+		-DCMAKE_C_FLAGS="-std=gnu99 -Wall -fcommon" \
+		-DCMAKE_INSTALL_PREFIX:PATH=/usr			\
 		${ARCH_ARGS} &&
 	make &&
 	make install

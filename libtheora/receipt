@@ -17,8 +17,7 @@ BUILD_DEPENDS="libogg-dev libvorbis-dev libpng-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
-	cd $src
-	patch -Np1 -i $stuff/png_sizeof.patch &&
+	sed -i 's/png_\(sizeof\)/\1/g' examples/png2theora.c &&
 	./configure \
 		--prefix=/usr \
 		--mandir=/usr/share/man \

@@ -11,7 +11,7 @@ WEB_SITE="http://libdv.sourceforge.net/"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
 DEPENDS="popt xorg-libXv"
-BUILD_DEPENDS="gtk+-dev popt-dev xorg-libXv-dev"
+BUILD_DEPENDS="gtk+-dev popt-dev xorg-libXv-dev jpeg-dev"
 
 # Rules to configure and make the package.
 compile_rules()

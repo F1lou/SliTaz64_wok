@@ -1,0 +1,37 @@
+# SliTaz package receipt.
+
+PACKAGE="wlroots-Xwayland"
+SOURCE="wlroots"
+VERSION="0.15.1"
+CATEGORY="x-window"
+SHORT_DESC="A modular Wayland compositor library"
+MAINTAINER="nhc1@gmx.net"
+LICENSE="MIT"
+WEB_SITE="https://gitlab.freedesktop.org/wlroots/"
+TARBALL="$SOURCE-$VERSION.tar.bz2"
+WGET_URL="https://gitlab.freedesktop.org/$SOURCE/$SOURCE/-/archive/$VERSION/$TARBALL"
+
+DEPENDS="wayland wayland-protocols libdrm-wayland libxkbcommon-wayland 
+	eudev-wayland pixman libpng libseat mesa-wayland libinput"
+BUILD_DEPENDS="wayland-dev wayland-protocols libdrm-wayland-dev
+	libxkbcommon-wayland-dev eudev-wayland-dev pixman-dev pnpids
+	mesa-wayland-dev libseat-dev libinput-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	export CFLAGS="$CFLAGS -Wno-maybe-uninitialized"
+	meson --prefix=/usr 	\
+		-Dxwayland=enabled	\
+		build &&
+	ninja -C build &&
+	ninja -C build install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib64
+	cp -a $install/usr/lib64/*so* $fs/usr/lib64
+}

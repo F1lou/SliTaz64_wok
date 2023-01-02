@@ -10,8 +10,9 @@ WEB_SITE="http://janswaal.home.xs4all.nl/Xsnow/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$WEB_SITE/$TARBALL"
 
-DEPENDS="xorg-libXpm xorg-libXext"
-BUILD_DEPENDS="xorg-imake xorg-gccmakedep xorg-libXpm-dev"
+DEPENDS="xorg-libXpm xorg-libXext xorg-libXt"
+BUILD_DEPENDS="xorg-imake xorg-gccmakedep xorg-libXpm-dev
+	xorg-libXt-dev xorg-libXext-dev"
 
 # Rules to configure and make the package.
 compile_rules()

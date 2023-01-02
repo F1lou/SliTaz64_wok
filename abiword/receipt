@@ -13,14 +13,16 @@ WGET_URL="http://www.abisource.com/downloads/abiword/$VERSION/source/$TARBALL"
 TAGS="word doc office"
 LOCALES="cs da de es fr hu id it pt ru sl sv zh"
 
-DEPENDS="gtk+3 libgnomeprint libgnomeprintui libgnomecanvas fribidi libglade \
-popt libxml2 libart_lgpl libgsf libgio enchant wv xorg-libXdamage gcc-lib-base \
-librsvg goffice glibc-locale libffi libjpeg-turbo slitaz-icon"
-BUILD_DEPENDS="$DEPENDS gtk+3-dev libgnomeprint-dev libgnomeprintui-dev \
-fribidi-dev libglade-dev popt-dev libxml2-dev libart_lgpl-dev libgsf-dev \
-enchant-dev wv-dev libgnomecanvas-dev libcroco-dev libboost-dev librsvg-dev \
- libpng-dev libepoxy-dev libxslt-dev mesa-dev xorg-libXtst-dev \
-xorg-libXxf86vm-dev libdrm-dev libjpeg-turbo-dev liblzma-dev "
+DEPENDS="gtk+3 libgnomeprint libgnomeprintui libgnomecanvas fribidi
+	libglade popt libxml2 libart_lgpl libgsf libgio enchant wv 
+	xorg-libXdamage gcc-lib-base librsvg goffice glibc-locale libffi
+	libjpeg-turbo slitaz-icon"
+BUILD_DEPENDS="gtk+3-dev libgnomeprint-dev libgnomeprintui-dev 
+	fribidi-dev libglade-dev popt-dev libxml2-dev libart_lgpl-dev
+	libgsf-dev enchant-dev wv-dev libgnomecanvas-dev libcroco-dev 
+	libboost-dev librsvg-dev libpng-dev libepoxy-dev libxslt-dev 
+	mesa-dev xorg-libXtst-dev xorg-libXxf86vm-dev libdrm-dev 
+	libjpeg-turbo-dev liblzma-dev"
 SUGGESTED="abiword-plugins"
 
 # Rules to configure and make the package.
@@ -33,12 +35,13 @@ compile_rules()
 	sed -i 's|TRUE|boolean(TRUE)|' src/af/util/xp/ut_jpeg.cpp
 	
 	./configure \
-		--prefix=/usr \
-		--infodir=/usr/share/info \
-		--mandir=/usr/share/man \
-		--enable-plugins \
-		--enable-clipart \
-		--enable-templates \
+		--prefix=/usr 				\
+		--infodir=/usr/share/info 	\
+		--mandir=/usr/share/man 	\
+		--disable-static			\
+		--enable-plugins 			\
+		--enable-clipart 			\
+		--enable-templates 			\
 		--disable-collab-backend-sugar \
 		$CONFIGURE_ARGS &&
 	make $MAKEFLAGS &&

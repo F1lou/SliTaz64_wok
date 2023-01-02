@@ -16,6 +16,7 @@ BUILD_DEPENDS="xorg-dev xorg-libXpm-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
+	export CFLAGS="$CFLAGS -fcommon -I/usr/include/X11"
 	sed -i 's|/usr/X386|/usr|' Makefile
 	sed -i 's|./pixmaps/|/usr/share/games/xtron/|' xtronrc
 	sed -i 's|usr/X11/lib|etc|' resource.c xtronrc

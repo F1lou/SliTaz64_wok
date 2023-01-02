@@ -1,20 +1,20 @@
 # SliTaz package receipt.
 
 PACKAGE="exo"
-VERSION="4.17.1"
+VERSION="4.18.0"
 CATEGORY="meta"
 SHORT_DESC="Xfce Exo library and tools"
 MAINTAINER="erjo@slitaz.org"
 LICENSE="GPL2"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WEB_SITE="https://www.xfce.org"
-WGET_URL="https://archive.xfce.org/src/xfce/exo/4.17/$TARBALL"
+WGET_URL="https://archive.xfce.org/src/xfce/exo/${VERSION%.*}/$TARBALL"
 COOK_OPT="!fs"
 
 DEPENDS="exo-tools libexo util-linux-uuid libgio"
-BUILD_DEPENDS="libxfce4util-dev perl-uri startup-notification-dev intltool \
-util-linux-uuid-dev libgio-dev glib-dev gtk+3-dev libxfce4ui-dev libxml2-dev \
-xcb-util-dev  "
+BUILD_DEPENDS="libxfce4util-dev perl-uri startup-notification-dev intltool 
+	util-linux-uuid-dev libgio-dev glib-dev gtk+3-dev libxfce4ui-dev 
+	libxml2-dev xcb-util-dev liblzma-dev"
 
 # Rules to configure and make the package.
 compile_rules()

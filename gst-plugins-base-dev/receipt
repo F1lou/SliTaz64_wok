@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gst-plugins-base-dev"
-VERSION="1.20.0"
+VERSION="1.20.5"
 SERIES="1.0"
 CATEGORY="development"
 SHORT_DESC="gst-plugins-base devel files"

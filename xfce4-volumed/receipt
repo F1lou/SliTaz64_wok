@@ -2,18 +2,17 @@
 
 PACKAGE="xfce4-volumed"
 VERSION="0.1.13"
-HI_VERSION=$(echo $VERSION | cut -d. -f1,2)
 CATEGORY="x-window"
 SHORT_DESC="Volume keys daemon"
 MAINTAINER="al.bobylev@gmail.com"
 LICENSE="GPL3"
 WEB_SITE="https://launchpad.net/xfce4-volumed/"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
-WGET_URL="http://archive.xfce.org/src/apps/xfce4-volumed/$HI_VERSION/$TARBALL"
+WGET_URL="http://archive.xfce.org/src/apps/xfce4-volumed/${VERSION%.*}/$TARBALL"
 
-DEPENDS="gst-plugins-base libkeybinder libnotify libxfconf"
-BUILD_DEPENDS="libxfconf-dev gstreamer-dev gst-plugins-base-dev \
-libkeybinder-dev libxml2-dev libnotify-dev"
+DEPENDS="gst-plugins-base libkeybinder libnotify xfconf"
+BUILD_DEPENDS="xfconf-dev gstreamer-dev gst-plugins-base-dev libxml2-dev
+	libkeybinder-dev libnotify-dev"
 
 # Rules to configure and make the package.
 compile_rules()

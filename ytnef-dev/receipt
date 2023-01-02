@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="ytnef-dev"
-VERSION="1.9.3"
+VERSION="2.0"
 CATEGORY="mail"
 SHORT_DESC="Yeraze's TNEF Stream Reader for winmail.dat files - development files."
 MAINTAINER="maintainer@slitaz.org"

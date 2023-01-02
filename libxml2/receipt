@@ -9,8 +9,7 @@ LICENSE="MIT"
 WEB_SITE="http://xmlsoft.org/"
 
 TARBALL="$PACKAGE-$VERSION.tar.xz"
-WGET_URL="ftp://xmlsoft.org/libxml2/$TARBALL"
-
+WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION%.*}/$TARBALL"
 DEPENDS="zlib"
 BUILD_DEPENDS="autoconf automake libtool py3k-dev zlib-dev sed"
 

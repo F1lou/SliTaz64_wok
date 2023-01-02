@@ -2,7 +2,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gst-plugins-bad-dev"
-VERSION="0.10.23"
+VERSION="1.20.5"
 SERIES="0.10"
 CATEGORY="development"
 SHORT_DESC="gst-plugins-bad devel files"

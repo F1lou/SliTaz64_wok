@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="apngasm"
-VERSION="3.1.6"
+VERSION="3.1.10"
 CATEGORY="utilities"
 SHORT_DESC="Creates APNG animation from PNG/TGA image sequence."
 MAINTAINER="al.bobylev@gmail.com"
@@ -19,15 +19,16 @@ BUILD_DEPENDS="cmake libboost-filesystem-dev libboost-program-options-dev
 # Rules to configure and make the package.
 compile_rules()
 {
-	mkdir	build
-	cd	build
-	cmake	.. &&
+	export LDFLAGS="$LDFLAGS -I$src/build/lib"
+	mkdir build && cd build
+	cmake .. &&
 	make
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/bin
+	mkdir -p $fs/usr/bin $fs/usr/lib
 	cp -a $src/build/cli/$PACKAGE	$fs/usr/bin
+	cp -a $src/build/lib/*.so		$fs/usr/lib
 }

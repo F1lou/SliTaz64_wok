@@ -16,26 +16,10 @@ BUILD_DEPENDS="gfortran blas"
 # Rules to configure and make the package.
 compile_rules()
 {
+	export CFLAGS="$CFLAGS -fPIC"
 	mkdir build && cd build
 	cmake -DCMAKE_INSTALL_LIBDIR=/usr/lib .. &&
 	cmake --build . -j --target install
-	
-	
-	#~ cd $src
-	#~ cp -f $src/INSTALL/make.inc.gfortran make.inc
-	#~ cp -f "$stuff/Makefile.lapack" $src/SRC/Makefile
-	
-	#~ export FC=gfortran
-
-	#~ cd $src/INSTALL
-	#~ make clean
-	#~ make NOOPT="${CFLAGS/-O?/-O0} -fPIC" OPTS="${CFLAGS} -fPIC"
-
-	#~ cd $src/SRC
-	#~ make clean
-
-	#~ make FFLAGS="${CFLAGS} -fPIC" CFLAGS="${CFLAGS} -fPIC" shared
-	#~ cp liblapack.so.$VERSION "$src/"
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="thunar-volman"
-VERSION="4.16.0"
+VERSION="4.18.0"
 CATEGORY="x-window"
 SHORT_DESC="Thunar Volume Manager plugin"
 MAINTAINER="erjo@slitaz.org"
@@ -11,9 +11,9 @@ WEB_SITE="https://www.xfce.org/"
 WGET_URL="https://archive.xfce.org/src/xfce/$PACKAGE/${VERSION:0:4}/$TARBALL"
 
 DEPENDS="thunar libxfce4ui startup-notification"
-BUILD_DEPENDS="thunar-dev glibc-locale intltool libexo-dev libgudev-dev libxfce4ui-dev \
- xfconf-dev startup-notification-dev util-linux-uuid-dev libxml2-dev libnotify-gtk3-dev
- libxfce4util-dev xcb-util-dev"
+BUILD_DEPENDS="thunar-dev glibc-locale intltool libexo-dev libgudev-dev
+	libxfce4ui-dev xfconf-dev startup-notification-dev util-linux-uuid-dev
+	libxml2-dev libnotify-gtk3-dev libxfce4util-dev xcb-util-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -30,7 +30,7 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/share/locale $fs/usr/lib
+	mkdir -p $fs/usr/share/locale
 	
 	cp -a $install/usr/bin $fs/usr
 	cp -a $install/usr/share/applications $fs/usr/share

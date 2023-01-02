@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libxfce4ui"
-VERSION="4.17.6"
+VERSION="4.18.0"
 CATEGORY="x-window"
 SHORT_DESC="Xfce Gtk Widget library"
 MAINTAINER="erjo@slitaz.org"
@@ -10,11 +10,11 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WEB_SITE="https://www.xfce.org"
 WGET_URL="http://archive.xfce.org/src/xfce/$PACKAGE/${VERSION%.*}/$TARBALL"
 
-DEPENDS="gtk+3 libxfce4util libxfconf startup-notification dbus-glib libglade \
-util-linux-uuid"
-BUILD_DEPENDS="gtk+3-dev libxfce4util-dev libxfconf-dev \
-startup-notification-dev libglade-dev xcb-util-dev util-linux-uuid-dev \
-intltool libexif-dev xorg-proto "
+DEPENDS="gtk+3 libxfce4util libxfconf startup-notification dbus-glib 
+	libglade util-linux-uuid"
+BUILD_DEPENDS="gtk+3-dev libxfce4util-dev xfconf-dev xcb-util-dev
+	startup-notification-dev libglade-dev util-linux-uuid-dev
+	intltool libexif-dev xorg-proto liblzma-dev"
 
 # Rules to configure and make the package.
 compile_rules()

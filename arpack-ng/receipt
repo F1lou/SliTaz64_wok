@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="arpack-ng"
-VERSION="3.7.0"
+VERSION="3.8.0"
 CATEGORY="development"
 SHORT_DESC="Fortran77 subroutines to solve large scale eigenvalue problems."
 MAINTAINER="pascal.bellard@slitaz.org"

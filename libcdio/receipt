@@ -11,23 +11,19 @@ WEB_SITE="https://www.gnu.org/software/libcdio/"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="$GNU_MIRROR/libcdio/$TARBALL"
 
-DEPENDS="gcc-lib-base libcddb ncurses"
-BUILD_DEPENDS="gcc-lib-base libcddb libcddb-dev ncurses-dev "
+DEPENDS="gcc-lib-base libcddb ncurses libiconv"
+BUILD_DEPENDS="gcc-lib-base libcddb libcddb-dev ncurses-dev
+	libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	#~ export LDFLAGS="$LDFLAGS -ltinfo"
-	#~ grep -qs 'define u8' lib/driver/gnu_linux.c ||
-	#~ sed -i 's|#include <scsi/scsi.h>|#define u8 __u8\n&|' \
-		#~ lib/driver/gnu_linux.c
-
+	export LDLAGS="$LDFLAGS -liconv"
 	./configure			\
 		--prefix=/usr		\
 		--disable-vcd-info	\
 		$CONFIGURE_ARGS &&
-	make -j 1 &&
-	make DESTDIR=$DESTDIR install
+	make &&	make DESTDIR=$DESTDIR install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

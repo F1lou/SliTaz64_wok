@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libsdl2-dev"
-VERSION="2.0.14"
+VERSION="2.26.0"
 CATEGORY="development"
 SHORT_DESC="A cross-platform interactive media development library - development files."
 MAINTAINER="tcg.thegamer@gmail.com"

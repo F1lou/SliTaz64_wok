@@ -12,11 +12,10 @@ WEB_SITE="https://aubio.org/"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="${WEB_SITE}pub/$TARBALL"
 
-DEPENDS="fftw flac jack-audio-connection-kit2 libogg \
-	libsamplerate libvorbis"
-BUILD_DEPENDS="fftw fftw-dev flac-dev jack-audio-connection-kit2-dev \
-	libogg-dev libsamplerate libsamplerate-dev libsndfile-dev \
-	libvorbis-dev"
+DEPENDS="fftw flac jack-audio-connection-kit2 libogg libsamplerate libvorbis"
+BUILD_DEPENDS="fftw fftw-dev flac-dev jack-audio-connection-kit2-dev
+	libogg-dev libsamplerate libsamplerate-dev libsndfile-dev
+	libvorbis-dev python-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -36,10 +35,10 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/lib64
 
-	cp -a $install/usr/bin		$fs/usr
-	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+	cp -a $install/usr/bin			$fs/usr
+	cp -a $install/usr/lib64/*.so*	$fs/usr/lib64
 
 #	0.4.9: no longer available
 #	cp -a $install/usr/share/sounds $fs/usr/share

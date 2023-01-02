@@ -2,7 +2,7 @@
 
 PACKAGE="appstream"
 SOURCE="AppStream"
-VERSION="0.14.4"
+VERSION="0.15.6"
 CATEGORY="system-tools"
 SHORT_DESC="AppStream is a cross-distribution effort for enhancing the way we interact with the software repositories provided by (Linux) distributions by standardizing software component metadata."
 MAINTAINER="nhc1@gmx.net"
@@ -11,15 +11,20 @@ WEB_SITE="https://www.freedesktop.org/wiki/Distributions/AppStream/"
 TARBALL="$SOURCE-$VERSION.tar.xz"
 WGET_URL="https://www.freedesktop.org/software/$PACKAGE/releases/$TARBALL"
 
-DEPENDS=""
+DEPENDS="util-linux-mount zlib curl"
 BUILD_DEPENDS="zlib-dev util-linux-mount-dev curl-dev yaml-dev lmdb-dev
-	gobject-introspection-dev libxml2-dev"
+	gobject-introspection-dev libxml2-dev liblzma-dev gperf itstool
+	gtk-doc docbook-xsl"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export XML_CATALOG_FILES="/etc/xml/catalog"
 	mkdir build && cd build
-	meson --prefix=/usr -Dinstall-docs=false -Dstemming=false .. &&
+	meson --prefix=/usr 		\
+		-Dapidocs=false			\
+		-Dinstall-docs=false	\
+		-Dstemming=false .. &&
 	ninja && ninja install
 }
 

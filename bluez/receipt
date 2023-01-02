@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="bluez"
-VERSION="5.58"
+VERSION="5.66"
 CATEGORY="system-tools"
 TAGS="bluetooth"
 SHORT_DESC="Bluetooth protocol stack."
@@ -9,34 +9,18 @@ MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL2"
 WEB_SITE="http://www.bluez.org/"
 
-TARBALL="$PACKAGE-$VERSION.tar.gz"
+TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://www.kernel.org/pub/linux/bluetooth/$TARBALL"
-#WGET_URL="http://sourceware.mirrors.tds.net/pub/kernel.org/linux/bluetooth/$TARBALL"
 
 DEPENDS="dbus dbus-python glib libical libusb-compat linux-bluetooth pygobject"
 BUILD_DEPENDS="dbus-dev glib-dev libical-dev libusb-compat libusb-dev 
-	pkg-config readline-dev"
+	pkg-config readline-dev python3-docutils"
 
 CONFIG_FILES="/etc/bluetooth"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i 's/NEED_USB/xx&/' tools/*.c
-
-	export	LDFLAGS="$LDFLAGS -ltinfo"
-
-	# 5.54 unrecognised
-#		--enable-bccmd \
-#		--enable-dfutool \
-#		--enable-dund \
-#		--enable-hid2hci \
-#		--enable-hidd \
-#		--enable-pand \
-#		--enable-usb \
-#		--enable-wiimote \
-
-
 	./configure			\
 		--prefix=/usr		\
 		--sysconfdir=/etc	\

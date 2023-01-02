@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libsdl2"
-VERSION="2.0.14"
+VERSION="2.26.0"
 CATEGORY="x-window"
 SHORT_DESC="A cross-platform interactive media development library."
 MAINTAINER="tcg.thegamer@gmail.com"
@@ -12,7 +12,7 @@ TARBALL="SDL2-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}/release/${TARBALL}"
 
 DEPENDS="alsa-lib dbus mesa"
-BUILD_DEPENDS="alsa-lib-dev dbus-dev mesa-dev mesa-wayland-dev pulseaudio-dev"
+BUILD_DEPENDS="alsa-lib-dev dbus-dev mesa-dev mesa-dev pulseaudio-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -20,7 +20,7 @@ compile_rules()
 	./configure		\
 		--prefix=/usr	\
 		$CONFIGURE_ARGS &&
-	make -j 1 &&
+	make &&
 	make DESTDIR=$DESTDIR install
 }
 

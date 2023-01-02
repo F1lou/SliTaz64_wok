@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xrdp"
-VERSION="0.9.17"
+VERSION="0.9.21.1"
 CATEGORY="network"
 SHORT_DESC="An open source remote desktop protocol (RDP) server."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -34,21 +34,20 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib/xrdp
-	mkdir -p $fs/usr/share
-	mkdir -p $install/usr/share/doc
+	mkdir -p $fs/usr/lib/xrdp $fs/usr/share $install/usr/share/doc
 
-	cp -a $src/*.txt			$install/usr/share/doc
-	cp -a $src/*.md				$install/usr/share/doc
-	cp -a $src/COPYING			$install/usr/share/doc
-	cp -a $install/etc			$fs/
-	cp -a $install/usr/lib/xrdp/*.so*	$fs/usr/lib/xrdp/
-	cp -a $install/usr/sbin			$fs/usr/
-	cp -a $install/usr/bin			$fs/usr/
-	cp -a $install/usr/share/xrdp		$fs/usr/share/
+	#~ cp -a $src/*.txt					$install/usr/share/doc
+	#~ cp -a $src/*.md					$install/usr/share/doc
+	#~ cp -a $src/COPYING				$install/usr/share/doc
+	cp -a $install/etc					$fs
+	cp -a $install/usr/bin				$fs/usr
+	cp -a $install/usr/sbin				$fs/usr
+	cp -a $install/usr/lib/*.so*		$fs/usr/lib
+	cp -a $install/usr/lib/xrdp/*.so*	$fs/usr/lib/xrdp
+	cp -a $install/usr/share/xrdp		$fs/usr/share
 
 	# 0.9.13 no such file
-#	mv $fs/etc/xrdp/xrdp.sh			$fs/etc/init.d/xrdp
+#	mv $fs/etc/xrdp/xrdp.sh				$fs/etc/init.d/xrdp
 
 	sed -i	-e 's|/usr/local|/usr|;s|xrdp\.sh|xrdp|' \
 		-e 's|--noheading -C||' \

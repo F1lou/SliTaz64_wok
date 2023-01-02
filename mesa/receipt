@@ -20,16 +20,29 @@ BUILD_DEPENDS="xorg-dev libva-dev eudev-dev libvdpau-dev zstd-dev llvm
 	libdrm-dev libdrm-intel libdrm-nouveau libdrm-radeon xorg-libpciaccess-dev
 	expat-dev wayland-dev wayland-protocols xorg-libXshmfence-dev
 	xorg-libXxf86vm-dev python3-mako python3-pygments python3-markupsafe
-	elfutils-dev xorg-server-dev zlib-dev libffi-dev"
+	elfutils-dev xorg-server-dev zlib-dev libffi-dev glslang"
 # autoconf automake expat-dev file lesstif-dev libtool libxml2-python pkg-config talloc
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	mkdir build && cd build && 
-	
-	meson --prefix=/usr -Dbuildtype=release -Dvulkan-drivers="" -Dgallium-nine=false .. &&
-	ninja install
+	find . -name 'nouveau*.h' | \
+		xargs sed -i 's|libdrm/nouveau.h|libdrm/nouveau/nouveau.h|'
+
+	mkdir build && cd build &&
+
+	meson --prefix=/usr								\
+		  -Dbuildtype=release						\
+		  -Dplatforms="x11,wayland"					\
+		  -Degl-native-platform="x11"				\
+		  -Dgallium-drivers=auto					\
+		  -Dvulkan-drivers="amd,intel"				\
+		  -Dglx=dri									\
+		  -Dvalgrind=disabled						\
+		  -Dlibunwind=disabled						\
+		  .. &&
+
+	ninja && ninja install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

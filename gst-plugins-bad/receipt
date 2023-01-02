@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gst-plugins-bad"
-VERSION="1.20.0"
+VERSION="1.20.5"
 SERIES="1.0"
 CATEGORY="multimedia"
 SHORT_DESC="GStreamer Bad Plugins"
@@ -13,30 +13,27 @@ WEB_SITE="https://gstreamer.freedesktop.org/"
 WGET_URL="$WEB_SITE/src/$PACKAGE/$TARBALL"
 LOCALES="da de es fr id it pt_BR ru zh_CN"
 
-DEPENDS="gst-plugins-base faac libpng libvpx openssl xvidcore
-faad2 jasper libmms libmodplug libsndfile mjpegtools neon"
-BUILD_DEPENDS="gstreamer-dev gst-plugins-base-dev
-faac-dev libpng-dev libvpx-dev openssl-dev xvidcore-dev jpeg-dev
-faad2-dev jasper-dev libmms-dev libmodplug-dev libsndfile-dev libsdl-dev
-mjpegtools-dev neon-dev schroedinger-dev expat-dev flac-dev"
+DEPENDS="gst-plugins-base faac libpng libvpx openssl xvidcore faad2 
+	jasper libmms libmodplug libsndfile mjpegtools neon libxkbcommon"
+BUILD_DEPENDS="gstreamer-dev gst-plugins-base-dev faac-dev libpng-dev 
+	libvpx-dev openssl-dev xvidcore-dev jpeg-dev faad2-dev jasper-dev
+	libmms-dev libmodplug-dev libsndfile-dev libsdl-dev	mjpegtools-dev
+	neon-dev schroedinger-dev expat-dev flac-dev 
+	wayland-dev wayland-protocols libxkbcommon-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i 's|ndef VPX_|def |' ext/vp8/gstvp8utils.h
-	sed -i 's|stdafx.h|libmodplug/&|' ext/modplug/gstmodplug.cc
-	./configure \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var \
-		--disable-static \
-		--disable-debug \
-		--enable-experimental \
-		--with-package-name="GStreamer Bad Plugins ($SERIES)" \
-		--with-package-origin="http://www.slitaz.org/" \
-		$CONFIGURE_ARGS &&
-	make $MAKEFLAGS &&
-	make install
+	mkdir build && cd build
+	meson	--prefix=/usr			\
+			--sysconfdir=/etc 		\
+			--localstatedir=/var	\
+			-Dx11=enabled			\
+			-Dwayland=enabled		\
+			-Dpackage-name="GStreamer Bad Plugins ($SERIES)"	\
+			-Dpackage-origin="http://www.slitaz.org/"			\
+			$CONFIGURE_ARGS .. &&
+	ninja && ninja install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

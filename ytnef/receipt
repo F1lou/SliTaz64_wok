@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="ytnef"
-VERSION="1.9.3"
+VERSION="2.0"
 CATEGORY="mail"
 SHORT_DESC="Yeraze's TNEF Stream Reader - for winmail.dat files."
 MAINTAINER="maintainer@slitaz.org"
@@ -11,7 +11,7 @@ WEB_SITE="https://github.com/Yeraze/ytnef"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/Yeraze/$PACKAGE/archive/v$VERSION.tar.gz"
 
-BUILD_DEPENDS="automake libtool"
+BUILD_DEPENDS="automake libtool bash"
 
 compile_rules()
 {

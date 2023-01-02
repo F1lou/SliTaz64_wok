@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xfce4-session"
-VERSION="4.16.0"
+VERSION="4.18.0"
 CATEGORY="x-window"
 SHORT_DESC="Xfce session manager"
 MAINTAINER="erjo@slitaz.org"
@@ -14,7 +14,7 @@ SUGGESTED="perl-xml-parser"
 DEPENDS="libxfce4util libxfce4ui libwnck3 dbus-glib libglade xorg-iceauth"
 BUILD_DEPENDS="libxfce4util-dev libxfce4ui-dev xfconf-dev libglade-dev
 	dbus-dev dbus-glib-dev xorg-iceauth libwnck3-dev pkg-config intltool
-	util-linux-uuid-dev xcb-util-dev "
+	util-linux-uuid-dev xcb-util-dev liblzma-dev"
 
 # Rules to configure and make the package.
 compile_rules()

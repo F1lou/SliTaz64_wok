@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libnotify-gtk3"
-VERSION="0.7.9"
+VERSION="0.8.1"
 CATEGORY="utilities"
 SHORT_DESC="Sends desktop notifications to a notification daemon (GTK+3)"
 MAINTAINER="al.bobylev@gmail.com"
@@ -9,13 +9,12 @@ LICENSE="LGPL2.1"
 SOURCE="libnotify"
 TARBALL="$SOURCE-$VERSION.tar.xz"
 WEB_SITE="https://web.archive.org/web/20160322142309/https://developer-next.gnome.org/libnotify/"
-SERIES=$(echo $VERSION | cut -d. -f1,2)
-WGET_URL="$GNOME_MIRROR/$SOURCE/$SERIES/$TARBALL"
+WGET_URL="$GNOME_MIRROR/$SOURCE/${VERSION%.*}/$TARBALL"
 TAGS="gtk3"
 
 DEPENDS="gdk-pixbuf dbus"
 BUILD_DEPENDS="gtk+3-dev gobject-introspection-dev glib-dev libxml2-dev
-	dbus-dev liblzma-dev  bash"
+	dbus-dev liblzma-dev bash"
 
 # Rules to configure and make the package.
 compile_rules()

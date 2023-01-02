@@ -9,7 +9,7 @@ LICENSE="other"
 WEB_SITE="https://www.x.org/wiki/"
 
 WANTED="xorg-libXshmfence"
-DEPENDS=""
+DEPENDS="xorg-libXshmfence"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
