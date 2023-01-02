@@ -1,6 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xcursor-comix"
+SOURCE="comixcursors"
 VERSION="0.9.1"
 CATEGORY="x-window"
 TAGS="cursor-theme"
@@ -9,8 +10,8 @@ MAINTAINER="al.bobylev@gmail.com"
 LICENSE="GPL"
 WEB_SITE="https://limitland.de/comixcursors"
 
-TARBALL="ComixCursors-$VERSION.tar.bz2"
-WGET_URL="https://limitland.gitlab.io/comixcursors/$TARBALL"
+TARBALL="$SOURCE-$VERSION.tar.bz2"
+WGET_URL="https://gitlab.com/limitland/$SOURCE/-/archive/$VERSION/$TARBALL"
 
 DEPENDS="xorg-libXcursor"
 BUILD_DEPENDS=""

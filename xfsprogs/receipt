@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xfsprogs"
-VERSION="5.6.0"
+VERSION="6.1.0"
 CATEGORY="system-tools"
 SHORT_DESC="Utilities for making, mounting, and manipulating XFS file-systems."
 MAINTAINER="patel@math.uga.edu"
@@ -9,7 +9,7 @@ LICENSE="GPL3"
 WEB_SITE="https://xfs.wiki.kernel.org/"
 
 TARBALL="$PACKAGE-$VERSION.tar.xz"
-WGET_URL="https://www.kernel.org/pub/linux/utils/fs/xfs/xfsprogs/$TARBALL"
+WGET_URL="https://www.kernel.org/pub/linux/utils/fs/xfs/xfsprogs/$PACKAGE-$VERSION.tag.xz"	# <- typo serverside
 
 DEPENDS="e2fsprogs"
 BUILD_DEPENDS="e2fsprogs-dev gettext libdevmapper-dev libtool 
@@ -18,11 +18,11 @@ BUILD_DEPENDS="e2fsprogs-dev gettext libdevmapper-dev libtool
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i 's/--best -c/-9 -c/' \
-		include/buildmacros
-	sed -i	-e 's/lt_shell_append=yes/lt_shell_append=no/' \
-		-e 's/DDEBUG/DNODEBUG/' \
-		configure
+	#~ sed -i 's/--best -c/-9 -c/' \
+		#~ include/buildmacros
+	#~ sed -i	-e 's/lt_shell_append=yes/lt_shell_append=no/' \
+		#~ -e 's/DDEBUG/DNODEBUG/' \
+		#~ configure
 
 	./configure		\
 		$CONFIGURE_ARGS || return 1

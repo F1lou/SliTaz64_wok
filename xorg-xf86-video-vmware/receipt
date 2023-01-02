@@ -20,6 +20,7 @@ MODS='/usr/lib/X11/modules'
 # Rules to configure and make the package.
 compile_rules()
 {
+	sed -i 's/>yuv.i/>yuv[j][i/' vmwgfx/vmwgfx_tex_video.c
 	./configure				\
 		--sysconfdir=/etc		\
 		--mandir=/usr/share/man		\

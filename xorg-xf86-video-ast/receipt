@@ -13,7 +13,7 @@ WGET_URL="$XORG_MIRROR/driver/$TARBALL"
 TAGS="xorg display"
 
 DEPENDS="xorg-server"
-BUILD_DEPENDS="xorg-server-dev libpthread-stubs-dev"
+BUILD_DEPENDS="xorg-server-dev"
 
 MODS='/usr/lib/X11/modules'
 

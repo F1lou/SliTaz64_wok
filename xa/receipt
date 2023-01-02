@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xa"
-VERSION="2.3.10"
+VERSION="2.3.13"
 CATEGORY="development"
 TAGS="cross assembler 6502"
 SHORT_DESC="6502 cross assembler."

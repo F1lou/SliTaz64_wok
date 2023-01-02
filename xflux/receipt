@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xflux"
-VERSION="1.2.0"
+VERSION="2.0"
 CATEGORY="x-window"
 SHORT_DESC="f.lux for X."
 MAINTAINER="paul@slitaz.org"
@@ -10,8 +10,8 @@ TARBALL="v$VERSION.tar.gz"
 WEB_SITE="https://github.com/xflux-gui/fluxgui"
 WGET_URL="https://github.com/xflux-gui/fluxgui/archive/refs/tags/$TARBALL"
 
-DEPENDS=""
-BUILD_DEPENDS="git bzip2"
+DEPENDS="libgio"
+BUILD_DEPENDS="bzip2 libgio-dev py3k-setuptools_scm"
 
 # Rules to configure and make the package.
 compile_rules()

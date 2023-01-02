@@ -11,7 +11,7 @@ HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="xorg-libxkbfile-dev xorg-libpciaccess-dev xorg-libXxf86vm-dev 
 	xorg-libXfont-dev libgcrypt-dev pixman-dev eudev-dev mesa-dev pkg-config 
-	perl flex xorg-server xorg-proto"
+	perl flex xorg-server xorg-proto xorg-libXcvt-dev"
 
 # xorg-xf86driproto xorg-xcmiscproto xorg-bigreqsproto xorg-dri2proto
 # xorg-xextproto xorg-xproto xorg-fontsproto xorg-inputproto

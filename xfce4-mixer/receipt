@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xfce4-mixer"
-VERSION="4.10.0"
+VERSION="4.11.0"
 CATEGORY="x-window"
 SHORT_DESC="Xfce Audio Mixer"
 MAINTAINER="erjo@slitaz.org"
@@ -10,11 +10,12 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WEB_SITE="https://www.xfce.org"
 WGET_URL="http://archive.xfce.org/src/apps/$PACKAGE/${VERSION%.*}/$TARBALL"
 
-DEPENDS="gtk+ libxfce4util gtk+ xfconf xfce4-panel gst-plugins-base startup-notification
- util-linux-uuid libunique"
-BUILD_DEPENDS="gtk+-dev libxfce4util-dev xfconf-dev xfce4-panel-dev
- gst-plugins-base-dev intltool libxfce4ui-dev gstreamer-dev startup-notification-dev \
- util-linux-uuid-dev libxml2-dev libunique-dev xcb-util-dev"
+DEPENDS="gtk+3 libxfce4util xfconf xfce4-panel gst-plugins-base
+	startup-notification util-linux-uuid libunique"
+BUILD_DEPENDS="gtk+3-dev libxfce4util-dev xfconf-dev xfce4-panel-dev
+	gst-plugins-base-dev intltool libxfce4ui-dev gstreamer-dev
+	startup-notification-dev util-linux-uuid-dev libxml2-dev
+	libunique-dev xcb-util-dev"
  
 # Rules to configure and make the package.
 compile_rules()

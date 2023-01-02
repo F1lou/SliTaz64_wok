@@ -12,17 +12,15 @@ WEB_SITE="https://nouveau.freedesktop.org/"
 WGET_URL="$XORG_MIRROR/driver/$TARBALL"
 TAGS="xorg display"
 
-DEPENDS="xorg-server libdrm-nouveau libpthread-stubs \
- mesa-dri-nouveau" # opengl only
-BUILD_DEPENDS="xorg-server-dev libpthread-stubs-dev libdrm-dev
-	libdrm-nouveau"
+DEPENDS="xorg-server libdrm-nouveau mesa-dri-nouveau" # opengl only
+BUILD_DEPENDS="xorg-server-dev libdrm-dev libdrm-nouveau"
 
 MODS='/usr/lib/X11/modules'
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	cd $src
+	grep -rl slave * | xargs sed -i 's/slave/secondary/'
 	./configure \
 		--sysconfdir=/etc \
 		--mandir=/usr/share/man \

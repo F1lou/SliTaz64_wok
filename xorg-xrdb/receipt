@@ -13,7 +13,7 @@ TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="$XORG_MIRROR/app/$TARBALL"
 
 DEPENDS="xorg-libXmu"
-BUILD_DEPENDS="pkg-config"
+BUILD_DEPENDS="pkg-config xorg-libX11-dev xorg-proto"
 
 # Rules to configure and make the package.
 compile_rules()

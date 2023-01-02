@@ -13,13 +13,15 @@ WGET_URL="$XORG_MIRROR/driver/$TARBALL"
 TAGS="xorg display"
 
 DEPENDS="xorg-server mesa-dri-ati"
-BUILD_DEPENDS="xorg-server-dev libpthread-stubs-dev xorg-proto" # xorg-xf86driproto
+BUILD_DEPENDS="xorg-server-dev xorg-proto" # xorg-xf86driproto
 
 MODS='/usr/lib/X11/modules'
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	patch -Np1 -i $stuff/xf86-video-ati-19.1.0-upstream_fixes-1.patch
+	
 	./configure \
 		--sysconfdir=/etc \
 		--mandir=/usr/share/man \

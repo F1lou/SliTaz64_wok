@@ -11,7 +11,8 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$WEB_SITE/$TARBALL"
 
 DEPENDS="xorg-libXpm xorg-libX11 xorg-libXext"
-BUILD_DEPENDS="xorg-libXpm-dev xorg-libX11-dev xorg-libXext-dev"
+BUILD_DEPENDS="xorg-libXpm-dev xorg-libX11-dev xorg-libXext-dev
+	xorg-libXt-dev"
 
 # Rules to configure and make the package.
 compile_rules()

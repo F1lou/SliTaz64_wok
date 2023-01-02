@@ -11,8 +11,8 @@ WEB_SITE="https://motion-project.github.io/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/Motion-Project/$PACKAGE/archive/release-$VERSION.tar.gz"
 
-DEPENDS="ffmpeg jpeg libmicrohttpd libpthread-stubs libv4l"
-BUILD_DEPENDS="automake ffmpeg-dev jpeg-dev libmicrohttpd-dev libpthread-stubs \
+DEPENDS="ffmpeg jpeg libmicrohttpd  libv4l"
+BUILD_DEPENDS="automake ffmpeg-dev jpeg-dev libmicrohttpd-dev  \
 	libtool libv4l-dev"
 
 # Rules to configure and make the package.

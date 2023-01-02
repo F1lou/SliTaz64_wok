@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xfce4-dev-tools"
-VERSION="4.17.0"
+VERSION="4.18.0"
 CATEGORY="development"
 SHORT_DESC="Xfce Developpers Tools"
 MAINTAINER="erjo@slitaz.org"
@@ -11,6 +11,7 @@ WEB_SITE="http://xfce.org/~benny/projects/xfce4-dev-tools/"
 WGET_URL="http://archive.xfce.org/src/xfce/$PACKAGE/${VERSION%.*}/$TARBALL"
 
 DEPENDS="subversion autoconf automake intltool pkg-config"
+BUILD_DEPENDS="glib-dev"
 
 # Rules to configure and make the package.
 compile_rules()

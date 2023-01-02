@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="$SF_MIRROR/pupnp/$TARBALL"
 
 DEPENDS="libxml2"
-BUILD_DEPENDS="libxml2-dev libpthread-stubs"
+BUILD_DEPENDS="libxml2-dev "
 
 # Rules to configure and make the package.
 compile_rules()

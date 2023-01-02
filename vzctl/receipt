@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="vzctl"
-VERSION="3.0.25.1"
+VERSION="4.11.1"
 CATEGORY="system-tools"
 SHORT_DESC="OpenVZ containers control utility"
 MAINTAINER="erjo@slitaz.org"
@@ -16,20 +16,6 @@ BUILD_DEPENDS="sed"
 # Rules to configure and make the package.
 compile_rules()
 {
-	cd $src
-	
-	# Apply patches
-	while read patch_file; do
-		if [ -f done.$patch_file ]; then
-			echo "Skipping $patch_file"
-			continue
-		fi
-		echo "Apply $patch_file"
-		patch -p1 < $stuff/$patch_file || return 1
-		touch done.$patch_file
-	done <<EOT
-vzctl-${VERSION}-Makefile.u
-EOT
 	./configure \
 		--prefix=/usr \
 		--localstatedir=/var \

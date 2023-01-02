@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="xorg-xf86-video-intel"
-VERSION="2.99.917"
+VERSION="20210222"
 CATEGORY="x-window"
 TAGS="xorg display"
 SHORT_DESC="Xorg server Intel driver."
@@ -10,32 +10,26 @@ LICENSE="MIT"
 WEB_SITE="https://www.x.org/wiki/"
 
 SOURCE="xf86-video-intel"
-TARBALL="$SOURCE-$VERSION.tar.bz2"
-WGET_URL="$XORG_MIRROR/driver/$TARBALL"
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WGET_URL="ftp://anduin.linuxfromscratch.org/BLFS/$SOURCE/$TARBALL"
 
 DEPENDS="libdrm libdrm-intel mesa-dri-intel xcb-util xorg-libXvMC xorg-server"
-BUILD_DEPENDS="libdrm-dev libpthread-stubs-dev xcb-util-dev 
-	xorg-libXvMC-dev xorg-server-dev xorg-libXfont2-dev"
+BUILD_DEPENDS="libdrm-dev  xcb-util-dev xorg-libXvMC-dev xorg-server-dev
+	xorg-libXfont2-dev"
 
 MODS='/usr/lib/X11/modules'
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	export CFLAGS="$CFLAGS -Wno-error=implicit-function-declaration"
-	sed -i 's|#define BLOCKHANDLER_ARGS_DECL ScreenPtr arg, pointer timeout, pointer read_mask|#define BLOCKHANDLER_ARGS_DECL ScreenPtr arg, void* pTimeout|' ./src/compat-api.h
-	sed -i 's|#define BLOCKHANDLER_ARGS arg, timeout, read_mask|#define BLOCKHANDLER_ARGS arg, pTimeout|' ./src/compat-api.h
-	
-	./configure				\
+	./autogen.sh --prefix=/usr 	\
 		--sysconfdir=/etc		\
-		--mandir=/usr/share/man		\
-		--localstatedir=/var		\
-		--with-xorg-module-dir=$MODS	\
-		--enable-dri			\
-		--enable-xvmc			\
-		$CONFIGURE_ARGS &&
-	make &&
-	make install
+		--localstatedir=/var	\
+		--disable-static		\
+		--enable-kms-only		\
+		--enable-uxa			\
+		--mandir=/usr/share/man &&
+	make && make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
@@ -43,6 +37,7 @@ genpkg_rules()
 {
 	mkdir -p ${fs}${MODS}/drivers
 
-	cp -a ${install}${MODS}/drivers/*.so	${fs}${MODS}/drivers
-	cp -a $install/usr/lib/*.so*		$fs/usr/lib
+	cp -a $install/usr/lib/xorg/modules/drivers/*.so	${fs}${MODS}/drivers
+	cp -a $install/usr/lib/*.so*	$fs/usr/lib
+	cp -a $install/usr/libexec		$fs/usr
 }

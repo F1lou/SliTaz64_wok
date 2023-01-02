@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="whois"
-VERSION="5.5.6"
+VERSION="5.5.15"
 CATEGORY="network"
 SHORT_DESC="The whois client by Marco d'Itri."
 MAINTAINER="slaxemulator@gmail.com"
