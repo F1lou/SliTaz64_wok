@@ -25,8 +25,6 @@ compile_rules()
 	meson	--prefix=/usr			\
 			--sysconfdir=/etc 		\
 			--localstatedir=/var	\
-			--disable-static 		\
-			--disable-debug 		\
 			-Dpackage-name="GStreamer Ugly Plugins ($SERIES)"	\
 			-Dpackage-origin="http://www.slitaz.org/"			\
 			$CONFIGURE_ARGS .. &&
@@ -36,9 +34,9 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib/gstreamer-$SERIES $fs/usr/share/locale
-	mv $install/usr/lib/gstreamer-$SERIES/*.so* $fs/usr/lib/gstreamer-$SERIES
-	mv $install/usr/share/gstreamer-$SERIES $fs/usr/share
+	mkdir -p $fs/usr/lib64/gstreamer-$SERIES $fs/usr/share/locale
+	mv $install/usr/lib64/gstreamer-$SERIES/*.so* 	$fs/usr/lib64/gstreamer-$SERIES
+	#~ mv $install/usr/share/gstreamer-$SERIES $fs/usr/share
 	for locale in $LOCALES; do
 		mv $install/usr/share/locale/$locale $fs/usr/share/locale
 	done

@@ -17,39 +17,34 @@ DEPENDS="gst-plugins-base cairo flac libjpeg libpng speex bzip2"
 BUILD_DEPENDS="gstreamer-dev gst-plugins-base-dev sqlite-dev cairo-dev 
 	flac-dev jpeg-dev libpng-dev libshout-dev libsoup-dev 
 	jack-audio-connection-kit2-dev libcdio-dev libdv-dev speex-dev 
-	taglib-dev wavpack-dev bzip2-dev util-linux-uuid-dev"
+	taglib-dev wavpack-dev bzip2-dev util-linux-uuid-dev
+	wayland-dev wayland-protocols libxkbcommon-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i 's|.*vbuffer.input|// &|' sys/v4l2/gstv4l2bufferpool.c
-	sed -i '/e V4L2_CID_.CENTER/d' sys/v4l2/v4l2_calls.c
-	./configure \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var \
-		--enable-experimental \
-		--disable-static \
-		--disable-debug \
-		--disable-hal \
-		--disable-esd \
-		--with-package-name="GStreamer Good Plugins ($SERIES)" \
-		--with-package-origin="http://www.slitaz.org/" \
-		$CONFIGURE_ARGS &&
-	make $MAKEFLAGS &&
-	make install
+	mkdir build && cd build
+	meson	--prefix=/usr			\
+			--sysconfdir=/etc 		\
+			--localstatedir=/var	\
+			-Dpackage-name="GStreamer Good Plugins ($SERIES)"	\
+			-Dpackage-origin="http://www.slitaz.org/"			\
+			$CONFIGURE_ARGS .. &&
+	ninja && ninja install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib/gstreamer-$SERIES $fs/usr/share/locale
-	cp -a $install/usr/lib/gstreamer-$SERIES/*.so* $fs/usr/lib/gstreamer-$SERIES
+	mkdir -p $fs/usr/lib64/gstreamer-$SERIES $fs/usr/share/locale
+	cp -a $install/usr/lib64/gstreamer-$SERIES/*.so*	$fs/usr/lib64/gstreamer-$SERIES
 	cp -a $install/usr/share/gstreamer* $fs/usr/share
-	# for locale in $LOCALES; do
-	# 	cp -a $install/usr/share/locale/$locale $fs/usr/share/locale
-	# done
+	
+	for locale in $LOCALES; do
+		cp -a $install/usr/share/locale/$locale $fs/usr/share/locale
+	done
+	
 	for i in dv jack shout2 souphttpsrc taglib wavpack rtp rtpmanager rtsp deinterlace video4linux2; do
-		rm -f $fs/usr/lib/gstreamer-$SERIES/libgst${i}.so
+		rm -f $fs/usr/lib64/gstreamer-$SERIES/libgst${i}.so
 	done
 }

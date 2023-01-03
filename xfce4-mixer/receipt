@@ -11,11 +11,11 @@ WEB_SITE="https://www.xfce.org"
 WGET_URL="http://archive.xfce.org/src/apps/$PACKAGE/${VERSION%.*}/$TARBALL"
 
 DEPENDS="gtk+3 libxfce4util xfconf xfce4-panel gst-plugins-base
-	startup-notification util-linux-uuid libunique"
+	startup-notification util-linux-uuid libunique-gtk3"
 BUILD_DEPENDS="gtk+3-dev libxfce4util-dev xfconf-dev xfce4-panel-dev
 	gst-plugins-base-dev intltool libxfce4ui-dev gstreamer-dev
 	startup-notification-dev util-linux-uuid-dev libxml2-dev
-	libunique-dev xcb-util-dev"
+	libunique-gtk3-dev xcb-util-dev"
  
 # Rules to configure and make the package.
 compile_rules()

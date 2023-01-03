@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libdvdread"
-VERSION="6.0.2"
+VERSION="6.1.3"
 CATEGORY="system-tools"
 SHORT_DESC="Library for reading DVDs."
 MAINTAINER="erjo@slitaz.org"

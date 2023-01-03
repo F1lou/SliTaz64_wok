@@ -1,8 +1,8 @@
 # SliTaz package receipt.
 
 PACKAGE="gst-plugins-good-dev"
-VERSION="0.10.31"
-SERIES="0.10"
+VERSION="1.20.5"
+SERIES="1.0"
 CATEGORY="development"
 SHORT_DESC="gst-plugins-good devel files"
 MAINTAINER="jozee@slitaz.org"
@@ -10,14 +10,13 @@ LICENSE="LGPL2.1"
 WANTED="gst-plugins-good"
 WEB_SITE="https://gstreamer.freedesktop.org/"
 
-DEPENDS="gstreamer-dev gst-plugins-base-dev
-cairo-dev flac-dev jpeg-dev libpng-dev libshout-dev
-libsoup-dev jack-audio-connection-kit2-dev libcdio-dev
-libdv-dev speex-dev taglib-dev wavpack-dev bzip2-dev"
+DEPENDS="gstreamer-dev gst-plugins-base-dev cairo-dev flac-dev jpeg-dev
+	libpng-dev libshout-dev libsoup-dev jack-audio-connection-kit2-dev 
+	libcdio-dev libdv-dev speex-dev taglib-dev wavpack-dev bzip2-dev"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib/gstreamer-$SERIES
-	cp -a $install/usr/lib/gstreamer-$SERIES/*.*a $fs/usr/lib/gstreamer-$SERIES
+	mkdir -p $fs/usr/lib64/gstreamer-$SERIES
+	cp -a $install/usr/lib64/gstreamer-$SERIES/*.*a $fs/usr/lib64/gstreamer-$SERIES
 }

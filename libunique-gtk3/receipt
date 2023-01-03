@@ -13,8 +13,8 @@ WGET_URL="$GNOME_MIRROR/$SOURCE/${VERSION%.*}/$TARBALL"
 TAGS="gtk3"
 
 DEPENDS="dbus-glib gtk+3"
-BUILD_DEPENDS="glib-dev gtk+3-dev dbus-glib-dev gobject-introspection-dev \
-libxml2-dev libepoxy-dev mesa-dev xorg-libXtst-dev"
+BUILD_DEPENDS="glib-dev gtk+3-dev dbus-glib-dev gobject-introspection-dev 
+	libxml2-dev libepoxy-dev mesa-dev xorg-libXtst-dev liblzma-dev"
 
 # Rules to configure and make the package.
 compile_rules()
