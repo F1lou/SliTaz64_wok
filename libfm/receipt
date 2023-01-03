@@ -15,8 +15,7 @@ SUGGESTED="gvfs"
 DEPENDS="glib glibc-base libffi libgio menu-cache pcre zlib"
 BUILD_DEPENDS="automake dbus-dev dbus-glib-dev expat-dev gtk-doc gtk+3-dev 
 	libgio-dev libtool libxcb-dev menu-cache-dev shared-mime-info-dev 
-	startup-notification-dev xcb-util-dev intltool wayland-dev
-	libxkbcommon-dev" # git-version deps: gtk-doc libtool automake
+	startup-notification-dev xcb-util-dev intltool liblzma-dev" # git-version deps: gtk-doc libtool automake
 
 GENERIC_MENUS="no"
 
@@ -29,8 +28,6 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	./autogen.sh
-
 	patch -p1 -i $stuff/quick-exec.patch
 
 	# Do *not* treat desktop entries as executables!

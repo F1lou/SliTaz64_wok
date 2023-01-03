@@ -1,0 +1,36 @@
+# SliTaz package receipt.
+
+PACKAGE="lxappearance-gtk3"
+SOURCE="lxappearance"
+VERSION="0.6.3"
+CATEGORY="x-window"
+SHORT_DESC="LXDE GTK+ theme switcher"
+MAINTAINER="pankso@slitaz.org"
+LICENSE="GPL2"
+WEB_SITE="https://wiki.lxde.org/en/LXAppearance"
+TARBALL="$SOURCE-$VERSION.tar.xz"
+WGET_URL="$SF_MIRROR/lxde/$TARBALL"
+TAGS="LXDE"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="gtk+3"
+BUILD_DEPENDS="xorg-libX11-dev gtk+3-dev intltool"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--sysconfdir=/etc 	\
+		--enable-gtk3 		\
+		$CONFIGURE_ARGS &&
+	make && make install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/bin $fs/usr
+	cp -a $install/usr/share/applications $fs/usr/share
+	cp -a $install/usr/share/lxappearance $fs/usr/share
+}

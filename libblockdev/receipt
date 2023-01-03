@@ -11,10 +11,12 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://github.com/storaged-project/$PACKAGE/releases/download/$VERSION-1/$TARBALL"
 #HOST_ARCH="x86_64 i486 arm"
 
-DEPENDS=""
+DEPENDS="gobject-introspection kmod libdevmapper eudev util-linux-mount
+	zlib libbytesize coreutils-file-special volume_key"
 BUILD_DEPENDS="gobject-introspection-dev yaml-dev kmod-dev libdevmapper-dev
-	cryptsetup-dev zlib-dev eudev-dev util-linux-mount-dev libbytesize-dev
-	parted-dev pcre2-dev nss-dev coreutils-file-special"
+	zlib-dev eudev-dev util-linux-mount-dev libbytesize-dev cryptsetup-dev 
+	parted-dev pcre2-dev nss-dev coreutils-file-special volume_key-dev
+	bash mpfr-dev gmp-dev"
 
 # Rules to configure and make the package.
 compile_rules()

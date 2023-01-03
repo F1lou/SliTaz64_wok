@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=LXSession Log Out
+Name[fr]=Déconnexion de LXSession
+Name[it]=Esci LXSession
+Name[pt]=Encerrar sessão do LXDE 
+Name[pt_BR]=Encerrar sessão do LXDE 
+Name[ru]=Завершить сеанс
+Exec=lxde-logout
+Icon=system-log-out
+Categories=System;
+OnlyShowIn=LXDE;

@@ -1,14 +1,14 @@
 # SliTaz package receipt.
 
 PACKAGE="cryptsetup-dev"
-VERSION="2.3.5"
+VERSION="2.6.0"
 CATEGORY="development"
 SHORT_DESC="cryptsetup library - development files."
 MAINTAINER="b1+slitaz@nagel.org"
 LICENSE="GPL2"
 WEB_SITE="https://gitlab.com/$PACKAGE/$PACKAGE"
 
-DEPENDS="cryptsetup pkg-config"
+DEPENDS="cryptsetup libdevmapper-dev libjson-c-dev"
 WANTED="cryptsetup"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

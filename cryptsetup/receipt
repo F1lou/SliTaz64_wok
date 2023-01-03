@@ -12,10 +12,10 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WGET_URL="https://www.kernel.org/pub/linux/utils/$PACKAGE/v${VERSION%.*}/$TARBALL"
 
 DEPENDS="e2fsprogs libdevmapper libgcrypt libjson-c openssl libssh popt
-	libsodium"
+	libargon2"
 BUILD_DEPENDS="e2fsprogs-dev libdevmapper-dev libgcrypt-dev
 	libjson-c-dev openssl-dev popt-dev util-linux-blkid-dev 
-	util-linux-uuid-dev libssh-dev"
+	util-linux-uuid-dev libssh-dev libargon2-dev bash"
 
 # Rules to configure and make the package.
 compile_rules()

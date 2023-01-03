@@ -2,7 +2,7 @@
 
 PACKAGE="udisks2"
 SOURCE="udisks"
-VERSION="2.9.2"
+VERSION="2.9.4"
 CATEGORY="system-tools"
 SHORT_DESC="D-Bus service to access and manipulate storage devices"
 MAINTAINER="pankso@slitaz.org"
@@ -12,13 +12,14 @@ TARBALL="$SOURCE-$VERSION.tar.bz2"
 WGET_URL="https://github.com/storaged-project/$SOURCE/releases/download/$SOURCE-$VERSION/$TARBALL"
 
 DEPENDS="libatasmart libgudev polkit"
-BUILD_DEPENDS="docbook-xsl gtk-doc libgudev-dev polkit-dev libatasmart-dev \
-	gobject-introspection-dev zlib-dev util-linux-mount-dev libblockdev-dev \
-	kmod-dev"
+BUILD_DEPENDS="docbook-xsl gtk-doc libgudev-dev polkit-dev libatasmart-dev
+	gobject-introspection-dev zlib-dev util-linux-mount-dev libblockdev-dev
+	kmod-dev bash"
 
 # Rules to configure and make the package.
 compile_rules()
 {
+	export XML_CATALOG_FILES="/etc/xml/catalog"
 	./configure \
 		--sysconfdir=/etc \
 		--localstatedir=/var \

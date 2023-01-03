@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libgphoto2-dev"
-VERSION="2.5.27"
+VERSION="2.5.30"
 CATEGORY="development"
 SHORT_DESC="libgphoto2 - development files."
 MAINTAINER="jozee@slitaz.org"

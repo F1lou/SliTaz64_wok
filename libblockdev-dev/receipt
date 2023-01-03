@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libblockdev-dev"
-VERSION="2.25"
+VERSION="2.28"
 CATEGORY="development"
 SHORT_DESC="C library supporting GObject Introspection for manipulation of block devices"
 MAINTAINER="nhc1@gmx.net"

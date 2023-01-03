@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="udisks2-dev"
-VERSION="2.9.2"
+VERSION="2.9.4"
 CATEGORY="development"
 SHORT_DESC="D-Bus service to access and manipulate storage devices (development)"
 MAINTAINER="pankso@slitaz.org"

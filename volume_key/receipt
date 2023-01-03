@@ -13,14 +13,15 @@ WGET_URL="https://github.com/felixonmars/$PACKAGE/archive/$TARBALL"
 
 DEPENDS=""
 BUILD_DEPENDS="nss-dev cryptsetup-dev util-linux-blkid-dev
-	util-linux-uuid-dev gpgme-dev"
+	util-linux-uuid-dev gpgme-dev glib-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	autoreconf -fiv              &&
-	./configure --prefix=/usr    \
-            --without-python --without-python3 &&
+	autoreconf -fi &&
+	./configure	--prefix=/usr		\
+				--without-python	\
+				--without-python3	&&
 	make &&
 	make DESTDIR=$DESTDIR install
 }

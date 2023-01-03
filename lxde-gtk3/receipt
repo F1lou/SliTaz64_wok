@@ -1,6 +1,6 @@
 # SliTaz package receipt.
 
-PACKAGE="lxde"
+PACKAGE="lxde-gtk3"
 VERSION="0.3.2.1"
 CATEGORY="meta"
 SHORT_DESC="Meta-package for the Lightweight X11 Desktop Environement"
@@ -10,11 +10,12 @@ WEB_SITE="https://lxde.org/"
 TAGS="LXDE window-manager desktop"
 HOST_ARCH="x86_64 i486 arm"
 
-SUGGESTED="lxterminal lxdm lxshortcut xarchiver"
+SUGGESTED="lxterminal lxdm-gtk3 lxshortcut xarchiver"
 # hack DEPENDS with lxsession046 (lxsession needs consolekit)
-DEPENDS="xorg-libX11 gtk+3 lxpanel lxtask lxappearance lxsession pcmanfm \
-lxsession-edit lxrandr lxinput openbox obconf gpicview leafpad slitaz-configs \
-slitaz-tools-boxes"
+DEPENDS="xorg-libX11 gtk+3 lxpanel-gtk3 lxtask-gtk3 lxappearance-gtk3
+	lxsession-gtk3 pcmanfm-gtk3 lxsession-edit-gtk3 lxrandr-gtk3 
+	lxinput-gtk3 openbox obconf gpicview leafpad slitaz-configs
+	slitaz-tools-boxes"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

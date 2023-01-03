@@ -44,11 +44,11 @@ compile_rules()
 	sed -i s'/gdk_color_parse("green"/gdk_color_parse("#cfcfcf"/' $src/plugins/cpu/cpu.c || return 1
 
 	./configure \
-		--prefix=/usr \
-		--enable-gtk3 \
-		--sysconfdir=/etc \
-		--localstatedir=/var \
-		--with-plugins="$pluglist" \
+		--prefix=/usr 				\
+		--enable-gtk3 				\
+		--sysconfdir=/etc 			\
+		--localstatedir=/var 		\
+		--with-plugins="$pluglist" 	\
 		$CONFIGURE_ARGS
 	#https://bugzilla.gnome.org/show_bug.cgi?id=656231
 	sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
@@ -79,13 +79,13 @@ genpkg_rules()
 	done
 
 	# Move profile to /etc/lxpanel (/usr maybe read-only) and default config
-	cp -a $install/etc $fs/
-	mv -f $fs/etc/xdg/lxpanel/default $fs/etc/xdg/lxpanel/original
-	cp -a $stuff/default $fs/etc/xdg/lxpanel
+	cp -a $install/etc 					$fs/
+	mv -f $fs/etc/xdg/lxpanel/default 	$fs/etc/xdg/lxpanel/original
+	cp -a $stuff/default 				$fs/etc/xdg/lxpanel
 	rm -rf $fs/etc/xdg/lxpanel/two_panels
 
 	# XDG autostart desktop file (lxsession will use it automaticaly)
-	cp -a $stuff/autostart $fs/etc/xdg
+	cp -a $stuff/autostart 				$fs/etc/xdg
 
 	cp -a $install/usr/share/lxpanel/ui $fs/usr/share/lxpanel
 	cp -a $install/usr/share/lxpanel/x* $fs/usr/share/lxpanel

@@ -8,7 +8,7 @@ MAINTAINER="nhc1@gmx.net"
 LICENSE="GPL2"
 WEB_SITE="https://pagure.io/volume_key"
 WANTED="volume_key"
-DEPENDS=""
+DEPENDS="volume_key gpgme-dev"
 BUILD_DEPENDS="swig"
 
 # Rules to configure and make the package.

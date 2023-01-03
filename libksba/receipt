@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libksba"
-VERSION="1.6.2"
+VERSION="1.6.3"
 CATEGORY="security"
 SHORT_DESC="Library to work with X.509 certificates, CMS data and related objects."
 MAINTAINER="pankso@slitaz.org"
@@ -17,7 +17,7 @@ BUILD_DEPENDS="libgpg-error-dev"
 compile_rules()
 {
 	# Integrity check: https://www.gnupg.org/download/integrity_check.html
-	echo "5e9d2223bfc1d4431594cb4a14f118ba0008cc2e  $SRC/$TARBALL" | sha1sum -c || exit 1
+	echo "7fe6d00b61e85a699a28d0aa309ba0bddcc46f3e  $SRC/$TARBALL" | sha1sum -c || exit 1
 
 	./configure $CONFIGURE_ARGS && make && make install
 }

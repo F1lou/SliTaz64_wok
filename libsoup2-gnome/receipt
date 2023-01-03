@@ -1,0 +1,21 @@
+# SliTaz package receipt.
+
+PACKAGE="libsoup2-gnome"
+VERSION="2.74.3"
+CATEGORY="x-window"
+SHORT_DESC="GNOME Soup Library."
+MAINTAINER="al.bobylev@gmail.com"
+LICENSE="LGPL2"
+WEB_SITE="https://live.gnome.org/LibSoup/"
+HOST_ARCH="x86_64 i486 arm"
+
+DEPENDS="libsoup2 libgnome-keyring libsqlite"
+WANTED="libsoup2"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib64
+
+	cp -a $install/usr/lib64/libsoup-gnome*.so* $fs/usr/lib64
+}

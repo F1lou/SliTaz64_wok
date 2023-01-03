@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gnupg"
-VERSION="2.3.8"
+VERSION="2.4.0"
 CATEGORY="security"
 SHORT_DESC="Free implementation of the OpenPGP."
 MAINTAINER="pankso@slitaz.org"
@@ -12,17 +12,18 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="${WEB_SITE}ftp/gcrypt/gnupg/$TARBALL"
 
 DEPENDS="bzlib gnutls libassuan libcurl libgcrypt libksba libusb 
-	libusb-compat ncurses npth openldap pinentry pth readline sqlite"
+	libusb-compat ncurses npth openldap pinentry pth readline sqlite
+	libksba libiconv"
 BUILD_DEPENDS="curl-dev gnutls-dev libassuan-dev libgcrypt-dev libgnutls 
-	libgpg-error-dev libksba-dev libusb-compat-dev libusb-dev 
+	libgpg-error-dev libksba-dev libusb-compat-dev libusb-dev libksba-dev
 	npth-dev openldap-dev pth-dev readline-dev sqlite-dev zlib-dev
-	"
+	libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	# Integrity check: https://www.gnupg.org/download/integrity_check.html
-	echo "1f31b7b4c9c9adad97f94ea3acf1aa64c0424bcc  $SRC/$TARBALL" | sha1sum -c ||
+	echo "63dde155a8df0d5e1987efa5fc17438beca83ac1  $SRC/$TARBALL" | sha1sum -c ||
 		exit 1
 
 	export LDFLAGS="-lrt"

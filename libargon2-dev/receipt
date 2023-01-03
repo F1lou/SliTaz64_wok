@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="libargon2-dev"
+VERSION="20190702"
+CATEGORY="misc"
+SHORT_DESC="Reference C implementation of Argon2, the password-hashing function that won the Password Hashing Competition (PHC)."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="MIT"
+WEB_SITE="https://github.com/P-H-C/phc-winner-argon2"
+
+WANTED="libargon2"
+DEPENDS="libargon2"
+BUILD_DEPENDS=""
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/include			$fs/usr
+	cp -a $install/usr/lib/*.*a 		$fs/usr/lib
+	cp -a $install/usr/lib/pkgconfig	$fs/usr/lib
+}

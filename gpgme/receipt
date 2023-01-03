@@ -18,10 +18,9 @@ BUILD_DEPENDS="gcc gnupg libassuan-dev libgpg-error-dev "
 compile_rules()
 {
 	# Integrity check: https://www.gnupg.org/download/integrity_check.html
-	echo "070f551664dfd4a7e4dd9cdeae3ed167c91581d5  $SRC/$TARBALL" | sha1sum -c || exit 1
+	echo "d559f7994f9dfd1af611f1f14313b2abbea2a33b  $SRC/$TARBALL" | sha1sum -c || exit 1
 
-	 ./configure		\
-		$CONFIGURE_ARGS &&
+	./configure	--prefix=/usr $CONFIGURE_ARGS &&
 	make &&
 	make install
 }

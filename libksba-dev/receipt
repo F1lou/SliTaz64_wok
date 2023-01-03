@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libksba-dev"
-VERSION="1.6.2"
+VERSION="1.6.3"
 CATEGORY="security"
 SHORT_DESC="The libksba devel files."
 MAINTAINER="pankso@slitaz.org"

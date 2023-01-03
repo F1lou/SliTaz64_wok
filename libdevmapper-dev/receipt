@@ -9,7 +9,7 @@ LICENSE="GPL2"
 WANTED="lvm2"
 WEB_SITE="http://sourceware.org/dm/"
 
-DEPENDS="libdevmapper pkg-config"
+DEPENDS="libdevmapper eudev-dev"
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()

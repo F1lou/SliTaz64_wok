@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libgphoto2"
-VERSION="2.5.27"
+VERSION="2.5.30"
 CATEGORY="graphics"
 TAGS="camera photo"
 SHORT_DESC="Core library of gphoto2 to access photos from digital camera."
@@ -13,9 +13,8 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="$SF_MIRROR/gphoto/$TARBALL"
 
 DEPENDS="hal jpeg libexif libltdl libusb libusb-compat"
-BUILD_DEPENDS="jpeg jpeg-dev libexif libexif-dev libtool liblzma-dev \
-	libusb libusb-compat libusb-compat-dev libusb-dev pkg-config \
-	"
+BUILD_DEPENDS="jpeg jpeg-dev libexif libexif-dev libtool liblzma-dev 
+	libusb libusb-compat libusb-compat-dev libusb-dev pkg-config"
 
 # Rules to configure and make the package.
 compile_rules()
