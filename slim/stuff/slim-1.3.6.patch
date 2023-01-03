@@ -207,3 +207,16 @@ Patch cmake-file for not building simlock without pam
  # configure
  install(FILES slim.conf DESTINATION ${SYSCONFDIR})
  # systemd service file
+
+
+--- slim-1.3.6/panel.cpp
++++ slim-1.3.6/panel.cpp
+@@ -48,7 +48,7 @@
+ 		gcm = GCGraphicsExposures;
+ 		gcv.graphics_exposures = False;
+ 		WinGC = XCreateGC(Dpy, Win, gcm, &gcv);
+-		if (WinGC < 0) {
++		if (WinGC == 0) {
+ 			cerr << APPNAME
+ 				<< ": failed to create pixmap\n.";
+ 			exit(ERR_EXIT);
