@@ -1,0 +1,19 @@
+# SliTaz package receipt.
+
+PACKAGE="mesa-wayland-dri-crocus"
+VERSION="22.2.2"
+CATEGORY="x-window"
+SHORT_DESC="Mesa DRI drivers for Intel Crocus."
+MAINTAINER="pascal.bellard@slitaz.org"
+LICENSE="MIT"
+WEB_SITE="https://www.mesa3d.org/"
+
+DEPENDS="libdrm-wayland-intel mesa-wayland"
+WANTED="mesa-wayland"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib64/dri
+	cp $install/usr/lib64/dri/crocus_dri.so $fs/usr/lib64/dri
+}
