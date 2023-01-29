@@ -2,7 +2,7 @@
 
 PACKAGE="collectd-bind"
 SOURCE="collectd"
-VERSION="5.8.1"
+VERSION="5.12.0"
 CATEGORY="network"
 SHORT_DESC="Apache plugin for Collectd"
 MAINTAINER="erjo@slitaz.org"

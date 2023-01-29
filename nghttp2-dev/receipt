@@ -1,0 +1,22 @@
+# SliTaz package receipt.
+
+PACKAGE="nghttp2-dev"
+VERSION="1.51.0"
+CATEGORY="network"
+SHORT_DESC="Implementation of the Hypertext Transfer Protocol version 2 in C - development files"
+MAINTAINER="nhc1@gmx.net"
+LICENSE="MIT"
+WEB_SITE="https://github.com/nghttp2/nghttp2"
+WANTED="nghttp2"
+
+DEPENDS="nghttp2 openssl-dev zlib-dev libxml2-dev libev-dev libnghttp2"
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/lib
+	cp -a $install/usr/include 			$fs/usr/
+	cp -a $install/usr/lib/pkgconfig	$fs/usr/lib/
+	cp -a $install/usr/lib/*.la			$fs/usr/lib/
+}
+

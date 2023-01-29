@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="deluge"
-VERSION="2.0.5"
+VERSION="2.1.1"
 CATEGORY="network"
 SHORT_DESC="A bittorrent client written with python and pygtk"
 MAINTAINER="slaxemulator@gmail.com"

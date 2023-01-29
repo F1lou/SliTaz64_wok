@@ -1,0 +1,35 @@
+# SliTaz package receipt.
+
+PACKAGE="nghttp2"
+VERSION="1.51.0"
+CATEGORY="network"
+SHORT_DESC="Implementation of the Hypertext Transfer Protocol version 2 in C."
+MAINTAINER="nhc1@gmx.net"
+LICENSE="MIT"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WEB_SITE="https://github.com/nghttp2/nghttp2"
+WGET_URL="$WEB_SITE/releases/download/v$VERSION/$TARBALL"
+
+DEPENDS="openssl zlib libxml2 libev libnghttp2"
+BUILD_DEPENDS="pkg-config openssl-dev zlib-dev c-ares-dev libxml2-dev
+	libev-dev"
+
+# Rules to configure and make the package.
+compile_rules()
+{
+	./configure \
+		--prefix=/usr 		\
+		--disable-static 	\
+		--mandir=/usr/share/man \
+		$CONFIGURE_ARGS &&
+	make && make DESTDIR=$DESTDIR install
+}
+
+# Rules to gen a SliTaz package suitable for Tazpkg.
+genpkg_rules()
+{
+	mkdir -p $fs/usr/share
+	cp -a $install/usr/bin 				$fs/usr/
+	cp -a $install/usr/share/nghttp2	$fs/usr/share/
+}
+

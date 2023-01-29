@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="clamav-dev"
-VERSION="0.102.3"
+VERSION="0.103.7"
 CATEGORY="development"
 TAGS="antivirus"
 SHORT_DESC="Clamav dev files."

@@ -10,8 +10,8 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="http://clisp.sourceforge.net/"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
-DEPENDS="readline ncurses libffcall"
-BUILD_DEPENDS="readline-dev libsigsegv libffcall file "
+DEPENDS="readline ncurses libffcall libiconv"
+BUILD_DEPENDS="readline-dev libsigsegv libffcall file libiconv-dev"
 
 # Rules to configure and make the package.
 compile_rules()

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="clex"
-VERSION="4.6.patch9"
+VERSION="4.7"
 CATEGORY="system-tools"
 TAGS="file-manager"
 SHORT_DESC="Text mode file manager."

@@ -13,7 +13,7 @@ TARBALL="$SOURCE-$VERSION.tar.gz"
 WGET_URL="git|https://github.com/uw-imap/imap.git"
 TAGS="imap pop3 smtp"
 
-BUILD_DEPENDS="openssl-dev"
+BUILD_DEPENDS="openssl-dev bzip2"
 
 # Rules to configure and make the package.
 compile_rules()

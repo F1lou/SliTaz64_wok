@@ -1,14 +1,14 @@
 # SliTaz package receipt.
 
 PACKAGE="ckermit"
-VERSION="9.0.302"
+VERSION="10.0-beta04"
 CATEGORY="network"
 SHORT_DESC="Portable Scriptable Network and Serial Communication Software."
 MAINTAINER="pascal.bellard@slitaz.org"
 LICENSE="BSD"
 WEB_SITE="http://www.columbia.edu/kermit/ck90.html"
-TARBALL="cku${VERSION##*.}.tar.gz"
-WGET_URL="ftp://kermit.columbia.edu/kermit/archives/$TARBALL"
+TARBALL="cku$VERSION.tar.gz"
+WGET_URL="https://www.kermitproject.org/ftp/kermit/test/tar/$TARBALL"
 
 DEPENDS="ncurses"
 BUILD_DEPENDS="ncurses-dev"
@@ -16,7 +16,7 @@ BUILD_DEPENDS="ncurses-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i 's|uname -m|echo i486|' makefile
+	#~ sed -i 's|uname -m|echo i486|' makefile
 	make linux "LNKFLAGS=-lncurses -ltinfo"
 }
 

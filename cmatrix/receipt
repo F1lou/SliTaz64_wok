@@ -8,7 +8,7 @@ MAINTAINER="paul@slitaz.org"
 LICENSE="GPL2"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="https://www.asty.org/cmatrix/"
-WGET_URL="https://www.asty.org/cmatrix/dist/$TARBALL"
+WGET_URL="https://www.asty.org/cmatrix2/dist/$TARBALL"
 
 DEPENDS="ncurses"
 BUILD_DEPENDS="ncurses-dev"
@@ -28,6 +28,8 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr
-	cp -a $install/usr/bin $fs/usr
+	mkdir -p $fs/usr/share/kbd/consolefonts $fs/usr/share/fonts/X11/misc
+	cp -a $install/usr/bin 	$fs/usr
+	cp -a $src/matrix.* 	$fs/usr/share/kbd/consolefonts/
+	cp -a $src/*.pcf 		$fs/usr/share/fonts/X11/misc/
 }

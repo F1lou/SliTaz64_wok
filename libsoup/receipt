@@ -11,10 +11,11 @@ WEB_SITE="https://live.gnome.org/LibSoup/"
 WGET_URL="$GNOME_MIRROR/$PACKAGE/${VERSION%.*}/$TARBALL"
 HOST_ARCH="x86_64 i486 arm"
 
-DEPENDS="glib glibc-base libffi libgio libxml2 pcre zlib libpsl"
+DEPENDS="glib glibc-base libffi libgio libxml2 pcre zlib libpsl
+	libnghttp2 glib-networking"
 BUILD_DEPENDS="bash libgio-dev krb5-dev libxml2-dev libgcrypt-dev
 	libtasn1-dev gnutls-dev zlib-dev libgnome-keyring-dev sqlite-dev 
-	dbus-dev brotli libpsl-dev glib-networking" # glib-networking-dev 
+	dbus-dev brotli libpsl-dev glib-networking nghttp2-dev gi-docgen"
 
 # Handle cross compilation.
 case "$ARCH" in

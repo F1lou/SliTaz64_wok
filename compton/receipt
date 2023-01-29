@@ -11,9 +11,11 @@ WEB_SITE="https://github.com/chjj/compton"
 WGET_URL="https://github.com/chjj/$PACKAGE/archive/v${VERSION}.tar.gz"
 HOST_ARCH="x86_64 i486 arm"
 
-DEPENDS="xorg-libXcomposite xorg-libXrandr libdrm xorg-xwininfo xorg-xprop"
+DEPENDS="xorg-libXcomposite xorg-libXrandr libdrm xorg-xwininfo xorg-xprop
+	pcre"
 BUILD_DEPENDS="xorg-libXcomposite xorg-libXrandr-dev libdrm-dev wget
-	xorg-libXcomposite-dev xorg-libXdamage-dev xorg-libXinerama-dev"
+	xorg-libXcomposite-dev xorg-libXdamage-dev xorg-libXinerama-dev
+	pcre-dev"
 
 # Rules to configure and make the package.
 compile_rules()
