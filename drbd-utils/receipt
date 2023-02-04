@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="drbd-utils"
-VERSION="9.11.0"
+VERSION="9.23.0"
 CATEGORY="system-tools"
 SHORT_DESC="DRBD is a block device to build high availability clusters."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -9,7 +9,7 @@ LICENSE="GPL2"
 WEB_SITE="https://www.linbit.com/en/drbd-community/"
 
 TARBALL="$PACKAGE-$VERSION.tar.gz"
-WGET_URL="https://www.linbit.com/downloads/drbd/utils/$TARBALL"
+WGET_URL="https://pkg.linbit.com//downloads/drbd/utils/$TARBALL"
 
 DEPENDS="gcc-lib-base"
 BUILD_DEPENDS="autoconf automake flex gcc libxslt eudev-dev"

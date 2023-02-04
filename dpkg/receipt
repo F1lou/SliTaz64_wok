@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="dpkg"
-VERSION="1.17.27"
+VERSION="1.21.19"
 CATEGORY="misc"
 SHORT_DESC="Debian package management system."
 MAINTAINER="shann@slitaz.org"
@@ -13,7 +13,8 @@ TARBALL="${PACKAGE}_$VERSION.tar.xz"
 WGET_URL="http://deb.debian.org/debian/pool/main/d/$PACKAGE/$TARBALL"
 
 DEPENDS="bzlib liblzma zlib"
-BUILD_DEPENDS="file liblzma-dev ncurses-dev perl"
+BUILD_DEPENDS="file liblzma-dev ncurses-dev perl zlib-dev patch tar
+	libmd-dev"
 
 CONFIG_FILES="/etc/logrotate.d/dpkg
 /etc/cron.daily/dpkg

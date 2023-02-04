@@ -13,7 +13,7 @@ TAGS="e enlightenment efl"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="eina libjpeg libssl"
-BUILD_DEPENDS="eina-dev jpeg-dev openssl-dev zlib-dev"
+BUILD_DEPENDS="eina-dev jpeg-dev zlib-dev" # openssl-dev gnutls-dev
 
 # Handle cross compilation
 case "$ARCH" in
@@ -23,8 +23,11 @@ esac
 # Rules to configure and make the package.
 compile_rules()
 {
-	export CFLAGS="$CFLAGS -fvisibility=hidden"
-	export LDFLAGS="$LDFLAGS -fvisibility=hidden"
+	#~ export CFLAGS="$CFLAGS -fvisibility=hidden"
+	#~ export LDFLAGS="$LDFLAGS -fvisibility=hidden"
+	#~ patch -Np1 -i $stuff/openssl.patch				# openssl change in V1.0
+	#~ sed -i 's|gnutls_x509_crt_verify_data|gnutls_x509_crt_verify_data2|' \
+		src/lib/eet_cipher.c			# gnutls change to verify_data2
 	./configure \
 		--disable-doc \
 		--disable-old-eet-file-format \

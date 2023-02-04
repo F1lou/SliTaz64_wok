@@ -12,8 +12,10 @@ WEB_SITE="https://www.dillo.org/"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="https://www.dillo.org/download/$TARBALL"
 
-DEPENDS="fltk gcc-lib-base jpeg libpng openssl xorg-libX11 zlib"
-BUILD_DEPENDS="fltk-dev jpeg-dev libpng-dev openssl-dev zlib-dev"
+DEPENDS="fltk gcc-lib-base jpeg libpng openssl xorg-libX11 zlib
+	xorg-libXcursor xorg-libXinerama"
+BUILD_DEPENDS="fltk-dev jpeg-dev libpng-dev openssl-dev zlib-dev
+	xorg-libX11-dev xorg-libXcursor-dev xorg-libXinerama-dev"
 
 HOST_ARCH="x86_64 i486 arm"
 
@@ -21,6 +23,7 @@ HOST_ARCH="x86_64 i486 arm"
 compile_rules()
 {
 #	patch -p0 < $stuff/fltk-1.3.3.u
+	export CFLAGS="$CFLAGS -fcommon"
 	cp -f $stuff/pixmaps.slitaz.h src/pixmaps.h
 
 	./configure			\

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="fdutils"
-VERSION="5.5"
+VERSION="5.6"
 CATEGORY="system-tools"
 SHORT_DESC="Utilities for configuring and formatting floppy."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -17,17 +17,13 @@ BUILD_DEPENDS="flex"
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i 's|.*inux/ext2_fs.*|struct ext2_super_block {\n\
-	__le32 pad1;\n	__le32 s_blocks_count;\n	__le32 pad2[4];\n\
-	__le32 s_log_block_size;\n	__le32 pad3[7];\n\
-	__le16 s_magic;\n};|' src/fdmount.c
-	sed -i 's|(uname -m)|(echo i686)|' configure
+	export CFLAGS="$CFLAGS -fcommon"
 	mkdir -p $DESTDIR/etc
 	sed -i -e "s|^bindir.*|bindir = $DESTDIR/usr/bin|" \
 		-e "s|^sysconfdir.*|sysconfdir = $DESTDIR/etc|" \
 			src/Makefile*
 	./configure $CONFIGURE_ARGS &&
-	make -j 1 DESTDIR=$DESTDIR install-prog
+	make -j 1 && make DESTDIR=$DESTDIR install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

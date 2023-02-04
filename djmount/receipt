@@ -12,27 +12,22 @@ WEB_SITE="http://djmount.sourceforge.net"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
-DEPENDS="fuse readline"
-BUILD_DEPENDS="automake bash fuse-dev readline-dev "	# libupnp libupnp-dev
-							# included in source archive
+DEPENDS="fuse2 readline"
+BUILD_DEPENDS="automake bash fuse2-dev readline-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-#	sed -i 's|upnptools.h>|&\n#include <upnp/upnp.h>|' \
-#		djmount/upnp_util.h
+	#~ sed -i 's|upnptools.h>|&\n#include <upnp/upnp.h>|' djmount/upnp_util.h
 
-	# to satisfy #include <upnp/....h>
-	ln -s $src/libupnp/ixml/inc		libupnp/ixml/upnp
-	ln -s $src/libupnp/upnp/inc		libupnp/upnp/upnp
-	ln -s $src/libupnp/threadutil/inc	libupnp/threadutil/upnp
+	#~ # to satisfy #include <upnp/....h>
+	#~ ln -s $src/libupnp/ixml/inc			libupnp/ixml/upnp
+	#~ ln -s $src/libupnp/upnp/inc			libupnp/upnp/upnp
+	#~ ln -s $src/libupnp/threadutil/inc	libupnp/threadutil/upnp
+	#~ ln -s $src/libupnp/ixml/inc/ixml.h	libupnp/upnp/ixml.h
+	#~ ln -s $src/libupnp/threadutil/inc/ithread.h djmount/ithread.h
 
-	ln -s $src/libupnp/ixml/inc/ixml.h	libupnp/upnp/ixml.h
-	ln -s $src/libupnp/threadutil/inc/ithread.h djmount/ithread.h
-
-	export LDFLAGS="$LDFLAGS  -Lfuse3"
-	export	LIBUPNP_CFLAGS="-I$src/libupnp/threadutil \
-			-I$src/libupnp/upnp -I$src/libupnp/ixml"
+	#~ export	LIBUPNP_CFLAGS="-I$src/libupnp/threadutil I$src/libupnp/upnp -I$src/libupnp/ixml"
 
 	./configure 				\
 		CONFIG_SHELL=/bin/bash		\
@@ -40,8 +35,7 @@ compile_rules()
 		--infodir=/usr/share/info	\
 		--mandir=/usr/share/man		\
 		$CONFIGURE_ARGS 2>&1 | grep -v /config.rpath: &&
-	make -j1 &&
-	make -j1 install
+	make -j1 && make install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.

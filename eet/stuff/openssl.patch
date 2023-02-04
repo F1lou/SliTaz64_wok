@@ -1,0 +1,52 @@
+--- ./src/lib/eet_cipher.c
++++ ./src/lib/eet_cipher.c
+@@ -505,7 +505,8 @@
+    gnutls_privkey_t privkey;
+ #endif
+ # else /* ifdef HAVE_GNUTLS */
+-   EVP_MD_CTX md_ctx;
++   EVP_MD_CTX *md_ctx;
++   md_ctx = EVP_MD_CTX_new();
+    unsigned int sign_len = 0;
+    int cert_len = 0;
+ # endif /* ifdef HAVE_GNUTLS */
+@@ -814,7 +815,8 @@
+    const unsigned char *tmp;
+    EVP_PKEY *pkey;
+    X509 *x509;
+-   EVP_MD_CTX md_ctx;
++   EVP_MD_CTX *md_ctx;
++   md_ctx = EVP_MD_CTX_new();
+    int err;
+ 
+    /* Strange but d2i_X509 seems to put 0 all over the place. */
+@@ -971,7 +973,8 @@
+    gcry_cipher_hd_t cipher;
+ # else /* ifdef HAVE_GNUTLS */
+    /* Openssl declarations*/
+-   EVP_CIPHER_CTX ctx;
++   EVP_CIPHER_CTX *ctx;
++   ctx = EVP_CIPHER_CTX_new();
+    unsigned int *buffer = NULL;
+    int tmp_len;
+ # endif /* ifdef HAVE_GNUTLS */
+@@ -1203,7 +1206,8 @@
+    gcry_cipher_close(cipher);
+ 
+ # else /* ifdef HAVE_GNUTLS */
+-   EVP_CIPHER_CTX ctx;
++   EVP_CIPHER_CTX *ctx;
++   ctx = EVP_CIPHER_CTX_new();
+    int opened = 0;
+ 
+    /* Openssl create the corresponding cipher */
+@@ -1342,7 +1346,8 @@
+    int j, k;
+ # ifdef HAVE_GNUTLS
+ # else
+-   HMAC_CTX hctx;
++   HMAC_CTX *hctx;
++   hctx = HMAC_CTX_new();
+ # endif /* ifdef HAVE_GNUTLS */
+ 
+    buf = alloca(salt_len + 4);

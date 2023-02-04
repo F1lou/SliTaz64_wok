@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="dmenu"
-VERSION="4.5"
+VERSION="5.2"
 CATEGORY="misc"
 SHORT_DESC="dynamic menu lauch bar"
 MAINTAINER="jozee@slitaz.org"
@@ -13,7 +13,7 @@ TAGS="launchbar"
 HOST_ARCH="x86_64 i486 arm"
 
 DEPENDS="xorg-libX11 xorg-libXau xorg-libXdmcp xorg-libXext xorg-libXinerama"
-BUILD_DEPENDS="xorg-libX11-dev xorg-libXinerama-dev"
+BUILD_DEPENDS="xorg-libX11-dev xorg-libXinerama-dev xorg-libXft-dev"
 
 # Rules to configure and make the package.
 compile_rules()

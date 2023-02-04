@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="https://libopenraw.freedesktop.org/download/$TARBALL"
 
 DEPENDS="expat gcc-lib-base"
-BUILD_DEPENDS="expat-dev gcc libboost-dev libboost-test-dev"
+BUILD_DEPENDS="expat-dev gcc libboost-dev libboost-test-dev zlib-dev"
 
 # Rules to configure and make the package.
 compile_rules()

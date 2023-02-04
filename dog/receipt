@@ -12,7 +12,7 @@ WGET_URL="https://github.com/ogham/dog/archive/v$VERSION.tar.gz"
 TAGS="dns"
 
 DEPENDS="libssl libcrypto"
-BUILD_DEPENDS="rust-cargo git openssl-dev"
+BUILD_DEPENDS="rust-cargo git openssl-dev libssl-dev"
 
 # Rules to configure and make the package.
 compile_rules()

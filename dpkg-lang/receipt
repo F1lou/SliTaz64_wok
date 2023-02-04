@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="dpkg-lang"
-VERSION="1.17.27"
+VERSION="1.21.19"
 CATEGORY="misc"
 SHORT_DESC="Debian package management system - message files."
 MAINTAINER="maintainer@slitaz.org"

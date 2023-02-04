@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="efivar"
-VERSION="37"
+VERSION="38"
 CATEGORY="system-tools"
 SHORT_DESC="Manage UEFI variables."
 MAINTAINER="developer@slitaz.org"

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="dnstop"
-VERSION="20121017"
+VERSION="20140915"
 CATEGORY="network"
 SHORT_DESC="Displays various tables of DNS traffic on your network."
 MAINTAINER="paul@slitaz.org"

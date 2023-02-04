@@ -16,11 +16,10 @@ BUILD_DEPENDS="cdrkit gcc-lib-base m4"
 # Rules to configure and make the package.
 compile_rules()
 {
-	cd $src
 	patch -p1 -i $stuff/build-7.1.patch
 	grep -qs 'define u8' growisofs.c ||
 	sed -i 's|#include <scsi/scsi.h>|#define u8 __u8\n&|' growisofs.c
-	make
+	CFLAGS="$CFLAGS -Wno-implicit-function-declaration" make
 	mkdir -p $DESTDIR/usr/bin/
 	for bin in growisofs dvd+rw-booktype dvd+rw-format dvd+rw-mediainfo dvd-ram-control; do
 		install -m755 $bin $DESTDIR/usr/bin/
