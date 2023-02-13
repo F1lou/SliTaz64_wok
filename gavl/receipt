@@ -15,7 +15,7 @@ DEPENDS="glibc-base"
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure --without-doxygen \
+	LIBS=-lm ./configure --prefix=/usr --without-doxygen \
 		--with-cpuflags=none $CONFIGURE_ARGS &&
 	make && make install
 }

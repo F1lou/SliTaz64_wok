@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="fpc"
-VERSION="2.6.4"
+VERSION="3.2.2"
 CATEGORY="development"
 SHORT_DESC="The Free Pascal Compiler"
 MAINTAINER="slaxemulator@gmail.com"
@@ -29,7 +29,7 @@ compile_rules()
 {
 	case "$ARCH" in
 	x86_64|i?86)
-		make ${ARCH_ARGS} NOGDB=1 build
+		make ${ARCH}-linux NOGDB=1 build
 		make -j1 NOGDB=1 PREFIX=$DESTDIR/usr install ;;
 	arm*)
 		make crossinstall \

@@ -17,8 +17,9 @@ BUILD_DEPENDS="gcc-lib-base"
 # Rules to configure and make the package.
 compile_rules()
 {
-	sed -i 's|uname -m|echo i486|' Makefile.*
+	#~ sed -i 's|uname -m|echo i486|' Makefile.*
 	patch -Np1 -i $stuff/gcc4.5_ln.patch
+	export CXXFLAGS="$CXXFLAGS -std=c++14"
 	pkgdir=$DESTDIR
 	incl=$pkgdir/usr/include
     dest=$pkgdir/usr/lib
