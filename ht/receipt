@@ -12,7 +12,7 @@ WGET_URL="$SF_MIRROR/hte/$TARBALL"
 TAGS="viewer text-editor analysis"
 
 DEPENDS="gcc-lib-base lzo ncurses xorg-libX11 xorg-libXau xorg-libXdmcp"
-BUILD_DEPENDS="lzo-dev ncurses-dev"
+BUILD_DEPENDS="lzo-dev ncurses-dev xorg-libX11-dev"
 
 # Rules to configure and make the package.
 compile_rules()

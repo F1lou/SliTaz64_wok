@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gnustep-base"
-VERSION="1.26.0"
+VERSION="1.28.0"
 CATEGORY="x-window"
 SHORT_DESC="GNUstep base package."
 MAINTAINER="pankso@slitaz.org"

@@ -11,8 +11,8 @@ WEB_SITE="https://opensource.apple.com/"
 WGET_URL="http://http.debian.net/debian/pool/main/h/hfsprogs/$TARBALL"
 EXTRA_SOURCE_FILES="${PACKAGE}_$VERSION-11.debian.tar.gz"
 
-DEPENDS=" libcrypto"
-BUILD_DEPENDS=" openssl-dev"
+DEPENDS="libbsd libcrypto"
+BUILD_DEPENDS="libbsd-dev openssl-dev"
 
 # Rules to configure and make the package.
 compile_rules()

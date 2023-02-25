@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="htmldoc"
-VERSION="1.9.8"
+VERSION="1.9.16"
 CATEGORY="utilities"
 SHORT_DESC="Convert HTML pages into a PDF document."
 MAINTAINER="gokhlayeh@slitaz.org"
@@ -11,8 +11,8 @@ WEB_SITE="https://www.htmldoc.org"
 TARBALL="$PACKAGE-$VERSION-source.tar.gz"
 WGET_URL="https://github.com/michaelrsweet/$PACKAGE/releases/download/v$VERSION/$TARBALL"
 
-DEPENDS="fltk jpeg libpng"
-BUILD_DEPENDS="fltk-dev jpeg-dev libpng-dev"
+DEPENDS="fltk jpeg libpng zlib"
+BUILD_DEPENDS="fltk-dev jpeg-dev libpng-dev zlib-dev"
 
 # Rules to configure and make the package.
 compile_rules()

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="gssdp"
-VERSION="0.14.7"
+VERSION="0.14.16"
 CATEGORY="network"
 SHORT_DESC="Resource discovery and announcement over SSDP."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -10,8 +10,8 @@ TARBALL="$PACKAGE-$VERSION.tar.xz"
 WEB_SITE="https://wiki.gnome.org/action/show/Projects/GUPnP"
 WGET_URL="https://download.gnome.org/sources/$PACKAGE/${VERSION%.*}/$TARBALL"
 
-DEPENDS="libsoup"
-BUILD_DEPENDS="wget pkg-config libsoup-dev sqlite-dev"
+DEPENDS="libsoup2 libpsl krb5"
+BUILD_DEPENDS="wget pkg-config libsoup2-dev libpsl-dev sqlite-dev krb5-dev"
 
 # Rules to configure and make the package.
 compile_rules()

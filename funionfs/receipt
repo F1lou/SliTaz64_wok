@@ -11,21 +11,13 @@ WEB_SITE="https://web.archive.org/web/20191120030918/http://funionfs.apiou.org/"
 WGET_URL="${WEB_SITE}file/$TARBALL"
 TAGS="filesystem"
 
-BUILD_DEPENDS="fuse-dev"
-DEPENDS="fuse"
+BUILD_DEPENDS="fuse2-dev"
+DEPENDS="fuse2"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	cd $src
-	[ -f main.c.done ] || patch -p0 << EOT
---- main.c
-+++ main.c
-@@ -305 +305 @@
--			if (res < 0)
-+			// if (res < 0)
-EOT
-	touch main.c.done
+	export CFLAGS="$CFLAGS -fcommon"
 	./configure --prefix=/usr --bindir=/bin \
 	--libexecdir=/usr/bin --mandir=/usr/share/man \
 	$CONFIGURE_ARGS &&

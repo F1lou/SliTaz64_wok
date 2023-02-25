@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="hdf5"
-VERSION="1.10.6"
+VERSION="1.14.0"
 CATEGORY="misc"
 SHORT_DESC="A data model, library, and file format for storing and managing data."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -21,7 +21,7 @@ compile_rules()
 		src/CMakeLists.txt
 
 	./configure $CONFIGURE_ARGS &&
-	make -j 1 all &&
+	make all &&
 	make DESTDIR=$DESTDIR install
 }
 

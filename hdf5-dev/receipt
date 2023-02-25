@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="hdf5-dev"
-VERSION="1.10.6"
+VERSION="1.14.0"
 CATEGORY="development"
 SHORT_DESC="A data model, library, and file format for storing and managing data - development files."
 MAINTAINER="pascal.bellard@slitaz.org"

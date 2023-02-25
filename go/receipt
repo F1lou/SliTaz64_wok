@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="go"
-VERSION="1.17.7"
+VERSION="1.20.1"
 CATEGORY="development"
 SHORT_DESC="The Go programming language (R.Griesemer R.Pike K.Thompson)"
 MAINTAINER="domcox@slitaz.org"

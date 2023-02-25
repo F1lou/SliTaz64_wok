@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="getmail"
-VERSION="5.14"
+VERSION="5.16"
 CATEGORY="network"
 SHORT_DESC="A simple mail retrieval agent intended as a replacement for fetchmail."
 MAINTAINER="claudinei@slitaz.org"

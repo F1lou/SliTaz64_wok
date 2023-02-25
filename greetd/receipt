@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="greetd"
-VERSION="0.8.0"
+VERSION="0.9.0"
 CATEGORY="x-window"
 SHORT_DESC="greetd is a minimal and flexible login manager daemon that makes no assumptions about what you want to launch."
 MAINTAINER="nhc1@gmx.net"
