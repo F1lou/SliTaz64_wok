@@ -1,15 +1,15 @@
 # SliTaz package receipt.
 
 PACKAGE="lftp"
-VERSION="4.9.1"
+VERSION="4.9.2"
 CATEGORY="network"
 SHORT_DESC="Small but powerful ftp client."
 MAINTAINER="mimas@slitaz.org"
 LICENSE="GPL3"
 WEB_SITE="https://lftp.yar.ru/"
 
-TARBALL="$PACKAGE-$VERSION.tar.xz"
-WGET_URL="https://lftp.tech/ftp/$TARBALL"
+TARBALL="$PACKAGE-$VERSION.tar.bz2"
+WGET_URL="http://lftp.yar.ru/ftp/$TARBALL"
 
 DEPENDS="expat gcc-lib-base gmp gnutls readline"
 BUILD_DEPENDS="expat-dev gcc gcc-lib-base gmp-dev gnutls-dev gperf \

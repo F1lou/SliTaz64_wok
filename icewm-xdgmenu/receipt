@@ -12,7 +12,7 @@ TARBALL=$SOURCE
 WGET_URL="http://distro.ibiblio.org/puppylinux/sources/x/$TARBALL"
 
 DEPENDS="gnome-menus slitaz-menus icewm"
-BUILD_DEPENDS="gnome-menus gnome-menus-dev"
+BUILD_DEPENDS="gnome-menus gnome-menus-dev glib-dev xorg-libXpm-dev"
 
 # Rules to configure and make the package.
 compile_rules()

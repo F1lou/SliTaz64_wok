@@ -1,18 +1,18 @@
 # SliTaz package receipt.
 
 PACKAGE="libass"
-VERSION="0.10.0"
+VERSION="0.17.1"
 CATEGORY="multimedia"
 SHORT_DESC="A portable library for SSA/ASS subtitles rendering"
 MAINTAINER="slaxemulator@gmail.com"
 LICENSE="BSD"
 TARBALL="$PACKAGE-$VERSION.tar.xz"
 WEB_SITE="https://github.com/libass/libass"
-WGET_URL="http://libass.googlecode.com/files/$TARBALL"
+WGET_URL="https://github.com/$PACKAGE/$PACKAGE/releases/download/$VERSION/$TARBALL"
 
 DEPENDS="enca fontconfig libpng fribidi"
-BUILD_DEPENDS="enca-dev freetype-dev fontconfig-dev libpng-dev \
-expat-dev fribidi-dev pkg-config libxml2-dev"
+BUILD_DEPENDS="enca-dev freetype-dev fontconfig-dev libpng-dev
+	expat-dev fribidi-dev pkg-config libxml2-dev liblzma-dev"
 
 # Rules to configure and make the package.
 compile_rules()

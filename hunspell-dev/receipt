@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="hunspell-dev"
-VERSION="1.7.0"
+VERSION="1.7.2"
 CATEGORY="development"
 SHORT_DESC="A spell checker, development files."
 MAINTAINER="pascal.bellard@slitaz.org"

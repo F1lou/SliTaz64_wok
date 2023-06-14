@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="irrlicht-dev"
-VERSION="1.8.4"
+VERSION="1.8.5"
 CATEGORY="development"
 SHORT_DESC="High performance realtime 3D engine written in C++."
 MAINTAINER="pascal.bellard@slitaz.org"

@@ -12,8 +12,8 @@ TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WGET_URL="$SF_MIRROR/sf-xpaint/$TARBALL"
 
 DEPENDS="xorg-libXmu fontconfig xorg-libXrender xorg-libXft lzlib"
-BUILD_DEPENDS="xorg-libXmu-dev util-linux-uuid-dev expat-dev libxml2-dev \
-	xorg-libXpm-dev"
+BUILD_DEPENDS="xorg-libXmu-dev util-linux-uuid-dev expat-dev libxml2-dev
+	xorg-libXpm-dev xorg-libXft-dev liblzma-dev"
 HOST_ARCH="x86_64 i486 arm"
 
 # Rules to configure and make the package.

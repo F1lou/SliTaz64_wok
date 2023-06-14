@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="lensfun"
-VERSION="0.3.2"
+VERSION="0.3.95"
 CATEGORY="multimedia"
 SHORT_DESC="Database of photographic lenses and a library that allows advanced access to the database."
 MAINTAINER="slaxemulator@gmail.com"
@@ -12,7 +12,7 @@ TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 
 DEPENDS="glib"
-BUILD_DEPENDS="cmake glib-dev libpng python"
+BUILD_DEPENDS="cmake glib-dev libpng py3k-dev"
 
 # Rules to configure and make the package.
 compile_rules()
@@ -21,15 +21,15 @@ compile_rules()
 	cd	build
 	cmake	..				\
 		-DCMAKE_INSTALL_PREFIX=/usr &&
-	make -j 1 all && 
+	make all && 
 	make INSTALL_PREFIX="$DESTDIR" install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib $fs/usr/share
+	mkdir -p $fs/usr/lib64 $fs/usr/share
 
-	cp -a $install/usr/lib/*.so*		$fs/usr/lib
+	cp -a $install/usr/lib64/*.so*		$fs/usr/lib64
 	cp -a $install/usr/share/lensfun	$fs/usr/share
 }

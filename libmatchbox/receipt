@@ -8,11 +8,12 @@ MAINTAINER="pankso@slitaz.org"
 LICENSE="LGPL2.1"
 WEB_SITE="https://www.yoctoproject.org/software-item/matchbox/"
 
-TARBALL="$PACKAGE-$VERSION.tar.bz2"
-WGET_URL="http://git.yoctoproject.org/cgit/cgit.cgi/$PACKAGE/snapshot/$TARBALL"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://git.yoctoproject.org/libmatchbox/snapshot/$TARBALL"
 
 DEPENDS="pango"
-BUILD_DEPENDS="autoconf automake jpeg-dev libtool libxml2-dev pango-dev"
+BUILD_DEPENDS="autoconf automake jpeg-dev libtool libxml2-dev pango-dev
+	liblzma-dev"
 
 # Rules to configure and make the package.
 compile_rules()
