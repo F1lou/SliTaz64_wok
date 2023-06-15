@@ -12,6 +12,7 @@ WEB_SITE="https://www.freetype.org/"
 WGET_URL="$SF_MIRROR/$SOURCE/$TARBALL"
 
 DEPENDS="glibc-base"
+BUILD_DEPENDS=""
 
 # Rules to configure and make the package.
 compile_rules()
@@ -26,6 +27,7 @@ compile_rules()
 		--includedir=$DESTDIR/usr/include \
 		--libdir=$DESTDIR/usr/lib \
 		--with-x --enable-gif \
+		--build=$ARCH	\
 		$CONFIGURE_ARGS &&
 	make ttlib ttpo || return 1
 

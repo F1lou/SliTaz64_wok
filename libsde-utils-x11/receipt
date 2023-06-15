@@ -18,7 +18,7 @@ BUILD_DEPENDS="git cmake xorg-dev libsde-utils"
 compile_rules()
 {
 	rm -rf $src/.git
-	cmake -DCMAKE_INSTALL_PREFIX=/usr . &&
+	./configure --preifx=/usr &&
 	make &&
 	make install
 }

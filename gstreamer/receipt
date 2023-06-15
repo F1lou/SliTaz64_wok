@@ -14,7 +14,7 @@ HOST_ARCH="x86_64 i486 arm"
 
 LOCALES="da de es fr id it pt_BR ru zh_CN"
 DEPENDS="glib libgio libxml2"
-BUILD_DEPENDS="glib-dev libgio-dev libxml2-dev gsl-dev"
+BUILD_DEPENDS="glib-dev libgio-dev libxml2-dev gsl-dev bash"
 
 # Handle cross compilation
 case "$ARCH" in

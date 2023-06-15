@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="lxc"
-VERSION="3.2.1"
+VERSION="5.0.2"
 CATEGORY="system-tools"
 SHORT_DESC="Userspace control package for Linux Containers."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -18,15 +18,12 @@ BUILD_DEPENDS="gcc gnutls-dev libcap-dev util-linux-getopt"
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure				\
-		--prefix=/usr			\
-		--mandir=/usr/share/man		\
-		--sysconfdir=/etc		\
-		--libexec=/usr/lib/$PACKAGE	\
-		--localstatedir=/var		\
-		$CONFIGURE_ARGS &&
-	make -j 1 &&
-	make DESTDIR=$DESTDIR install
+	mkdir build && cd build
+	meson 	--prefix=/usr			\
+			-Ddistrosysconfdir=/sys	\
+			-Dman=false				\
+			-Dinit-script=sysvinit .. &&
+	ninja && ninja install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.   
@@ -37,9 +34,9 @@ genpkg_rules()
 
 	cp -a $install/usr/share/lxc	$fs/usr/share
 	cp -a $install/usr/bin		$fs/usr
-	cp -a $install/usr/lib		$fs/usr
+	cp -a $install/usr/lib64		$fs/usr
 
-	rm -rf				$fs/usr/lib/pkgconfig
+	rm -rf				$fs/usr/lib64/pkgconfig
 
 	cp -a $install/etc		$fs
 	cp -a $install/var		$fs

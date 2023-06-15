@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libtorrent-rasterbar"
-VERSION="1.2.5"
+VERSION="2.0.9"
 CATEGORY="development"
 SHORT_DESC="A C++ library that aims to be a good alternative to all the other bittorrent implementations around."
 MAINTAINER="slaxemulator@gmail.com"
@@ -10,20 +10,19 @@ WEB_SITE="https://www.rasterbar.com/products/libtorrent/"
 
 SOURCE="libtorrent"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
-WGET_URL="https://github.com/arvidn/$SOURCE/archive/${SOURCE}-${VERSION//./_}.tar.gz"
+WGET_URL="https://github.com/arvidn/libtorrent/releases/download/v$VERSION/$TARBALL"
 
 DEPENDS="gcc-lib-base libboost-filesystem libboost-math libboost-python 
 	libboost-thread openssl python"
 BUILD_DEPENDS="autoconf automake gcc libboost-filesystem-dev 
 	libboost-math-dev libboost-python-dev libboost-thread-dev 
-	libtool openssl-dev python-dev zlib-dev"
+	libtool openssl-dev py3k-dev zlib-dev libboost-regex-dev"
 
 # Rules to configure and make the package.
 compile_rules()
 {
-	./bootstrap.sh			\
-		--enable-python-binding \
-		$CONFIGURE_ARGS &&
+	mkdir build && cd build
+	cmake -D CMAKE_INSTALL_PREFIX=/usr .. &&
 	make &&
 	make install
 }
@@ -31,8 +30,7 @@ compile_rules()
 # Rules to gen a SliTaz package suitable for Tazpkg.
 genpkg_rules()
 {
-	mkdir -p $fs/usr/lib
+	mkdir -p $fs/usr/lib64
 
-	cp -a $install/usr/lib/*.so*	$fs/usr/lib
-	cp -a $install/usr/lib/python*	$fs/usr/lib
+	cp -a $install/usr/lib64/*.so*		$fs/usr/lib64
 }

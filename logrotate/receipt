@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="logrotate"
-VERSION="3.18.0"
+VERSION="3.21.0"
 CATEGORY="system-tools"
 SHORT_DESC="Automatic rotation, compression, and removal of log files."
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -11,8 +11,8 @@ WEB_SITE="https://github.com/logrotate/logrotate/"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WGET_URL="${WEB_SITE}releases/download/$VERSION/$TARBALL"
 
-DEPENDS="popt"
-BUILD_DEPENDS="automake popt-dev"
+DEPENDS="popt acl"
+BUILD_DEPENDS="automake popt-dev acl-dev"
 
 CONFIG_FILES="/etc/logrotate.conf"
 

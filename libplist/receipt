@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libplist"
-VERSION="2.0.0"
+VERSION="2.3.0"
 CATEGORY="multimedia"
 SHORT_DESC="A library to handle Apple Property List format whereas it's binary or XML"
 MAINTAINER="slaxemulator@gmail.com"
@@ -9,11 +9,11 @@ LICENSE="GPL2"
 WEB_SITE="https://libimobiledevice.org/"
 
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
-WGET_URL="http://www.libimobiledevice.org/downloads/$TARBALL"
+WGET_URL="https://github.com/libimobiledevice/$PACKAGE/releases/download/$VERSION/$TARBALL"
 
 DEPENDS="glib libxml2"
 #BUILD_DEPENDS="glib-dev libxml2-dev cmake swig python python-dev "
-BUILD_DEPENDS="file glib-dev libxml2-dev python python-dev"
+BUILD_DEPENDS="file glib-dev libxml2-dev py3k-dev"
 
 # Rules to configure and make the package.
 compile_rules()

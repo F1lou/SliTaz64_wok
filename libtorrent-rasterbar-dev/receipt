@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libtorrent-rasterbar-dev"
-VERSION="1.2.5"
+VERSION="2.0.9"
 CATEGORY="development"
 SHORT_DESC="Development files for libtorrent-rasterbar."
 MAINTAINER="slaxemulator@gmail.com"

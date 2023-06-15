@@ -1,14 +1,14 @@
 # SliTaz package receipt.
 
 PACKAGE="lsyncd"
-VERSION="2.1.5"
+VERSION="2.3.1"
 CATEGORY="network"
 SHORT_DESC="Live Syncing (Mirror) Daemon."
 MAINTAINER="pankso@slitaz.org"
 LICENSE="GPL2"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
 WEB_SITE="https://axkibe.github.io/lsyncd/"
-WGET_URL="http://lsyncd.googlecode.com/files/$TARBALL"
+WGET_URL="https://github.com/$PACKAGE/$PACKAGE/archive/refs/tags/v$VERSION.tar.gz"
 
 DEPENDS="lua"
 BUILD_DEPENDS="lua-dev"
@@ -16,7 +16,8 @@ BUILD_DEPENDS="lua-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure $CONFIGURE_ARGS LDFLAGS="$LDFLAGS -ldl" &&
+	mkdir build && cd build
+	cmake .. &&
 	make && make install
 }
 

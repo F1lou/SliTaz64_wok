@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="libnice-dev"
-VERSION="0.0.13"
+VERSION="0.1.21"
 CATEGORY="development"
 SHORT_DESC="Libnice devel files."
 MAINTAINER="pankso@slitaz.org"
@@ -15,9 +15,6 @@ DEPENDS="pkg-config"
 genpkg_rules()
 {
     mkdir -p $fs/usr/lib
-    cp -a $install/usr/lib/*.*a $fs/usr/lib
-    cp -a $install/usr/lib/pkgconfig $fs/usr/lib
-    cp -a $install/usr/lib/gstreamer-* $fs/usr/lib
-    rm $fs//usr/lib/gstreamer-*/*.so*
+    cp -a $install/usr/lib64/pkgconfig $fs/usr/lib
     cp -a $install/usr/include $fs/usr
 }

@@ -1,23 +1,23 @@
 # SliTaz package receipt.
 
 PACKAGE="libsde-utils-gtk"
-VERSION="3c571f0"
+VERSION="0.1.0-r1"
 CATEGORY="development"
 SHORT_DESC="SDE GTK Utility Library"
 MAINTAINER="al.bobylev@gmail.com"
 LICENSE="GPL"
 WEB_SITE="https://github.com/sde-gui/libsde-utils"
-TARBALL="$PACKAGE-$VERSION.tar.xz"
-WGET_URL="http://git.make-linux.org/sde/$PACKAGE.git/snapshot/$TARBALL"
+TARBALL="$PACKAGE-$VERSION.tar.gz"
+WGET_URL="https://github.com/sde-gui/libsde-utils/archive/refs/tags/$VERSION.tar.gz"
 
-DEPENDS="gtk+ libsde-utils"
-BUILD_DEPENDS="cmake gtk+-dev gdk-pixbuf-dev libsde-utils"
+DEPENDS="gtk+3 libsde-utils"
+BUILD_DEPENDS="cmake gtk+3-dev gdk-pixbuf-dev libsde-utils"
 
 # Rules to configure and make the package.
 compile_rules()
 {
 	rm -rf $src/.git
-	cmake -DCMAKE_INSTALL_PREFIX=/usr . &&
+	./configure --prefix=/usr &&
 	make &&
 	make install
 }
