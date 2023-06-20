@@ -11,7 +11,7 @@ WEB_SITE="http://mcrypt.sourceforge.net/"
 WGET_URL="http://downloads.sourceforge.net/project/mcrypt/MCrypt/$VERSION/$TARBALL"
 
 DEPENDS="zlib mhash libmcrypt"
-BUILD_DEPENDS="libmcrypt-dev libmcrypt-dev mhash-dev"
+BUILD_DEPENDS="libmcrypt-dev libmcrypt-dev mhash-dev zlib-dev"
 
 # Rules to configure and make the package.
 compile_rules()

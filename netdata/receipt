@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="netdata"
-VERSION="1.11.0"
+VERSION="1.40.0"
 CATEGORY="system-tools"
 SHORT_DESC="Real-time performance monitoring, done right"
 MAINTAINER="pascal.bellard@slitaz.org"
@@ -13,7 +13,7 @@ TAGS="monitoring"
 CONFIG_FILES="/etc/netdata"
 
 DEPENDS="python-pyyaml util-linux-uuid zlib"
-BUILD_DEPENDS="pkg-config util-linux-uuid-dev"
+BUILD_DEPENDS="pkg-config util-linux-uuid-dev zlib-dev"
 SUGGESTED="psycopg2 python-mysql lm-sensors curl node iproute2 gnu-netcat"
 
 # Rules to configure and make the package.

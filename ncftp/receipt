@@ -18,6 +18,7 @@ BUILD_DEPENDS="ncurses-dev"
 compile_rules()
 {
 	export LDFLAGS="$LDFLAGS -ltinfo"
+	export CFLAGS="$CFLAGS -fcommon"
 	./configure --prefix=/usr --sysconfdir=/etc &&
 	make &&
 	make DESTDIR=$DESTDIR install

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="megatools"
-VERSION="1.9.96"
+VERSION="1.11.1.20230212"
 CATEGORY="network"
 SHORT_DESC="A collection of CLI programs for accessing Mega service."
 MAINTAINER="Lucas Levrel <llev@slitaz.org>"
@@ -16,8 +16,9 @@ BUILD_DEPENDS="glib-dev curl-dev openssl-dev gmp-dev"
 # Rules to configure and make the package.
 compile_rules()
 {
-	./configure $CONFIGURE_ARGS --disable-static \
-	&& make && make install
+	mkdir build && cd build
+	meson --prefix=/usr .. &&
+	ninja && ninja install
 }
 
 # Rules to gen a SliTaz package suitable for Tazpkg.
@@ -25,5 +26,5 @@ genpkg_rules()
 {
 	cp -a $install/* $fs
 	# upstream info: lib is deprecated; remove .h .pc .la
-	rm -r $fs/usr/share $fs/usr/lib/pkgconfig $fs/usr/lib/*a $fs/usr/include
+	#~ rm -r $fs/usr/share $fs/usr/lib/pkgconfig $fs/usr/lib/*a $fs/usr/include
 }

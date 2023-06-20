@@ -16,15 +16,15 @@ BUILD_DEPENDS="wget zlib-dev lzlib-dev lzlib"
 # Rules to configure and make the package.
 compile_rules()
 {
-	for patch_file in lzlib depmod; do
-		if [ -f done.$patch_file ]; then
-			echo "Skipping $patch_file"
-			continue
-		fi
-		echo "Apply $patch_file.u"
-		patch -p1 < $stuff/$patch_file.u || return 1
-		touch done.$patch_file
-	done
+	#~ for patch_file in lzlib depmod; do
+		#~ if [ -f done.$patch_file ]; then
+			#~ echo "Skipping $patch_file"
+			#~ continue
+		#~ fi
+		#~ echo "Apply $patch_file.u"
+		#~ patch -p1 < $stuff/$patch_file.u || return 1
+		#~ touch done.$patch_file
+	#~ done
 
 	# Don't generate manpages to avoid failure.
 	echo '.so man5/modprobe.conf.5' > modprobe.d.5

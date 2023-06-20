@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="nagios-nrpe"
-VERSION="4.0.2"
+VERSION="4.1.0"
 CATEGORY="network"
 SHORT_DESC="Service and network monitoring program, remote monitoring."
 MAINTAINER="erjo@slitaz.org"

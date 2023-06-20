@@ -7,12 +7,12 @@ SHORT_DESC="Media server for the Roku SoundBridge and iTunes."
 MAINTAINER="pascal.bellard@slitaz.org"
 LICENSE="GPL2"
 TARBALL="$PACKAGE-$VERSION.tar.gz"
-WEB_SITE="http://fireflymediaserver.org/"
+WEB_SITE="http://fireflymediaserver.net/"
 WGET_URL="$SF_MIRROR/$PACKAGE/$TARBALL"
 PROVIDE="firefly"
 
 DEPENDS="gdbm libid3tag zlib"
-BUILD_DEPENDS="gdbm-dev libid3tag-dev glib"
+BUILD_DEPENDS="gdbm-dev libid3tag-dev glib zlib-dev"
 
 # Rules to configure and make the package.
 #

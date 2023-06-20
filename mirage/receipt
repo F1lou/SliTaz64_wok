@@ -8,7 +8,7 @@ MAINTAINER="paul@slitaz.org"
 LICENSE="GPL3"
 TARBALL="$PACKAGE-$VERSION.tar.bz2"
 WEB_SITE="http://mirageiv.sourceforge.net/"
-WGET_URL="http://download.berlios.de/mirageiv/$TARBALL"
+WGET_URL="https://downloads.sourceforge.net/project/mirageiv/$TARBALL"
 
 DEPENDS="python pygtk xorg-libX11 xorg-libXau xorg-libXdmcp libffi"
 BUILD_DEPENDS="python python-dev xorg-xproto xorg-libX11-dev gettext"

@@ -1,7 +1,7 @@
 # SliTaz package receipt.
 
 PACKAGE="mercurial"
-VERSION="6.0.2"
+VERSION="6.4.2"
 CATEGORY="development"
 SHORT_DESC="Revision tools system."
 MAINTAINER="pankso@slitaz.org"
